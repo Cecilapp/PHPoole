@@ -3,6 +3,12 @@ PHPoole-library
 
 Static site builder library with events plugin system. WIP.
 
+Installation
+------------
+
+1. Clone or download the repository
+2. Install dependencies through [Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
+
 Usage
 -----
 
