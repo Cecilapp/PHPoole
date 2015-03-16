@@ -84,8 +84,8 @@ class PHPoole implements EventsCapableInterface
     /**
      * Constructor
      *
-     * @param string $sourceDir
-     * @param string $destDir
+     * @param null $sourceDir
+     * @param null $destDir
      * @param array $options
      */
     public function __construct($sourceDir = null, $destDir = null, $options = array())
