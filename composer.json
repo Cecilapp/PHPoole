@@ -1,0 +1,17 @@
+{
+  "require": {
+    "php": ">=5.4",
+    "zendframework/zend-eventmanager": "2.*",
+    "symfony/finder": "2.*",
+    "symfony/filesystem": "2.*",
+    "symfony/yaml": "2.*",
+    "erusev/parsedown": "1.5.*",
+    "twig/twig": "1.*",
+    "cocur/slugify": "1.*"
+  },
+  "autoload": {
+    "psr-4" : {
+      "PHPoole\\": "lib"
+    }
+  }
+}
