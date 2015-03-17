@@ -424,13 +424,11 @@ class PHPoole implements EventsCapableInterface
             $renderer->save($pathname);
         }
 
-        // copy static
-        $this->filesystem->mirror(
-            $this->sourceDir . '/' . $this->getOptions()['static']['dir'],
-            $dir,
-            null,
-            ['override' => true]
-        );
+        // copy static dir if exist
+        $staticDir = $this->sourceDir . '/' . $this->getOptions()['static']['dir'];
+        if ($this->filesystem->exists($staticDir)) {
+            $this->filesystem->mirror($staticDir, $dir, null, ['override' => true]);
+        }
 
         return true;
     }

@@ -42,6 +42,12 @@ class Page implements \ArrayAccess
      * @var bool
      */
     protected $virtual = false;
+    /**
+     * @var string
+     *
+     * 'homepage', 'list' or 'page'
+     */
+    protected $nodeType = 'page';
 
     /**
      * @var string
@@ -71,7 +77,7 @@ class Page implements \ArrayAccess
     /**
      * @var string
      */
-    protected $layout = 'default.html';
+    protected $layout;
 
     /**
      * @var string
@@ -134,6 +140,31 @@ class Page implements \ArrayAccess
      */
     public function isVirtual() {
         return $this->virtual;
+    }
+
+    /**
+     * Set node type
+     *
+     * @param $nodeType 'homepage', 'list' or 'page'
+     * @return self
+     * @throws \Exception
+     */
+    public function setNodeType($nodeType) {
+        $filter = ['homepage', 'list', 'page'];
+        if (!in_array($nodeType, $filter)) {
+            throw new \Exception(sprintf("Node type '%s' not supported", $nodeType));
+        }
+        $this->nodeType = $nodeType;
+        return $this;
+    }
+
+    /**
+     * Get node type
+     *
+     * @return string
+     */
+    public function getNodeType() {
+        return $this->nodeType;
     }
 
     /**
