@@ -8,6 +8,10 @@
 
 namespace PHPoole\Renderer;
 
+/**
+ * Class TwigExtensionSortArray
+ * @package PHPoole\Renderer
+ */
 class TwigExtensionSortArray extends \Twig_Extension
 {
     /**
@@ -33,6 +37,12 @@ class TwigExtensionSortArray extends \Twig_Extension
         return 'sortarray';
     }
 
+    /**
+     * Main method
+     *
+     * @param $array
+     * @return mixed
+     */
     function sortMenu($array)
     {
         usort($array, function($a, $b) {

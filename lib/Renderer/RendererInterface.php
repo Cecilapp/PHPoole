@@ -8,11 +8,29 @@
 
 namespace PHPoole\Renderer;
 
+/**
+ * Interface RendererInterface
+ * @package PHPoole\Renderer
+ */
 interface RendererInterface
 {
-    public function __construct($templatesPath);
+    /**
+     * Constructor
+     *
+     * @param null $templatesPath
+     */
+    public function __construct($templatesPath = null);
 
+    /**
+     * @param $path
+     * @return mixed
+     */
     public function addPath($path);
 
+    /**
+     * @param $template
+     * @param $variables
+     * @return mixed
+     */
     public function render($template, $variables);
 }

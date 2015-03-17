@@ -10,6 +10,10 @@ namespace PHPoole\Plugin;
 
 use Zend\EventManager\ListenerAggregateInterface;
 
+/**
+ * Interface PluginInterface
+ * @package PHPoole\Plugin
+ */
 interface PluginInterface extends ListenerAggregateInterface
 {
 }

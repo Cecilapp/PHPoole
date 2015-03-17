@@ -11,10 +11,20 @@ namespace PHPoole\Plugin;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\AbstractListenerAggregate;
 
+/**
+ * Class AbstractPlugin
+ * @package PHPoole\Plugin
+ */
 abstract class AbstractPlugin extends AbstractListenerAggregate implements PluginInterface
 {
+    /**
+     * @var array
+     */
     protected $handles = array();
 
+    /**
+     * {@inheritdoc}
+     */
     public function detach(EventManagerInterface $events)
     {
         foreach ($this->handles as $handle) {

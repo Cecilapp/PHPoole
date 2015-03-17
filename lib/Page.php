@@ -11,31 +11,90 @@ namespace PHPoole;
 use Symfony\Component\Finder\SplFileInfo;
 use Cocur\Slugify\Slugify;
 
+/**
+ * Class Page
+ * @package PHPoole
+ */
 class Page implements \ArrayAccess
 {
+    /**
+     * @var Slugify
+     */
     private $slugify;
 
+    /**
+     * @var SplFileInfo
+     */
     protected $file;
+    /**
+     * @var string
+     */
     protected $fileExtension;
+    /**
+     * @var string
+     */
     protected $filePath;
+    /**
+     * @var string
+     */
     protected $fileId;
-    protected $virtual;
+    /**
+     * @var bool
+     */
+    protected $virtual = false;
 
+    /**
+     * @var string
+     */
     protected $id;
+    /**
+     * @var string
+     */
     protected $pathname;
+    /**
+     * @var string
+     */
     protected $name;
+    /**
+     * @var string
+     */
     protected $path;
 
-    protected $title;
+    /**
+     * @var string
+     */
+    protected $title = "Default title";
+    /**
+     * @var string
+     */
     protected $section;
+    /**
+     * @var string
+     */
     protected $layout = 'default.html';
 
+    /**
+     * @var string
+     */
     protected $frontmatter;
+    /**
+     * @var array
+     */
     protected $variables = [];
+    /**
+     * @var string
+     */
     protected $body;
+    /**
+     * @var string
+     */
     protected $html;
 
-    /* @var $file SplFileInfo */
+    /**
+     * Constructor
+     *
+     * @param SplFileInfo $file
+     */
     public function __construct(SplFileInfo $file = null)
     {
         $this->file    = $file;
@@ -68,6 +127,11 @@ class Page implements \ArrayAccess
         }
     }
 
+    /**
+     * Is current page is virtual?
+     *
+     * @return bool
+     */
     public function isVirtual() {
         return $this->virtual;
     }
@@ -81,10 +145,9 @@ class Page implements \ArrayAccess
      * -->
      * Lorem Ipsum.
      *
-     * @return self
      * @throws \RuntimeException
      */
-    private function parse()
+    protected function _parse()
     {
         if ($this->file->isFile()) {
             if (!$this->file->isReadable()) {
@@ -109,33 +172,71 @@ class Page implements \ArrayAccess
             $this->frontmatter = $matches[2];
             $this->body        = $matches[4];
         }
-        return $this;
     }
 
-    public function process()
+    /**
+     * Public method to parse file content
+     *
+     * @return $this
+     */
+    public function parse()
     {
-        $this->parse();
+        $this->_parse();
         return $this;
     }
 
+    /**
+     * Set variables
+     *
+     * @param $variables
+     * @return $this
+     */
     public function setVariables($variables)
     {
         $this->variables = $variables;
         return $this;
     }
+
+    /**
+     * Get variables
+     *
+     * @return array
+     */
     public function getVariables()
     {
         return $this->variables;
     }
+
+    /**
+     * Set a variable
+     *
+     * @param $name
+     * @param $value
+     * @return $this
+     */
     public function setVariable($name, $value)
     {
         $this->variables[$name] = $value;
         return $this;
     }
+
+    /**
+     * Is variable exist?
+     *
+     * @param $name
+     * @return bool
+     */
     public function hasVariable($name)
     {
         return array_key_exists($name, $this->variables);
     }
+
+    /**
+     * Get a variable
+     *
+     * @param $name
+     * @return null
+     */
     public function getVariable($name)
     {
         if ($this->hasVariable($name)) {
@@ -143,6 +244,12 @@ class Page implements \ArrayAccess
         }
         return null;
     }
+
+    /**
+     * Unset a variable
+     *
+     * @param $name
+     */
     public function unVariable($name)
     {
         if ($this->hasVariable($name)) {
@@ -150,27 +257,56 @@ class Page implements \ArrayAccess
         }
     }
 
+    /**
+     * Implement ArrayAccess
+     *
+     * @param mixed $offset
+     * @return bool
+     */
     public function offsetExists($offset)
     {
-        //echo __METHOD__, " $offset\n";
         return $this->hasVariable($offset);
     }
+
+    /**
+     * Implement ArrayAccess
+     *
+     * @param mixed $offset
+     * @return null
+     */
     public function offsetGet($offset)
     {
-        //echo __METHOD__, " $offset\n";
         return $this->getVariable($offset);
     }
+
+    /**
+     * Implement ArrayAccess
+     *
+     * @param mixed $offset
+     * @param mixed $value
+     */
     public function offsetSet($offset, $value)
     {
-        //echo __METHOD__, " $offset\n";
         $this->setVariable($offset, $value);
     }
+
+    /**
+     * Implement ArrayAccess
+     *
+     * @param mixed $offset
+     */
     public function offsetUnset($offset)
     {
-        //echo __METHOD__, " $offset\n";
         $this->unVariable($offset);
     }
 
+    /**
+     * @todo use magic method or not?
+     *
+     * @param $method
+     * @param $params
+     * @return $this|mixed|null
+     */
     /*
     public function __call($method, $params)
     {
@@ -195,38 +331,89 @@ class Page implements \ArrayAccess
     }
     */
 
+    /**
+     * Set name
+     *
+     * @param $name
+     * @return $this
+     */
     public function setName($name)
     {
         $this->name = $name;
         return $this;
     }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
+
+    /**
+     * Set path
+     *
+     * @param $path
+     * @return $this
+     */
     public function setPath($path)
     {
         $this->path = $path;
         return $this;
     }
+
+    /**
+     * Get path
+     *
+     * @return string
+     */
     public function getPath()
     {
         return $this->path;
     }
+
+    /**
+     * Set path name
+     *
+     * @param $pathname
+     * @return $this
+     */
     public function setPathname($pathname)
     {
         $this->pathname = $pathname;
         return $this;
     }
+
+    /**
+     * Get path name
+     *
+     * @return string
+     */
     public function getPathname()
     {
         return $this->pathname;
     }
+
+    /**
+     * Set section
+     *
+     * @param $section
+     * @return $this
+     */
     public function setSection($section)
     {
         $this->section = $section;
         return $this;
     }
+
+    /**
+     * Get section
+     *
+     * @return string
+     */
     public function getSection()
     {
         if (empty($this->section) && !empty($this->path)) {
@@ -234,47 +421,110 @@ class Page implements \ArrayAccess
         }
         return $this->section;
     }
+
+    /**
+     * Set title
+     *
+     * @param $title
+     * @return $this
+     */
     public function setTitle($title)
     {
         $this->title = $title;
         return $this;
     }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
     public function getTitle()
     {
-        //echo __METHOD__, "\n";
         return $this->title;
     }
+
+    /**
+     * Set ID
+     *
+     * @param $id
+     * @return $this
+     */
     public function setId($id)
     {
         $this->id = $id;
         return $this;
     }
+
+    /**
+     * Get ID
+     *
+     * @return string
+     */
     public function getId()
     {
         return $this->id;
     }
+
+    /**
+     * Get frontmatter
+     *
+     * @return string
+     */
     public function getFrontmatter()
     {
         return $this->frontmatter;
     }
+
+    /**
+     * Get body
+     *
+     * @return string
+     */
     public function getBody()
     {
         return $this->body;
     }
+
+    /**
+     * Set HTML
+     *
+     * @param $html
+     * @return $this
+     */
     public function setHtml($html)
     {
         $this->html = $html;
         return $this;
     }
+
+    /**
+     * Get HTML alias
+     *
+     * @return string
+     */
     public function getContent()
     {
         return $this->html;
     }
+
+    /**
+     * Set layout
+     *
+     * @param $layout
+     * @return $this
+     */
     public function setLayout($layout)
     {
         $this->layout = $layout;
         return $this;
     }
+
+    /**
+     * Get layout
+     *
+     * @return string
+     */
     public function getLayout()
     {
         return $this->layout;

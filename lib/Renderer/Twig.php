@@ -10,15 +10,36 @@ namespace PHPoole\Renderer;
 
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * Class Twig
+ * @package PHPoole\Renderer
+ */
 class Twig implements RendererInterface
 {
+    /**
+     * @var \Twig_Environment
+     */
     protected $twig;
-    protected $templates_dir = 'templates';
-    protected $rendered;
-    protected $filesystem;
-    //protected $cache_dir = 'cache';
 
-    public function __construct($templatesPath=null)
+    /**
+     * @var null|string
+     */
+    protected $templates_dir = 'templates';
+
+    /**
+     * @var string
+     */
+    protected $rendered;
+
+    /**
+     * @var Filesystem
+     */
+    protected $filesystem;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($templatesPath = null)
     {
         if ($templatesPath != null) {
             $this->templates_dir = $templatesPath;
@@ -34,13 +55,14 @@ class Twig implements RendererInterface
         $this->twig->addExtension(new \Twig_Extension_Debug());
         $this->twig->addExtension(new TwigExtensionSortArray());
         $this->filesystem = new Filesystem();
-        // cache
-        //if (!$this->filesystem->exists($this->cache_dir . '/twig')) {
-        //    $this->filesystem->mkdir($this->cache_dir . '/twig');
-        //}
-        //$this->twig->setCache($this->cache_dir . '/twig');
     }
 
+    /**
+     * Add templates path
+     *
+     * @param $path
+     * @throws \Twig_Error_Loader
+     */
     public function addPath($path)
     {
         if (is_dir($path)) {
@@ -51,22 +73,34 @@ class Twig implements RendererInterface
         }
     }
 
+    /**
+     * Rendering
+     *
+     * @param $template
+     * @param $variables
+     * @return $this
+     */
     public function render($template, $variables)
     {
         $this->rendered = $this->twig->render($template, $variables);
         return $this;
     }
 
-    public function debug()
-    {
-        echo $this->rendered . "\n";
-    }
-
+    /**
+     * Save rendered file
+     *
+     * @param $pathname
+     */
     public function save($pathname)
     {
         if (!is_dir($dir = dirname($pathname))) {
             $this->filesystem->mkdir($dir);
         }
         file_put_contents($pathname, $this->rendered);
+    }
+
+    public function debug()
+    {
+        echo $this->rendered . "\n";
     }
 }

@@ -14,6 +14,10 @@ use DomainException;
 //use InvalidArgumentException;
 use IteratorAggregate;
 
+/**
+ * Class PageCollection
+ * @package PHPoole
+ */
 class PageCollection implements Countable, IteratorAggregate
 {
     /**
@@ -39,19 +43,6 @@ class PageCollection implements Countable, IteratorAggregate
     public function getIterator()
     {
         return new ArrayIterator($this->pages);
-    }
-
-    public function add(Page $page)
-    {
-        $id = $page->getId();
-        if (isset($this->pages[$id])) {
-            throw new DomainException(sprintf(
-                'Failed adding page "%s": a page with that id has already been added.',
-                $id
-            ));
-        }
-        $this->pages[$id] = $page;
-        return $this;
     }
 
     /**
@@ -80,6 +71,24 @@ class PageCollection implements Countable, IteratorAggregate
     }
 
     /**
+     * Add page
+     *
+     * @param Page $page
+     * @return $this
+     */
+    public function add(Page $page)
+    {
+        if ($this->has($page->getId())) {
+            throw new DomainException(sprintf(
+                'Failed adding page "%s": a page with that id has already been added.',
+                $page->getId()
+            ));
+        }
+        $this->pages[$page->getId()] = $page;
+        return $this;
+    }
+
+    /**
      * Retrieve all pages IDs
      *
      * @return array
@@ -89,10 +98,21 @@ class PageCollection implements Countable, IteratorAggregate
         return array_keys($this->pages);
     }
 
+    /**
+     * Replace a page if exist
+     *
+     * @param $id
+     * @param Page $page
+     */
     public function replace($id, Page $page)
     {
         if ($this->has($id)) {
             $this->pages[$id] = $page;
+        } else {
+            throw new DomainException(sprintf(
+                'Failed replacing page "%s": page does not exist.',
+                $page->getId()
+            ));
         }
     }
 }

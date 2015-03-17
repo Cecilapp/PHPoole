@@ -13,11 +13,14 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
 use Parsedown;
-use SplObjectStorage;
+use PHPoole\Plugin\PluginInterface;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventsCapableInterface;
 
-
+/**
+ * Class PHPoole
+ * @package PHPoole
+ */
 class PHPoole implements EventsCapableInterface
 {
     const VERSION = '2.0.0-dev';
@@ -68,7 +71,7 @@ class PHPoole implements EventsCapableInterface
     protected $filesystem;
 
     /**
-     * The used EventManager if any
+     * The EventManager
      *
      * @var null|EventManager
      */
@@ -77,7 +80,7 @@ class PHPoole implements EventsCapableInterface
     /**
      * The plugin registry
      *
-     * @var SplObjectStorage Registered plugins
+     * @var \SplObjectStorage
      */
     protected $pluginRegistry;
 
@@ -102,10 +105,9 @@ class PHPoole implements EventsCapableInterface
         }
 
         $options = array_replace_recursive([
-            'configfile' => 'config.yaml',
             'site' => [
-                'title'      => "PHPoole's website",
-                'baseurl'    => 'http://localhost:63342/PHPoole-library/demo/site/',
+                'title'   => "PHPoole's website",
+                'baseurl' => 'http://localhost:63342/PHPoole-library/demo/site/',
             ],
             'content' => [
                 'dir' => 'content',
@@ -120,7 +122,7 @@ class PHPoole implements EventsCapableInterface
             'static' => [
                 'dir' => 'static'],
             'layout' =>  [
-                'dir' => 'layouts',
+                'dir'     => 'layouts',
                 'default' => 'default.html'
             ],
             'output' => [
@@ -138,11 +140,9 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Creates a new PHPoole.
+     * Creates a new PHPoole instance
      *
-     * @return PHPoole A new PHPoole instance
-     *
-     * @api
+     * @return PHPoole
      */
     public static function create()
     {
@@ -152,7 +152,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Set options.
+     * Set options
      *
      * @param  array $options
      * @return self
@@ -168,10 +168,10 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Get options.
+     * Get options
      *
      * @return array
-     * @see setOptions()
+     * @see    setOptions()
      */
     public function getOptions()
     {
@@ -181,18 +181,8 @@ class PHPoole implements EventsCapableInterface
         return $this->options;
     }
 
-    public function setContent($iterator)
-    {
-        return $this->contentIterator = $iterator;
-    }
-
-    public function setPageCollection($iterator)
-    {
-        return $this->pageCollection = $iterator;
-    }
-
     /**
-     * Build
+     * Builds a new website
      */
     public function build()
     {
@@ -205,7 +195,10 @@ class PHPoole implements EventsCapableInterface
         $this->renderPages();
     }
 
-    public function locateContent()
+    /**
+     * Locates content
+     */
+    protected function locateContent()
     {
         try {
             $dir = $this->sourceDir . '/' . $this->getOptions()['content']['dir'];
@@ -225,24 +218,32 @@ class PHPoole implements EventsCapableInterface
         }
     }
 
-    public function buildPagesFromContent()
+    /**
+     * Builds pages collection from content iterator
+     */
+    protected function buildPagesFromContent()
     {
         $this->pageCollection = new PageCollection();
         /* @var $file SplFileInfo */
         /* @var $page Page */
         foreach($this->contentIterator as $file) {
             $page = (new Page($file))
-                ->process();
+                ->parse();
             $this->pageCollection->add($page);
         }
     }
 
-    public function convertPages()
+    /**
+     * Converts page content
+     * * Yaml frontmatter -> PHP array
+     * * Mardown body -> HTML
+     */
+    protected function convertPages()
     {
         /* @var $page Page */
         foreach($this->pageCollection as $page) {
             if (!$page->isVirtual()) {
-                // convert frontmatter
+                // converts frontmatter
                 switch ($this->getOptions()['frontmatter']['format']) {
                     case 'ini':
                         $variables = parse_ini_string($page->getFrontmatter());
@@ -251,9 +252,9 @@ class PHPoole implements EventsCapableInterface
                     default:
                         $variables = Yaml::parse($page->getFrontmatter());
                 }
-                // convert body
+                // converts body
                 $html = (new Parsedown())->text($page->getBody());
-                // set page properties
+                // setting page properties
                 if (array_key_exists('title', $variables)) {
                     $page->setTitle($variables['title']);
                     unset($variables['title']);
@@ -263,21 +264,28 @@ class PHPoole implements EventsCapableInterface
                     unset($variables['section']);
                 }
                 $page->setHtml($html);
-                // set page variables
+                // setting page variables
                 $page->setVariables($variables);
                 $this->pageCollection->replace($page->getId(), $page);
             }
         }
     }
 
-    public function addVirtualPages()
+    /**
+     * Adds virtual pages to collection
+     */
+    protected function addVirtualPages()
     {
         $this->addHomePage();
         $this->addSectionPages();
+        // @todo move to a plugin
         //$this->addTagsPage();
     }
 
-    public function addHomePage()
+    /**
+     * Adds homepage to collection
+     */
+    protected function addHomePage()
     {
         if (!$this->pageCollection->has('index')) {
             $homePage = new Page();
@@ -292,7 +300,10 @@ class PHPoole implements EventsCapableInterface
         }
     }
 
-    public function addSectionPages()
+    /**
+     * Adds section pages to collection
+     */
+    protected function addSectionPages()
     {
         /* @var $page Page */
         foreach($this->pageCollection as $page) {
@@ -316,7 +327,10 @@ class PHPoole implements EventsCapableInterface
         }
     }
 
-    public function buildMenus()
+    /**
+     * Builds menus
+     */
+    protected function buildMenus()
     {
         /* @var $page Page */
         foreach($this->pageCollection as $page) {
@@ -347,7 +361,10 @@ class PHPoole implements EventsCapableInterface
         }
     }
 
-    public function buildSiteVars()
+    /**
+     * Builds site variables
+     */
+    protected function buildSiteVars()
     {
         $this->site = array_merge(
             $this->getOptions()['site'],
@@ -355,7 +372,11 @@ class PHPoole implements EventsCapableInterface
         );
     }
 
-    public function addTagsPage()
+    /**
+     * Adds tags pages
+     * @todo move to a plugin
+     */
+    protected function addTagsPage()
     {
         $tags = [];
         /* @var $page Page */
@@ -373,7 +394,10 @@ class PHPoole implements EventsCapableInterface
         $this->pageCollection->add($tagsPage);
     }
 
-    public function renderPages()
+    /**
+     * Pages rendering from pages collections + twig
+     */
+    protected function renderPages()
     {
         $dir = $this->destDir . '/' . $this->getOptions()['output']['dir'];
         $renderer = new Renderer\Twig($this->sourceDir . '/' . $this->getOptions()['layout']['dir']);
@@ -398,12 +422,12 @@ class PHPoole implements EventsCapableInterface
             $renderer->save($pathname);
         }
 
-        echo "done!\n";
+        return true;
     }
 
 
     /**
-     * Event (plugin) logic
+     * Plugin logic
      */
 
     /**
@@ -419,22 +443,49 @@ class PHPoole implements EventsCapableInterface
         return $this->events;
     }
 
+    /**
+     * Trigger event
+     *
+     * @param $eventName
+     * @param array $params
+     */
     protected function trigger($eventName, array $params = array())
     {
         $params = $this->getEventManager()->prepareArgs($params);
         $this->getEventManager()->trigger($eventName, $this, $params);
     }
 
+    /**
+     * Trigger "pre" event
+     *
+     * @param $eventName
+     * @param array $params
+     * @see   trigger()
+     */
     protected function triggerPre($eventName, array $params = array())
     {
         $this->trigger($eventName . '.pre', $params);
     }
 
+    /**
+     * Trigger "post" event
+     *
+     * @param $eventName
+     * @param array $params
+     * @see   trigger()
+     */
     protected function triggerPost($eventName, array $params = array())
     {
         $this->trigger($eventName . '.post', $params);
     }
 
+    /**
+     * Trigger "exception" event
+     *
+     * @param $eventName
+     * @param array $params
+     * @see   trigger()
+     */
     protected function triggerException($eventName, array $params = array())
     {
         $this->trigger($eventName . '.exception', $params);
@@ -443,10 +494,10 @@ class PHPoole implements EventsCapableInterface
     /**
      * Check if a plugin is registered
      *
-     * @param  Plugin\PluginInterface $plugin
+     * @param  PluginInterface $plugin
      * @return bool
      */
-    public function hasPlugin(Plugin\PluginInterface $plugin)
+    public function hasPlugin(PluginInterface $plugin)
     {
         $registry = $this->getPluginRegistry();
         return $registry->contains($plugin);
@@ -455,12 +506,12 @@ class PHPoole implements EventsCapableInterface
     /**
      * Register a plugin
      *
-     * @param  Plugin\PluginInterface $plugin
-     * @param  int                    $priority
+     * @param  PluginInterface $plugin
+     * @param  int             $priority
      * @return PHPoole
      * @throws \LogicException
      */
-    public function addPlugin(Plugin\PluginInterface $plugin, $priority = 1)
+    public function addPlugin(PluginInterface $plugin, $priority = 1)
     {
         $registry = $this->getPluginRegistry();
         if ($registry->contains($plugin)) {
@@ -477,11 +528,11 @@ class PHPoole implements EventsCapableInterface
     /**
      * Remove an already registered plugin
      *
-     * @param  Plugin\PluginInterface $plugin
+     * @param  PluginInterface $plugin
      * @return self
      * @throws \LogicException
      */
-    public function removePlugin(Plugin\PluginInterface $plugin)
+    public function removePlugin(PluginInterface $plugin)
     {
         $registry = $this->getPluginRegistry();
         if ($registry->contains($plugin)) {
@@ -494,12 +545,12 @@ class PHPoole implements EventsCapableInterface
     /**
      * Return registry of plugins
      *
-     * @return SplObjectStorage
+     * @return \SplObjectStorage
      */
     public function getPluginRegistry()
     {
-        if (!$this->pluginRegistry instanceof SplObjectStorage) {
-            $this->pluginRegistry = new SplObjectStorage();
+        if (!$this->pluginRegistry instanceof \SplObjectStorage) {
+            $this->pluginRegistry = new \SplObjectStorage();
         }
         return $this->pluginRegistry;
     }
