@@ -1,4 +1,18 @@
 {
+  "name": "narno/phpoole-library",
+  "type": "library",
+  "description": "Static site builder library with events plugin system. WIP.",
+  "keywords": ["static", "website"],
+  "homepage": "https://github.com/Narno/PHPoole-library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Arnaud Ligny",
+      "email": "arnaud@ligny.org",
+      "homepage": "http://narno.org",
+      "role": "Developer"
+    }
+  ],
   "require": {
     "php": ">=5.4",
     "zendframework/zend-eventmanager": "2.*",
