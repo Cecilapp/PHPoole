@@ -311,18 +311,20 @@ class PHPoole implements EventsCapableInterface
                 $this->sections[$page->getSection()][] = $page;
             }
         }
-        foreach($this->sections as $section => $pageObject) {
-            if (!$this->pageCollection->has("$section/index")) {
-                $page = (new Page())
-                    ->setId("$section/index")
-                    ->setPathname($section)
-                    ->setTitle(ucfirst($section))
-                    ->setLayout('list.html')
-                    ->setVariable('list', $pageObject)
-                    ->setVariable('menu', [
-                        'main' => ['weight' => 100]
-                    ]);
-                $this->pageCollection->add($page);
+        if (!empty($this->sections)) {
+            foreach ($this->sections as $section => $pageObject) {
+                if (!$this->pageCollection->has("$section/index")) {
+                    $page = (new Page())
+                        ->setId("$section/index")
+                        ->setPathname($section)
+                        ->setTitle(ucfirst($section))
+                        ->setLayout('list.html')
+                        ->setVariable('list', $pageObject)
+                        ->setVariable('menu', [
+                            'main' => ['weight' => 100]
+                        ]);
+                    $this->pageCollection->add($page);
+                }
             }
         }
     }
