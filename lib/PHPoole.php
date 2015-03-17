@@ -289,10 +289,9 @@ class PHPoole implements EventsCapableInterface
     {
         if (!$this->pageCollection->has('index')) {
             $homePage = new Page();
-            $homePage->setId('index')
-                ->setPathname('')
+            $homePage->setId('homepage')
                 ->setTitle('Homepage')
-                ->setLayout('index.html')
+                ->setNodeType('homepage')
                 ->setVariable('menu', [
                     'main' => ['weight' => 1]
                 ]);
@@ -313,12 +312,12 @@ class PHPoole implements EventsCapableInterface
         }
         if (!empty($this->sections)) {
             foreach ($this->sections as $section => $pageObject) {
-                if (!$this->pageCollection->has("$section/index")) {
+                if (!$this->pageCollection->has("$section")) {
                     $page = (new Page())
                         ->setId("$section/index")
                         ->setPathname($section)
                         ->setTitle(ucfirst($section))
-                        ->setLayout('list.html')
+                        ->setNodeType('list')
                         ->setVariable('list', $pageObject)
                         ->setVariable('menu', [
                             'main' => ['weight' => 100]
@@ -391,8 +390,8 @@ class PHPoole implements EventsCapableInterface
         $tagsPage->setId('tags')
             ->setPathname('tags')
             ->setTitle('Tags list')
+            ->setNodeType('list')
             ->setVariable('tagslist', $tags)
-            ->setLayout('tags.html');
         $this->pageCollection->add($tagsPage);
     }
 
@@ -407,7 +406,7 @@ class PHPoole implements EventsCapableInterface
         $this->filesystem->mkdir($dir);
         /* @var $page Page */
         foreach($this->pageCollection as $page) {
-            $renderer->render($page->getLayout(), [
+            $renderer->render($this->layoutFallback($page), [
                 'site'    => $this->site,
                 'page'    => $page,
                 'phpoole' => [
@@ -431,6 +430,58 @@ class PHPoole implements EventsCapableInterface
         }
 
         return true;
+    }
+
+    /**
+     * Layout file fall-back
+     *
+     * @param Page $page
+     * @return string
+     * @throws \Exception
+     */
+    protected function layoutFallback(Page $page)
+    {
+        $layouts = [];
+        $layout = '';
+        $layoutsDir = $this->sourceDir . '/' . $this->getOptions()['layout']['dir'];
+
+        if ($page->getNodeType() == 'homepage') {
+            $layouts = [
+                'index.html',
+                '_default/list.html',
+                '_default/page.html',
+            ];
+        }
+        if ($page->getNodeType() == 'list') {
+            $layouts = [
+                '_default/section.html',
+                '_default/list.html',
+            ];
+            if ($page->getSection() != null) {
+                // 'section/$section.html'
+                $layouts = array_merge(["section/{$page->getSection()}.html"], $layouts);
+            }
+        }
+        if ($page->getNodeType() == 'page') {
+            $layouts = [
+                '_default/page.html',
+            ];
+            if ($page->getSection() != null) {
+                // '$section/page.html'
+                $layouts = array_merge(["{$page->getSection()}/page.html"], $layouts);
+                if ($page->getLayout() != null) {
+                    // '$section/$layout.html'
+                    $layouts = array_merge(["{$page->getSection()}/{$page->getLayout()}.html"], $layouts);
+                }
+            }
+        }
+
+        foreach($layouts as $layout) {
+            if ($this->filesystem->exists($layoutsDir . '/' . $layout)) {
+                return $layout;
+            }
+        }
+        throw new \Exception(sprintf('Layout%s not found!', "' $layout'"));
     }
 
 
