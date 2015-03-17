@@ -278,8 +278,7 @@ class PHPoole implements EventsCapableInterface
     {
         $this->addHomePage();
         $this->addSectionPages();
-        // @todo move to a plugin
-        //$this->addTagsPage();
+        // @todo taxonomy?
     }
 
     /**
@@ -371,28 +370,6 @@ class PHPoole implements EventsCapableInterface
             $this->getOptions()['site'],
             ['menus' => $this->menus]
         );
-    }
-
-    /**
-     * Adds tags pages
-     * @todo move to a plugin
-     */
-    protected function addTagsPage()
-    {
-        $tags = [];
-        /* @var $page Page */
-        foreach($this->pageCollection as $page) {
-            $tags[] = $page->getVariable('tags');
-        }
-        $tags = array_unique($tags);
-        /* @var $tagsPage Page */
-        $tagsPage = new Page();
-        $tagsPage->setId('tags')
-            ->setPathname('tags')
-            ->setTitle('Tags list')
-            ->setNodeType('list')
-            ->setVariable('tagslist', $tags)
-        $this->pageCollection->add($tagsPage);
     }
 
     /**
