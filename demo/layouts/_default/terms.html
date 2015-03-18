@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ page.title|title }}</title>
+</head>
+<body>
+{% include 'include/menu-main.html' %}
+<h1>{{ plural }}</h1>
+<ul>
+{% for name, term in page.terms %}
+    <li><h2><a href="{{ site.baseurl }}{{ page.plural }}/{{ name|slugify }}">{{ name }}</a> ({{ term|length }})</h2>
+        <ul>
+{% for page in term %}
+            <li><a href="{{ site.baseurl }}{{ page.pathname }}">{{ page.title }}</a></li>
+{% endfor %}
+        </ul>
+    </li>
+{% endfor %}
+</ul>
+<p>Layout: _default/terms.html</p>
+</body>
+</html>
