@@ -9,7 +9,7 @@
 <h1>{{ plural }}</h1>
 <ul>
 {% for name, term in page.terms %}
-    <li><h2><a href="{{ site.baseurl }}{{ page.plural }}/{{ name|slugify }}">{{ name }}</a> ({{ term|length }})</h2>
+    <li><h2><a href="{{ site.baseurl }}{{ page.plural }}/{{ name|urlize }}">{{ name }}</a> ({{ term|length }})</h2>
         <ul>
 {% for page in term %}
             <li><a href="{{ site.baseurl }}{{ page.pathname }}">{{ page.title }}</a></li>
