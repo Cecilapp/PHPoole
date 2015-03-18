@@ -107,7 +107,7 @@ class PHPoole implements EventsCapableInterface
         $options = array_replace_recursive([
             'site' => [
                 'title'   => "PHPoole's website",
-                'baseurl' => 'http://localhost:63342/PHPoole-library/demo/site/',
+                'baseurl' => 'http://localhost:63342/PHPoole-library/demo/_site/',
                 'taxonomies' => [
                     'tags'       => 'tag',
                     'categories' => 'category'
@@ -130,7 +130,7 @@ class PHPoole implements EventsCapableInterface
                 'dir' => 'layouts'
             ],
             'output' => [
-                'dir'      => 'site',
+                'dir'      => '_site',
                 'filename' => 'index.html'
             ],
         ], $options);
