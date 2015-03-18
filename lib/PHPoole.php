@@ -133,6 +133,9 @@ class PHPoole implements EventsCapableInterface
                 'dir'      => '_site',
                 'filename' => 'index.html'
             ],
+            'themes' => [
+                'dir' => 'themes'
+            ],
         ], $options);
         if ($options) {
             $this->setOptions($options);
@@ -468,13 +471,32 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
+     * Theme name
+     *
+     * @var null
+     */
+    protected $theme = null;
+
+    /**
      * Pages rendering from pages collections + twig
      */
     protected function renderPages()
     {
-        $dir = $this->destDir . '/' . $this->getOptions()['output']['dir'];
-        $renderer = new Renderer\Twig($this->sourceDir . '/' . $this->getOptions()['layouts']['dir']);
+        // uses a theme?
+        $themesDir  = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'];
+        if ($this->theme == null && array_key_exists('theme', $this->getOptions())) {
+            if ($this->filesystem->exists($themesDir . '/' . $this->getOptions()['theme'])) {
+                $this->theme = $this->getOptions()['theme'];
+            }
+        }
 
+        // prepare renderer
+        $renderer = new Renderer\Twig($this->sourceDir . '/' . $this->getOptions()['layouts']['dir']);
+        if ($this->theme != null) {
+            $renderer->addPath($this->sourceDir . '/' . $this->getOptions()['themes']['dir'] . '/' . $this->theme . '/layouts');
+        }
+
+        $dir = $this->destDir . '/' . $this->getOptions()['output']['dir'];
         $this->filesystem->mkdir($dir);
         /* @var $page Page */
         foreach($this->pageCollection as $page) {
@@ -495,7 +517,14 @@ class PHPoole implements EventsCapableInterface
             $renderer->save($pathname);
         }
 
-        // copy static dir if exist
+        // copy theme static dir if exists
+        if ($this->theme != null) {
+            $themeStaticDir = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'] . '/' . $this->theme . '/static';
+            if ($this->filesystem->exists($themeStaticDir)) {
+                $this->filesystem->mirror($themeStaticDir, $dir, null, ['override' => true]);
+            }
+        }
+        // copy static dir if exists
         $staticDir = $this->sourceDir . '/' . $this->getOptions()['static']['dir'];
         if ($this->filesystem->exists($staticDir)) {
             $this->filesystem->mirror($staticDir, $dir, null, ['override' => true]);
@@ -513,9 +542,6 @@ class PHPoole implements EventsCapableInterface
      */
     protected function layoutFallback(Page $page)
     {
-        $layout = 'page.html';
-        $layoutsDir = $this->sourceDir . '/' . $this->getOptions()['layouts']['dir'];
-
         switch ($page->getNodeType()) {
             case 'homepage':
                 $layouts = [
@@ -575,9 +601,20 @@ class PHPoole implements EventsCapableInterface
                 }
         }
 
+        // layout exists?
+        $layoutsDir = $this->sourceDir . '/' . $this->getOptions()['layouts']['dir'];
         foreach($layouts as $layout) {
             if ($this->filesystem->exists($layoutsDir . '/' . $layout)) {
                 return $layout;
+            }
+        }
+        // layout exists in theme?
+        if ($this->theme != null) {
+            $themeDir = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'] . '/' . $this->theme . '/layouts';
+            foreach($layouts as $layout) {
+                if ($this->filesystem->exists($themeDir . '/' . $layout)) {
+                    return $layout;
+                }
             }
         }
         throw new \Exception(sprintf("Layout '%s' not found!", $layout));
