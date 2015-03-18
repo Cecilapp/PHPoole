@@ -1,6 +1,8 @@
 <!--
 title: Post 2
 date: 2015-03-15
+tags: [Magento, PHP]
+categories: Magento
 -->
 Post 2
 =====

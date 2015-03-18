@@ -108,6 +108,10 @@ class PHPoole implements EventsCapableInterface
             'site' => [
                 'title'   => "PHPoole's website",
                 'baseurl' => 'http://localhost:63342/PHPoole-library/demo/site/',
+                'taxonomies' => [
+                    'tag'      => 'tags',
+                    'category' => 'categories'
+                ]
             ],
             'content' => [
                 'dir' => 'content',
@@ -190,6 +194,7 @@ class PHPoole implements EventsCapableInterface
         $this->buildPagesFromContent();
         $this->convertPages();
         $this->addVirtualPages();
+        $this->buildTaxonomies();
         $this->buildMenus();
         $this->buildSiteVars();
         $this->renderPages();
@@ -321,6 +326,46 @@ class PHPoole implements EventsCapableInterface
                         ->setVariable('menu', [
                             'main' => ['weight' => 100]
                         ]);
+                    $this->pageCollection->add($page);
+                }
+            }
+        }
+    }
+
+    protected function buildTaxonomies()
+    {
+        $siteTaxonomies = [];
+        if (array_key_exists('taxonomies', $this->getOptions()['site'])) {
+            $taxonomies = $this->getOptions()['site']['taxonomies'];
+            /* @var $page Page */
+            foreach($this->pageCollection as $page) {
+                foreach($taxonomies as $singular => $plural) {
+                    if ($page->getVariable($plural) != null) {
+                        if (is_array($page->getVariable($plural))) {
+                            foreach($page->getVariable($plural) as $term) {
+                                $siteTaxonomies[$singular][$term][] = $page;
+                            }
+                        } else {
+                            $siteTaxonomies[$singular][$page->getVariable($plural)][] = $page;
+                        }
+                    }
+                }
+            }
+            //print_r($siteTaxonomies);
+            foreach($siteTaxonomies as $singular => $terms) {
+                foreach($terms as $term => $pages) {
+                    $page = (new Page())
+                        ->setId(strtolower($singular) . '/' . strtolower($term))
+                        ->setPathname(strtolower($singular) . '/' . strtolower($term))
+                        ->setTitle($term)
+                        ->setNodeType('list')
+                        ->setVariable('list', $pages);
+                    // tmp
+                    if ($singular == 'category') {
+                        $page->setVariable('menu', [
+                            'main' => ['weight' => 200]
+                        ]);
+                    }
                     $this->pageCollection->add($page);
                 }
             }
