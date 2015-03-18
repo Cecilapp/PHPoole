@@ -1,7 +1,7 @@
 <!--
 title: Post 2
 date: 2015-03-15
-tags: [Magento, PHP]
+tags: [Magento CE, PHP]
 categories: Magento
 -->
 Post 2

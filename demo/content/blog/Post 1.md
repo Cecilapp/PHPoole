@@ -1,7 +1,7 @@
 <!--
 title: Post 1
 date: 2015-03-14
-tags: [Dev, Magento]
+tags: [Développement, Magento EE]
 categories: Magento
 -->
 Post 1
