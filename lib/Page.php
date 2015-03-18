@@ -17,10 +17,7 @@ use Cocur\Slugify\Slugify;
  */
 class Page implements \ArrayAccess
 {
-    /**
-     * @var Slugify
-     */
-    private $slugify;
+    const SLUGIFY_PATTERN = '/([^a-z0-9\/]|-)+/';
 
     /**
      * @var SplFileInfo
@@ -103,8 +100,7 @@ class Page implements \ArrayAccess
      */
     public function __construct(SplFileInfo $file = null)
     {
-        $this->file    = $file;
-        $this->slugify = Slugify::create('/([^a-z0-9\/]|-)+/');
+        $this->file = $file;
 
         if ($this->file instanceof SplFileInfo) {
             // file extension : md
@@ -114,13 +110,13 @@ class Page implements \ArrayAccess
             // file id : Blog/Post 1
             $this->fileId = ($this->filePath ? $this->filePath . '/' : '') . basename($this->file->getBasename(), '.' . $this->fileExtension);
             // id : blog/post-1
-            $this->id = $this->slugify->slugify($this->fileId);
+            $this->id = $this->urlize($this->fileId);
             // pathname : blog/post-1
-            $this->pathname = $this->slugify->slugify($this->fileId);
+            $this->pathname = $this->urlize($this->fileId);
             // path : blog
-            $this->path = $this->slugify->slugify($this->filePath);
+            $this->path = $this->urlize($this->filePath);
             // name : post-1
-            $this->name = $this->slugify->slugify(basename($this->file->getBasename(), '.' . $this->fileExtension));
+            $this->name = $this->urlize(basename($this->file->getBasename(), '.' . $this->fileExtension));
             /**
              * frontmatter default values
              */
@@ -131,6 +127,17 @@ class Page implements \ArrayAccess
         } else {
             $this->virtual = true;
         }
+    }
+
+    /**
+     * Format string into URL
+     *
+     * @param $string
+     * @return string
+     */
+    public static function urlize($string)
+    {
+        return Slugify::create(self::SLUGIFY_PATTERN)->slugify($string);
     }
 
     /**
@@ -145,15 +152,11 @@ class Page implements \ArrayAccess
     /**
      * Set node type
      *
-     * @param $nodeType 'homepage', 'list' or 'page'
+     * @param $nodeType
      * @return self
      * @throws \Exception
      */
     public function setNodeType($nodeType) {
-        $filter = ['homepage', 'list', 'page'];
-        if (!in_array($nodeType, $filter)) {
-            throw new \Exception(sprintf("Node type '%s' not supported", $nodeType));
-        }
         $this->nodeType = $nodeType;
         return $this;
     }
@@ -203,6 +206,8 @@ class Page implements \ArrayAccess
             $this->frontmatter = $matches[2];
             $this->body        = $matches[4];
         }
+
+        return true;
     }
 
     /**

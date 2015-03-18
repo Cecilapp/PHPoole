@@ -8,7 +8,10 @@
 
 namespace PHPoole\Renderer;
 
+use PHPoole\Page;
 use Symfony\Component\Filesystem\Filesystem;
+use Cocur\Slugify\Bridge\Twig\SlugifyExtension;
+use Cocur\Slugify\Slugify;
 
 /**
  * Class Twig
@@ -54,6 +57,7 @@ class Twig implements RendererInterface
         );
         $this->twig->addExtension(new \Twig_Extension_Debug());
         $this->twig->addExtension(new TwigExtensionSortArray());
+        $this->twig->addExtension(new SlugifyExtension(Slugify::create(Page::SLUGIFY_PATTERN)));
         $this->filesystem = new Filesystem();
     }
 

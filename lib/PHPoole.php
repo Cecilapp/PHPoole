@@ -109,8 +109,8 @@ class PHPoole implements EventsCapableInterface
                 'title'   => "PHPoole's website",
                 'baseurl' => 'http://localhost:63342/PHPoole-library/demo/site/',
                 'taxonomies' => [
-                    'tag'      => 'tags',
-                    'category' => 'categories'
+                    'tags'       => 'tag',
+                    'categories' => 'category'
                 ]
             ],
             'content' => [
@@ -332,6 +332,9 @@ class PHPoole implements EventsCapableInterface
         }
     }
 
+    /**
+     * Builds taxonomies
+     */
     protected function buildTaxonomies()
     {
         $siteTaxonomies = [];
@@ -339,34 +342,81 @@ class PHPoole implements EventsCapableInterface
             $taxonomies = $this->getOptions()['site']['taxonomies'];
             /* @var $page Page */
             foreach($this->pageCollection as $page) {
-                foreach($taxonomies as $singular => $plural) {
+                /**
+                 * ex:
+                 * taxonomies:
+                 *     tags: tag
+                 *     categories: category
+                 */
+                foreach($taxonomies as $plural => $singular) {
                     if ($page->getVariable($plural) != null) {
+                        /**
+                         * List
+                         * ex:
+                         * tags: [Tag 1, Tag 2]
+                         */
                         if (is_array($page->getVariable($plural))) {
                             foreach($page->getVariable($plural) as $term) {
-                                $siteTaxonomies[$singular][$term][] = $page;
+                                $siteTaxonomies[$plural][$term][] = $page;
                             }
+                        /**
+                         * Unique
+                         * ex:
+                         * categories: Category
+                         */
                         } else {
-                            $siteTaxonomies[$singular][$page->getVariable($plural)][] = $page;
+                            $siteTaxonomies[$plural][$page->getVariable($plural)][] = $page;
                         }
                     }
                 }
             }
+            /**
+             * ex:
+             * [
+             *   [tags] =>
+             *     [Tag 1] =>
+             *       [0] => Page object
+             *       [1] => Page object
+             *       ...
+             * ]
+             */
             //print_r($siteTaxonomies);
-            foreach($siteTaxonomies as $singular => $terms) {
+            //die();
+            foreach($siteTaxonomies as $plural => $terms) {
+                // create $plural/$term pages (list of pages)
                 foreach($terms as $term => $pages) {
                     $page = (new Page())
-                        ->setId(strtolower($singular) . '/' . strtolower($term))
-                        ->setPathname(strtolower($singular) . '/' . strtolower($term))
+                        ->setId(Page::urlize("$plural/$term"))
+                        ->setPathname(Page::urlize("$plural/$term"))
                         ->setTitle($term)
-                        ->setNodeType('list')
+                        ->setNodeType('taxonomy')
+                        ->setVariable('singular', $taxonomies[$plural])
                         ->setVariable('list', $pages);
-                    // tmp
-                    if ($singular == 'category') {
+                    // tmp: add to 'main' menu
+                    if ($plural == 'categories') {
                         $page->setVariable('menu', [
                             'main' => ['weight' => 200]
                         ]);
                     }
+                    //
                     $this->pageCollection->add($page);
+                }
+                // create $plural pages (list of terms)
+                $page = (new Page())
+                    ->setId(strtolower($plural))
+                    ->setPathname(strtolower($plural))
+                    ->setTitle($plural)
+                    ->setNodeType('terms')
+                    ->setVariable('plural', $plural)
+                    ->setVariable('singular', $taxonomies[$plural])
+                    ->setVariable('terms', $terms);
+                // add page only if a template exist
+                try {
+                    $this->layoutFallback($page);
+                    $this->pageCollection->add($page);
+                } catch (\Exception $e) {
+                    // do not add page
+                    unset($page);
                 }
             }
         }
@@ -463,39 +513,66 @@ class PHPoole implements EventsCapableInterface
      */
     protected function layoutFallback(Page $page)
     {
-        $layouts = [];
-        $layout = '';
+        $layout = 'page.html';
         $layoutsDir = $this->sourceDir . '/' . $this->getOptions()['layout']['dir'];
 
-        if ($page->getNodeType() == 'homepage') {
-            $layouts = [
-                'index.html',
-                '_default/list.html',
-                '_default/page.html',
-            ];
-        }
-        if ($page->getNodeType() == 'list') {
-            $layouts = [
-                '_default/section.html',
-                '_default/list.html',
-            ];
-            if ($page->getSection() != null) {
+        switch ($page->getNodeType()) {
+            case 'homepage':
+                $layouts = [
+                    'index.html',
+                    '_default/list.html',
+                    '_default/page.html',
+                ];
+                break;
+            case 'list':
+                $layouts = [
+                    '_default/section.html',
+                    '_default/list.html',
+                ];
                 // 'section/$section.html'
-                $layouts = array_merge(["section/{$page->getSection()}.html"], $layouts);
-            }
-        }
-        if ($page->getNodeType() == 'page') {
-            $layouts = [
-                '_default/page.html',
-            ];
-            if ($page->getSection() != null) {
-                // '$section/page.html'
-                $layouts = array_merge(["{$page->getSection()}/page.html"], $layouts);
-                if ($page->getLayout() != null) {
-                    // '$section/$layout.html'
-                    $layouts = array_merge(["{$page->getSection()}/{$page->getLayout()}.html"], $layouts);
+                if ($page->getSection() != null) {
+                    $layouts = array_merge(["section/{$page->getSection()}.html"], $layouts);
                 }
-            }
+                break;
+            case 'taxonomy':
+                $layouts = [
+                    '_default/taxonomy.html',
+                    '_default/list.html',
+                ];
+                // 'taxonomy/$singular.html'
+                if ($page->getVariable('singular') != null) {
+                    $layouts = array_merge(["taxonomy/{$page->getVariable('singular')}.html"], $layouts);
+                }
+                break;
+            case 'terms':
+                $layouts = [
+                    '_default/terms.html',
+                ];
+                // 'taxonomy/$singular.terms.html'
+                if ($page->getVariable('singular') != null) {
+                    $layouts = array_merge(["taxonomy/{$page->getVariable('singular')}.terms.html"], $layouts);
+                }
+                break;
+            case 'page':
+            default:
+                $layouts = [
+                    '_default/page.html',
+                ];
+                // '$section/page.html'
+                if ($page->getSection() != null) {
+                    $layouts = array_merge(["{$page->getSection()}/page.html"], $layouts);
+                    // '$section/$layout.html'
+                    if ($page->getLayout() != null) {
+                        $layouts = array_merge(["{$page->getSection()}/{$page->getLayout()}.html"], $layouts);
+                    }
+                    // 'page.html'
+                } else {
+                    $layouts = array_merge(['page.html'], $layouts);
+                    // '$layout.html'
+                    if ($page->getLayout() != null) {
+                        $layouts = array_merge(["{$page->getLayout()}.html"], $layouts);
+                    }
+                }
         }
 
         foreach($layouts as $layout) {
@@ -503,7 +580,7 @@ class PHPoole implements EventsCapableInterface
                 return $layout;
             }
         }
-        throw new \Exception(sprintf('Layout%s not found!', "' $layout'"));
+        throw new \Exception(sprintf("Layout '%s' not found!", $layout));
     }
 
 
