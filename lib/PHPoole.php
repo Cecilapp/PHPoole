@@ -124,10 +124,10 @@ class PHPoole implements EventsCapableInterface
                 'format' => 'md'
             ],
             'static' => [
-                'dir' => 'static'],
-            'layout' =>  [
-                'dir'     => 'layouts',
-                'default' => 'default.html'
+                'dir' => 'static'
+            ],
+            'layouts' => [
+                'dir' => 'layouts'
             ],
             'output' => [
                 'dir'      => 'site',
@@ -473,7 +473,7 @@ class PHPoole implements EventsCapableInterface
     protected function renderPages()
     {
         $dir = $this->destDir . '/' . $this->getOptions()['output']['dir'];
-        $renderer = new Renderer\Twig($this->sourceDir . '/' . $this->getOptions()['layout']['dir']);
+        $renderer = new Renderer\Twig($this->sourceDir . '/' . $this->getOptions()['layouts']['dir']);
 
         $this->filesystem->mkdir($dir);
         /* @var $page Page */
@@ -514,7 +514,7 @@ class PHPoole implements EventsCapableInterface
     protected function layoutFallback(Page $page)
     {
         $layout = 'page.html';
-        $layoutsDir = $this->sourceDir . '/' . $this->getOptions()['layout']['dir'];
+        $layoutsDir = $this->sourceDir . '/' . $this->getOptions()['layouts']['dir'];
 
         switch ($page->getNodeType()) {
             case 'homepage':
