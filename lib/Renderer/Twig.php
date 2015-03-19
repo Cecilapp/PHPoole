@@ -8,9 +8,7 @@
 
 namespace PHPoole\Renderer;
 
-use PHPoole\Page;
 use Symfony\Component\Filesystem\Filesystem;
-use Cocur\Slugify\Slugify;
 
 /**
  * Class Twig
@@ -56,7 +54,17 @@ class Twig implements RendererInterface
         );
         $this->twig->addExtension(new \Twig_Extension_Debug());
         $this->twig->addExtension(new TwigExtensionSortArray());
-        $this->twig->addExtension(new UrlizeExtension(Slugify::create(Page::SLUGIFY_PATTERN)));
+        $this->twig->addExtension(new TwigExtensionUrlize());
+
+        // excerpt filter
+        $excerptFilter = new \Twig_SimpleFilter('excerpt', function ($string, $length = 450, $suffix = '…') {
+            $str = trim(strip_tags($string));
+            if (mb_strlen($str) > $length) {
+                $string = mb_substr($string, 0, $length) . $suffix;
+            }
+            return $string;
+        });
+        $this->twig->addFilter($excerptFilter);
 
         $this->filesystem = new Filesystem();
     }
@@ -75,6 +83,17 @@ class Twig implements RendererInterface
             $loader->addPath($path);
             $this->twig->setLoader($loader);
         }
+    }
+
+    /**
+     * Add global variable
+     *
+     * @param $name
+     * @param $value
+     */
+    public function addGlobal($name, $value)
+    {
+        $this->twig->addGlobal($name, $value);
     }
 
     /**

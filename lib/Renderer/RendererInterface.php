@@ -28,6 +28,13 @@ interface RendererInterface
     public function addPath($path);
 
     /**
+     * @param $name
+     * @param $value
+     * @return mixed
+     */
+    public function addGlobal($name, $value);
+
+    /**
      * @param $template
      * @param $variables
      * @return mixed

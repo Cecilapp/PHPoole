@@ -7,6 +7,7 @@
  */
 
 namespace PHPoole\Renderer;
+use PHPoole\Page;
 
 /**
  * Class TwigExtensionSortArray
@@ -22,7 +23,9 @@ class TwigExtensionSortArray extends \Twig_Extension
     public function getFilters()
     {
         $filters = array(
-            new \Twig_SimpleFilter('sortmenubyweight', array($this, 'sortMenu')),
+            new \Twig_SimpleFilter('sortByWeight', array($this, 'sortByWeight')),
+            new \Twig_SimpleFilter('sortByDate', array($this, 'sortByDate')),
+            new \Twig_SimpleFilter('bySection', array($this, 'bySection')),
         );
 
         return $filters;
@@ -34,16 +37,16 @@ class TwigExtensionSortArray extends \Twig_Extension
      */
     public function getName()
     {
-        return 'sortarray';
+        return 'sort_array';
     }
 
     /**
-     * Main method
+     * Sort by weight
      *
      * @param $array
      * @return mixed
      */
-    function sortMenu($array)
+    function sortByWeight($array)
     {
         usort($array, function($a, $b) {
             if (!array_key_exists('weight', $a) || !array_key_exists('weight', $b)) {
@@ -56,5 +59,56 @@ class TwigExtensionSortArray extends \Twig_Extension
         });
 
         return $array;
+    }
+
+    /**
+     * Sort by date
+     *
+     * @param $array
+     * @return mixed
+     */
+    function sortByDate($array)
+    {
+        $callback = function($a, $b) {
+            if (!array_key_exists('date', $a) || !array_key_exists('date', $b)) {
+                return 0;
+            }
+            if ($a['weight'] == $b['date']) {
+                return 0;
+            }
+            return ($a['date'] < $b['date']) ? -1 : 1;
+        };
+
+        if ($array instanceof \PHPoole\PageCollection) {
+            $array->usort($callback);
+        } else {
+            if (is_array($array)) {
+                usort($array, $callback);
+            }
+        }
+
+        return $array;
+    }
+
+    /**
+     * Filter by section
+     *
+     * @param $pages
+     * @param $section
+     * @return array
+     */
+    function bySection($pages, $section)
+    {
+        $filtered = [];
+
+        foreach($pages as $page) {
+            if ($page instanceof Page) {
+                if ($page->getSection() == $section) {
+                    $filtered[] = $page;
+                }
+            }
+        }
+
+        return $filtered;
     }
 }

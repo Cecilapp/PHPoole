@@ -115,4 +115,14 @@ class PageCollection implements Countable, IteratorAggregate
             ));
         }
     }
+
+    /**
+     * Implements usort
+     *
+     * @param callable $callback
+     */
+    public function usort(\Closure $callback)
+    {
+        usort($this->pages, $callback);
+    }
 }

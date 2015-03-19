@@ -492,29 +492,37 @@ class PHPoole implements EventsCapableInterface
      */
     protected function renderPages()
     {
-        $this->checkTheme();
+        // create output dir
+        $dir = $this->destDir . '/' . $this->getOptions()['output']['dir'];
 
         // prepare renderer
         $renderer = new Renderer\Twig($this->sourceDir . '/' . $this->getOptions()['layouts']['dir']);
+
+        // add theme templates
+        $this->checkTheme();
         if ($this->theme != null) {
             $renderer->addPath($this->sourceDir . '/' . $this->getOptions()['themes']['dir'] . '/' . $this->theme . '/layouts');
         }
 
-        $dir = $this->destDir . '/' . $this->getOptions()['output']['dir'];
+        // add global variables
+        $renderer->addGlobal('site', $this->site);
+        $renderer->addGlobal('phpoole', [
+            'url'       => 'http://phpoole.narno.org/#v2',
+            'version'   => self::VERSION,
+            'poweredby' => 'PHPoole v' . self::VERSION,
+        ]);
+
+        // start rendering
         $this->filesystem->mkdir($dir);
         /* @var $page Page */
         foreach($this->pageCollection as $page) {
             $renderer->render($this->layoutFallback($page), [
-                'site'    => $this->site,
                 'page'    => $page,
-                'phpoole' => [
-                    'version'   => self::VERSION,
-                    'poweredby' => 'PHPoole v' . self::VERSION,
-                ]
             ]);
             // create an index/list from on a content file instead of a virtual page
             if ($page->getName() == 'index') {
                 $pathname = $dir . '/' . $page->getPath() . '/' . $this->getOptions()['output']['filename'];
+            // create page
             } else {
                 $pathname = $dir . '/' . $page->getPathname() . '/' . $this->getOptions()['output']['filename'];
             }
@@ -558,29 +566,29 @@ class PHPoole implements EventsCapableInterface
                 break;
             case 'list':
                 $layouts = [
+                    // 'section/$section.html'
                     '_default/section.html',
                     '_default/list.html',
                 ];
-                // 'section/$section.html'
                 if ($page->getSection() != null) {
                     $layouts = array_merge(["section/{$page->getSection()}.html"], $layouts);
                 }
                 break;
             case 'taxonomy':
                 $layouts = [
+                    // 'taxonomy/$singular.html'
                     '_default/taxonomy.html',
                     '_default/list.html',
                 ];
-                // 'taxonomy/$singular.html'
                 if ($page->getVariable('singular') != null) {
                     $layouts = array_merge(["taxonomy/{$page->getVariable('singular')}.html"], $layouts);
                 }
                 break;
             case 'terms':
                 $layouts = [
+                    // 'taxonomy/$singular.terms.html'
                     '_default/terms.html',
                 ];
-                // 'taxonomy/$singular.terms.html'
                 if ($page->getVariable('singular') != null) {
                     $layouts = array_merge(["taxonomy/{$page->getVariable('singular')}.terms.html"], $layouts);
                 }
@@ -588,19 +596,19 @@ class PHPoole implements EventsCapableInterface
             case 'page':
             default:
                 $layouts = [
+                    // '$section/page.html'
+                    // '$section/$layout.html'
+                    // 'page.html'
+                    // '$layout.html'
                     '_default/page.html',
                 ];
-                // '$section/page.html'
                 if ($page->getSection() != null) {
                     $layouts = array_merge(["{$page->getSection()}/page.html"], $layouts);
-                    // '$section/$layout.html'
                     if ($page->getLayout() != null) {
                         $layouts = array_merge(["{$page->getSection()}/{$page->getLayout()}.html"], $layouts);
                     }
-                    // 'page.html'
                 } else {
                     $layouts = array_merge(['page.html'], $layouts);
-                    // '$layout.html'
                     if ($page->getLayout() != null) {
                         $layouts = array_merge(["{$page->getLayout()}.html"], $layouts);
                     }
