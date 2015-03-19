@@ -467,7 +467,8 @@ class PHPoole implements EventsCapableInterface
     {
         $this->site = array_merge(
             $this->getOptions()['site'],
-            ['menus' => $this->menus]
+            ['menus' => $this->menus],
+            ['pages' => $this->pageCollection]
         );
     }
 
