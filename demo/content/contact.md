@@ -2,8 +2,6 @@
 title: Contact
 menu:
     main:
-        weight: 101
+        weight: 1000
 -->
-Use this form to contact us!
-=====
-...
+Contact page.
