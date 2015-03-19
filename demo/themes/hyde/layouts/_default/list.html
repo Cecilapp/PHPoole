@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 
-{% include 'head.html' %}
+{% include 'include/head.html' %}
 
 <body>
 
-{% include 'sidebar.html' %}
+{% include 'include/sidebar.html' %}
 
 <div class="content container">
-    <ul>
-        {% for item in page.list %}
-        <li><a href="{{ site.baseurl }}{{ item.pathname }}">{{ item.title }}</a> - {{ item.date|date("d/m/Y") }}</li>
+    <div class="posts">
+        {% for post in site.pages|bySection(page.pathname)|sortByDate %}
+        <div class="post">
+            <h1 class="post-title">
+                <a href="{{ url(post) }}">
+                    {{ post.title }}
+                </a>
+            </h1>
+
+            <span class="post-date">{{ page.date|date("j M Y") }}</span>
+
+            {{ post.content|excerpt }}
+        </div>
         {% endfor %}
-    </ul>
+    </div>
 </div>
 
 </body>
