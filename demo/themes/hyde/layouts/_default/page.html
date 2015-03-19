@@ -8,7 +8,13 @@
 {% include 'sidebar.html' %}
 
 <div class="content container">
+    <h1 class="page-title">{{ page.title }}</h1>
     {{ page.content }}
+    <p>
+    {% for tag in page.tags %}
+        <a href="{{ site.baseurl}}/tags/{{ tag|urlize }}">{{ tag }}</a>&nbsp;
+    {% endfor %}
+    </p>
 </div>
 
 </body>
