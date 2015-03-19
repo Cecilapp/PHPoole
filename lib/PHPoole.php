@@ -107,7 +107,7 @@ class PHPoole implements EventsCapableInterface
         $options = array_replace_recursive([
             'site' => [
                 'title'   => "PHPoole's website",
-                'baseurl' => 'http://localhost:63342/PHPoole-library/demo/_site/',
+                'baseurl' => 'http://localhost/demo/_site/',
                 'taxonomies' => [
                     'tags'       => 'tag',
                     'categories' => 'category'
@@ -297,7 +297,7 @@ class PHPoole implements EventsCapableInterface
         if (!$this->pageCollection->has('index')) {
             $homePage = new Page();
             $homePage->setId('homepage')
-                ->setTitle('Homepage')
+                ->setTitle('Home')
                 ->setNodeType('homepage')
                 ->setVariable('menu', [
                     'main' => ['weight' => 1]
@@ -318,6 +318,7 @@ class PHPoole implements EventsCapableInterface
             }
         }
         if (!empty($this->sections)) {
+            $weight = 100;
             foreach ($this->sections as $section => $pageObject) {
                 if (!$this->pageCollection->has("$section")) {
                     $page = (new Page())
@@ -327,9 +328,10 @@ class PHPoole implements EventsCapableInterface
                         ->setNodeType('list')
                         ->setVariable('list', $pageObject)
                         ->setVariable('menu', [
-                            'main' => ['weight' => 100]
+                            'main' => ['weight' => $weight]
                         ]);
                     $this->pageCollection->add($page);
+                    $weight +=10;
                 }
             }
         }
@@ -391,11 +393,13 @@ class PHPoole implements EventsCapableInterface
                         ->setVariable('singular', $taxonomies[$plural])
                         ->setVariable('list', $pages);
                     // tmp: add to 'main' menu
+                    /*
                     if ($plural == 'categories') {
                         $page->setVariable('menu', [
                             'main' => ['weight' => 200]
                         ]);
                     }
+                    */
                     //
                     $this->pageCollection->add($page);
                 }
