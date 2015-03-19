@@ -337,6 +337,8 @@ class PHPoole implements EventsCapableInterface
 
     /**
      * Builds taxonomies
+     *
+     * @todo should use dedicated classes: VocabularyCollection and Term
      */
     protected function buildTaxonomies()
     {
@@ -354,21 +356,14 @@ class PHPoole implements EventsCapableInterface
                 foreach($taxonomies as $plural => $singular) {
                     if ($page->getVariable($plural) != null) {
                         /**
-                         * List
                          * ex:
-                         * tags: [Tag 1, Tag 2]
+                         * tags: Tag 1 => tags: [Tag 1]
                          */
-                        if (is_array($page->getVariable($plural))) {
-                            foreach($page->getVariable($plural) as $term) {
-                                $siteTaxonomies[$plural][$term][] = $page;
-                            }
-                        /**
-                         * Unique
-                         * ex:
-                         * categories: Category
-                         */
-                        } else {
-                            $siteTaxonomies[$plural][$page->getVariable($plural)][] = $page;
+                        if (!is_array($page->getVariable($plural))) {
+                            $page->setVariable($plural, [$page->getVariable($plural)]);
+                        }
+                        foreach($page->getVariable($plural) as $term) {
+                            $siteTaxonomies[$plural][$term][] = $page;
                         }
                     }
                 }
