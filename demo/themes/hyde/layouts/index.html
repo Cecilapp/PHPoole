@@ -8,7 +8,13 @@
 {% include 'sidebar.html' %}
 
 <div class="content container">
-    {{ page.content }}
+    <ul>
+{% for item in site.pages %}
+{% if item.section == 'blog' %}
+        <li><a href="{{ site.baseurl }}{{ item.pathname }}">{{ item.title }}</a> - {{ item.date|date("d/m/Y") }}</li>
+{% endif %}
+{% endfor %}
+    </ul>
 </div>
 
 </body>

@@ -10,19 +10,11 @@
         </div>
 
         <nav class="sidebar-nav">
-            <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="{{ site.baseurl }}">Home</a>
 
-            {% for node in site.pages %}
-            {% if node.title != null %}
-            {% if node.layout == "page" %}
-            <a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" href="{{ node.url }}">{{ node.title }}</a>
-            {% endif %}
-            {% endif %}
+            {% for menu in site.menus.main|sortmenubyweight %}
+            <a class="sidebar-nav-item{% if page.url == menu.url %} active{% endif %}" href="{{ site.baseurl }}{{ menu.url }}">{{ menu.name }}</a>
             {% endfor %}
 
-            <a class="sidebar-nav-item" href="{{ site.github.repo }}/archive/v{{ site.version }}.zip">Download</a>
-            <a class="sidebar-nav-item" href="{{ site.github.repo }}">GitHub project</a>
-            <span class="sidebar-nav-item">Currently v{{ site.version }}</span>
         </nav>
 
         <p>&copy; {{ site.time | date('Y') }}. All rights reserved.</p>

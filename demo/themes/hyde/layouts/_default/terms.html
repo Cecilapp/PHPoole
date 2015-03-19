@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+
+{% include 'head.html' %}
+
+<body>
+
+{% include 'sidebar.html' %}
+
+<div class="content container">
+    <h1>{{ plural }}</h1>
+    <ul>
+        {% for name, term in page.terms %}
+        <li><h2><a href="{{ site.baseurl }}{{ page.plural }}/{{ name|urlize }}">{{ name }}</a> ({{ term|length }})</h2>
+            <ul>
+                {% for page in term %}
+                <li><a href="{{ site.baseurl }}{{ page.pathname }}">{{ page.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+</body>
+</html>

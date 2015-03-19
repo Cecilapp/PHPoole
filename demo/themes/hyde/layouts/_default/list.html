@@ -8,7 +8,11 @@
 {% include 'sidebar.html' %}
 
 <div class="content container">
-    {{ page.content }}
+    <ul>
+        {% for item in page.list %}
+        <li><a href="{{ site.baseurl }}{{ item.pathname }}">{{ item.title }}</a> - {{ item.date|date("d/m/Y") }}</li>
+        {% endfor %}
+    </ul>
 </div>
 
 </body>
