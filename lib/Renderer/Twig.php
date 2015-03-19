@@ -10,7 +10,6 @@ namespace PHPoole\Renderer;
 
 use PHPoole\Page;
 use Symfony\Component\Filesystem\Filesystem;
-//use Cocur\Slugify\Bridge\Twig\SlugifyExtension;
 use Cocur\Slugify\Slugify;
 
 /**
@@ -25,9 +24,9 @@ class Twig implements RendererInterface
     protected $twig;
 
     /**
-     * @var null|string
+     * @var string
      */
-    protected $templates_dir = 'templates';
+    protected $templates_dir;
 
     /**
      * @var string
