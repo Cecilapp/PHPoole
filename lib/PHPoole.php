@@ -418,6 +418,7 @@ class PHPoole implements EventsCapableInterface
                     $this->layoutFallback($page);
                     $this->pageCollection->add($page);
                 } catch (\Exception $e) {
+                    echo $e->getMessage() . "\n";
                     // do not add page
                     unset($page);
                 }
@@ -478,17 +479,24 @@ class PHPoole implements EventsCapableInterface
     protected $theme = null;
 
     /**
-     * Pages rendering from pages collections + twig
+     * Uses a theme?
      */
-    protected function renderPages()
+    protected function checkTheme()
     {
-        // uses a theme?
         $themesDir  = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'];
         if ($this->theme == null && array_key_exists('theme', $this->getOptions())) {
             if ($this->filesystem->exists($themesDir . '/' . $this->getOptions()['theme'])) {
                 $this->theme = $this->getOptions()['theme'];
             }
         }
+    }
+
+    /**
+     * Pages rendering from pages collections + twig
+     */
+    protected function renderPages()
+    {
+        $this->checkTheme();
 
         // prepare renderer
         $renderer = new Renderer\Twig($this->sourceDir . '/' . $this->getOptions()['layouts']['dir']);
@@ -542,6 +550,8 @@ class PHPoole implements EventsCapableInterface
      */
     protected function layoutFallback(Page $page)
     {
+        $this->checkTheme();
+
         switch ($page->getNodeType()) {
             case 'homepage':
                 $layouts = [
