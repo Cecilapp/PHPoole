@@ -49,7 +49,7 @@ class TwigExtensionSortArray extends \Twig_Extension
     function sortByWeight($array)
     {
         usort($array, function($a, $b) {
-            if (!array_key_exists('weight', $a) || !array_key_exists('weight', $b)) {
+            if (!isset($a['weight']) || !isset($b['weight'])) {
                 return 0;
             }
             if ($a['weight'] == $b['weight']) {
@@ -70,13 +70,13 @@ class TwigExtensionSortArray extends \Twig_Extension
     function sortByDate($array)
     {
         $callback = function($a, $b) {
-            if (!array_key_exists('date', $a) || !array_key_exists('date', $b)) {
+            if (!isset($a['date']) || !isset($b['date'])) {
                 return 0;
             }
-            if ($a['weight'] == $b['date']) {
+            if ($a['date'] == $b['date']) {
                 return 0;
             }
-            return ($a['date'] < $b['date']) ? -1 : 1;
+            return ($a['date'] > $b['date']) ? -1 : 1;
         };
 
         if ($array instanceof \PHPoole\PageCollection) {
