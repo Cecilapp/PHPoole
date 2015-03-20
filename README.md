@@ -1,7 +1,7 @@
 PHPoole-library
-==============
+===============
 
-Static site builder library with events plugin system. WIP.
+Static site builder library (with events plugin system). WIP.
 
 Installation
 ------------
@@ -27,32 +27,38 @@ PHPoole::create('./demo')->build();
 
 **Files tree**
 ```
-~/website
+~/project
 |- content
 |  |- Section 1
-|  |  |- File 1.md
-|  |  \- File 2.md
-|  \- Section 2
-|  |  |- File 3.md
-|  |  \- File 4.md
+|  |  |- File 2.md
+|  |  \- File 3.md
+|  |- Section 2
+|  |  |- File 4.md
+|  |  \- File 5.md
+|  \- File 1.md
 |- layouts
-|  |- default.html
+|  |- _default
+|  |  |- list.html
+|  |  |- page.html
+|  |  \- terms.html
 |  |- index.html
-|  \- list.html
 \- static
 ```
 
 **PHP script**
 ```php
-$sourceDir = $destDir = '~/website';
-$options = [
+<?php
+require_once 'vendor/autoload.php';
+use PHPoole\PHPoole;
+
+$phpoole = new PHPoole('./project', null, [
     'site' => [
         'title'   => "PHPoole's website",
-        'baseurl' => 'http://localhost:63342/PHPoole-library/demo/site/',
-    ]
-];
-$phpoole = new PHPoole($sourceDir, $destDir, $options);
+        'baseurl' => 'http://localhost/project/_site/',
+    ],
+    'theme' => 'hyde'
+]);
 $phpoole->build();
 ```
 
-The result is a new static website created in _~/website/site_.
+The result is a new static website created in _./project/_site_.
