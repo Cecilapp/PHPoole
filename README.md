@@ -1,13 +1,23 @@
-PHPoole-library
+PHPoole-library - A PHP library to generate a static website. WIP.
 ===============
 
-Static site builder library (with events plugin system). WIP.
+_PHPoole-library_ is a static website generator built on PHP, inspired by [Jekyll](http://jekyllrb.com/) and [Hugo](http://gohugo.io/).
+
+It converts [Markdown](http://daringfireball.net/projects/markdown/) files into a static HTML web site, with the help of [Twig](http://twig.sensiolabs.org), a flexible and fast template engine.
+
+You can easily create a blog, a personal website, a simple corporate website, etc.
+
+Requirements
+------------
+
+Please see the [composer.json](composer.json) file.
 
 Installation
 ------------
 
-1. Clone or download the repository
-2. Install dependencies through [Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
+Run the following Composer command:
+
+    $ composer require "narno/phpoole-library": "dev-master"
 
 Usage
 -----
