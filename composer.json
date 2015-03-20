@@ -19,7 +19,7 @@
     "symfony/finder": "2.*",
     "symfony/filesystem": "2.*",
     "symfony/yaml": "2.*",
-    "erusev/parsedown": "1.5.*",
+    "erusev/parsedown-extra": "0.7.*",
     "twig/twig": "1.*",
     "cocur/slugify": "1.*"
   },

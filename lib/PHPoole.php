@@ -12,7 +12,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
-use Parsedown;
+use ParsedownExtra;
 use PHPoole\Plugin\PluginInterface;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventsCapableInterface;
@@ -261,7 +261,7 @@ class PHPoole implements EventsCapableInterface
                         $variables = Yaml::parse($page->getFrontmatter());
                 }
                 // converts body
-                $html = (new Parsedown())->text($page->getBody());
+                $html = (new ParsedownExtra())->text($page->getBody());
                 // setting page properties
                 if (array_key_exists('title', $variables)) {
                     $page->setTitle($variables['title']);
