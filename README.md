@@ -20,14 +20,14 @@ require_once 'vendor/autoload.php';
 
 use PHPoole\PHPoole;
 
-PHPoole::create('./demo')->build();
+PHPoole::create('./demo', null, ['theme' => 'hyde'])->build();
 ```
 
 ### Basic usage
 
 **Files tree**
 ```
-~/project
+./project
 |- content
 |  |- Section 1
 |  |  |- File 2.md
@@ -56,7 +56,6 @@ $phpoole = new PHPoole('./project', null, [
         'title'   => "PHPoole's website",
         'baseurl' => 'http://localhost/project/_site/',
     ],
-    'theme' => 'hyde'
 ]);
 $phpoole->build();
 ```
