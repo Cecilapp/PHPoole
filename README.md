@@ -84,6 +84,7 @@ title: "The title"
 date: "2013-01-01"
 myvar: "My varm"
 ---
+Markdown page content.
 ```
 
 ### Layout example
