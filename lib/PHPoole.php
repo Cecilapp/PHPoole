@@ -602,8 +602,8 @@ class PHPoole implements EventsCapableInterface
                 $layouts = [
                     // '$section/page.html'
                     // '$section/$layout.html'
-                    // 'page.html'
                     // '$layout.html'
+                    // 'page.html'
                     '_default/page.html',
                 ];
                 if ($page->getSection() != null) {
