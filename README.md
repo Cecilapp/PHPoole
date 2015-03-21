@@ -33,7 +33,7 @@ Run the following PHP CLI command:
 
 ### Basic usage
 
-First create a new directory (ie "mywebsite") with the following files structure
+First create a new directory (ie "mywebsite") with the following files structure:
 ```
 ./mywebsite
 |- content             <- Contains the Mardown files
@@ -54,8 +54,7 @@ First create a new directory (ie "mywebsite") with the following files structure
 \- static              <- Contains the static files
 ```
 
-Then create and run the following PHP script
-**PHP script**
+Then create and run the following PHP script:
 ```php
 <?php
 require_once 'vendor/autoload.php';
