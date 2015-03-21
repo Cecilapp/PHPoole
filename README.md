@@ -75,3 +75,22 @@ $phpoole->build();
 ```
 
 The result is a new static website created in _./mywebsite/_site_.
+
+### Page example
+
+```yml
+---
+title: "The title"
+date: "2013-01-01"
+myvar: "My varm"
+---
+```
+
+### Layout example
+
+```html
+<h1>{{ page.title }}</h1>
+<span>{{ page.date|date("j M Y") }}</span>
+<b>{{ page.content }}</p>
+<b>{{ page.myvar }}</p>
+```
