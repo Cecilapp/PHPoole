@@ -1,8 +1,8 @@
 {
   "name": "narno/phpoole-library",
   "type": "library",
-  "description": "Static site builder library with events plugin system. WIP.",
-  "keywords": ["static", "website"],
+  "description": "A PHP library to generate a static website.",
+  "keywords": ["static", "website", "generator"],
   "homepage": "https://github.com/Narno/PHPoole-library",
   "license": "MIT",
   "authors": [
@@ -15,13 +15,13 @@
   ],
   "require": {
     "php": ">=5.4",
-    "zendframework/zend-eventmanager": "2.*",
     "symfony/finder": "2.*",
     "symfony/filesystem": "2.*",
+    "cocur/slugify": "1.*",
     "symfony/yaml": "2.*",
     "erusev/parsedown-extra": "0.7.*",
     "twig/twig": "1.*",
-    "cocur/slugify": "1.*"
+    "zendframework/zend-eventmanager": "2.*"
   },
   "autoload": {
     "psr-4" : {
