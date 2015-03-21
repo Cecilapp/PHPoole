@@ -62,12 +62,12 @@ require_once 'vendor/autoload.php';
 use PHPoole\PHPoole;
 
 $phpoole = new PHPoole(
-    './mywebsite',  <- The source directory
-    null,           <- The destination directory
-    [               <- Options array
+    './mywebsite',  // The source directory
+    null,           // The destination directory
+    [               // Options array
         'site' => [
-            'title'   => "My website",                        <- The Site title
-            'baseurl' => 'http://localhost/mywebsite/_site/', <- The Site base URL
+            'title'   => "My website",                        // The Site title
+            'baseurl' => 'http://localhost/mywebsite/_site/', // The Site base URL
         ],
     ]
 );
