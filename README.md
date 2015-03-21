@@ -33,7 +33,7 @@ Run the following PHP CLI command:
 
 ### Basic usage
 
-1. Create a new directory (ie "mywebsite") with the following files structure
+First create a new directory (ie "mywebsite") with the following files structure
 ```
 ./mywebsite
 |- content             <- Contains the Mardown files
@@ -54,7 +54,7 @@ Run the following PHP CLI command:
 \- static              <- Contains the static files
 ```
 
-2. Create and run the following PHP script
+Then create and run the following PHP script
 **PHP script**
 ```php
 <?php
