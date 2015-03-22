@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {{ for page in site.pages }}
+    <url>
+        <loc>{{ url(page) }}</loc>
+        <lastmod>{{ page.date|date("2006-01-02T15:04:05-07:00") }}</lastmod>
+        {{ if page.sitemap.changefreq }}
+        <changefreq>{{ page.sitemap.changefreq }}</changefreq>
+        {{ endif }}
+        {{ if page.sitemap.priority }}
+        <priority>{{ page.sitemap.priority }}</priority>
+        {{ endif }}
+    </url>
+    {{ endfor }}
+</urlset>
