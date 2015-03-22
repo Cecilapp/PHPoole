@@ -285,8 +285,8 @@ class PHPoole implements EventsCapableInterface
     protected function addVirtualPages()
     {
         $this->addHomePage();
+        $this->add404Page();
         $this->addSectionPages();
-        // @todo taxonomy?
     }
 
     /**
@@ -303,6 +303,20 @@ class PHPoole implements EventsCapableInterface
                     'main' => ['weight' => 1]
                 ]);
             $this->pageCollection->add($homePage);
+        }
+    }
+
+    /**
+     * Adds 404 page to collection
+     */
+    protected function add404Page()
+    {
+        if (!$this->pageCollection->has('404')) {
+            $page = new Page();
+            $page->setId('404')
+                ->setTitle('Page not found!')
+                ->setLayout('404.html');
+            $this->pageCollection->add($page);
         }
     }
 
@@ -523,13 +537,19 @@ class PHPoole implements EventsCapableInterface
             $renderer->render($this->layoutFallback($page), [
                 'page'    => $page,
             ]);
-            // create an index/list from on a content file instead of a virtual page
-            if ($page->getName() == 'index') {
-                $pathname = $dir . '/' . $page->getPath() . '/' . $this->getOptions()['output']['filename'];
-            // create page
+            // destination of the 404 page
+            if ($page->getId() == '404') {
+                $pathname = $dir . '/' . $page->getId() . '.html';
             } else {
-                $pathname = $dir . '/' . $page->getPathname() . '/' . $this->getOptions()['output']['filename'];
+                // destination of an index/list from on a content file instead of a virtual page
+                if ($page->getName() == 'index') {
+                    $pathname = $dir . '/' . $page->getPath() . '/' . $this->getOptions()['output']['filename'];
+                    // destination of a page
+                } else {
+                    $pathname = $dir . '/' . $page->getPathname() . '/' . $this->getOptions()['output']['filename'];
+                }
             }
+            echo $pathname . "\n";
             $renderer->save($pathname);
         }
 
