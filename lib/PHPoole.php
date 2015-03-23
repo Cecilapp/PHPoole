@@ -8,6 +8,8 @@
 
 namespace PHPoole;
 
+use PHPoole\Page\Collection as PageCollection;
+use PHPoole\Page\Page;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;

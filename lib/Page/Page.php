@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPoole;
+namespace PHPoole\Page;
 
 use Symfony\Component\Finder\SplFileInfo;
 use Cocur\Slugify\Slugify;

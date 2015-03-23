@@ -12,10 +12,10 @@ use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\AbstractListenerAggregate;
 
 /**
- * Class AbstractPlugin
+ * Class Plugin
  * @package PHPoole\Plugin
  */
-abstract class AbstractPlugin extends AbstractListenerAggregate implements PluginInterface
+abstract class Plugin extends AbstractListenerAggregate implements PluginInterface
 {
     /**
      * @var array
