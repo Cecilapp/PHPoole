@@ -549,6 +549,7 @@ class PHPoole implements EventsCapableInterface
                     $pathname = $dir . '/' . $page->getPathname() . '/' . $this->getOptions()['output']['filename'];
                 }
             }
+            $pathname = preg_replace('#/+#','/', $pathname); // remove unnecessary slashes
             echo $pathname . "\n";
             $renderer->save($pathname);
         }
