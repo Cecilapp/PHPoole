@@ -4,7 +4,7 @@ namespace PHPoole\Renderer;
 
 use Cocur\Slugify\Bridge\Twig\SlugifyExtension;
 use Cocur\Slugify\Slugify;
-use PHPoole\Page;
+use PHPoole\Page\Page;
 
 class TwigExtensionUrlize extends SlugifyExtension
 {

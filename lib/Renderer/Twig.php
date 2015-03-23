@@ -121,9 +121,4 @@ class Twig implements RendererInterface
         }
         file_put_contents($pathname, $this->rendered);
     }
-
-    public function debug()
-    {
-        echo $this->rendered . "\n";
-    }
 }

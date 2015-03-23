@@ -7,7 +7,9 @@
  */
 
 namespace PHPoole\Renderer;
-use PHPoole\Page;
+
+use PHPoole\Page\Collection as PageCollection;
+use PHPoole\Page\Page;
 
 /**
  * Class TwigExtensionSortArray
@@ -79,7 +81,7 @@ class TwigExtensionSortArray extends \Twig_Extension
             return ($a['date'] > $b['date']) ? -1 : 1;
         };
 
-        if ($array instanceof \PHPoole\PageCollection) {
+        if ($array instanceof PageCollection) {
             $array->usort($callback);
         } else {
             if (is_array($array)) {
