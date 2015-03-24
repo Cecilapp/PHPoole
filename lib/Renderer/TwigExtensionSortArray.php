@@ -8,9 +8,6 @@
 
 namespace PHPoole\Renderer;
 
-use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\Page;
-
 /**
  * Class TwigExtensionSortArray
  * @package PHPoole\Renderer
@@ -46,20 +43,31 @@ class TwigExtensionSortArray extends \Twig_Extension
     /**
      * Sort by weight
      *
-     * @param $array
-     * @return array
+     * @param $array|\PHPoole\Collection\CollectionInterface
+     * @return mixed
      */
     function sortByWeight($array)
     {
-        usort($array, function($a, $b) {
-            if (!isset($a['weight']) || !isset($b['weight'])) {
-                return 0;
+        $callback = function($a, $b) {
+            if (!isset($a['weight'])) {
+                return 1;
+            }
+            if (!isset($b['weight'])) {
+                return -1;
             }
             if ($a['weight'] == $b['weight']) {
                 return 0;
             }
             return ($a['weight'] < $b['weight']) ? -1 : 1;
-        });
+        };
+
+        if ($array instanceof \PHPoole\Collection\CollectionInterface) {
+            $array->usort($callback);
+        } else {
+            if (is_array($array)) {
+                usort($array, $callback);
+            }
+        }
 
         return $array;
     }
@@ -67,14 +75,17 @@ class TwigExtensionSortArray extends \Twig_Extension
     /**
      * Sort by date
      *
-     * @param $array
-     * @return array
+     * @param $array|\PHPoole\Collection\CollectionInterface
+     * @return mixed
      */
     function sortByDate($array)
     {
         $callback = function($a, $b) {
-            if (!isset($a['date']) || !isset($b['date'])) {
-                return 0;
+            if (!isset($a['date'])) {
+                return -1;
+            }
+            if (!isset($b['date'])) {
+                return 1;
             }
             if ($a['date'] == $b['date']) {
                 return 0;
@@ -82,7 +93,7 @@ class TwigExtensionSortArray extends \Twig_Extension
             return ($a['date'] > $b['date']) ? -1 : 1;
         };
 
-        if ($array instanceof PageCollection) {
+        if ($array instanceof \PHPoole\Collection\CollectionInterface) {
             $array->usort($callback);
         } else {
             if (is_array($array)) {
@@ -96,16 +107,16 @@ class TwigExtensionSortArray extends \Twig_Extension
     /**
      * Filter by section
      *
-     * @param $pages
-     * @param $section
+     * @param \PHPoole\Page\Collection $pages
+     * @param string $section
      * @return array
      */
-    function bySection($pages, $section)
+    function bySection(\PHPoole\Page\Collection $pages, $section)
     {
         $filtered = [];
 
         foreach($pages as $page) {
-            if ($page instanceof Page) {
+            if ($page instanceof \PHPoole\Page\Page) {
                 if ($page->getSection() == $section) {
                     $filtered[] = $page;
                 }

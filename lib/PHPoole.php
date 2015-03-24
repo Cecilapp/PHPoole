@@ -457,29 +457,40 @@ class PHPoole implements EventsCapableInterface
      */
     protected function buildMenus()
     {
+        $this->menus = new Menu\Collection();
+
         /* @var $page Page */
         foreach($this->pageCollection as $page) {
-            if (!is_null($page->getVariable('menu'))) {
-                $menu = $page->getVariable('menu');
+            if (!empty($page['menu'])) {
+                $pageMenu = $page['menu'];
                 // single
-                if (is_string($menu) && !empty($menu)) {
-                    $this->menus[$menu][$page->getId()] = [
-                        'id'   => $page->getId(),
-                        'name' => $page->getTitle(),
-                        'url'  => $page->getPathname(),
-                        'menu' => $menu,
-                    ];
+                /**
+                 * ex:
+                 * menu: main
+                 */
+                if (is_string($pageMenu) && !empty($pageMenu)) {
+                    $menu = $this->menus->get($pageMenu);
+                    $item = (new Menu\Item($page->getId()))
+                        ->setName($page->getTitle())
+                        ->setUrl($page->getPathname());
+                    $menu->add($item);
                 }
                 // multiple
-                if (is_array($menu) && !empty($menu)) {
-                    foreach($menu as $name => $value) {
-                        $this->menus[$name][$page->getId()] = [
-                            'id'     => $page->getId(),
-                            'name'   => $page->getTitle(),
-                            'url'    => $page->getPathname(),
-                            'menu'   => $name,
-                            'weight' => $value['weight'],
-                        ];
+                /**
+                 * ex:
+                 * menu:
+                 *     main:
+                 *         weight: 1000
+                 *     other
+                 */
+                if (is_array($pageMenu) && !empty($pageMenu)) {
+                    foreach($pageMenu as $name => $value) {
+                        $menu = $this->menus->get($name);
+                        $item = (new Menu\Item($page->getId()))
+                            ->setName($page->getTitle())
+                            ->setUrl($page->getPathname())
+                            ->setWeight($value['weight']);
+                        $menu->add($item);
                     }
                 }
             }
