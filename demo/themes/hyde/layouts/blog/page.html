@@ -15,7 +15,7 @@
     {{ page.content }}
     <p>
     {% for tag in page.tags %}
-        <a href="{{ url('tags/' ~ tag) }}">{{ tag }}</a>&nbsp;
+        <a href="{{ url('tags/' ~ tag) }}">#{{ tag }}</a>&nbsp;
     {% endfor %}
     </p>
 </div>
