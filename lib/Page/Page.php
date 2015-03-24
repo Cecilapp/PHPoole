@@ -8,6 +8,7 @@
 
 namespace PHPoole\Page;
 
+use PHPoole\Collection\Item as AbstractItem;
 use Symfony\Component\Finder\SplFileInfo;
 use Cocur\Slugify\Slugify;
 
@@ -15,7 +16,7 @@ use Cocur\Slugify\Slugify;
  * Class Page
  * @package PHPoole
  */
-class Page implements \ArrayAccess
+class Page extends AbstractItem implements \ArrayAccess
 {
     const SLUGIFY_PATTERN = '/([^a-z0-9\/]|-)+/';
 
