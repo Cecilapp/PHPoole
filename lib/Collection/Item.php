@@ -22,7 +22,9 @@ abstract class Item implements ItemInterface
     /**
      * Constructor
      *
-     * @param null $id
+     * Set an item identifier or the object hash by default
+     *
+     * @param null $id The item identifier
      */
     public function __construct($id = null)
     {

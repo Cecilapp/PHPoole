@@ -15,7 +15,7 @@ namespace PHPoole\Collection;
 interface ItemInterface
 {
     /**
-     * Get ID
+     * Return the item identifier
      *
      * @return string
      */
