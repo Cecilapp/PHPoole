@@ -8,16 +8,15 @@
 
 namespace PHPoole\Collection;
 
-use Countable;
-use IteratorAggregate;
-use ArrayIterator;
 use DomainException;
+use ArrayIterator;
+use Closure;
 
 /**
  * Class Collection
  * @package PHPoole\Collection
  */
-abstract class Collection implements Countable, IteratorAggregate//, ArrayAccess
+abstract class Collection implements CollectionInterface
 {
     /**
      * @var array
@@ -25,6 +24,8 @@ abstract class Collection implements Countable, IteratorAggregate//, ArrayAccess
     protected $items = array();
 
     /**
+     * Constructor
+     *
      * @param array $items
      */
     public function __construct($items = array())
@@ -33,10 +34,7 @@ abstract class Collection implements Countable, IteratorAggregate//, ArrayAccess
     }
 
     /**
-     * Does the item exist?
-     *
-     * @param string $id
-     * @return bool
+     * {@inheritDoc}
      */
     public function has($id)
     {
@@ -44,10 +42,7 @@ abstract class Collection implements Countable, IteratorAggregate//, ArrayAccess
     }
 
     /**
-     * Add an item
-     *
-     * @param ItemInterface $item
-     * @return self
+     * {@inheritDoc}
      */
     public function add(ItemInterface $item)
     {
@@ -62,10 +57,7 @@ abstract class Collection implements Countable, IteratorAggregate//, ArrayAccess
     }
 
     /**
-     * Replace an item if exists
-     *
-     * @param $id
-     * @param ItemInterface $item
+     * {@inheritDoc}
      */
     public function replace($id, ItemInterface $item)
     {
@@ -80,9 +72,7 @@ abstract class Collection implements Countable, IteratorAggregate//, ArrayAccess
     }
 
     /**
-     * Remove an item if exists
-     *
-     * @param $id
+     * {@inheritDoc}
      */
     public function remove($id)
     {
@@ -97,10 +87,7 @@ abstract class Collection implements Countable, IteratorAggregate//, ArrayAccess
     }
 
     /**
-     * Retrieve an item
-     *
-     * @param  string $id
-     * @return null|self
+     * {@inheritDoc}
      */
     public function get($id)
     {
@@ -111,9 +98,7 @@ abstract class Collection implements Countable, IteratorAggregate//, ArrayAccess
     }
 
     /**
-     * Retrieve all the keys
-     *
-     * @return array An array of all the keys
+     * {@inheritDoc}
      */
     public function keys()
     {
@@ -121,9 +106,7 @@ abstract class Collection implements Countable, IteratorAggregate//, ArrayAccess
     }
 
     /**
-     * Implement Countable
-     *
-     * @return int
+     * {@inheritDoc}
      */
     public function count()
     {
@@ -131,49 +114,97 @@ abstract class Collection implements Countable, IteratorAggregate//, ArrayAccess
     }
 
     /**
-     * Implement IteratorAggregate
-     *
-     * @return ArrayIterator
+     * {@inheritDoc}
      */
-    public function getIterator()
-    {
-        return new ArrayIterator($this->items);
-    }
-
     public function toArray()
     {
         return $this->items;
     }
 
     /**
-     * Implements usort
-     *
-     * @param callable $callback
+     * {@inheritDoc}
      */
-    public function usort(callable $callback)
+    public function getIterator()
     {
-        usort($this->items, $callback);
+        return new ArrayIterator($this->items);
     }
 
     /**
-     * Filters items using a callback function
-     *
-     * @param callable $callback
-     * @return Collection
+     * {@inheritDoc}
      */
-    public function filter(callable $callback)
+    public function filter(Closure $callback)
     {
         return new static(array_filter($this->items, $callback));
     }
 
     /**
-     * Applies a callback to items
-     *
-     * @param callable $callback
-     * @return Collection
+     * {@inheritDoc}
      */
-    public function map(callable $callback)
+    public function map(Closure $callback)
     {
         return new static(array_map($callback, $this->items));
+    }
+
+    /**
+     * Implement ArrayAccess
+     *
+     * @param mixed $offset
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return $this->has($offset);
+    }
+
+    /**
+     * Implement ArrayAccess
+     *
+     * @param mixed $offset
+     * @return null
+     */
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    /**
+     * Implement ArrayAccess
+     *
+     * @param mixed $offset
+     * @param mixed $value
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->add($offset, $value);
+    }
+
+    /**
+     * Implement ArrayAccess
+     *
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset)
+    {
+        $this->remove($offset);
+    }
+
+    /**
+     * Implements usort
+     *
+     * @param Closure $callback
+     */
+    public function usort(Closure $callback)
+    {
+        usort($this->items, $callback);
+    }
+
+    /**
+     * Returns a string representation of this object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return __CLASS__ . '@' . spl_object_hash($this);
     }
 }
