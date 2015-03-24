@@ -26,59 +26,72 @@ use Zend\EventManager\EventsCapableInterface;
 class PHPoole implements EventsCapableInterface
 {
     const VERSION = '2.0.0-dev';
-
     /**
+     * Source directory
+     *
      * @var string
      */
     protected $sourceDir;
-
     /**
+     * Destination directory
+     *
      * @var string
      */
     protected $destDir;
-
     /**
+     * Array of options
+     *
      * @var array
      */
     protected $options;
-
     /**
+     * Content iterator
+     *
      * @var Finder
      */
     protected $contentIterator;
-
     /**
+     * Pages collection
+     *
      * @var PageCollection
      */
     protected $pageCollection;
-
     /**
+     * Site variables
+     *
      * @var array
      */
     protected $site;
-
     /**
+     * Array of site sections
+     *
      * @var array
      */
     protected $sections;
-
     /**
+     * Array of site menus
+     *
      * @var array
      */
     protected $menus;
-
     /**
+     * The theme name
+     *
+     * @var null
+     */
+    protected $theme = null;
+    /**
+     * Symfony\Component\Filesystem
+     *
      * @var Filesystem
      */
-    protected $filesystem;
-
+    protected $fs;
     /**
      * The EventManager
      *
      * @var null|EventManager
      */
     protected $events = null;
-
     /**
      * The plugin registry
      *
@@ -143,9 +156,7 @@ class PHPoole implements EventsCapableInterface
             $this->setOptions($options);
         }
 
-        $this->filesystem = new Filesystem();
-
-        //$this->addPlugin(new Plugin\Example);
+        $this->fs = new Filesystem();
     }
 
     /**
@@ -244,7 +255,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Converts page content
+     * Converts page content:
      * * Yaml frontmatter -> PHP array
      * * Mardown body -> HTML
      */
@@ -488,27 +499,10 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Theme name
-     *
-     * @var null
-     */
-    protected $theme = null;
-
-    /**
-     * Uses a theme?
-     */
-    protected function checkTheme()
-    {
-        $themesDir  = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'];
-        if ($this->theme == null && array_key_exists('theme', $this->getOptions())) {
-            if ($this->filesystem->exists($themesDir . '/' . $this->getOptions()['theme'])) {
-                $this->theme = $this->getOptions()['theme'];
-            }
-        }
-    }
-
-    /**
-     * Pages rendering from pages collections + twig
+     * Pages rendering:
+     * 1. Iterates pages collection
+     * 2. Applies Twig templates
+     * 3. Saves rendered file
      */
     protected function renderPages()
     {
@@ -533,7 +527,7 @@ class PHPoole implements EventsCapableInterface
         ]);
 
         // start rendering
-        $this->filesystem->mkdir($dir);
+        $this->fs->mkdir($dir);
         /* @var $page Page */
         foreach($this->pageCollection as $page) {
             $renderer->render($this->layoutFallback($page), [
@@ -559,17 +553,31 @@ class PHPoole implements EventsCapableInterface
         // copy theme static dir if exists
         if ($this->theme != null) {
             $themeStaticDir = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'] . '/' . $this->theme . '/static';
-            if ($this->filesystem->exists($themeStaticDir)) {
-                $this->filesystem->mirror($themeStaticDir, $dir, null, ['override' => true]);
+            if ($this->fs->exists($themeStaticDir)) {
+                $this->fs->mirror($themeStaticDir, $dir, null, ['override' => true]);
             }
         }
         // copy static dir if exists
         $staticDir = $this->sourceDir . '/' . $this->getOptions()['static']['dir'];
-        if ($this->filesystem->exists($staticDir)) {
-            $this->filesystem->mirror($staticDir, $dir, null, ['override' => true]);
+        if ($this->fs->exists($staticDir)) {
+            $this->fs->mirror($staticDir, $dir, null, ['override' => true]);
         }
 
         return true;
+    }
+
+    /**
+     * Uses a theme?
+     * If yes, set $theme variable
+     */
+    protected function checkTheme()
+    {
+        $themesDir  = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'];
+        if ($this->theme == null && array_key_exists('theme', $this->getOptions())) {
+            if ($this->fs->exists($themesDir . '/' . $this->getOptions()['theme'])) {
+                $this->theme = $this->getOptions()['theme'];
+            }
+        }
     }
 
     /**
@@ -581,6 +589,7 @@ class PHPoole implements EventsCapableInterface
      */
     protected function layoutFallback(Page $page)
     {
+        $layout = 'unknown';
         $this->checkTheme();
 
         switch ($page->getNodeType()) {
@@ -642,18 +651,18 @@ class PHPoole implements EventsCapableInterface
                 }
         }
 
-        // layout exists?
+        // is layout exists in local layout dir?
         $layoutsDir = $this->sourceDir . '/' . $this->getOptions()['layouts']['dir'];
         foreach($layouts as $layout) {
-            if ($this->filesystem->exists($layoutsDir . '/' . $layout)) {
+            if ($this->fs->exists($layoutsDir . '/' . $layout)) {
                 return $layout;
             }
         }
-        // layout exists in theme?
+        // is layout exists in layout theme dir?
         if ($this->theme != null) {
             $themeDir = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'] . '/' . $this->theme . '/layouts';
             foreach($layouts as $layout) {
-                if ($this->filesystem->exists($themeDir . '/' . $layout)) {
+                if ($this->fs->exists($themeDir . '/' . $layout)) {
                     return $layout;
                 }
             }
@@ -744,7 +753,7 @@ class PHPoole implements EventsCapableInterface
      *
      * @param  PluginInterface $plugin
      * @param  int             $priority
-     * @return PHPoole
+     * @return self
      * @throws \LogicException
      */
     public function addPlugin(PluginInterface $plugin, $priority = 1)
