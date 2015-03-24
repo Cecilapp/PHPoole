@@ -14,7 +14,7 @@ use Cocur\Slugify\Slugify;
 
 /**
  * Class Page
- * @package PHPoole
+ * @package PHPoole\Page
  */
 class Page extends AbstractItem implements \ArrayAccess
 {

@@ -18,6 +18,16 @@ use PHPoole\Page\Page;
 class TwigExtensionSortArray extends \Twig_Extension
 {
     /**
+     * Name of this extension
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return 'sort_array';
+    }
+
+    /**
      * Returns a list of filters.
      *
      * @return array
@@ -32,21 +42,12 @@ class TwigExtensionSortArray extends \Twig_Extension
 
         return $filters;
     }
-    /**
-     * Name of this extension
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'sort_array';
-    }
 
     /**
      * Sort by weight
      *
      * @param $array
-     * @return mixed
+     * @return array
      */
     function sortByWeight($array)
     {
@@ -67,7 +68,7 @@ class TwigExtensionSortArray extends \Twig_Extension
      * Sort by date
      *
      * @param $array
-     * @return mixed
+     * @return array
      */
     function sortByDate($array)
     {

@@ -12,7 +12,7 @@ use PHPoole\Collection\Collection as AbstractCollection;
 
 /**
  * Class Collection
- * @package PHPoole
+ * @package PHPoole\Page
  */
 class Collection extends AbstractCollection
 {

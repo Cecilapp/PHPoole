@@ -20,21 +20,18 @@ class Twig implements RendererInterface
      * @var \Twig_Environment
      */
     protected $twig;
-
     /**
      * @var string
      */
     protected $templates_dir;
-
     /**
      * @var string
      */
     protected $rendered;
-
     /**
      * @var Filesystem
      */
-    protected $filesystem;
+    protected $fs;
 
     /**
      * {@inheritdoc}
@@ -66,13 +63,11 @@ class Twig implements RendererInterface
         });
         $this->twig->addFilter($excerptFilter);
 
-        $this->filesystem = new Filesystem();
+        $this->fs = new Filesystem();
     }
 
     /**
-     * Add templates path
-     *
-     * @param $path
+     * {@inheritDoc}
      * @throws \Twig_Error_Loader
      */
     public function addPath($path)
@@ -86,10 +81,7 @@ class Twig implements RendererInterface
     }
 
     /**
-     * Add global variable
-     *
-     * @param $name
-     * @param $value
+     * {@inheritDoc}
      */
     public function addGlobal($name, $value)
     {
@@ -97,11 +89,7 @@ class Twig implements RendererInterface
     }
 
     /**
-     * Rendering
-     *
-     * @param $template
-     * @param $variables
-     * @return $this
+     * {@inheritDoc}
      */
     public function render($template, $variables)
     {
@@ -110,15 +98,15 @@ class Twig implements RendererInterface
     }
 
     /**
-     * Save rendered file
-     *
-     * @param $pathname
+     * {@inheritDoc}
      */
     public function save($pathname)
     {
         if (!is_dir($dir = dirname($pathname))) {
-            $this->filesystem->mkdir($dir);
+            $this->fs->mkdir($dir);
         }
-        file_put_contents($pathname, $this->rendered);
+        if (false!== @file_put_contents($pathname, $this->rendered)) {
+            return true;
+        }
     }
 }

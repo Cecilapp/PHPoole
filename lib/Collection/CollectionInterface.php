@@ -14,6 +14,10 @@ use ArrayIterator;
 use ArrayAccess;
 use Closure;
 
+/**
+ * Interface CollectionInterface
+ * @package PHPoole\Collection
+ */
 interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
 {
     /**

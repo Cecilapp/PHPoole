@@ -22,22 +22,32 @@ interface RendererInterface
     public function __construct($templatesPath = null);
 
     /**
+     * Add templates path
+     *
      * @param $path
-     * @return mixed
      */
     public function addPath($path);
 
     /**
+     * Add global variable
+     *
      * @param $name
      * @param $value
-     * @return mixed
      */
     public function addGlobal($name, $value);
 
     /**
+     * Rendering
+     *
      * @param $template
      * @param $variables
-     * @return mixed
+     * @return self
      */
     public function render($template, $variables);
+
+    /**
+     * @param $pathname
+     * @return bool
+     */
+    public function save($pathname);
 }
