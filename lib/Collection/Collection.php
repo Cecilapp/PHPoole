@@ -132,6 +132,14 @@ abstract class Collection implements CollectionInterface
     /**
      * {@inheritDoc}
      */
+    public function usort(Closure $callback)
+    {
+        usort($this->items, $callback);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function filter(Closure $callback)
     {
         return new static(array_filter($this->items, $callback));
@@ -186,16 +194,6 @@ abstract class Collection implements CollectionInterface
     public function offsetUnset($offset)
     {
         $this->remove($offset);
-    }
-
-    /**
-     * Implements usort
-     *
-     * @param Closure $callback
-     */
-    public function usort(Closure $callback)
-    {
-        usort($this->items, $callback);
     }
 
     /**
