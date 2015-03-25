@@ -27,5 +27,6 @@
     "psr-4" : {
       "PHPoole\\": "lib"
     }
-  }
+  },
+  "minimum-stability": "dev"
 }
