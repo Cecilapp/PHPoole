@@ -25,7 +25,7 @@ use Zend\EventManager\EventsCapableInterface;
  */
 class PHPoole implements EventsCapableInterface
 {
-    const VERSION = '2.0.0-dev';
+    const VERSION = '1.0.x-dev';
     /**
      * Source directory
      *
@@ -115,7 +115,8 @@ class PHPoole implements EventsCapableInterface
     public function __construct($sourceDir = null, $destDir = null, $options = array())
     {
         if ($sourceDir == null) {
-            $this->sourceDir = __DIR__;
+            //$this->sourceDir = __DIR__;
+            $this->sourceDir = getcwd();
         } else {
             $this->sourceDir = $sourceDir;
         }
@@ -127,9 +128,11 @@ class PHPoole implements EventsCapableInterface
 
         $options = array_replace_recursive([
             'site' => [
-                'title'   => "PHPoole's website",
-                'baseurl' => 'http://localhost/demo/_site/',
-                'taxonomies' => [
+                'title'       => "PHPoole",
+                'baseline'    => "A PHPoole website",
+                'baseurl'     => 'http://localhost:8000/', // php -S localhost:8000 -t _site/ >/dev/null
+                'description' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                'taxonomies'  => [
                     'tags'       => 'tag',
                     'categories' => 'category'
                 ]
@@ -530,7 +533,9 @@ class PHPoole implements EventsCapableInterface
         $dir = $this->destDir . '/' . $this->getOptions()['output']['dir'];
 
         // prepare renderer
-        $renderer = new Renderer\Twig($this->sourceDir . '/' . $this->getOptions()['layouts']['dir']);
+        $renderer = new Renderer\Twig(
+            (is_dir($this->getOptions()['layouts']['dir'])) ? $this->sourceDir . '/' . $this->getOptions()['layouts']['dir'] : []
+        );
 
         // add theme templates
         $this->checkTheme();
