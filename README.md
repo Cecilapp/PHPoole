@@ -7,6 +7,15 @@ It converts [Markdown](http://daringfireball.net/projects/markdown/) files into 
 
 You can easily create a blog, a personal website, a simple corporate website, etc.
 
+Features
+--------
+
+* No database, files only
+* Fully configurable (Through options and plugins system)
+* HTML templates ([Twig](http://twig.sensiolabs.org/doc/templates.html))
+* Menu
+* Taxonomy (Vocablulary > Term > pages collection)
+
 Requirements
 ------------
 
