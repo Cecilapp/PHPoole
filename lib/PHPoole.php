@@ -69,9 +69,9 @@ class PHPoole implements EventsCapableInterface
      */
     protected $sections;
     /**
-     * Array of site menus
+     * Collection of site menus
      *
-     * @var array
+     * @var Collection\CollectionInterface
      */
     protected $menus;
     /**
@@ -469,8 +469,9 @@ class PHPoole implements EventsCapableInterface
                  * menu: main
                  */
                 if (is_string($pageMenu) && !empty($pageMenu)) {
+                    /* @var $menu Menu\Menu */
                     $menu = $this->menus->get($pageMenu);
-                    $item = (new Menu\Item($page->getId()))
+                    $item = (new Menu\Entry($page->getId()))
                         ->setName($page->getTitle())
                         ->setUrl($page->getPathname());
                     $menu->add($item);
@@ -485,8 +486,9 @@ class PHPoole implements EventsCapableInterface
                  */
                 if (is_array($pageMenu) && !empty($pageMenu)) {
                     foreach($pageMenu as $name => $value) {
+                        /* @var $menu Menu\Menu */
                         $menu = $this->menus->get($name);
-                        $item = (new Menu\Item($page->getId()))
+                        $item = (new Menu\Entry($page->getId()))
                             ->setName($page->getTitle())
                             ->setUrl($page->getPathname())
                             ->setWeight($value['weight']);
