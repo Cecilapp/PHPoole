@@ -26,7 +26,7 @@ Installation
 
 Run the following Composer command:
 
-    $ composer require "narno/phpoole-library": "dev-master"
+    $ composer require narno/phpoole-library:1.0.X-dev
 
 Usage
 -----
