@@ -19,11 +19,21 @@ class Menu extends AbstractCollecton implements ItemInterface
 {
     protected $name;
 
+    /**
+     * Set menu name
+     *
+     * @param array $name
+     */
     public function __construct($name)
     {
         $this->name = $name;
     }
 
+    /**
+     * Return menu name
+     *
+     * @return array
+     */
     public function getId()
     {
         return $this->name;
