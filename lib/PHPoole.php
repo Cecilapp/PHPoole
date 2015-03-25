@@ -75,6 +75,12 @@ class PHPoole implements EventsCapableInterface
      */
     protected $menus;
     /**
+     * Collection of taxonomies menus
+     *
+     * @var Collection\CollectionInterface
+     */
+    protected $taxonomies;
+    /**
      * The theme name
      *
      * @var null
@@ -366,51 +372,58 @@ class PHPoole implements EventsCapableInterface
 
     /**
      * Builds taxonomies
-     *
-     * @todo should use dedicated classes: VocabularyCollection and Term
      */
     protected function buildTaxonomies()
     {
-        $siteTaxonomies = [];
+        /**
+         * Builds collections
+         */
+        $this->taxonomies = new Taxonomy\Collection();
         if (array_key_exists('taxonomies', $this->getOptions()['site'])) {
+            /**
+             * ex:
+             * taxonomies:
+             *     tags: tag
+             *     categories: category
+             */
             $taxonomies = $this->getOptions()['site']['taxonomies'];
+            // adds each vocabulary collection to the taxonomies collection
+            foreach($taxonomies as $plural => $singular) {
+                $this->taxonomies->add(new Taxonomy\Vocabulary($plural));
+            }
             /* @var $page Page */
             foreach($this->pageCollection as $page) {
-                /**
-                 * ex:
-                 * taxonomies:
-                 *     tags: tag
-                 *     categories: category
-                 */
                 foreach($taxonomies as $plural => $singular) {
-                    if ($page->getVariable($plural) != null) {
+                    if (isset($page[$plural])) {
                         /**
+                         * Converts a list to an array if necessary
                          * ex:
                          * tags: Tag 1 => tags: [Tag 1]
                          */
-                        if (!is_array($page->getVariable($plural))) {
-                            $page->setVariable($plural, [$page->getVariable($plural)]);
+                        if (!is_array($page[$plural])) {
+                            $page->setVariable($plural, [$page[$plural]]);
                         }
-                        foreach($page->getVariable($plural) as $term) {
-                            $siteTaxonomies[$plural][$term][] = $page;
+                        foreach($page[$plural] as $term) {
+                            // adds each terms to the vocabulary collection
+                            $this->taxonomies->get($plural)
+                                ->add(new Taxonomy\Term($term));
+                            // adds each pages to the term collection
+                            $this->taxonomies
+                                ->get($plural)
+                                ->get($term)
+                                ->add($page);
                         }
                     }
                 }
             }
             /**
-             * ex:
-             * [
-             *   [tags] =>
-             *     [Tag 1] =>
-             *       [0] => Page object
-             *       [1] => Page object
-             *       ...
-             * ]
+             * Builds taxonomy pages
              */
-            //print_r($siteTaxonomies);
-            //die();
-            foreach($siteTaxonomies as $plural => $terms) {
-                // create $plural/$term pages (list of pages)
+            foreach($this->taxonomies as $plural => $terms) {
+                /**
+                 * Create $plural/$term pages (list of pages)
+                 * ex: /tags/tag-1/
+                 */
                 foreach($terms as $term => $pages) {
                     $page = (new Page())
                         ->setId(Page::urlize("$plural/$term"))
@@ -419,18 +432,12 @@ class PHPoole implements EventsCapableInterface
                         ->setNodeType('taxonomy')
                         ->setVariable('singular', $taxonomies[$plural])
                         ->setVariable('list', $pages);
-                    // tmp: add to 'main' menu
-                    /*
-                    if ($plural == 'categories') {
-                        $page->setVariable('menu', [
-                            'main' => ['weight' => 200]
-                        ]);
-                    }
-                    */
-                    //
                     $this->pageCollection->add($page);
                 }
-                // create $plural pages (list of terms)
+                /**
+                 * Create $plural pages (list of terms)
+                 * ex: /tags/
+                 */
                 $page = (new Page())
                     ->setId(strtolower($plural))
                     ->setPathname(strtolower($plural))
