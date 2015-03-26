@@ -28,17 +28,14 @@ Run the following Composer command:
 
     $ composer require narno/phpoole-library:1.0.X-dev
 
+Demo
+----
+
+Try the [demo](https://github.com/Narno/PHPoole-demo)
+
+
 Usage
 -----
-
-### Try the demo
-
-This demo is a simple blog, based on the [Hyde](https://github.com/poole/hyde) theme.
-
-Run the following PHP CLI command:
-
-    $ php demo.php
-
 
 ### Basic usage
 
