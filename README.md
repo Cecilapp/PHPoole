@@ -24,7 +24,13 @@ Please see the [composer.json](composer.json) file.
 Installation
 ------------
 
-Run the following Composer command:
+### Manually
+
+[Download](http://narno.org/PHPoole-library/phpoole-library.phar) the Phar
+
+### Composer
+
+Run the following command:
 
     $ composer require narno/phpoole-library:1.0.X-dev
 
@@ -32,7 +38,6 @@ Demo
 ----
 
 Try the [demo](https://github.com/Narno/PHPoole-demo)
-
 
 Usage
 -----
@@ -44,12 +49,8 @@ First create a new directory (ie "mywebsite") with the following files structure
 ./mywebsite
 |- content             <- Contains the Mardown files
 |  |- Blog             <- A 'section' named "Blog"
-|  |  |- Post 1.md     <- A content page
-|  |  \- Post 2.md
-|  |- Project          <- A 'section' named "Project"
-|  |  |- Project 1.md
-|  |  \- Project 2.md
-|  \- About.md
+|  |  \- Post 1.md     <- A content page a section
+|  \- About.md         <- A content page
 |- layouts             <- Contains the Twig templates
 |  |- _default         <- Contains the default templates
 |  |  |- list.html     <- Used by a node type 'list'
@@ -63,7 +64,8 @@ First create a new directory (ie "mywebsite") with the following files structure
 Then create and run the following PHP script:
 ```php
 <?php
-require_once 'vendor/autoload.php';
+require_once 'vendor/autoload.php'; // Composer
+//require_once 'phar://phpoole-library.phar'; // Phar
 use PHPoole\PHPoole;
 
 $phpoole = new PHPoole(
@@ -71,17 +73,21 @@ $phpoole = new PHPoole(
     null,           // The destination directory
     [               // Options array
         'site' => [
-            'title'   => "My website",                        // The Site title
-            'baseurl' => 'http://localhost/mywebsite/_site/', // The Site base URL
+            'title'   => "My website",             // The Site title
+            'baseurl' => 'http://localhost:8000/', // The Site base URL
         ],
     ]
 );
-$phpoole->build();
+$phpoole->build(); // Launch builder
+
+exec('php -S localhost:8000 -t _site'); // Run a local server
 ```
 
 The result is a new static website created in _./mywebsite/_site_.
 
-### Page example
+### Content
+
+#### Page example
 
 ```yml
 ---
@@ -92,7 +98,9 @@ myvar: "My varm"
 Markdown page content.
 ```
 
-### Layout example
+### Layouts
+
+#### Layout example
 
 ```html
 <h1>{{ page.title }}</h1>
