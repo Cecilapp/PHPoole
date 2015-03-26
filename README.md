@@ -42,7 +42,7 @@ Try the [demo](https://github.com/Narno/PHPoole-demo)
 Usage
 -----
 
-### Basic usage
+### Overview
 
 First create a new directory (ie "mywebsite") with the following files structure:
 ```
