@@ -1,10 +1,15 @@
 {
+  "alias": "phpoole-library.phar",
   "chmod": "0755",
+  "compactors": [
+    "Herrera\\Box\\Compactor\\Php"
+  ],
   "directories": [
     "lib"
   ],
+  "extract": true,
   "files": [
-    "LICENSE"
+    "LICENSE.md"
   ],
   "finder": [
     {
@@ -32,6 +37,6 @@
     }
   ],
   "git-version": "git_version",
-  "output": "phpoole-library.phar",
-  "stub": true
+  "output": "phpoole-library-@git-version@.phar",
+  "stub": "phar-stub.php"
 }
