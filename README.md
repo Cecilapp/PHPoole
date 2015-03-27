@@ -10,11 +10,12 @@ You can easily create a blog, a personal website, a simple corporate website, et
 Features
 --------
 
-* No database, files only
-* Fully configurable (Through options and plugins system)
-* HTML templates ([Twig](http://twig.sensiolabs.org/doc/templates.html))
-* Menu
-* Taxonomy (Vocablulary > Term > pages collection)
+* No database, files only (host your site anywhere)
+* Fully configurable (Through options and plugins system) _WIP_
+* Flexible template engine ([Twig](http://twig.sensiolabs.org/doc/templates.html))
+* Theme support
+* Dynamic menu creation
+* Configurable taxonomies (categories, tags, etc.) 
 
 Requirements
 ------------
@@ -48,8 +49,8 @@ First create a new directory (ie "mywebsite") with the following files structure
 ```
 ./mywebsite
 |- content             <- Contains the Mardown files
-|  |- Blog             <- A 'section' named "Blog"
-|  |  \- Post 1.md     <- A content page a section
+|  |- Blog             <- A section named "Blog"
+|  |  \- Post 1.md     <- A content page in a section
 |  \- About.md         <- A content page
 |- layouts             <- Contains the Twig templates
 |  |- _default         <- Contains the default templates
