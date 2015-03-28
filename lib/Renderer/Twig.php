@@ -44,9 +44,9 @@ class Twig implements RendererInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct($templatesPath = null)
+    public function __construct($templatesPath = '')
     {
-        if ($templatesPath != null) {
+        if (!empty($templatesPath)) {
             $this->templates_dir = $templatesPath;
         }
         $this->twig = new \Twig_Environment(
