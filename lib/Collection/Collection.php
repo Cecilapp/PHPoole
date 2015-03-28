@@ -183,7 +183,7 @@ abstract class Collection implements CollectionInterface
      */
     public function offsetSet($offset, $value)
     {
-        $this->add($offset, $value);
+        $this->add($value);
     }
 
     /**

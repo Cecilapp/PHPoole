@@ -115,7 +115,6 @@ class PHPoole implements EventsCapableInterface
     public function __construct($sourceDir = null, $destDir = null, $options = array())
     {
         if ($sourceDir == null) {
-            //$this->sourceDir = __DIR__;
             $this->sourceDir = getcwd();
         } else {
             $this->sourceDir = $sourceDir;
@@ -161,7 +160,7 @@ class PHPoole implements EventsCapableInterface
                 'dir' => 'themes'
             ],
         ], $options);
-        if ($options) {
+        if (!empty($options)) {
             $this->setOptions($options);
         }
 
@@ -175,7 +174,6 @@ class PHPoole implements EventsCapableInterface
      */
     public static function create()
     {
-        //return new static();
         $r = new \ReflectionClass(get_called_class());
         return $r->newInstanceArgs(func_get_args());
     }
@@ -204,7 +202,7 @@ class PHPoole implements EventsCapableInterface
      */
     public function getOptions()
     {
-        if (!$this->options) {
+        if (is_null($this->options)) {
             $this->setOptions(array());
         }
         return $this->options;

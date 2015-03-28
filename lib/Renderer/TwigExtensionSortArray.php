@@ -46,7 +46,7 @@ class TwigExtensionSortArray extends \Twig_Extension
      * @param $array|\PHPoole\Collection\CollectionInterface
      * @return mixed
      */
-    function sortByWeight($array)
+    protected function sortByWeight($array)
     {
         $callback = function($a, $b) {
             if (!isset($a['weight'])) {
@@ -78,7 +78,7 @@ class TwigExtensionSortArray extends \Twig_Extension
      * @param $array|\PHPoole\Collection\CollectionInterface
      * @return mixed
      */
-    function sortByDate($array)
+    protected function sortByDate($array)
     {
         $callback = function($a, $b) {
             if (!isset($a['date'])) {
@@ -111,7 +111,7 @@ class TwigExtensionSortArray extends \Twig_Extension
      * @param string $section
      * @return array
      */
-    function bySection(\PHPoole\Page\Collection $pages, $section)
+    protected function bySection(\PHPoole\Page\Collection $pages, $section)
     {
         $filtered = [];
 

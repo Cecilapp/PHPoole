@@ -32,6 +32,14 @@ class Twig implements RendererInterface
      * @var Filesystem
      */
     protected $fs;
+    /**
+     * @var bool
+     */
+    protected $twig_strict = false;
+    /**
+     * @var bool
+     */
+    protected $twig_debug = true;
 
     /**
      * {@inheritdoc}
@@ -44,9 +52,9 @@ class Twig implements RendererInterface
         $this->twig = new \Twig_Environment(
             new \Twig_Loader_Filesystem($this->templates_dir),
             [
-                //'strict_variables' => true,
-                'autoescape' => false,
-                'debug'      => true
+                'autoescape'       => false,
+                'strict_variables' => $this->twig_strict,
+                'debug'            => $this->twig_debug
             ]
         );
         $this->twig->addExtension(new \Twig_Extension_Debug());

@@ -22,7 +22,7 @@ class Vocabulary extends AbstractCollecton implements ItemInterface
     /**
      * Create vocabulary
      *
-     * @param array $name
+     * @param string $name
      */
     public function __construct($name)
     {
@@ -32,7 +32,7 @@ class Vocabulary extends AbstractCollecton implements ItemInterface
     /**
      * Return vocabulary name
      *
-     * @return array
+     * @return string
      */
     public function getId()
     {

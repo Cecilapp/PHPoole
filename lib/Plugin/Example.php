@@ -34,14 +34,5 @@ class Example extends Plugin
     public function onLocateContentPost(Event $event)
     {
         echo sprintf("Method 'locateContent' finished, with params '%s'\n", json_encode($event->getParams()));
-
-        $iterator = \Symfony\Component\Finder\Finder::create()
-            ->files()
-            ->in($event->getParam('dir') . '_bis')
-            ->name('*.md');
-
-        /* @var $phpoole \PHPoole\PHPoole */
-        $phpoole = $event->getTarget();
-        $phpoole->setContent($iterator);
     }
 }

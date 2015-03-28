@@ -22,7 +22,7 @@ class Term extends AbstractCollecton implements ItemInterface
     /**
      * Create term
      *
-     * @param array $name
+     * @param string $name
      */
     public function __construct($name)
     {
@@ -32,7 +32,7 @@ class Term extends AbstractCollecton implements ItemInterface
     /**
      * Return term name
      *
-     * @return array
+     * @return string
      */
     public function getId()
     {

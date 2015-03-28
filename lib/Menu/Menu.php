@@ -22,7 +22,7 @@ class Menu extends AbstractCollecton implements ItemInterface
     /**
      * Set menu name
      *
-     * @param array $name
+     * @param string $name
      */
     public function __construct($name)
     {
@@ -32,7 +32,7 @@ class Menu extends AbstractCollecton implements ItemInterface
     /**
      * Return menu name
      *
-     * @return array
+     * @return string
      */
     public function getId()
     {
