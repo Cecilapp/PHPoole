@@ -532,7 +532,7 @@ class PHPoole implements EventsCapableInterface
 
         // prepare renderer
         $renderer = new Renderer\Twig(
-            (is_dir($this->getOptions()['layouts']['dir'])) ? $this->sourceDir . '/' . $this->getOptions()['layouts']['dir'] : []
+            (is_dir($this->getOptions()['layouts']['dir'])) ? $this->sourceDir . '/' . $this->getOptions()['layouts']['dir'] : ''
         );
 
         // add theme templates

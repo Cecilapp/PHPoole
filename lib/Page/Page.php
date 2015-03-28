@@ -338,37 +338,6 @@ class Page extends AbstractItem implements \ArrayAccess
     }
 
     /**
-     * @todo use magic method or not?
-     *
-     * @param $method
-     * @param $params
-     * @return $this|mixed|null
-     */
-    /*
-    public function __call($method, $params)
-    {
-        echo __METHOD__, "\n";
-
-        if (method_exists($this, $method)) {
-            return call_user_func_array(array($this, $method), $params);
-        }
-        if (substr($method, 0, 3) == 'set') {
-            $property = strtolower(substr($method, 3));
-            $value = $params[0];
-            $this->setVariable($property, $value);
-            return $this;
-        }
-        if (substr($method, 0, 3) == 'get') {
-            $property = strtolower(substr($method, 3));
-            return $this->getVariable($property);
-        }
-        if (property_exists($this, $method)) {
-            return $this->$method;
-        }
-    }
-    */
-
-    /**
      * Set name
      *
      * @param $name
