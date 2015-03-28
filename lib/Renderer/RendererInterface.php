@@ -17,9 +17,9 @@ interface RendererInterface
     /**
      * Constructor
      *
-     * @param null $templatesPath
+     * @param string|array $templatesPath
      */
-    public function __construct($templatesPath = null);
+    public function __construct($templatesPath = array());
 
     /**
      * Add templates path
