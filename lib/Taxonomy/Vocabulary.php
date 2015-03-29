@@ -8,14 +8,14 @@
 
 namespace PHPoole\Taxonomy;
 
-use PHPoole\Collection\Collection as AbstractCollecton;
+use PHPoole\Collection\AbstractCollection;
 use PHPoole\Collection\ItemInterface;
 
 /**
  * Class Vocabulary
  * @package PHPoole\Taxonomy
  */
-class Vocabulary extends AbstractCollecton implements ItemInterface
+class Vocabulary extends AbstractCollection implements ItemInterface
 {
     protected $name;
 

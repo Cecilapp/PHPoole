@@ -18,6 +18,7 @@ interface RendererInterface
      * Constructor
      *
      * @param string|array $templatesPath
+     * @return void
      */
     public function __construct($templatesPath = array());
 
@@ -25,6 +26,7 @@ interface RendererInterface
      * Add templates path
      *
      * @param $path
+     * @return void
      */
     public function addPath($path);
 
@@ -33,6 +35,7 @@ interface RendererInterface
      *
      * @param $name
      * @param $value
+     * @return void
      */
     public function addGlobal($name, $value);
 

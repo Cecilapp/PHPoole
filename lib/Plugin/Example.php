@@ -11,7 +11,7 @@ namespace PHPoole\Plugin;
 use Zend\EventManager\Event;
 use Zend\EventManager\EventManagerInterface;
 
-class Example extends Plugin
+class Example extends AbstractPlugin
 {
     public function attach(EventManagerInterface $events)
     {

@@ -23,7 +23,7 @@ class Twig implements RendererInterface
     /**
      * @var string
      */
-    protected $templates_dir;
+    protected $templatesDir;
     /**
      * @var string
      */
@@ -35,11 +35,11 @@ class Twig implements RendererInterface
     /**
      * @var bool
      */
-    protected $twig_strict = false;
+    protected $twigStrict = false;
     /**
      * @var bool
      */
-    protected $twig_debug = true;
+    protected $twigDebug = true;
 
     /**
      * {@inheritdoc}
@@ -47,14 +47,14 @@ class Twig implements RendererInterface
     public function __construct($templatesPath = '')
     {
         if (!empty($templatesPath)) {
-            $this->templates_dir = $templatesPath;
+            $this->templatesDir = $templatesPath;
         }
         $this->twig = new \Twig_Environment(
-            new \Twig_Loader_Filesystem($this->templates_dir),
+            new \Twig_Loader_Filesystem($this->templatesDir),
             [
                 'autoescape'       => false,
-                'strict_variables' => $this->twig_strict,
-                'debug'            => $this->twig_debug
+                'strict_variables' => $this->twigStrict,
+                'debug'            => $this->twigDebug
             ]
         );
         $this->twig->addExtension(new \Twig_Extension_Debug());

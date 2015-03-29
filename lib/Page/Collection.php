@@ -8,7 +8,7 @@
 
 namespace PHPoole\Page;
 
-use PHPoole\Collection\Collection as AbstractCollection;
+use PHPoole\Collection\AbstractCollection;
 
 /**
  * Class Collection

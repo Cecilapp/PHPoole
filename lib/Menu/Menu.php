@@ -8,14 +8,14 @@
 
 namespace PHPoole\Menu;
 
-use PHPoole\Collection\Collection as AbstractCollecton;
+use PHPoole\Collection\AbstractCollection;
 use PHPoole\Collection\ItemInterface;
 
 /**
  * Class Menu
  * @package PHPoole\Menu
  */
-class Menu extends AbstractCollecton implements ItemInterface
+class Menu extends AbstractCollection implements ItemInterface
 {
     protected $name;
 

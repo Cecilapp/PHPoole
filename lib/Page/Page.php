@@ -8,7 +8,7 @@
 
 namespace PHPoole\Page;
 
-use PHPoole\Collection\Item as AbstractItem;
+use PHPoole\Collection\AbstractItem;
 use Symfony\Component\Finder\SplFileInfo;
 use Cocur\Slugify\Slugify;
 
@@ -67,7 +67,7 @@ class Page extends AbstractItem implements \ArrayAccess
     /**
      * @var string
      */
-    protected $title = "Default title";
+    protected $title = 'Default title';
     /**
      * @var string
      */
@@ -97,7 +97,7 @@ class Page extends AbstractItem implements \ArrayAccess
     /**
      * Constructor
      *
-     * @param SplFileInfo $file
+     * @param null|SplFileInfo $file
      */
     public function __construct(SplFileInfo $file = null)
     {
@@ -182,7 +182,7 @@ class Page extends AbstractItem implements \ArrayAccess
      *
      * @throws \RuntimeException
      */
-    protected function _parse()
+    private function __parse()
     {
         if ($this->file->isFile()) {
             if (!$this->file->isReadable()) {
@@ -218,7 +218,7 @@ class Page extends AbstractItem implements \ArrayAccess
      */
     public function parse()
     {
-        $this->_parse();
+        $this->__parse();
         return $this;
     }
 

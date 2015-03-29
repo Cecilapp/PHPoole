@@ -41,6 +41,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
      *
      * @param $id
      * @param ItemInterface $item
+     * @return null|self
      */
     public function replace($id, ItemInterface $item);
 
@@ -48,6 +49,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
      * Remove an item if exists
      *
      * @param $id
+     * @return null|self
      */
     public function remove($id);
 
@@ -91,6 +93,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
      * Implements usort
      *
      * @param Closure $callback
+     * @return null
      */
     public function usort(Closure $callback);
 
@@ -98,7 +101,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
      * Filters items using a callback function
      *
      * @param Closure $callback
-     * @return Collection
+     * @return CollectionInterface
      */
     public function filter(Closure $callback);
 
@@ -106,7 +109,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
      * Applies a callback to items
      *
      * @param Closure $callback
-     * @return Collection
+     * @return CollectionInterface
      */
     public function map(Closure $callback);
 }

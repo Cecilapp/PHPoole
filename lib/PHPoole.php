@@ -127,10 +127,10 @@ class PHPoole implements EventsCapableInterface
 
         $options = array_replace_recursive([
             'site' => [
-                'title'       => "PHPoole",
-                'baseline'    => "A PHPoole website",
+                'title'       => 'PHPoole',
+                'baseline'    => 'A PHPoole website',
                 'baseurl'     => 'http://localhost:8000/', // php -S localhost:8000 -t _site/ >/dev/null
-                'description' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                 'taxonomies'  => [
                     'tags'       => 'tag',
                     'categories' => 'category'
@@ -197,7 +197,7 @@ class PHPoole implements EventsCapableInterface
     /**
      * Get options
      *
-     * @return array
+     * @return null|array
      * @see    setOptions()
      */
     public function getOptions()
@@ -229,7 +229,7 @@ class PHPoole implements EventsCapableInterface
     protected function locateContent()
     {
         try {
-            $dir = $this->sourceDir . '/' . $this->getOptions()['content']['dir'];
+            $dir    = $this->sourceDir . '/' . $this->getOptions()['content']['dir'];
             $params = compact('dir');
             $this->triggerPre(__FUNCTION__, $params);
             $this->contentIterator = Finder::create()
@@ -354,9 +354,9 @@ class PHPoole implements EventsCapableInterface
         if (!empty($this->sections)) {
             $weight = 100;
             foreach ($this->sections as $section => $pageObject) {
-                if (!$this->pageCollection->has("$section")) {
+                if (!$this->pageCollection->has($section)) {
                     $page = (new Page())
-                        ->setId("$section/index")
+                        ->setId(sprintf('%s/index', $section))
                         ->setPathname($section)
                         ->setTitle(ucfirst($section))
                         ->setNodeType('list')
@@ -427,8 +427,8 @@ class PHPoole implements EventsCapableInterface
                  */
                 foreach($terms as $term => $pages) {
                     $page = (new Page())
-                        ->setId(Page::urlize("$plural/$term"))
-                        ->setPathname(Page::urlize("$plural/$term"))
+                        ->setId(Page::urlize(sprintf('%s%s', $plural, $term)))
+                        ->setPathname(Page::urlize(sprintf('%s%s', $plural, $term)))
                         ->setTitle($term)
                         ->setNodeType('taxonomy')
                         ->setVariable('singular', $taxonomies[$plural])
@@ -554,7 +554,7 @@ class PHPoole implements EventsCapableInterface
         /* @var $page Page */
         foreach($this->pageCollection as $page) {
             $renderer->render($this->layoutFallback($page), [
-                'page'    => $page,
+                'page' => $page,
             ]);
             // destination of the 404 page
             if ($page->getId() == '404') {
@@ -585,8 +585,6 @@ class PHPoole implements EventsCapableInterface
         if ($this->fs->exists($staticDir)) {
             $this->fs->mirror($staticDir, $dir, null, ['override' => true]);
         }
-
-        return true;
     }
 
     /**
@@ -595,7 +593,7 @@ class PHPoole implements EventsCapableInterface
      */
     protected function checkTheme()
     {
-        $themesDir  = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'];
+        $themesDir = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'];
         if ($this->theme == null && array_key_exists('theme', $this->getOptions())) {
             if ($this->fs->exists($themesDir . '/' . $this->getOptions()['theme'])) {
                 $this->theme = $this->getOptions()['theme'];
@@ -630,7 +628,7 @@ class PHPoole implements EventsCapableInterface
                     '_default/list.html',
                 ];
                 if ($page->getSection() != null) {
-                    $layouts = array_merge(["section/{$page->getSection()}.html"], $layouts);
+                    $layouts = array_merge([sprintf('section/%s.html', $page->getSection())], $layouts);
                 }
                 break;
             case 'taxonomy':
@@ -640,7 +638,7 @@ class PHPoole implements EventsCapableInterface
                     '_default/list.html',
                 ];
                 if ($page->getVariable('singular') != null) {
-                    $layouts = array_merge(["taxonomy/{$page->getVariable('singular')}.html"], $layouts);
+                    $layouts = array_merge([sprintf('taxonomy/%s.html', $page->getVariable('singular'))], $layouts);
                 }
                 break;
             case 'terms':
@@ -649,7 +647,7 @@ class PHPoole implements EventsCapableInterface
                     '_default/terms.html',
                 ];
                 if ($page->getVariable('singular') != null) {
-                    $layouts = array_merge(["taxonomy/{$page->getVariable('singular')}.terms.html"], $layouts);
+                    $layouts = array_merge([sprintf('taxonomy/%s.terms.html', $page->getVariable('singular'))], $layouts);
                 }
                 break;
             case 'page':
@@ -662,14 +660,14 @@ class PHPoole implements EventsCapableInterface
                     '_default/page.html',
                 ];
                 if ($page->getSection() != null) {
-                    $layouts = array_merge(["{$page->getSection()}/page.html"], $layouts);
+                    $layouts = array_merge([sprintf('%s/page.html', $page->getSection())], $layouts);
                     if ($page->getLayout() != null) {
-                        $layouts = array_merge(["{$page->getSection()}/{$page->getLayout()}.html"], $layouts);
+                        $layouts = array_merge([sprintf('%s/%s.html', $page->getSection(), $page->getLayout())], $layouts);
                     }
                 } else {
                     $layouts = array_merge(['page.html'], $layouts);
                     if ($page->getLayout() != null) {
-                        $layouts = array_merge(["{$page->getLayout()}.html"], $layouts);
+                        $layouts = array_merge([sprintf('%s.html', $page->getLayout())], $layouts);
                     }
                 }
         }

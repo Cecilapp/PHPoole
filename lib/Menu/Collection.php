@@ -8,7 +8,7 @@
 
 namespace PHPoole\Menu;
 
-use PHPoole\Collection\Collection as AbstractCollection;
+use PHPoole\Collection\AbstractCollection;
 
 /**
  * Class Collection

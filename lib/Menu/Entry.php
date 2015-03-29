@@ -8,7 +8,7 @@
 
 namespace PHPoole\Menu;
 
-use PHPoole\Collection\Item as AbstractItem;
+use PHPoole\Collection\AbstractItem;
 use ArrayAccess;
 use PHPoole\Collection\ItemArrayAccessTrait;
 

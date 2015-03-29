@@ -33,7 +33,7 @@ class TwigExtensionUrlize extends SlugifyExtension
     /**
      * Returns a list of filters.
      *
-     * @return array
+     * @return \Twig_SimpleFilter[]
      */
     public function getFilters()
     {
@@ -45,7 +45,7 @@ class TwigExtensionUrlize extends SlugifyExtension
     /**
      * Returns a list of functions.
      *
-     * @return array
+     * @return \Twig_SimpleFunction[]
      */
     public function getFunctions()
     {
@@ -70,7 +70,7 @@ class TwigExtensionUrlize extends SlugifyExtension
         }
 
         $baseurl = $env->getGlobals()['site']['baseurl'];
-        $url =  rtrim($baseurl, "/") . '/' . $value;
+        $url     = rtrim($baseurl, '/') . '/' . $value;
 
         return $url;
     }
