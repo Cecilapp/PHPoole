@@ -168,7 +168,7 @@ abstract class AbstractCollection implements CollectionInterface
      * Implement ArrayAccess
      *
      * @param mixed $offset
-     * @return null|CollectionInterface|ItemInterface
+     * @return null|CollectionInterface
      */
     public function offsetGet($offset)
     {

@@ -182,7 +182,7 @@ class Page extends AbstractItem implements \ArrayAccess
      *
      * @throws \RuntimeException
      */
-    private function __parse()
+    private function _parse()
     {
         if ($this->file->isFile()) {
             if (!$this->file->isReadable()) {
@@ -218,7 +218,7 @@ class Page extends AbstractItem implements \ArrayAccess
      */
     public function parse()
     {
-        $this->__parse();
+        $this->_parse();
         return $this;
     }
 
