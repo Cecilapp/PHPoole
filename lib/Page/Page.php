@@ -18,6 +18,8 @@ use Cocur\Slugify\Slugify;
  */
 class Page extends AbstractItem implements \ArrayAccess
 {
+    use PageVariablesTrait;
+
     const SLUGIFY_PATTERN = '/([^a-z0-9\/]|-)+/';
 
     /**
@@ -82,10 +84,6 @@ class Page extends AbstractItem implements \ArrayAccess
      */
     protected $frontmatter;
     /**
-     * @var array
-     */
-    protected $variables = [];
-    /**
      * @var string
      */
     protected $body;
@@ -107,22 +105,22 @@ class Page extends AbstractItem implements \ArrayAccess
             // file extension : md
             $this->fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
             // file path : Blog
-            $this->filePath = str_replace(DIRECTORY_SEPARATOR, '/', $this->file->getRelativePath());
+            $this->filePath      = str_replace(DIRECTORY_SEPARATOR, '/', $this->file->getRelativePath());
             // file id : Blog/Post 1
-            $this->fileId = ($this->filePath ? $this->filePath . '/' : '') . basename($this->file->getBasename(), '.' . $this->fileExtension);
+            $this->fileId        = ($this->filePath ? $this->filePath . '/' : '') . basename($this->file->getBasename(), '.' . $this->fileExtension);
             // id : blog/post-1
-            $this->id = $this->urlize($this->fileId);
+            $this->id            = $this->urlize($this->fileId);
             // pathname : blog/post-1
-            $this->pathname = $this->urlize($this->fileId);
+            $this->pathname      = $this->urlize($this->fileId);
             // path : blog
-            $this->path = $this->urlize($this->filePath);
+            $this->path          = $this->urlize($this->filePath);
             // name : post-1
-            $this->name = $this->urlize(basename($this->file->getBasename(), '.' . $this->fileExtension));
+            $this->name          = $this->urlize(basename($this->file->getBasename(), '.' . $this->fileExtension));
             /**
              * frontmatter default values
              */
             // title : Post 1
-            $this->title = basename($this->file->getBasename(), '.' . $this->fileExtension);
+            $this->title   = basename($this->file->getBasename(), '.' . $this->fileExtension);
             // section : blog
             $this->section = explode('/', $this->path)[0];
         } else {
@@ -172,169 +170,17 @@ class Page extends AbstractItem implements \ArrayAccess
     }
 
     /**
-     * Parse the contents of the file.
-     *
-     * Example:
-     * <!--
-     * title = Title
-     * -->
-     * Lorem Ipsum.
-     *
-     * @throws \RuntimeException
-     */
-    private function _parse()
-    {
-        if ($this->file->isFile()) {
-            if (!$this->file->isReadable()) {
-                throw new \RuntimeException('Cannot read file');
-            }
-            // parse front matter
-            preg_match(
-                '/^'
-                . '(<!--|---|\+++){1}[\r\n|\n]*' // $matches[1] = front matter open
-                . '(.*)[\r\n|\n]+'               // $matches[2] = front matter
-                . '(-->|---|\+++){1}[\r\n|\n]*'  // $matches[3] = front matter close
-                . '(.+)'                         // $matches[4] = body
-                . '/s',
-                $this->file->getContents(),
-                $matches
-            );
-            // if not front matter, set body only
-            if (!$matches) {
-                $this->body = $this->file->getContents();
-                return $this;
-            }
-            $this->frontmatter = $matches[2];
-            $this->body        = $matches[4];
-        }
-
-        return true;
-    }
-
-    /**
-     * Public method to parse file content
+     * Parse file content
      *
      * @return $this
      */
     public function parse()
     {
-        $this->_parse();
+        $parser = new Parser($this->file);
+        $parsed = $parser->parse();
+        $this->frontmatter = $parsed->getFrontmatter();
+        $this->body        = $parsed->getBody();
         return $this;
-    }
-
-    /**
-     * Set variables
-     *
-     * @param $variables
-     * @return $this
-     */
-    public function setVariables($variables)
-    {
-        $this->variables = $variables;
-        return $this;
-    }
-
-    /**
-     * Get variables
-     *
-     * @return array
-     */
-    public function getVariables()
-    {
-        return $this->variables;
-    }
-
-    /**
-     * Set a variable
-     *
-     * @param $name
-     * @param $value
-     * @return $this
-     */
-    public function setVariable($name, $value)
-    {
-        $this->variables[$name] = $value;
-        return $this;
-    }
-
-    /**
-     * Is variable exist?
-     *
-     * @param $name
-     * @return bool
-     */
-    public function hasVariable($name)
-    {
-        return array_key_exists($name, $this->variables);
-    }
-
-    /**
-     * Get a variable
-     *
-     * @param $name
-     * @return null
-     */
-    public function getVariable($name)
-    {
-        if ($this->hasVariable($name)) {
-            return $this->variables[$name];
-        }
-        return null;
-    }
-
-    /**
-     * Unset a variable
-     *
-     * @param $name
-     */
-    public function unVariable($name)
-    {
-        if ($this->hasVariable($name)) {
-            unset($this->variables[$name]);
-        }
-    }
-
-    /**
-     * Implement ArrayAccess
-     *
-     * @param mixed $offset
-     * @return bool
-     */
-    public function offsetExists($offset)
-    {
-        return $this->hasVariable($offset);
-    }
-
-    /**
-     * Implement ArrayAccess
-     *
-     * @param mixed $offset
-     * @return null
-     */
-    public function offsetGet($offset)
-    {
-        return $this->getVariable($offset);
-    }
-
-    /**
-     * Implement ArrayAccess
-     *
-     * @param mixed $offset
-     * @param mixed $value
-     */
-    public function offsetSet($offset, $value)
-    {
-        $this->setVariable($offset, $value);
-    }
-
-    /**
-     * Implement ArrayAccess
-     *
-     * @param mixed $offset
-     */
-    public function offsetUnset($offset)
-    {
-        $this->unVariable($offset);
     }
 
     /**

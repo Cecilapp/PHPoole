@@ -9,12 +9,12 @@
 namespace PHPoole;
 
 use PHPoole\Page\Collection as PageCollection;
+use PHPoole\Page\Converter;
 use PHPoole\Page\Page;
+use PHPoole\Renderer\RendererInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Yaml\Yaml;
-use ParsedownExtra;
 use PHPoole\Plugin\PluginInterface;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventsCapableInterface;
@@ -80,6 +80,12 @@ class PHPoole implements EventsCapableInterface
      * @var Collection\CollectionInterface
      */
     protected $taxonomies;
+    /**
+     * Twig renderer
+     *
+     * @var RendererInterface
+     */
+    protected $renderer;
     /**
      * The theme name
      *
@@ -218,13 +224,17 @@ class PHPoole implements EventsCapableInterface
         $this->convertPages();
         $this->addVirtualPages();
         $this->buildTaxonomies();
+        $this->addTaxonomyPages();
         $this->buildMenus();
-        $this->buildSiteVars();
+        $this->addSiteVars();
         $this->renderPages();
+        $this->copyStatic();
     }
 
     /**
      * Locates content
+     *
+     * @see build()
      */
     protected function locateContent()
     {
@@ -248,6 +258,8 @@ class PHPoole implements EventsCapableInterface
 
     /**
      * Builds pages collection from content iterator
+     *
+     * @see build()
      */
     protected function buildPagesFromContent()
     {
@@ -265,6 +277,8 @@ class PHPoole implements EventsCapableInterface
      * Converts page content:
      * * Yaml frontmatter -> PHP array
      * * Mardown body -> HTML
+     *
+     * @see build()
      */
     protected function convertPages()
     {
@@ -272,16 +286,14 @@ class PHPoole implements EventsCapableInterface
         foreach($this->pageCollection as $page) {
             if (!$page->isVirtual()) {
                 // converts frontmatter
-                switch ($this->getOptions()['frontmatter']['format']) {
-                    case 'ini':
-                        $variables = parse_ini_string($page->getFrontmatter());
-                        break;
-                    case 'yaml':
-                    default:
-                        $variables = Yaml::parse($page->getFrontmatter());
-                }
+                $variables = (new Converter())
+                    ->convertFrontmatter(
+                        $page->getFrontmatter(),
+                        $this->getOptions()['frontmatter']['format']
+                    );
                 // converts body
-                $html = (new ParsedownExtra())->text($page->getBody());
+                $html = (new Converter())
+                    ->convertBody($page->getBody());
                 // setting page properties
                 if (array_key_exists('title', $variables)) {
                     $page->setTitle($variables['title']);
@@ -301,6 +313,8 @@ class PHPoole implements EventsCapableInterface
 
     /**
      * Adds virtual pages to collection
+     *
+     * @see build()
      */
     protected function addVirtualPages()
     {
@@ -311,6 +325,8 @@ class PHPoole implements EventsCapableInterface
 
     /**
      * Adds homepage to collection
+     *
+     * @see build()
      */
     protected function addHomePage()
     {
@@ -328,6 +344,8 @@ class PHPoole implements EventsCapableInterface
 
     /**
      * Adds 404 page to collection
+     *
+     * @see build()
      */
     protected function add404Page()
     {
@@ -342,6 +360,8 @@ class PHPoole implements EventsCapableInterface
 
     /**
      * Adds section pages to collection
+     *
+     * @see build()
      */
     protected function addSectionPages()
     {
@@ -373,34 +393,26 @@ class PHPoole implements EventsCapableInterface
 
     /**
      * Builds taxonomies
+     *
+     * @see build()
      */
     protected function buildTaxonomies()
     {
         /**
          * Builds collections
          */
-        $this->taxonomies = new Taxonomy\Collection();
         if (array_key_exists('taxonomies', $this->getOptions()['site'])) {
-            /**
-             * ex:
-             * taxonomies:
-             *     tags: tag
-             *     categories: category
-             */
-            $taxonomies = $this->getOptions()['site']['taxonomies'];
+            $this->taxonomies = new Taxonomy\Collection();
+            $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
             // adds each vocabulary collection to the taxonomies collection
-            foreach($taxonomies as $plural => $singular) {
+            foreach($siteTaxonomies as $plural => $singular) {
                 $this->taxonomies->add(new Taxonomy\Vocabulary($plural));
             }
             /* @var $page Page */
             foreach($this->pageCollection as $page) {
-                foreach($taxonomies as $plural => $singular) {
+                foreach($siteTaxonomies as $plural => $singular) {
                     if (isset($page[$plural])) {
-                        /**
-                         * Converts a list to an array if necessary
-                         * ex:
-                         * tags: Tag 1 => tags: [Tag 1]
-                         */
+                        // converts a list to an array if necessary
                         if (!is_array($page[$plural])) {
                             $page->setVariable($plural, [$page[$plural]]);
                         }
@@ -417,71 +429,81 @@ class PHPoole implements EventsCapableInterface
                     }
                 }
             }
+
+        }
+    }
+
+    /**
+     * Adds taxonomy pages
+     *
+     * @see build()
+     */
+    protected function addTaxonomyPages()
+    {
+        $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
+        foreach($this->taxonomies as $plural => $terms) {
             /**
-             * Builds taxonomy pages
+             * Create $plural/$term pages (list of pages)
+             * ex: /tags/tag-1/
              */
-            foreach($this->taxonomies as $plural => $terms) {
-                /**
-                 * Create $plural/$term pages (list of pages)
-                 * ex: /tags/tag-1/
-                 */
-                foreach($terms as $term => $pages) {
-                    $page = (new Page())
-                        ->setId(Page::urlize(sprintf('%s%s', $plural, $term)))
-                        ->setPathname(Page::urlize(sprintf('%s%s', $plural, $term)))
-                        ->setTitle($term)
-                        ->setNodeType('taxonomy')
-                        ->setVariable('singular', $taxonomies[$plural])
-                        ->setVariable('list', $pages);
-                    $this->pageCollection->add($page);
-                }
-                /**
-                 * Create $plural pages (list of terms)
-                 * ex: /tags/
-                 */
+            foreach($terms as $term => $pages) {
                 $page = (new Page())
-                    ->setId(strtolower($plural))
-                    ->setPathname(strtolower($plural))
-                    ->setTitle($plural)
-                    ->setNodeType('terms')
-                    ->setVariable('plural', $plural)
-                    ->setVariable('singular', $taxonomies[$plural])
-                    ->setVariable('terms', $terms);
-                // add page only if a template exist
-                try {
-                    $this->layoutFallback($page);
-                    $this->pageCollection->add($page);
-                } catch (\Exception $e) {
-                    echo $e->getMessage() . "\n";
-                    // do not add page
-                    unset($page);
-                }
+                    ->setId(Page::urlize(sprintf('%s%s', $plural, $term)))
+                    ->setPathname(Page::urlize(sprintf('%s%s', $plural, $term)))
+                    ->setTitle($term)
+                    ->setNodeType('taxonomy')
+                    ->setVariable('singular', $siteTaxonomies[$plural])
+                    ->setVariable('list', $pages);
+                $this->pageCollection->add($page);
+            }
+            /**
+             * Create $plural pages (list of terms)
+             * ex: /tags/
+             */
+            $page = (new Page())
+                ->setId(strtolower($plural))
+                ->setPathname(strtolower($plural))
+                ->setTitle($plural)
+                ->setNodeType('terms')
+                ->setVariable('plural', $plural)
+                ->setVariable('singular', $siteTaxonomies[$plural])
+                ->setVariable('terms', $terms);
+            // add page only if a template exist
+            try {
+                $this->layoutFinder($page);
+                $this->pageCollection->add($page);
+            } catch (\Exception $e) {
+                echo $e->getMessage() . "\n";
+                // do not add page
+                unset($page);
             }
         }
     }
 
     /**
      * Builds menus
+     *
+     * @see build()
      */
     protected function buildMenus()
     {
         $this->menus = new Menu\Collection();
 
         /* @var $page Page */
+        // @todo use collection filter?
         foreach($this->pageCollection as $page) {
             if (!empty($page['menu'])) {
-                $pageMenu = $page['menu'];
                 // single
                 /**
                  * ex:
                  * menu: main
                  */
-                if (is_string($pageMenu) && !empty($pageMenu)) {
-                    /* @var $menu Menu\Menu */
-                    $menu = $this->menus->get($pageMenu);
+                if (is_string($page['menu'])) {
                     $item = (new Menu\Entry($page->getId()))
                         ->setName($page->getTitle())
                         ->setUrl($page->getPathname());
+                    /* @var $menu Menu\Menu */
+                    $menu = $this->menus->get($page['menu']);
                     $menu->add($item);
                 }
                 // multiple
@@ -492,14 +514,14 @@ class PHPoole implements EventsCapableInterface
                  *         weight: 1000
                  *     other
                  */
-                if (is_array($pageMenu) && !empty($pageMenu)) {
-                    foreach($pageMenu as $name => $value) {
-                        /* @var $menu Menu\Menu */
-                        $menu = $this->menus->get($name);
+                if (is_array($page['menu'])) {
+                    foreach($page['menu'] as $name => $value) {
                         $item = (new Menu\Entry($page->getId()))
                             ->setName($page->getTitle())
                             ->setUrl($page->getPathname())
                             ->setWeight($value['weight']);
+                        /* @var $menu Menu\Menu */
+                        $menu = $this->menus->get($name);
                         $menu->add($item);
                     }
                 }
@@ -508,9 +530,11 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Builds site variables
+     * Adds site variables
+     *
+     * @see build()
      */
-    protected function buildSiteVars()
+    protected function addSiteVars()
     {
         $this->site = array_merge(
             $this->getOptions()['site'],
@@ -523,56 +547,76 @@ class PHPoole implements EventsCapableInterface
      * Pages rendering:
      * 1. Iterates pages collection
      * 2. Applies Twig templates
-     * 3. Saves rendered file
+     * 3. Saves rendered files
+     *
+     * @see build()
      */
     protected function renderPages()
     {
-        // create output dir
-        $dir = $this->destDir . '/' . $this->getOptions()['output']['dir'];
-
         // prepare renderer
-        $renderer = new Renderer\Twig(
+        $this->renderer = new Renderer\Twig(
             (is_dir($this->getOptions()['layouts']['dir'])) ? $this->sourceDir . '/' . $this->getOptions()['layouts']['dir'] : ''
         );
-
         // add theme templates
-        $this->checkTheme();
-        if ($this->theme != null) {
-            $renderer->addPath($this->sourceDir . '/' . $this->getOptions()['themes']['dir'] . '/' . $this->theme . '/layouts');
+        if ($this->isTheme()) {
+            $this->renderer->addPath($this->sourceDir . '/' . $this->getOptions()['themes']['dir'] . '/' . $this->theme . '/layouts');
         }
-
         // add global variables
-        $renderer->addGlobal('site', $this->site);
-        $renderer->addGlobal('phpoole', [
+        $this->renderer->addGlobal('site', $this->site);
+        $this->renderer->addGlobal('phpoole', [
             'url'       => 'http://phpoole.narno.org/#v2',
             'version'   => self::VERSION,
             'poweredby' => 'PHPoole v' . self::VERSION,
         ]);
 
         // start rendering
+        $dir = $this->destDir . '/' . $this->getOptions()['output']['dir'];
         $this->fs->mkdir($dir);
         /* @var $page Page */
         foreach($this->pageCollection as $page) {
-            $renderer->render($this->layoutFallback($page), [
-                'page' => $page,
-            ]);
-            // destination of the 404 page
-            if ($page->getId() == '404') {
-                $pathname = $dir . '/' . $page->getId() . '.html';
-            } else {
-                // destination of an index/list from on a content file instead of a virtual page
-                if ($page->getName() == 'index') {
-                    $pathname = $dir . '/' . $page->getPath() . '/' . $this->getOptions()['output']['filename'];
-                    // destination of a page
-                } else {
-                    $pathname = $dir . '/' . $page->getPathname() . '/' . $this->getOptions()['output']['filename'];
-                }
-            }
-            $pathname = preg_replace('#/+#','/', $pathname); // remove unnecessary slashes
-            echo $pathname . "\n";
-            $renderer->save($pathname);
+            $this->renderPage($page, $dir);
         }
+    }
 
+    /**
+     * Render a page
+     *
+     * @param Page $page
+     * @param $dir
+     * @throws \Exception
+     *
+     * @see renderPages()
+     */
+    protected function renderPage(Page $page, $dir)
+    {
+        $this->renderer->render($this->layoutFinder($page), [
+            'page' => $page,
+        ]);
+        // destination of the 404 page
+        if ($page->getId() == '404') {
+            $pathname = $dir . '/404.html';
+        } else {
+            // destination of an index/list from on a content file instead of a virtual page
+            if ($page->getName() == 'index') {
+                $pathname = $dir . '/' . $page->getPath() . '/' . $this->getOptions()['output']['filename'];
+                // destination of a page
+            } else {
+                $pathname = $dir . '/' . $page->getPathname() . '/' . $this->getOptions()['output']['filename'];
+            }
+        }
+        $pathname = preg_replace('#/+#','/', $pathname); // remove unnecessary slashes
+        $this->renderer->save($pathname);
+        echo $pathname . "\n";
+    }
+
+    /**
+     * Copy static directory content to site root
+     *
+     * @see build()
+     */
+    protected function copyStatic()
+    {
+        $dir = $this->destDir . '/' . $this->getOptions()['output']['dir'];
         // copy theme static dir if exists
         if ($this->theme != null) {
             $themeStaticDir = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'] . '/' . $this->theme . '/static';
@@ -590,29 +634,65 @@ class PHPoole implements EventsCapableInterface
     /**
      * Uses a theme?
      * If yes, set $theme variable
+     *
+     * @return bool
+     * @throws \Exception
      */
-    protected function checkTheme()
+    protected function isTheme()
     {
-        $themesDir = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'];
-        if ($this->theme == null && array_key_exists('theme', $this->getOptions())) {
+        if ($this->theme !== null) {
+            return true;
+        }
+        if (array_key_exists('theme', $this->getOptions())) {
+            $themesDir = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'];
             if ($this->fs->exists($themesDir . '/' . $this->getOptions()['theme'])) {
                 $this->theme = $this->getOptions()['theme'];
+                return true;
             }
+            throw new \Exception(sprintf("Theme directory '%s' not found!", $themesDir));
         }
+        return false;
     }
 
     /**
-     * Layout file fall-back
+     * Layout file finder
      *
      * @param Page $page
      * @return string
      * @throws \Exception
      */
+    protected function layoutFinder(Page $page)
+    {
+        $layout  = 'unknown';
+        $layouts = $this->layoutFallback($page);
+        // is layout exists in local layout dir?
+        $layoutsDir = $this->sourceDir . '/' . $this->getOptions()['layouts']['dir'];
+        foreach($layouts as $layout) {
+            if ($this->fs->exists($layoutsDir . '/' . $layout)) {
+                return $layout;
+            }
+        }
+        // is layout exists in layout theme dir?
+        if ($this->isTheme()) {
+            $themeDir = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'] . '/' . $this->theme . '/layouts';
+            foreach($layouts as $layout) {
+                if ($this->fs->exists($themeDir . '/' . $layout)) {
+                    return $layout;
+                }
+            }
+        }
+        throw new \Exception(sprintf("Layout '%s' not found!", $layout));
+    }
+
+    /**
+     * Layout fall-back
+     *
+     * @param $page
+     * @return array
+     * @see layoutFinder()
+     */
     protected function layoutFallback(Page $page)
     {
-        $layout = 'unknown';
-        $this->checkTheme();
-
         switch ($page->getNodeType()) {
             case 'homepage':
                 $layouts = [
@@ -671,24 +751,7 @@ class PHPoole implements EventsCapableInterface
                     }
                 }
         }
-
-        // is layout exists in local layout dir?
-        $layoutsDir = $this->sourceDir . '/' . $this->getOptions()['layouts']['dir'];
-        foreach($layouts as $layout) {
-            if ($this->fs->exists($layoutsDir . '/' . $layout)) {
-                return $layout;
-            }
-        }
-        // is layout exists in layout theme dir?
-        if ($this->theme != null) {
-            $themeDir = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'] . '/' . $this->theme . '/layouts';
-            foreach($layouts as $layout) {
-                if ($this->fs->exists($themeDir . '/' . $layout)) {
-                    return $layout;
-                }
-            }
-        }
-        throw new \Exception(sprintf("Layout '%s' not found!", $layout));
+        return $layouts;
     }
 
 
