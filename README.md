@@ -1,6 +1,10 @@
 A PHP library to generate a static website. WIP.
 ===============
 
+[![Build Status](https://travis-ci.org/Narno/PHPoole-library.svg?branch=master)](https://travis-ci.org/Narno/PHPoole-library)
+[![Code Coverage](https://scrutinizer-ci.com/g/Narno/PHPoole-library/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Narno/PHPoole-library/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Narno/PHPoole-library/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Narno/PHPoole-library/?branch=master)
+
 _PHPoole-library_ is a static website generator built on PHP, inspired by [Jekyll](http://jekyllrb.com/) and [Hugo](http://gohugo.io/).
 
 It converts [Markdown](http://daringfireball.net/projects/markdown/) files into a static HTML web site, with the help of [Twig](http://twig.sensiolabs.org), a flexible and fast template engine.
