@@ -29,7 +29,6 @@ class Converter
         switch ($type) {
             case 'ini':
                 return parse_ini_string($string);
-                break;
             case 'yaml':
             default:
                 return Yaml::parse($string);
@@ -40,7 +39,7 @@ class Converter
      * Converts body
      *
      * @param $string
-     * @return mixed|string
+     * @return string
      */
     public function convertBody($string)
     {

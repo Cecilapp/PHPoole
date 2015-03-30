@@ -403,7 +403,7 @@ class PHPoole implements EventsCapableInterface
          */
         if (array_key_exists('taxonomies', $this->getOptions()['site'])) {
             $this->taxonomies = new Taxonomy\Collection();
-            $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
+            $siteTaxonomies   = $this->getOptions()['site']['taxonomies'];
             // adds each vocabulary collection to the taxonomies collection
             foreach($siteTaxonomies as $plural => $singular) {
                 $this->taxonomies->add(new Taxonomy\Vocabulary($plural));
