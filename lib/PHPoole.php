@@ -681,7 +681,7 @@ class PHPoole implements EventsCapableInterface
                 }
             }
         }
-        throw new \Exception(sprintf("Layout '%s' not found!", $layout));
+        throw new \Exception(sprintf("Layout '%s' not found for page '%s'!", $layout, $page->getId()));
     }
 
     /**
