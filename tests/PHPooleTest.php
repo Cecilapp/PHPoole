@@ -45,7 +45,7 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
             ->name('*.md');
     }
 
-    public function testLocateContent()
+    public function testContentIterator()
     {
         $iterator = $this->createContentIterator();
         $this->assertInstanceOf('Symfony\Component\Finder\Finder', $iterator);
@@ -53,23 +53,22 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
         $this->assertContainsOnlyInstancesOf('Symfony\Component\Finder\SplFileInfo', $iterator);
     }
 
-    public function testBuildPagesFromContent()
+    public function testParsePage()
     {
         foreach($this->createContentIterator() as $file) {
-            $this->assertInstanceOf('Symfony\Component\Finder\SplFileInfo', $file);
+            $parsed = (new Page($file))->parse();
+            $this->assertStringEqualsFile(__DIR__ . '/fixtures/parsed/Page1.md/frontmatter.yaml', $parsed->getFrontmatter());
+            $this->assertStringEqualsFile(__DIR__ . '/fixtures/parsed/Page1.md/body.md', $parsed->getBody());
+        }
+    }
 
-            $page = (new Page($file));
-            $this->assertInstanceOf('PHPoole\Page\Page', $page);
-
-            $parsed = $page->parse();
-            //$this->assertArrayHasKey('title', $parsed->getFrontmatter());
-            $this->assertSame("title: Page 1\r\ndate: 2015-04-01", $parsed->getFrontmatter());
-            $this->assertSame('Content of page 1.', $parsed->getBody());
-
+    public function testAddPageToCollection()
+    {
+        foreach($this->createContentIterator() as $file) {
+            $page = new Page($file);
             $pageCollection = new PageCollection();
-            $this->assertInstanceOf('PHPoole\Page\Collection', $pageCollection);
             $addResult = $pageCollection->add($page);
-            $this->assertInstanceOf('PHPoole\Page\Collection', $addResult);
+            $this->assertArrayHasKey('section1/page1', $addResult);
         }
     }
 }
