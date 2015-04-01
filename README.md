@@ -51,7 +51,9 @@ Usage
 
 ### Overview
 
-First create a new directory (ie "mywebsite") with the following files structure:
+To create a new website, you need 3 things : Content, layouts and a build script.
+
+Organize your content:
 ```
 ./mywebsite
 |- content             <- Contains the Mardown files
@@ -68,7 +70,7 @@ First create a new directory (ie "mywebsite") with the following files structure
 \- static              <- Contains the static files
 ```
 
-Then create and run the following PHP script:
+PHP script example:
 ```php
 <?php
 require_once 'vendor/autoload.php'; // Composer
@@ -94,6 +96,8 @@ The result is a new static website created in _./mywebsite/_site_.
 
 ### Content
 
+A content file is composed by a frontmatter (Yaml) and a body (Markdown).
+
 #### Page example
 
 ```yml
@@ -106,6 +110,8 @@ Markdown page content.
 ```
 
 ### Layouts
+
+A layout is a Twig template.
 
 #### Layout example
 
