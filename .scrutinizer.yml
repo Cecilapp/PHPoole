@@ -1,7 +1,7 @@
 filter:
     excluded_paths:
         - 'vendor/*'
-        - 'test/*'
+        - 'tests/*'
 
 tools:
     php_cs_fixer: true
