@@ -73,8 +73,8 @@ class Parser
                 $this->body = $this->file->getContents();
                 return $this;
             }
-            $this->frontmatter = $matches[2];
-            $this->body        = $matches[4];
+            $this->frontmatter = trim($matches[2]);
+            $this->body        = trim($matches[4]);
         }
 
         return $this;
