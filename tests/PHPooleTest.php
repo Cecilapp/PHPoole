@@ -11,6 +11,7 @@ namespace PHPoole\PHPooleTest;
 use PHPoole\PHPoole;
 use PHPoole\Page\Page;
 use PHPoole\Page\Collection as PageCollection;
+use PHPoole\Page\Converter;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -20,6 +21,7 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
     protected $sourceDir;
     protected $destDir;
 
+    /*
     public function setUp()
     {
         $this->sourceDir = (__DIR__ . '/fixtures/website');
@@ -31,6 +33,7 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
         $fs = new Filesystem();
         $fs->remove($this->destDir . '/_site');
     }
+    */
 
     public function testCreate()
     {
@@ -41,7 +44,7 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
     {
         return Finder::create()
             ->files()
-            ->in($this->sourceDir . '/content')
+            ->in(__DIR__ . '/fixtures/content')
             ->name('*.md');
     }
 
@@ -57,8 +60,8 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
     {
         foreach($this->createContentIterator() as $file) {
             $parsed = (new Page($file))->parse();
-            $this->assertStringEqualsFile(__DIR__ . '/fixtures/parsed/Page1.md/frontmatter.yaml', $parsed->getFrontmatter());
-            $this->assertStringEqualsFile(__DIR__ . '/fixtures/parsed/Page1.md/body.md', $parsed->getBody());
+            $this->assertStringEqualsFile(__DIR__ . '/fixtures/content_parsed/Page1.md/frontmatter.yaml', $parsed->getFrontmatter());
+            $this->assertStringEqualsFile(__DIR__ . '/fixtures/content_parsed/Page1.md/body.md', $parsed->getBody());
         }
     }
 
@@ -69,6 +72,32 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
             $pageCollection = new PageCollection();
             $addResult = $pageCollection->add($page);
             $this->assertArrayHasKey('section1/page1', $addResult);
+        }
+    }
+
+    public function testConvertYaml()
+    {
+        foreach($this->createContentIterator() as $file) {
+            $page = new Page($file);
+            $page->parse();
+            $variables = (new Converter())
+                ->convertFrontmatter(
+                    $page->getFrontmatter(),
+                    'yaml'
+                );
+            $this->assertArrayHasKey('title', $variables);
+            $this->assertArrayHasKey('date', $variables);
+        }
+    }
+
+    public function testConvertMarkdown()
+    {
+        foreach($this->createContentIterator() as $file) {
+            $page = new Page($file);
+            $page->parse();
+            $html = (new Converter())
+                ->convertBody($page->getBody());
+            $this->assertSame('<p>Content of page 1.</p>', $html);
         }
     }
 }
