@@ -15,9 +15,8 @@ use PHPoole\Renderer\RendererInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use PHPoole\Plugin\PluginInterface;
-use Zend\EventManager\EventManager;
 use Zend\EventManager\EventsCapableInterface;
+use PHPoole\Plugin\PluginAwareTrait;
 
 /**
  * Class PHPoole
@@ -25,6 +24,8 @@ use Zend\EventManager\EventsCapableInterface;
  */
 class PHPoole implements EventsCapableInterface
 {
+    use PluginAwareTrait;
+
     const VERSION = '1.0.x-dev';
     /**
      * Source directory
@@ -98,18 +99,6 @@ class PHPoole implements EventsCapableInterface
      * @var Filesystem
      */
     protected $fs;
-    /**
-     * The EventManager
-     *
-     * @var null|EventManager
-     */
-    protected $events = null;
-    /**
-     * The plugin registry
-     *
-     * @var \SplObjectStorage
-     */
-    protected $pluginRegistry;
 
     /**
      * Constructor
@@ -760,135 +749,5 @@ class PHPoole implements EventsCapableInterface
                 }
         }
         return $layouts;
-    }
-
-
-    /**
-     * Plugin logic
-     */
-
-    /**
-     * Get the event manager
-     *
-     * @return EventManager
-     */
-    public function getEventManager()
-    {
-        if ($this->events === null) {
-            $this->events = new EventManager(array(__CLASS__, get_class($this)));
-        }
-        return $this->events;
-    }
-
-    /**
-     * Trigger event
-     *
-     * @param $eventName
-     * @param array $params
-     */
-    protected function trigger($eventName, array $params = array())
-    {
-        $params = $this->getEventManager()->prepareArgs($params);
-        $this->getEventManager()->trigger($eventName, $this, $params);
-    }
-
-    /**
-     * Trigger "pre" event
-     *
-     * @param $eventName
-     * @param array $params
-     * @see   trigger()
-     */
-    protected function triggerPre($eventName, array $params = array())
-    {
-        $this->trigger($eventName . '.pre', $params);
-    }
-
-    /**
-     * Trigger "post" event
-     *
-     * @param $eventName
-     * @param array $params
-     * @see   trigger()
-     */
-    protected function triggerPost($eventName, array $params = array())
-    {
-        $this->trigger($eventName . '.post', $params);
-    }
-
-    /**
-     * Trigger "exception" event
-     *
-     * @param $eventName
-     * @param array $params
-     * @see   trigger()
-     */
-    protected function triggerException($eventName, array $params = array())
-    {
-        $this->trigger($eventName . '.exception', $params);
-    }
-
-    /**
-     * Check if a plugin is registered
-     *
-     * @param  PluginInterface $plugin
-     * @return bool
-     */
-    public function hasPlugin(PluginInterface $plugin)
-    {
-        $registry = $this->getPluginRegistry();
-        return $registry->contains($plugin);
-    }
-
-    /**
-     * Register a plugin
-     *
-     * @param  PluginInterface $plugin
-     * @param  int             $priority
-     * @return self
-     * @throws \LogicException
-     */
-    public function addPlugin(PluginInterface $plugin, $priority = 1)
-    {
-        $registry = $this->getPluginRegistry();
-        if ($registry->contains($plugin)) {
-            throw new \LogicException(sprintf(
-                'Plugin of type "%s" already registered',
-                get_class($plugin)
-            ));
-        }
-        $plugin->attach($this->getEventManager(), $priority);
-        $registry->attach($plugin);
-        return $this;
-    }
-
-    /**
-     * Remove an already registered plugin
-     *
-     * @param  PluginInterface $plugin
-     * @return self
-     * @throws \LogicException
-     */
-    public function removePlugin(PluginInterface $plugin)
-    {
-        $registry = $this->getPluginRegistry();
-        if ($registry->contains($plugin)) {
-            $plugin->detach($this->getEventManager());
-            $registry->detach($plugin);
-        }
-        return $this;
-    }
-
-    /**
-     * Return registry of plugins
-     *
-     * @return \SplObjectStorage
-     */
-    public function getPluginRegistry()
-    {
-        if (!$this->pluginRegistry instanceof \SplObjectStorage) {
-            $this->pluginRegistry = new \SplObjectStorage();
-        }
-        return $this->pluginRegistry;
     }
 }
