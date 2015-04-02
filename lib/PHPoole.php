@@ -274,41 +274,49 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Converts page content:
-     * * Yaml frontmatter -> PHP array
-     * * Mardown body -> HTML
-     *
-     * @see build()
+     * Converts all pages
      */
     protected function convertPages()
     {
         /* @var $page Page */
         foreach($this->pageCollection as $page) {
             if (!$page->isVirtual()) {
-                // converts frontmatter
-                $variables = (new Converter())
-                    ->convertFrontmatter(
-                        $page->getFrontmatter(),
-                        $this->getOptions()['frontmatter']['format']
-                    );
-                // converts body
-                $html = (new Converter())
-                    ->convertBody($page->getBody());
-                // setting page properties
-                if (array_key_exists('title', $variables)) {
-                    $page->setTitle($variables['title']);
-                    unset($variables['title']);
-                }
-                if (array_key_exists('section', $variables)) {
-                    $page->setSection($variables['section']);
-                    unset($variables['section']);
-                }
-                $page->setHtml($html);
-                // setting page variables
-                $page->setVariables($variables);
+                $page = $this->convertPage($page, $this->getOptions()['frontmatter']['format']);
                 $this->pageCollection->replace($page->getId(), $page);
             }
         }
+    }
+
+    /**
+     * Converts page content:
+     * * Yaml frontmatter -> PHP array
+     * * Mardown body -> HTML
+     *
+     * @param Page $page
+     * @param string $format
+     * @return Page
+     */
+    public function convertPage($page, $format = 'yaml')
+    {
+        // converts frontmatter
+        $variables = (new Converter())
+            ->convertFrontmatter($page->getFrontmatter(), $format);
+        // converts body
+        $html = (new Converter())
+            ->convertBody($page->getBody());
+        // setting page properties
+        if (!empty($variables['title'])) {
+            $page->setTitle($variables['title']);
+            unset($variables['title']);
+        }
+        if (!empty($variables['section'])) {
+            $page->setSection($variables['section']);
+            unset($variables['section']);
+        }
+        $page->setHtml($html);
+        // setting page variables
+        $page->setVariables($variables);
+        return $page;
     }
 
     /**
