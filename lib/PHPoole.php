@@ -328,14 +328,14 @@ class PHPoole implements EventsCapableInterface
     protected function addHomePage()
     {
         if (!$this->pageCollection->has('index')) {
-            $homePage = new Page();
-            $homePage->setId('homepage')
+            $page = new Page();
+            $page->setId('homepage')
                 ->setTitle('Home')
                 ->setNodeType('homepage')
                 ->setVariable('menu', [
                     'main' => ['weight' => 1]
                 ]);
-            $this->pageCollection->add($homePage);
+            $this->pageCollection->add($page);
         }
     }
 
@@ -615,7 +615,7 @@ class PHPoole implements EventsCapableInterface
     {
         $dir = $this->destDir . '/' . $this->getOptions()['output']['dir'];
         // copy theme static dir if exists
-        if ($this->theme != null) {
+        if ($this->isTheme()) {
             $themeStaticDir = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'] . '/' . $this->theme . '/static';
             if ($this->fs->exists($themeStaticDir)) {
                 $this->fs->mirror($themeStaticDir, $dir, null, ['override' => true]);
