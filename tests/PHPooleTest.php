@@ -112,13 +112,12 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
             $pageCollection->replace($page->getId(), $page);
         }
         foreach($pageCollection as $page) {
-            $this->assertClassHasAttribute('title', 'PHPoole\Page\Page');
-            $this->assertClassHasAttribute('html', 'PHPoole\Page\Page');
-            $this->assertClassHasAttribute('variables', 'PHPoole\Page\Page');
+            $this->assertObjectHasAttribute('title', $page);
+            $this->assertObjectHasAttribute('html', $page);
+            $this->assertObjectHasAttribute('variables', $page);
             $this->assertSame('Page 1', $page->getTitle());
             $this->assertSame('<p>Content of page 1.</p>', $page->getContent());
-            //$this->assertSame(1427839200, $page->getVariable('date'));
-            $this->assertSame(1427839200, $page['date']);
+            $this->assertEquals(1427839200, $page['date'], '', 5);
         }
     }
 }
