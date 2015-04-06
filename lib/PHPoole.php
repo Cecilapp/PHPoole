@@ -110,15 +110,19 @@ class PHPoole implements EventsCapableInterface
     public function __construct($sourceDir = null, $destDir = null, $options = array())
     {
         if ($sourceDir == null) {
-            $this->sourceDir = getcwd();
-        } else {
-            $this->sourceDir = $sourceDir;
+            $sourceDir = getcwd();
+        }
+        if (!is_dir($sourceDir)) {
+            throw new \Exception(sprintf("'%s' is not a valid source directory.", $sourceDir));
         }
         if ($destDir == null) {
-            $this->destDir = $this->sourceDir;
-        } else {
-            $this->destDir = $destDir;
+            $destDir = $sourceDir;
         }
+        if (!is_dir($destDir)) {
+            throw new \Exception(sprintf("'%s' is not a valid destination directory.", $destDir));
+        }
+        $this->sourceDir = $sourceDir;
+        $this->destDir   = $destDir;
 
         $options = array_replace_recursive([
             'site' => [
@@ -252,6 +256,9 @@ class PHPoole implements EventsCapableInterface
      */
     protected function buildPagesFromContent()
     {
+        if (count($this->contentIterator) <= 0) {
+            throw new \Exception('No content files found.');
+        }
         $this->pageCollection = new PageCollection();
         /* @var $file SplFileInfo */
         /* @var $page Page */
@@ -426,7 +433,6 @@ class PHPoole implements EventsCapableInterface
                     }
                 }
             }
-
         }
     }
 
@@ -551,9 +557,10 @@ class PHPoole implements EventsCapableInterface
     protected function renderPages()
     {
         // prepare renderer
-        $this->renderer = new Renderer\Twig(
-            (is_dir($this->getOptions()['layouts']['dir'])) ? $this->sourceDir . '/' . $this->getOptions()['layouts']['dir'] : ''
-        );
+        if (!is_dir($this->sourceDir . '/' . $this->getOptions()['layouts']['dir'])) {
+            throw new \Exception(sprintf("'%s' is not a valid layouts directory", $this->getOptions()['layouts']['dir']));
+        }
+        $this->renderer = new Renderer\Twig($this->sourceDir . '/' . $this->getOptions()['layouts']['dir']);
         // add theme templates
         if ($this->isTheme()) {
             $this->renderer->addPath($this->sourceDir . '/' . $this->getOptions()['themes']['dir'] . '/' . $this->theme . '/layouts');
@@ -640,7 +647,7 @@ class PHPoole implements EventsCapableInterface
         if ($this->theme !== null) {
             return true;
         }
-        if (array_key_exists('theme', $this->getOptions())) {
+        if (isset($this->getOptions()['theme'])) {
             $themesDir = $this->sourceDir . '/' . $this->getOptions()['themes']['dir'];
             if ($this->fs->exists($themesDir . '/' . $this->getOptions()['theme'])) {
                 $this->theme = $this->getOptions()['theme'];
