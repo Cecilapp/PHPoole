@@ -106,6 +106,7 @@ class PHPoole implements EventsCapableInterface
      * @param null $sourceDir
      * @param null $destDir
      * @param array $options
+     * @throws \Exception
      */
     public function __construct($sourceDir = null, $destDir = null, $options = array())
     {
@@ -173,8 +174,8 @@ class PHPoole implements EventsCapableInterface
      */
     public static function create()
     {
-        $r = new \ReflectionClass(get_called_class());
-        return $r->newInstanceArgs(func_get_args());
+        $class = new \ReflectionClass(get_called_class());
+        return $class->newInstanceArgs(func_get_args());
     }
 
     /**
