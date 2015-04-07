@@ -257,10 +257,11 @@ class PHPoole implements EventsCapableInterface
      */
     protected function buildPagesFromContent()
     {
-        if (count($this->contentIterator) <= 0) {
-            throw new \Exception('No content files found.');
-        }
         $this->pageCollection = new PageCollection();
+        if (count($this->contentIterator) <= 0) {
+            //throw new \Exception('No content files found.');
+            return;
+        }
         /* @var $file SplFileInfo */
         /* @var $page Page */
         foreach ($this->contentIterator as $file) {
@@ -275,6 +276,10 @@ class PHPoole implements EventsCapableInterface
      */
     protected function convertPages()
     {
+        if (count($this->pageCollection) <= 0) {
+            //throw new \Exception('No pages found.');
+            return;
+        }
         /* @var $page Page */
         foreach ($this->pageCollection as $page) {
             if (!$page->isVirtual()) {
