@@ -1,0 +1,304 @@
+/* Inspired by http://gulpjs.com/css/style.css */
+body {
+    line-height: 1;
+    color: #000;
+    background: #fff;
+}
+ol, ul {
+    list-style: none;
+}
+a img {
+    border: none;
+}
+html, body {
+    height: 100%;
+    width: 100%;
+}
+body {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-font-feature-settings: 'liga', 'kern';
+    -moz-font-feature-settings: 'liga', 'kern';
+    font-feature-settings: 'liga', 'kern';
+}
+.navbar {
+    *zoom: 1;
+    float: left;
+    clear: none;
+    text-align: inherit;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 3%;
+    position: absolute;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    padding-top: 30px;
+}
+.navbar:before, .navbar:after {
+    content: '';
+    display: table;
+}
+.navbar:after {
+    clear: both;
+}
+.navbar:last-child {
+    margin-right: 0;
+}
+.navbar a {
+    color: inherit;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-transition: opacity 0.2s linear;
+    transition: opacity 0.2s linear;
+    -webkit-transform: translateX(50%);
+    -ms-transform: translateX(50%);
+    transform: translateX(50%);
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1;
+}
+.navbar a:focus,
+.navbar a:active {
+    opacity: 0.5;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    filter: alpha(opacity=50);
+}
+.navbar .navbar-title {
+    display: none;
+    position: static;
+    float: left;
+    left: 50%;
+}
+.navbar .navbar-links {
+    *zoom: 1;
+    width: auto;
+    max-width: 1440px;
+    float: none;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 0;
+    padding-right: 0;
+}
+.navbar .navbar-links:before,
+.navbar .navbar-links:after {
+    content: '';
+    display: table;
+}
+.navbar .navbar-links:after {
+    clear: both;
+}
+.navbar .navbar-links .navbar-link {
+    padding: 0 15px;
+    border-right: 1px solid rgba(255,255,255,0.3);
+}
+.navbar .navbar-links .navbar-link:last-child {
+    border-right: none;
+}
+.main-header {
+    height: 100%;
+    width: 100%;
+    min-height: 450px;
+    color: #fff;
+    text-align: center;
+    background-color: #428bca;
+}
+.main-header-content {
+    position: absolute;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.logo {
+    max-width: 20vh;
+    max-height: 20vh;
+}
+.main-header-text {
+    width: 90vw;
+    -webkit-animation: fadein 2s;
+    animation: fadein 2s;
+    margin-bottom: 60px;
+    font-size: 41px;
+    font-weight: 300;
+    line-height: 60px;
+}
+.main-header-btn {
+    -webkit-transition: all 0.4s;
+    transition: all 0.4s;
+    padding: 15px 20px 16px;
+    vertical-align: top;
+    cursor: pointer;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-animation: fadein 2s;
+    animation: fadein 2s;
+    text-shadow: none;
+    color: #333;
+    background-color: #fff;
+    font-size: 22px;
+}
+.main-header-btn:hover {
+    box-shadow: 0 0 50px rgba(255,255,255,0.3);
+}
+.main-info {
+    *zoom: 1;
+    width: auto;
+    max-width: 1024px;
+    float: none;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 0;
+    padding-right: 0;
+    background-color: #fff;
+}
+.main-info:before,
+.main-info:after {
+    content: '';
+    display: table;
+}
+.main-info:after {
+    clear: both;
+}
+.benefits {
+    *zoom: 1;
+    clear: none;
+    text-align: inherit;
+    width: auto;
+    max-width: 1024px;
+    float: none;
+    display: block;
+    padding: 50px;
+}
+.benefits:before,
+.benefits:after {
+    content: '';
+    display: table;
+}
+.benefits:after {
+    clear: both;
+}
+.benefits:last-child {
+    margin-right: 0;
+}
+.benefits:before,
+.benefits:after {
+    content: '';
+    display: table;
+}
+.benefits:after {
+    clear: both;
+}
+.benefits .benefit {
+    margin-top: 50px;
+}
+@media screen and (min-width: 700px) {
+    .benefits .benefit {
+        *zoom: 1;
+        float: left;
+        clear: none;
+        text-align: inherit;
+        width: 48.5%;
+        margin-left: 0;
+        margin-right: 3%;
+    }
+    .benefits .benefit:before,
+    .benefits .benefit:after {
+        content: '';
+        display: table;
+    }
+    .benefits .benefit:after {
+        clear: both;
+    }
+    .benefits .benefit:nth-child(2n) {
+        margin-right: 0;
+        float: right;
+    }
+    .benefits .benefit:nth-child(2n+1) {
+        clear: both;
+    }
+}
+@media screen and (max-width: 700px) {
+    .benefits .benefit {
+        *zoom: 1;
+        text-align: inherit;
+        display: block;
+        clear: both;
+        float: none;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .benefits .benefit:before,
+    .benefits .benefit:after {
+        content: '';
+        display: table;
+    }
+    .benefits .benefit:after {
+        clear: both;
+    }
+    .benefits .benefit:nth-child(4n) {
+        margin-right: 0;
+        float: right;
+    }
+    .benefits .benefit:nth-child(4n+1) {
+        clear: both;
+    }
+    .benefits .benefit:first-child {
+        margin-left: auto;
+    }
+    .benefits .benefit:last-child {
+        margin-right: auto;
+    }
+}
+.benefits .benefit .benefit-title {
+    margin-bottom: 14px;
+    font-size: 22px;
+    font-weight: 500;
+}
+.benefits .benefit .benefit-text {
+    color: #7f8c8d;
+    font-size: 16px;
+    line-height: 26px;
+}
+@-webkit-keyframes fadein {
+    from {
+        opacity: 0;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        filter: alpha(opacity=0);
+    }
+    to {
+        opacity: 1;
+        -ms-filter: none;
+        filter: none;
+    }
+}
+@keyframes fadein {
+    from {
+        opacity: 0;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        filter: alpha(opacity=0);
+    }
+    to {
+        opacity: 1;
+        -ms-filter: none;
+        filter: none;
+    }
+}
