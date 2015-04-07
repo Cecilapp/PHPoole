@@ -5,6 +5,11 @@
     <title></title>
 </head>
 <body>
+<ul>
+    {% for entry in site.menus.main|sortByWeight %}
+    <li><a href="{{ url() ~ entry.url }}">{{ entry.name }}</a></li>
+    {% endfor %}
+</ul>
 _default/list.html
 </body>
 </html>

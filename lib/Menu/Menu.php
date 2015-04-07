@@ -38,4 +38,16 @@ class Menu extends AbstractCollection implements ItemInterface
     {
         return $this->name;
     }
+
+    /**
+     * Add menu entry
+     *
+     * @param ItemInterface $item
+     * @return self
+     */
+    public function add(ItemInterface $item)
+    {
+        $this->items[$item->getId()] = $item;
+        return $this;
+    }
 }

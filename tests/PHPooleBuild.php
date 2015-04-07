@@ -28,15 +28,27 @@ class PHPooleBuildTest extends \PHPUnit_Framework_TestCase
         $fs->remove($this->wsDestinationDir . '/_site');
     }
 
-    public function testBuid()
+    public function testSimpleBuid()
+    {
+        PHPoole::create($this->wsSourceDir)->build();
+    }
+
+    public function testBuidWithMenu()
     {
         PHPoole::create(
             $this->wsSourceDir,
             null,
             [
                 'site' => [
-                    'title'   => "My website",
-                    'baseurl' => 'http://localhost:8000/',
+                    'menu' => [
+                        'main' => [
+                            'id'        => 'homepage',
+                            'name'      => 'TEST',
+                            'url'       => 'test',
+                            'weight'    => -100,
+                            'disabled'  => true,
+                        ]
+                    ]
                 ],
             ]
         )->build();

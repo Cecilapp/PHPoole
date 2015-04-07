@@ -531,6 +531,26 @@ class PHPoole implements EventsCapableInterface
                 }
             }
         }
+        /**
+         * Removing/adding/replacing menus entries from options array
+         */
+        if (isset($this->getOptions()['site']['menu'])) {
+            foreach($this->getOptions()['site']['menu'] as $name => $value) {
+                /* @var $menu Menu\Menu */
+                $menu = $this->menus->get($name);
+                if (isset($value['disabled']) && $value['disabled']) {
+                    if (isset($value['id']) && $menu->has($value['id'])) {
+                        $menu->remove($value['id']);
+                    }
+                    continue;
+                }
+                $item = (new Menu\Entry($value['id']))
+                    ->setName($value['name'])
+                    ->setUrl($value['url'])
+                    ->setWeight($value['weight']);
+                $menu->add($item);
+            }
+        }
     }
 
     /**
