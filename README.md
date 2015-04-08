@@ -1,5 +1,5 @@
 A PHP library to generate a static website. WIP.
-===============
+=============
 
 [![Build Status](https://travis-ci.org/Narno/PHPoole-library.svg?branch=master)](https://travis-ci.org/Narno/PHPoole-library)
 [![Code Coverage](https://scrutinizer-ci.com/g/Narno/PHPoole-library/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Narno/PHPoole-library/?branch=master)
@@ -51,48 +51,50 @@ Usage
 
 ### Overview
 
-To create a new website, you need 3 things : Content, layouts and a build script.
+To create a new website, you need 3 things:
+ * pages (content)
+ * templates (layouts)
+ * a build script (PHP)
 
 Organize your content:
 ```
-./mywebsite
-|- content             <- Contains the Mardown files
-|  |- Blog             <- A section named "Blog"
-|  |  \- Post 1.md     <- A content page in a section
-|  \- About.md         <- A content page
-|- layouts             <- Contains the Twig templates
-|  |- _default         <- Contains the default templates
-|  |  |- list.html     <- Used by a node type 'list'
-|  |  |- page.html     <- Used by a node type 'page'
-|  |  |- taxonomy.html <- Used by a node type 'taxonomy'
-|  |  \- terms.html    <- Used by a node type 'terms'
-|  |- index.html       <- Used by the node type 'homepage'
-\- static              <- Contains the static files
+.
+├─ content             <- Contains Mardown files
+|  ├─ Blog             <- A section named "Blog"
+|  |  └─ Post 1.md     <- A content page in a section
+|  └─ About.md         <- A content page
+├─ layouts             <- Contains Twig templates
+|  ├─ _default         <- Contains default templates
+|  |  ├─ list.html     <- Used by a node type 'list'
+|  |  ├─ page.html     <- Used by a node type 'page'
+|  |  ├─ taxonomy.html <- Used by a node type 'taxonomy'
+|  |  └─ terms.html    <- Used by a node type 'terms'
+|  ├─ index.html       <- Used by the node type 'homepage'
+└─ static              <- Contains static files
 ```
 
-PHP script example:
+Create a PHP script:
 ```php
 <?php
 require_once 'vendor/autoload.php'; // Composer
 //require_once 'phar://phpoole-library.phar'; // Phar
 use PHPoole\PHPoole;
 
-$phpoole = new PHPoole(
-    './mywebsite',  // The source directory
-    null,           // The destination directory
-    [               // Options array
+PHPoole::create(
+    './', // The source directory
+    null, // The destination directory
+    [     // Options array
         'site' => [
             'title'   => "My website",             // The Site title
             'baseurl' => 'http://localhost:8000/', // The Site base URL
         ],
     ]
-);
-$phpoole->build(); // Launch builder
+)->build(); // Launch builder
 
 exec('php -S localhost:8000 -t _site'); // Run a local server
 ```
 
-The result is a new static website created in _./mywebsite/_site_.
+The result is a new static website created in _./_site_.
 
 ### Content
 
@@ -106,7 +108,7 @@ title: "The title"
 date: "2013-01-01"
 myvar: "My varm"
 ---
-Markdown page content.
+_Markdown_ page content.
 ```
 
 ### Layouts
