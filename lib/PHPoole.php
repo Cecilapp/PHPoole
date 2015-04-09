@@ -217,6 +217,10 @@ class PHPoole implements EventsCapableInterface
         $this->buildPagesFromContent();
         $this->convertPages();
         $this->addVirtualPages();
+
+        $this->buildSections();
+        $this->addSectionPages();
+
         $this->buildTaxonomies();
         $this->addTaxonomyPages();
         $this->buildMenus();
@@ -321,6 +325,83 @@ class PHPoole implements EventsCapableInterface
         return $page;
     }
 
+
+    /**
+     * Builds sections
+     *
+     * @see build()
+     */
+    protected function buildSections()
+    {
+        /* @var $page Page */
+        foreach ($this->pageCollection as $page) {
+            if ($page->getSection() != '') {
+                $this->sections[$page->getSection()][] = $page;
+            }
+        }
+    }
+
+    /**
+     * Adds section pages to collection
+     *
+     * @see build()
+     */
+    protected function addSectionPages()
+    {
+        //$paginationMax  = 5;
+        $paginationPath = 'page';
+
+        if (count($this->sections) > 0) {
+            $sectionWeight = 100;
+            foreach ($this->sections as $section => $pages) {
+                if (!$this->pageCollection->has($section)) {
+                    // paginate
+                    if (isset($paginationMax) && count($pages) > $paginationMax) {
+                        $paginateCount = ceil(count($pages) / $paginationMax);
+                        for ($i = 0; $i < $paginateCount; $i++) {
+                            $pagesInPagination = array_slice($pages, ($i * $paginationMax),  ($i * $paginationMax) + $paginationMax);
+                            // first
+                            if ($i == 0) {
+                                $page = (new Page())
+                                    ->setId(sprintf('%s/index', $section))
+                                    ->setPathname($section)
+                                    ->setTitle(ucfirst($section))
+                                    ->setNodeType('section')
+                                    ->setVariable('pages', $pagesInPagination)
+                                    ->setVariable('menu', [
+                                        'main' => ['weight' => $sectionWeight]
+                                    ]);
+                            // others
+                            } else {
+                                $page = (new Page())
+                                    ->setId(sprintf('%s/%s/%s/index', $section, $paginationPath, $i + 1))
+                                    ->setPathname(sprintf('%s/%s/%s', $section, $paginationPath, $i + 1))
+                                    // @todo add a virtual page p/1/index.html -redirect-> index.html
+                                    ->setTitle(ucfirst($section))
+                                    ->setNodeType('section')
+                                    ->setVariable('pages', $pagesInPagination);
+                            }
+                            $this->pageCollection->add($page);
+                        }
+                    // not paginate
+                    } else {
+                        $page = (new Page())
+                            ->setId(sprintf('%s/index', $section))
+                            ->setPathname($section)
+                            ->setTitle(ucfirst($section))
+                            ->setNodeType('section')
+                            ->setVariable('pages', $pages)
+                            ->setVariable('menu', [
+                                'main' => ['weight' => $sectionWeight]
+                            ]);
+                        $this->pageCollection->add($page);
+                        $sectionWeight += 10;
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Adds virtual pages to collection
      *
@@ -330,7 +411,6 @@ class PHPoole implements EventsCapableInterface
     {
         $this->addHomePage();
         //$this->add404Page();
-        $this->addSectionPages();
     }
 
     /**
@@ -365,39 +445,6 @@ class PHPoole implements EventsCapableInterface
                 ->setTitle('Page not found!')
                 ->setLayout('404.html');
             $this->pageCollection->add($page);
-        }
-    }
-
-    /**
-     * Adds section pages to collection
-     *
-     * @see build()
-     */
-    protected function addSectionPages()
-    {
-        /* @var $page Page */
-        foreach ($this->pageCollection as $page) {
-            if ($page->getSection() != '') {
-                $this->sections[$page->getSection()][] = $page;
-            }
-        }
-        if (!empty($this->sections)) {
-            $weight = 100;
-            foreach ($this->sections as $section => $pageObject) {
-                if (!$this->pageCollection->has($section)) {
-                    $page = (new Page())
-                        ->setId(sprintf('%s/index', $section))
-                        ->setPathname($section)
-                        ->setTitle(ucfirst($section))
-                        ->setNodeType('list')
-                        ->setVariable('list', $pageObject)
-                        ->setVariable('menu', [
-                            'main' => ['weight' => $weight]
-                        ]);
-                    $this->pageCollection->add($page);
-                    $weight += 10;
-                }
-            }
         }
     }
 
@@ -731,7 +778,7 @@ class PHPoole implements EventsCapableInterface
                     '_default/page.html',
                 ];
                 break;
-            case 'list':
+            case 'section':
                 $layouts = [
                     // 'section/$section.html'
                     '_default/section.html',
