@@ -5,11 +5,16 @@
     <title></title>
 </head>
 <body>
-<ul>
-    {% for entry in site.menus.main|sortByWeight %}
-    <li><a href="{{ url() ~ entry.url }}">{{ entry.name }}</a></li>
-    {% endfor %}
-</ul>
-_default/list.html
+    Menu: <ul>
+{% for entry in site.menus.main|sortByWeight %}
+        <li><a href="{{ url() }}{{ entry.url }}">{{ entry.name }}</a></li>
+{% endfor %}
+    </ul>
+    Pages in section: <ul>
+{% for p in page.pages %}
+        <li><a href="{{ url(p) }}">{{ p.title }}</a></li>
+{% endfor %}
+    </ul>
+    layout: _default/list.html
 </body>
 </html>

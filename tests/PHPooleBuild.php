@@ -30,11 +30,14 @@ class PHPooleBuildTest extends \PHPUnit_Framework_TestCase
 
     public function testSimpleBuid()
     {
+        echo "START testSimpleBuid\n";
         PHPoole::create($this->wsSourceDir)->build();
+        echo "END testSimpleBuid\n";
     }
 
     public function testBuidWithMenu()
     {
+        echo "START testBuidWithMenu\n";
         PHPoole::create(
             $this->wsSourceDir,
             null,
@@ -52,5 +55,6 @@ class PHPooleBuildTest extends \PHPUnit_Framework_TestCase
                 ],
             ]
         )->build();
+        echo "END testBuidWithMenu\n";
     }
 }
