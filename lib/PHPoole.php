@@ -410,7 +410,7 @@ class PHPoole implements EventsCapableInterface
     protected function addVirtualPages()
     {
         $this->addHomePage();
-        //$this->add404Page();
+        $this->add404Page();
     }
 
     /**
