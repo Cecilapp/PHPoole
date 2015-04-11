@@ -133,8 +133,12 @@ class PHPoole implements EventsCapableInterface
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                 'taxonomies'  => [
                     'tags'       => 'tag',
-                    'categories' => 'category'
-                ]
+                    'categories' => 'category',
+                ],
+                'pagination' => [
+                    'max'  => 5,
+                    'path' => 'page',
+                ],
             ],
             'content' => [
                 'dir' => 'content',
@@ -348,8 +352,8 @@ class PHPoole implements EventsCapableInterface
      */
     protected function addSectionPages()
     {
-        //$paginationMax  = 5;
-        $paginationPath = 'page';
+        $paginationMax  = $this->getOptions()['site']['pagination']['max'];
+        $paginationPath = $this->getOptions()['site']['pagination']['path'];
 
         if (count($this->sections) > 0) {
             $sectionWeight = 100;
