@@ -138,26 +138,26 @@ class PHPoole implements EventsCapableInterface
             ],
             'content' => [
                 'dir' => 'content',
-                'ext' => 'md'
+                'ext' => 'md',
             ],
             'frontmatter' => [
-                'format' => 'yaml'
+                'format' => 'yaml',
             ],
             'body' => [
-                'format' => 'md'
+                'format' => 'md',
             ],
             'static' => [
-                'dir' => 'static'
+                'dir' => 'static',
             ],
             'layouts' => [
-                'dir' => 'layouts'
+                'dir' => 'layouts',
             ],
             'output' => [
                 'dir'      => '_site',
-                'filename' => 'index.html'
+                'filename' => 'index.html',
             ],
             'themes' => [
-                'dir' => 'themes'
+                'dir' => 'themes',
             ],
         ], $options);
         if (!empty($options)) {
