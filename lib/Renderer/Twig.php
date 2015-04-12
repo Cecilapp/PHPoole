@@ -49,8 +49,20 @@ class Twig implements RendererInterface
         if (!empty($templatesPath)) {
             $this->templatesDir = $templatesPath;
         }
-        $this->twig = new \Twig_Environment(
-            new \Twig_Loader_Filesystem($this->templatesDir),
+
+        $loaderFS    = new \Twig_Loader_Filesystem($this->templatesDir);
+        $loaderArray = new \Twig_Loader_Array(array(
+            'redirect.html' => '<!DOCTYPE html>
+<html>
+<head lang="en">
+    <link rel="canonical" href="{{ url(page.destination) }}"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="refresh" content="0;url={{ url(page.destination) }}" />
+</head>
+</html>',
+        ));
+        $loader = new \Twig_Loader_Chain(array($loaderFS, $loaderArray));
+        $this->twig = new \Twig_Environment($loader,
             [
                 'autoescape'       => false,
                 'strict_variables' => $this->twigStrict,

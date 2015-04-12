@@ -220,16 +220,21 @@ class PHPoole implements EventsCapableInterface
         $this->locateContent();
         $this->buildPagesFromContent();
         $this->convertPages();
-        $this->addVirtualPages();
 
         $this->buildSections();
         $this->addSectionPages();
 
         $this->buildTaxonomies();
         $this->addTaxonomyPages();
+
+        $this->addVirtualPages();
+
         $this->buildMenus();
+
         $this->addSiteVars();
+
         $this->renderPages();
+
         $this->copyStatic();
     }
 
@@ -374,13 +379,15 @@ class PHPoole implements EventsCapableInterface
                                     ->setVariable('pages', $pagesInPagination)
                                     ->setVariable('menu', [
                                         'main' => ['weight' => $sectionWeight]
+                                    ])
+                                    ->setVariable('aliases', [
+                                        sprintf('%s/%s/%s', $section, $paginationPath, 1)
                                     ]);
                             // others
                             } else {
                                 $page = (new Page())
                                     ->setId(sprintf('%s/%s/%s/index', $section, $paginationPath, $i + 1))
                                     ->setPathname(sprintf('%s/%s/%s', $section, $paginationPath, $i + 1))
-                                    // @todo add a virtual page p/1/index.html -redirect-> index.html
                                     ->setTitle(ucfirst($section))
                                     ->setNodeType('section')
                                     ->setVariable('pages', $pagesInPagination);
@@ -415,6 +422,7 @@ class PHPoole implements EventsCapableInterface
     {
         $this->addHomePage();
         $this->add404Page();
+        $this->addRedirectPages();
     }
 
     /**
@@ -449,6 +457,31 @@ class PHPoole implements EventsCapableInterface
                 ->setTitle('Page not found!')
                 ->setLayout('404.html');
             $this->pageCollection->add($page);
+        }
+    }
+
+    /**
+     * Adds redirect pages
+     *
+     * @see build()
+     */
+    protected function addRedirectPages()
+    {
+        /* @var $page Page */
+        foreach ($this->pageCollection as $page) {
+            if ($page->hasVariable('aliases')) {
+                $redirects = $page->getVariable('aliases');
+                foreach ($redirects as $redirect) {
+                    /* @var $redirectPage Page */
+                    $redirectPage = new Page();
+                    $redirectPage->setId($redirect)
+                        ->setPathname(Page::urlize($redirect))
+                        ->setTitle($redirect)
+                        ->setLayout('redirect')
+                        ->setVariable('destination', $page->getPathname());
+                    $this->pageCollection->add($redirectPage);
+                }
+            }
         }
     }
 
