@@ -70,7 +70,7 @@ class TwigExtensionUrlize extends SlugifyExtension
         }
 
         $baseurl = $env->getGlobals()['site']['baseurl'];
-        $url     = rtrim($baseurl, '/') . '/' . $value;
+        $url     = rtrim($baseurl, '/') . '/' . ltrim($value, '/');
 
         return $url;
     }
