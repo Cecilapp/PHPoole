@@ -2,9 +2,11 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>{{ page.title }}</title>
 </head>
 <body>
-    layout: _default/page.html
+{% include 'include/menu.html' %}
+{{ page.content }}
+layout: _default/page.html
 </body>
 </html>

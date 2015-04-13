@@ -28,16 +28,8 @@ class PHPooleBuildTest extends \PHPUnit_Framework_TestCase
         $fs->remove($this->wsDestinationDir . '/_site');
     }
 
-    public function testSimpleBuid()
+    public function testBuid()
     {
-        echo "START testSimpleBuid\n";
-        PHPoole::create($this->wsSourceDir)->build();
-        echo "END testSimpleBuid\n";
-    }
-
-    public function testBuidWithMenu()
-    {
-        echo "START testBuidWithMenu\n";
         PHPoole::create(
             $this->wsSourceDir,
             null,
@@ -55,6 +47,5 @@ class PHPooleBuildTest extends \PHPUnit_Framework_TestCase
                 ],
             ]
         )->build();
-        echo "END testBuidWithMenu\n";
     }
 }

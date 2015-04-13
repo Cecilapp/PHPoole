@@ -1,0 +1,5 @@
+<ul>
+{% for entry in site.menus.main|sortByWeight %}
+    <li><a href="{{ url() }}{{ entry.url }}">{{ entry.name }}</a> ({{ entry.weight }})</li>
+{% endfor %}
+</ul>

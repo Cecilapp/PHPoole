@@ -135,7 +135,7 @@ class PHPoole implements EventsCapableInterface
                     'tags'       => 'tag',
                     'categories' => 'category',
                 ],
-                'pagination' => [
+                'paginate' => [
                     'max'  => 5,
                     'path' => 'page',
                 ],
@@ -222,19 +222,17 @@ class PHPoole implements EventsCapableInterface
         $this->convertPages();
 
         $this->buildSections();
-        $this->addSectionPages();
-
         $this->buildTaxonomies();
-        $this->addTaxonomyPages();
 
+        $this->addSectionPages();
+        $this->addTaxonomyPages();
+        $this->addTaxonomyTermsPages();
         $this->addVirtualPages();
 
         $this->buildMenus();
 
         $this->addSiteVars();
-
         $this->renderPages();
-
         $this->copyStatic();
     }
 
@@ -334,7 +332,6 @@ class PHPoole implements EventsCapableInterface
         return $page;
     }
 
-
     /**
      * Builds sections
      *
@@ -346,141 +343,6 @@ class PHPoole implements EventsCapableInterface
         foreach ($this->pageCollection as $page) {
             if ($page->getSection() != '') {
                 $this->sections[$page->getSection()][] = $page;
-            }
-        }
-    }
-
-    /**
-     * Adds section pages to collection
-     *
-     * @see build()
-     */
-    protected function addSectionPages()
-    {
-        $paginationMax  = $this->getOptions()['site']['pagination']['max'];
-        $paginationPath = $this->getOptions()['site']['pagination']['path'];
-
-        if (count($this->sections) > 0) {
-            $sectionWeight = 100;
-            foreach ($this->sections as $section => $pages) {
-                if (!$this->pageCollection->has($section)) {
-                    // paginate
-                    if (isset($paginationMax) && count($pages) > $paginationMax) {
-                        $paginateCount = ceil(count($pages) / $paginationMax);
-                        for ($i = 0; $i < $paginateCount; $i++) {
-                            $pagesInPagination = array_slice($pages, ($i * $paginationMax),  ($i * $paginationMax) + $paginationMax);
-                            // first
-                            if ($i == 0) {
-                                $page = (new Page())
-                                    ->setId(sprintf('%s/index', $section))
-                                    ->setPathname($section)
-                                    ->setTitle(ucfirst($section))
-                                    ->setNodeType('section')
-                                    ->setVariable('pages', $pagesInPagination)
-                                    ->setVariable('menu', [
-                                        'main' => ['weight' => $sectionWeight]
-                                    ])
-                                    ->setVariable('aliases', [
-                                        sprintf('%s/%s/%s', $section, $paginationPath, 1)
-                                    ]);
-                            // others
-                            } else {
-                                $page = (new Page())
-                                    ->setId(sprintf('%s/%s/%s/index', $section, $paginationPath, $i + 1))
-                                    ->setPathname(sprintf('%s/%s/%s', $section, $paginationPath, $i + 1))
-                                    ->setTitle(ucfirst($section))
-                                    ->setNodeType('section')
-                                    ->setVariable('pages', $pagesInPagination);
-                            }
-                            $this->pageCollection->add($page);
-                        }
-                    // not paginate
-                    } else {
-                        $page = (new Page())
-                            ->setId(sprintf('%s/index', $section))
-                            ->setPathname($section)
-                            ->setTitle(ucfirst($section))
-                            ->setNodeType('section')
-                            ->setVariable('pages', $pages)
-                            ->setVariable('menu', [
-                                'main' => ['weight' => $sectionWeight]
-                            ]);
-                        $this->pageCollection->add($page);
-                        $sectionWeight += 10;
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Adds virtual pages to collection
-     *
-     * @see build()
-     */
-    protected function addVirtualPages()
-    {
-        $this->addHomePage();
-        $this->add404Page();
-        $this->addRedirectPages();
-    }
-
-    /**
-     * Adds homepage to collection
-     *
-     * @see build()
-     */
-    protected function addHomePage()
-    {
-        if (!$this->pageCollection->has('index')) {
-            $page = new Page();
-            $page->setId('homepage')
-                ->setTitle('Home')
-                ->setNodeType('homepage')
-                ->setVariable('menu', [
-                    'main' => ['weight' => 1]
-                ]);
-            $this->pageCollection->add($page);
-        }
-    }
-
-    /**
-     * Adds 404 page to collection
-     *
-     * @see build()
-     */
-    protected function add404Page()
-    {
-        if (!$this->pageCollection->has('404')) {
-            $page = new Page();
-            $page->setId('404')
-                ->setTitle('Page not found!')
-                ->setLayout('404.html');
-            $this->pageCollection->add($page);
-        }
-    }
-
-    /**
-     * Adds redirect pages
-     *
-     * @see build()
-     */
-    protected function addRedirectPages()
-    {
-        /* @var $page Page */
-        foreach ($this->pageCollection as $page) {
-            if ($page->hasVariable('aliases')) {
-                $redirects = $page->getVariable('aliases');
-                foreach ($redirects as $redirect) {
-                    /* @var $redirectPage Page */
-                    $redirectPage = new Page();
-                    $redirectPage->setId($redirect)
-                        ->setPathname(Page::urlize($redirect))
-                        ->setTitle($redirect)
-                        ->setLayout('redirect')
-                        ->setVariable('destination', $page->getPathname());
-                    $this->pageCollection->add($redirectPage);
-                }
             }
         }
     }
@@ -527,6 +389,109 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
+     * Adds a node page
+     *
+     * @param string $type The node type
+     * @param string $title The node title
+     * @param string $path The node path
+     * @param array $pages Pages collections as array
+     * @param array $variables
+     * @param int $menu
+     */
+    protected function addNodePage(
+        $type,
+        $title,
+        $path,
+        $pages,
+        $variables = [],
+        $menu = 0
+    ){
+        $paginateMax  = $this->getOptions()['site']['paginate']['max'];
+        $paginatePath = $this->getOptions()['site']['paginate']['path'];
+        // paginate
+        if (isset($paginateMax) && count($pages) > $paginateMax) {
+            $paginateCount = ceil(count($pages) / $paginateMax);
+            for ($i = 0; $i < $paginateCount; $i++) {
+                $pagesInPaginator = array_slice($pages, ($i * $paginateMax),  ($i * $paginateMax) + $paginateMax);
+                // first
+                if ($i == 0) {
+                    $page = (new Page())
+                        ->setId(Page::urlize(sprintf('%s/index', $path)))
+                        ->setPathname(Page::urlize(sprintf('%s', $path)))
+                        ->setVariable('aliases', [
+                            sprintf('%s/%s/%s', $path, $paginatePath, 1)
+                        ]);
+                    if ($menu) {
+                        $page->setVariable('menu', [
+                            'main' => ['weight' => $menu]
+                        ]);
+                    }
+                // others
+                } else {
+                    $page = (new Page())
+                        ->setId(Page::urlize(sprintf('%s/%s/%s/index', $path, $paginatePath, $i + 1)))
+                        ->setPathname(Page::urlize(sprintf('%s/%s/%s', $path, $paginatePath, $i + 1)));
+                }
+                // paginator
+                $paginator = ['pages' => $pagesInPaginator];
+                if ($i > 0) {
+                    $paginator += ['prev'  => Page::urlize(sprintf('%s/%s/%s', $path, $paginatePath, $i))];
+                }
+                if ($i < $paginateCount - 1) {
+                    $paginator += ['next'  => Page::urlize(sprintf('%s/%s/%s', $path, $paginatePath, $i + 2))];
+                }
+                // common properties/variables
+                $page->setTitle(ucfirst($title))
+                    ->setNodeType($type);
+                $page->setVariable('paginator', $paginator);
+                if (!empty($variables)) {
+                    foreach ($variables as $key => $value) {
+                        $page->setVariable($key, $value);
+                    }
+                }
+                $this->pageCollection->add($page);
+            }
+        // not paginate
+        } else {
+            $page = (new Page())
+                ->setId(Page::urlize(sprintf('%s/index', $path)))
+                ->setPathname(Page::urlize(sprintf('%s', $path)))
+                ->setTitle(ucfirst($title))
+                ->setNodeType($type)
+                ->setVariable('pages', $pages);
+            if ($menu) {
+                $page->setVariable('menu', [
+                    'main' => ['weight' => $menu]
+                ]);
+            }
+            if (!empty($variables)) {
+                foreach ($variables as $key => $value) {
+                    $page->setVariable($key, $value);
+                }
+            }
+            $this->pageCollection->add($page);
+        }
+    }
+
+    /**
+     * Adds section pages to collection
+     *
+     * @see build()
+     */
+    protected function addSectionPages()
+    {
+        if (count($this->sections) > 0) {
+            $menu = 100;
+            foreach ($this->sections as $node => $pages) {
+                if (!$this->pageCollection->has($node)) {
+                    $this->addNodePage('section', $node, $node, $pages, [], $menu);
+                }
+                $menu += 10;
+            }
+        }
+    }
+
+    /**
      * Adds taxonomy pages
      *
      * @see build()
@@ -539,16 +504,25 @@ class PHPoole implements EventsCapableInterface
              * Create $plural/$term pages (list of pages)
              * ex: /tags/tag-1/
              */
-            foreach ($terms as $term => $pages) {
-                $page = (new Page())
-                    ->setId(Page::urlize(sprintf('%s%s', $plural, $term)))
-                    ->setPathname(Page::urlize(sprintf('%s%s', $plural, $term)))
-                    ->setTitle($term)
-                    ->setNodeType('taxonomy')
-                    ->setVariable('singular', $siteTaxonomies[$plural])
-                    ->setVariable('list', $pages);
-                $this->pageCollection->add($page);
+            if (count($terms) > 0) {
+                foreach ($terms as $node => $pages) {
+                    if (!$this->pageCollection->has($node)) {
+                        $this->addNodePage('taxonomy', $node, "$plural/$node", $pages, ['singular' => $siteTaxonomies[$plural]]);
+                    }
+                }
             }
+        }
+    }
+
+    /**
+     * Adds taxonomy terms pages
+     *
+     * @see build()
+     */
+    protected function addTaxonomyTermsPages()
+    {
+        $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
+        foreach ($this->taxonomies as $plural => $terms) {
             /**
              * Create $plural pages (list of terms)
              * ex: /tags/
@@ -569,6 +543,78 @@ class PHPoole implements EventsCapableInterface
                 echo $e->getMessage()."\n";
                 // do not add page
                 unset($page);
+            }
+        }
+    }
+
+    /**
+     * Adds virtual pages to collection
+     *
+     * @see build()
+     */
+    protected function addVirtualPages()
+    {
+        $this->addHomePage();
+        $this->add404Page();
+        $this->addRedirectPages();
+    }
+
+    /**
+     * Adds homepage to collection
+     *
+     * @see build()
+     */
+    protected function addHomePage()
+    {
+        if (!$this->pageCollection->has('index')) {
+            $filtered = $this->pageCollection->filter(function($item) {
+                /* @var $item Page */
+                if ($item->getNodeType() == 'page' || $item->getNodeType() == '') {
+                    return true;
+                }
+                return false;
+            });
+            $this->addNodePage('homepage', 'Home', '', $filtered->toArray(), [], 1);
+        }
+    }
+
+    /**
+     * Adds 404 page to collection
+     *
+     * @see build()
+     */
+    protected function add404Page()
+    {
+        if (!$this->pageCollection->has('404')) {
+            $page = new Page();
+            $page->setId('404')
+                ->setTitle('Page not found!')
+                ->setLayout('404');
+            $this->pageCollection->add($page);
+        }
+    }
+
+    /**
+     * Adds redirect pages
+     *
+     * @see build()
+     */
+    protected function addRedirectPages()
+    {
+        /* @var $page Page */
+        foreach ($this->pageCollection as $page) {
+            if ($page->hasVariable('aliases')) {
+                $redirects = $page->getVariable('aliases');
+                foreach ($redirects as $redirect) {
+                    /* @var $redirectPage Page */
+                    $redirectPage = new Page();
+                    $redirectPage->setId($redirect)
+                        ->setPathname(Page::urlize($redirect))
+                        ->setTitle($redirect)
+                        ->setLayout('redirect')
+                        ->setVariable('destination', $page->getPathname());
+                    $this->pageCollection->add($redirectPage);
+                }
             }
         }
     }
@@ -703,6 +749,8 @@ class PHPoole implements EventsCapableInterface
      */
     protected function renderPage(Page $page, $dir)
     {
+        //echo '- page layout: '.$page->getLayout() . "\n";
+        //echo '- used layout: '.$this->layoutFinder($page) . "\n";
         $this->renderer->render($this->layoutFinder($page), [
             'page' => $page,
         ]);
@@ -713,7 +761,7 @@ class PHPoole implements EventsCapableInterface
             // destination of an index/list from on a content file instead of a virtual page
             if ($page->getName() == 'index') {
                 $pathname = $dir.'/'.$page->getPath().'/'.$this->getOptions()['output']['filename'];
-                // destination of a page
+            // destination of a page
             } else {
                 $pathname = $dir.'/'.$page->getPathname().'/'.$this->getOptions()['output']['filename'];
             }
@@ -779,6 +827,11 @@ class PHPoole implements EventsCapableInterface
     {
         $layout  = 'unknown';
         $layouts = $this->layoutFallback($page);
+
+        if ($page->getLayout() == 'redirect') {
+            return $page->getLayout().'.html';
+        }
+
         // is layout exists in local layout dir?
         $layoutsDir = $this->sourceDir.'/'.$this->getOptions()['layouts']['dir'];
         foreach ($layouts as $layout) {

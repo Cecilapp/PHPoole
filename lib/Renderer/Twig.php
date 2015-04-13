@@ -61,7 +61,7 @@ class Twig implements RendererInterface
 </head>
 </html>',
         ));
-        $loader = new \Twig_Loader_Chain(array($loaderFS, $loaderArray));
+        $loader = new \Twig_Loader_Chain(array($loaderArray, $loaderFS));
         $this->twig = new \Twig_Environment($loader,
             [
                 'autoescape'       => false,
