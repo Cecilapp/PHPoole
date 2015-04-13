@@ -6,7 +6,9 @@
 </head>
 <body>
 {% include 'include/menu.html' %}
+{% block content %}
 {{ page.content }}
-layout: _default/page.html
+{% endblock %}
+<p>layout: _default/page.html</p>
 </body>
 </html>

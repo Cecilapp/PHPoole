@@ -1,0 +1,9 @@
+{% extends '_default/page.html' %}
+
+{% block content %}
+{{ page.content }}
+{% for category in page.categories %}
+<a href="{{ url('categories/' ~ category) }}">#{{ category }}</a>&nbsp;
+{% endfor %}
+<p>layout: project/page.html</p>
+{% endblock %}

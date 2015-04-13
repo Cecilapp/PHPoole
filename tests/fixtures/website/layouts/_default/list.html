@@ -6,20 +6,25 @@
 </head>
 <body>
 {% include 'include/menu.html' %}
+
 <ul>
-{% for p in page.paginator.pages %}
+    {% for p in page.pages %}
     <li><a href="{{ url(p) }}">{{ p.title }}</a></li>
-{% endfor %}
+    {% endfor %}
 </ul>
+
+{% if page.paginator %}
 <p>
-{% if page.paginator.prev %}
+    {% if page.paginator.prev %}
     <a href="{{ url(page.paginator.prev) }}">Prev</a>
-{% endif %}
+    {% endif %}
     {% if page.paginator.prev and page.paginator.next %}|{% endif %}
-{% if page.paginator.next %}
+    {% if page.paginator.next %}
     <a href="{{ url(page.paginator.next) }}">Next</a>
-{% endif %}
+    {% endif %}
 </p>
-layout: _default/list.html
+{% endif %}
+
+<p>layout: _default/list.html</p>
 </body>
 </html>
