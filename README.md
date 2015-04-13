@@ -21,7 +21,8 @@ Features
 * Flexible template engine ([Twig](http://twig.sensiolabs.org/doc/templates.html))
 * Theme support
 * Dynamic menu creation
-* Configurable taxonomies (categories, tags, etc.) 
+* Configurable taxonomies (categories, tags, etc.)
+* Paginator (for homepage, sections and taxonomy)
 
 Requirements
 ------------
@@ -33,7 +34,7 @@ Installation
 
 ### Manually
 
-[Download](http://narno.org/PHPoole-library/phpoole-library.phar) the Phar
+[Download](http://narno.org/PHPoole-library/phpoole-library.phar) the Phar (not up to date)
 
 ### Composer
 
@@ -61,8 +62,8 @@ Organize your content:
 .
 ├─ content             <- Contains Mardown files
 |  ├─ Blog             <- A section named "Blog"
-|  |  └─ Post 1.md     <- A content page in a section
-|  └─ About.md         <- A content page
+|  |  └─ Post 1.md     <- A page in a section
+|  └─ About.md         <- A page
 ├─ layouts             <- Contains Twig templates
 |  ├─ _default         <- Contains default templates
 |  |  ├─ list.html     <- Used by a node type 'list'
@@ -82,7 +83,7 @@ use PHPoole\PHPoole;
 
 PHPoole::create(
     './', // The source directory
-    null, // The destination directory
+    null, // The destination directory (the same as source)
     [     // Options array
         'site' => [
             'title'   => "My website",             // The Site title
@@ -94,7 +95,7 @@ PHPoole::create(
 exec('php -S localhost:8000 -t _site'); // Run a local server
 ```
 
-The result is a new static website created in _./_site_.
+The static website is created in _./_site_.
 
 ### Content
 
@@ -122,4 +123,52 @@ A layout is a Twig template.
 <span>{{ page.date|date("j M Y") }}</span>
 <b>{{ page.content }}</p>
 <b>{{ page.myvar }}</p>
+```
+
+### Options
+
+PHP script options to define how to build the website.
+
+#### Default options
+
+```php
+[
+    'site' => [
+        'title'       => 'PHPoole',
+        'baseline'    => 'A PHPoole website',
+        'baseurl'     => 'http://localhost:8000/', // php -S localhost:8000 -t _site/ >/dev/null
+        'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        'taxonomies'  => [
+            'tags'       => 'tag',
+            'categories' => 'category',
+        ],
+        'paginate' => [
+            'max'  => 5,
+            'path' => 'page',
+        ],
+    ],
+    'content' => [
+        'dir' => 'content',
+        'ext' => 'md',
+    ],
+    'frontmatter' => [
+        'format' => 'yaml',
+    ],
+    'body' => [
+        'format' => 'md',
+    ],
+    'static' => [
+        'dir' => 'static',
+    ],
+    'layouts' => [
+        'dir' => 'layouts',
+    ],
+    'output' => [
+        'dir'      => '_site',
+        'filename' => 'index.html',
+    ],
+    'themes' => [
+        'dir' => 'themes',
+    ],
+]
 ```
