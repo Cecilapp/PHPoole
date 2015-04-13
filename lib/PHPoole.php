@@ -433,7 +433,7 @@ class PHPoole implements EventsCapableInterface
                         ->setPathname(Page::urlize(sprintf('%s/%s/%s', $path, $paginatePath, $i + 1)));
                 }
                 // paginator
-                $paginator = ['pages' => $pagesInPaginator];
+                $paginator = [];
                 if ($i > 0) {
                     $paginator += ['prev'  => Page::urlize(sprintf('%s/%s/%s', $path, $paginatePath, $i))];
                 }
@@ -442,8 +442,9 @@ class PHPoole implements EventsCapableInterface
                 }
                 // common properties/variables
                 $page->setTitle(ucfirst($title))
-                    ->setNodeType($type);
-                $page->setVariable('paginator', $paginator);
+                    ->setNodeType($type)
+                    ->setVariable('pages', $pagesInPaginator)
+                    ->setVariable('paginator', $paginator);
                 if (!empty($variables)) {
                     foreach ($variables as $key => $value) {
                         $page->setVariable($key, $value);
@@ -507,7 +508,8 @@ class PHPoole implements EventsCapableInterface
             if (count($terms) > 0) {
                 foreach ($terms as $node => $pages) {
                     if (!$this->pageCollection->has($node)) {
-                        $this->addNodePage('taxonomy', $node, "$plural/$node", $pages, ['singular' => $siteTaxonomies[$plural]]);
+                        /* @var $pages Collection\CollectionInterface */
+                        $this->addNodePage('taxonomy', $node, "$plural/$node", $pages->toArray(), ['singular' => $siteTaxonomies[$plural]]);
                     }
                 }
             }
