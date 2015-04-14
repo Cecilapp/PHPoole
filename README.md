@@ -62,14 +62,14 @@ Organize your content:
 .
 ├─ content             <- Contains Mardown files
 |  ├─ Blog             <- A section named "Blog"
-|  |  └─ Post 1.md     <- A page in a section
-|  └─ About.md         <- A page
+|  |  └─ Post 1.md     <- A page in the section "Blog"
+|  ├─ Project          <- A section named "Project"
+|  |  └─ Post 1.md     <- A page in the section "Project"
+|  └─ About.md         <- A page in the root
 ├─ layouts             <- Contains Twig templates
 |  ├─ _default         <- Contains default templates
 |  |  ├─ list.html     <- Used by a node type 'list'
 |  |  ├─ page.html     <- Used by a node type 'page'
-|  |  ├─ taxonomy.html <- Used by a node type 'taxonomy'
-|  |  └─ terms.html    <- Used by a node type 'terms'
 |  ├─ index.html       <- Used by the node type 'homepage'
 └─ static              <- Contains static files
 ```
@@ -99,7 +99,27 @@ The static website is created in _./_site_.
 
 ### Content
 
-A content file is composed by a frontmatter (Yaml) and a body (Markdown).
+The content is represented by Markdown files organized in folders.
+Folders in the root are called "section" (ie: "Blog", "Project", etc.).
+
+A page can contain a front matter ([YAML](http://www.yaml.org/spec/1.2/spec.html#Preview)) and/or a body ([Markdown](http://daringfireball.net/projects/markdown/syntax)).
+
+#### Front matter
+
+Any file that contains a YAML front matter will be processed to extract some variables. The front matter must be the first thing in the file and must be a valid YAML.
+
+**Predefined variables**
+
+| Variable      | Description   |
+| ------------- | ------------- |
+| title         | Title         |
+| section       | Section       |
+| layout        | Layout        |
+| date          | Date          |
+| menu          | Menu          |
+| tags          | Tags          |
+| categories    | Categories    |
+| permalink     | Permalink     |
 
 #### Page example
 
@@ -107,14 +127,14 @@ A content file is composed by a frontmatter (Yaml) and a body (Markdown).
 ---
 title: "The title"
 date: "2013-01-01"
-myvar: "My varm"
+customvar: "Custom variable"
 ---
 _Markdown_ page content.
 ```
 
 ### Layouts
 
-A layout is a Twig template.
+A layout is a [Twig](http://twig.sensiolabs.org) template.
 
 #### Layout example
 
