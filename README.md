@@ -136,10 +136,44 @@ _Markdown_ page content.
 
 A layout is a [Twig](http://twig.sensiolabs.org) template.
 
+#### Variables
+
+**Site variables**
+
+| Variable      | Description   |
+| ------------- | ------------- |
+| title         | Title         |
+
+_WIP_
+
+**Page variables**
+
+| Variable      | Description   |
+| ------------- | ------------- |
+| title         | Title         |
+
+_WIP_
+
+**Paginator variables**
+
+| Variable      | Description   |
+| ------------- | ------------- |
+| title         | Title         |
+
+_WIP_
+
+**PHPoole variables**
+
+| Variable      | Description   |
+| ------------- | ------------- |
+| title         | Title         |
+
+_WIP_
+
 #### Layout example
 
 ```html
-<h1>{{ page.title }}</h1>
+<h1>{{ page.title }} | {{ site.title }}</h1>
 <span>{{ page.date|date("j M Y") }}</span>
 <b>{{ page.content }}</p>
 <b>{{ page.myvar }}</p>
