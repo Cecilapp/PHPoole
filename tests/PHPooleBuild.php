@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPoole\PHPooleTest;
+namespace PHPoole\Test;
 
 use PHPoole\PHPoole;
 use Symfony\Component\Filesystem\Filesystem;
