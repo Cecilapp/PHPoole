@@ -28,7 +28,7 @@
   },
   "autoload": {
     "psr-4" : {
-      "PHPoole\\": "lib"
+      "PHPoole\\": "src"
     }
   },
   "autoload-dev": {
