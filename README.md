@@ -79,6 +79,7 @@ Organize your content:
 Create a PHP script:
 ```php
 <?php
+date_default_timezone_set('Europe/Paris');
 require_once 'vendor/autoload.php'; // Composer
 //require_once 'phar://phpoole-library.phar'; // Phar
 use PHPoole\PHPoole;
