@@ -11,20 +11,20 @@ namespace PHPoole\Taxonomy;
 use PHPoole\Collection\AbstractCollection;
 
 /**
- * Class Collection
- * @package PHPoole\Taxonomy
+ * Class Collection.
  */
 class Collection extends AbstractCollection
 {
     /**
      * Return vocabulary (and create it if not exists)
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get($id)
     {
         if (!$this->has($id)) {
             $this->add(new Vocabulary($id));
         }
+
         return $this->items[$id];
     }
 }

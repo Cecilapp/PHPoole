@@ -9,24 +9,24 @@
 namespace PHPoole\Collection;
 
 /**
- * Implements \ArrayAccess
+ * Implements \ArrayAccess.
  *
  * Class ItemArrayAccessTrait
- * @package PHPoole\Collection
  */
 trait ItemArrayAccessTrait
 {
     /**
-     * Item properties
+     * Item properties.
      *
      * @var array
      */
-    protected $properties = array();
+    protected $properties = [];
 
     /**
-     * Implement ArrayAccess
+     * Implement ArrayAccess.
      *
      * @param mixed $offset
+     *
      * @return bool
      */
     public function offsetExists($offset)
@@ -35,9 +35,10 @@ trait ItemArrayAccessTrait
     }
 
     /**
-     * Implement ArrayAccess
+     * Implement ArrayAccess.
      *
      * @param mixed $offset
+     *
      * @return null
      */
     public function offsetGet($offset)
@@ -46,7 +47,7 @@ trait ItemArrayAccessTrait
     }
 
     /**
-     * Implement ArrayAccess
+     * Implement ArrayAccess.
      *
      * @param mixed $offset
      * @param mixed $value
@@ -57,7 +58,7 @@ trait ItemArrayAccessTrait
     }
 
     /**
-     * Implement ArrayAccess
+     * Implement ArrayAccess.
      *
      * @param mixed $offset
      */

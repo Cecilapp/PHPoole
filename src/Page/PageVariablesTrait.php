@@ -9,8 +9,7 @@
 namespace PHPoole\Page;
 
 /**
- * Class PageVariablesTrait
- * @package PHPoole\Page
+ * Class PageVariablesTrait.
  */
 trait PageVariablesTrait
 {
@@ -20,19 +19,21 @@ trait PageVariablesTrait
     protected $variables = [];
 
     /**
-     * Set variables
+     * Set variables.
      *
      * @param $variables
+     *
      * @return $this
      */
     public function setVariables($variables)
     {
         $this->variables = $variables;
+
         return $this;
     }
 
     /**
-     * Get variables
+     * Get variables.
      *
      * @return array
      */
@@ -42,15 +43,17 @@ trait PageVariablesTrait
     }
 
     /**
-     * Set a variable
+     * Set a variable.
      *
      * @param $name
      * @param $value
+     *
      * @return $this
      */
     public function setVariable($name, $value)
     {
         $this->variables[$name] = $value;
+
         return $this;
     }
 
@@ -58,6 +61,7 @@ trait PageVariablesTrait
      * Is variable exist?
      *
      * @param $name
+     *
      * @return bool
      */
     public function hasVariable($name)
@@ -66,9 +70,10 @@ trait PageVariablesTrait
     }
 
     /**
-     * Get a variable
+     * Get a variable.
      *
      * @param $name
+     *
      * @return null
      */
     public function getVariable($name)
@@ -76,11 +81,12 @@ trait PageVariablesTrait
         if ($this->hasVariable($name)) {
             return $this->variables[$name];
         }
-        return null;
+
+        return;
     }
 
     /**
-     * Unset a variable
+     * Unset a variable.
      *
      * @param $name
      */
@@ -92,9 +98,10 @@ trait PageVariablesTrait
     }
 
     /**
-     * Implement ArrayAccess
+     * Implement ArrayAccess.
      *
      * @param mixed $offset
+     *
      * @return bool
      */
     public function offsetExists($offset)
@@ -103,9 +110,10 @@ trait PageVariablesTrait
     }
 
     /**
-     * Implement ArrayAccess
+     * Implement ArrayAccess.
      *
      * @param mixed $offset
+     *
      * @return null
      */
     public function offsetGet($offset)
@@ -114,7 +122,7 @@ trait PageVariablesTrait
     }
 
     /**
-     * Implement ArrayAccess
+     * Implement ArrayAccess.
      *
      * @param mixed $offset
      * @param mixed $value
@@ -125,7 +133,7 @@ trait PageVariablesTrait
     }
 
     /**
-     * Implement ArrayAccess
+     * Implement ArrayAccess.
      *
      * @param mixed $offset
      */

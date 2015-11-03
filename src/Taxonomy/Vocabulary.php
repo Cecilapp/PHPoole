@@ -12,15 +12,14 @@ use PHPoole\Collection\AbstractCollection;
 use PHPoole\Collection\ItemInterface;
 
 /**
- * Class Vocabulary
- * @package PHPoole\Taxonomy
+ * Class Vocabulary.
  */
 class Vocabulary extends AbstractCollection implements ItemInterface
 {
     protected $name;
 
     /**
-     * Create vocabulary
+     * Create vocabulary.
      *
      * @param string $name
      */
@@ -30,7 +29,7 @@ class Vocabulary extends AbstractCollection implements ItemInterface
     }
 
     /**
-     * Return vocabulary name
+     * Return vocabulary name.
      *
      * @return string
      */
@@ -40,9 +39,10 @@ class Vocabulary extends AbstractCollection implements ItemInterface
     }
 
     /**
-     * Adds term to vocabulary
+     * Adds term to vocabulary.
      *
      * @param ItemInterface $item
+     *
      * @return $this
      */
     public function add(ItemInterface $item)
@@ -52,6 +52,7 @@ class Vocabulary extends AbstractCollection implements ItemInterface
             return $this;
         }
         $this->items[$item->getId()] = $item;
+
         return $this;
     }
 }

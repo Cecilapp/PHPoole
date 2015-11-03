@@ -8,13 +8,12 @@
 
 namespace PHPoole\Page;
 
+use Cocur\Slugify\Slugify;
 use PHPoole\Collection\AbstractItem;
 use Symfony\Component\Finder\SplFileInfo;
-use Cocur\Slugify\Slugify;
 
 /**
- * Class Page
- * @package PHPoole\Page
+ * Class Page.
  */
 class Page extends AbstractItem implements \ArrayAccess
 {
@@ -93,7 +92,7 @@ class Page extends AbstractItem implements \ArrayAccess
     protected $html;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param null|SplFileInfo $file
      */
@@ -105,22 +104,22 @@ class Page extends AbstractItem implements \ArrayAccess
             // file extension : md
             $this->fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
             // file path : Blog
-            $this->filePath      = str_replace(DIRECTORY_SEPARATOR, '/', $this->file->getRelativePath());
+            $this->filePath = str_replace(DIRECTORY_SEPARATOR, '/', $this->file->getRelativePath());
             // file id : Blog/Post 1
-            $this->fileId        = ($this->filePath ? $this->filePath . '/' : '') . basename($this->file->getBasename(), '.' . $this->fileExtension);
+            $this->fileId = ($this->filePath ? $this->filePath.'/' : '').basename($this->file->getBasename(), '.'.$this->fileExtension);
             // id : blog/post-1
-            $this->id            = $this->urlize($this->fileId);
+            $this->id = $this->urlize($this->fileId);
             // pathname : blog/post-1
-            $this->pathname      = $this->urlize($this->fileId);
+            $this->pathname = $this->urlize($this->fileId);
             // path : blog
-            $this->path          = $this->urlize($this->filePath);
+            $this->path = $this->urlize($this->filePath);
             // name : post-1
-            $this->name          = $this->urlize(basename($this->file->getBasename(), '.' . $this->fileExtension));
-            /**
+            $this->name = $this->urlize(basename($this->file->getBasename(), '.'.$this->fileExtension));
+            /*
              * frontmatter default values
              */
             // title : Post 1
-            $this->title   = basename($this->file->getBasename(), '.' . $this->fileExtension);
+            $this->title = basename($this->file->getBasename(), '.'.$this->fileExtension);
             // section : blog
             $this->section = explode('/', $this->path)[0];
         } else {
@@ -129,9 +128,10 @@ class Page extends AbstractItem implements \ArrayAccess
     }
 
     /**
-     * Format string into URL
+     * Format string into URL.
      *
      * @param $string
+     *
      * @return string
      */
     public static function urlize($string)
@@ -144,33 +144,39 @@ class Page extends AbstractItem implements \ArrayAccess
      *
      * @return bool
      */
-    public function isVirtual() {
+    public function isVirtual()
+    {
         return $this->virtual;
     }
 
     /**
-     * Set node type
+     * Set node type.
      *
      * @param $nodeType
-     * @return self
+     *
      * @throws \Exception
+     *
+     * @return self
      */
-    public function setNodeType($nodeType) {
+    public function setNodeType($nodeType)
+    {
         $this->nodeType = $nodeType;
+
         return $this;
     }
 
     /**
-     * Get node type
+     * Get node type.
      *
      * @return string
      */
-    public function getNodeType() {
+    public function getNodeType()
+    {
         return $this->nodeType;
     }
 
     /**
-     * Parse file content
+     * Parse file content.
      *
      * @return $this
      */
@@ -179,24 +185,27 @@ class Page extends AbstractItem implements \ArrayAccess
         $parser = new Parser($this->file);
         $parsed = $parser->parse();
         $this->frontmatter = $parsed->getFrontmatter();
-        $this->body        = $parsed->getBody();
+        $this->body = $parsed->getBody();
+
         return $this;
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param $name
+     *
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -206,19 +215,21 @@ class Page extends AbstractItem implements \ArrayAccess
     }
 
     /**
-     * Set path
+     * Set path.
      *
      * @param $path
+     *
      * @return $this
      */
     public function setPath($path)
     {
         $this->path = $path;
+
         return $this;
     }
 
     /**
-     * Get path
+     * Get path.
      *
      * @return string
      */
@@ -228,19 +239,21 @@ class Page extends AbstractItem implements \ArrayAccess
     }
 
     /**
-     * Set path name
+     * Set path name.
      *
      * @param $pathname
+     *
      * @return $this
      */
     public function setPathname($pathname)
     {
         $this->pathname = $pathname;
+
         return $this;
     }
 
     /**
-     * Get path name
+     * Get path name.
      *
      * @return string
      */
@@ -250,19 +263,21 @@ class Page extends AbstractItem implements \ArrayAccess
     }
 
     /**
-     * Set section
+     * Set section.
      *
      * @param $section
+     *
      * @return $this
      */
     public function setSection($section)
     {
         $this->section = $section;
+
         return $this;
     }
 
     /**
-     * Get section
+     * Get section.
      *
      * @return string
      */
@@ -271,23 +286,26 @@ class Page extends AbstractItem implements \ArrayAccess
         if (empty($this->section) && !empty($this->path)) {
             $this->section = explode('/', $this->path)[0];
         }
+
         return $this->section;
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param $title
+     *
      * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -297,19 +315,21 @@ class Page extends AbstractItem implements \ArrayAccess
     }
 
     /**
-     * Set ID
+     * Set ID.
      *
      * @param $id
+     *
      * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
     /**
-     * Get ID
+     * Get ID.
      *
      * @return string
      */
@@ -319,7 +339,7 @@ class Page extends AbstractItem implements \ArrayAccess
     }
 
     /**
-     * Get frontmatter
+     * Get frontmatter.
      *
      * @return string
      */
@@ -329,7 +349,7 @@ class Page extends AbstractItem implements \ArrayAccess
     }
 
     /**
-     * Get body
+     * Get body.
      *
      * @return string
      */
@@ -339,19 +359,21 @@ class Page extends AbstractItem implements \ArrayAccess
     }
 
     /**
-     * Set HTML
+     * Set HTML.
      *
      * @param $html
+     *
      * @return $this
      */
     public function setHtml($html)
     {
         $this->html = $html;
+
         return $this;
     }
 
     /**
-     * Get HTML alias
+     * Get HTML alias.
      *
      * @return string
      */
@@ -361,19 +383,21 @@ class Page extends AbstractItem implements \ArrayAccess
     }
 
     /**
-     * Set layout
+     * Set layout.
      *
      * @param $layout
+     *
      * @return $this
      */
     public function setLayout($layout)
     {
         $this->layout = $layout;
+
         return $this;
     }
 
     /**
-     * Get layout
+     * Get layout.
      *
      * @return string
      */
