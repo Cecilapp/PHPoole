@@ -113,16 +113,16 @@ Any file that contains a YAML front matter will be processed to extract some var
 
 **Predefined variables**
 
-| Variable      | Description   |
-| ------------- | ------------- |
-| title         | Title         |
-| section       | Section       |
-| layout        | Layout        |
-| date          | Date          |
-| menu          | Menu          |
-| tags          | Tags          |
-| categories    | Categories    |
-| permalink     | Permalink     |
+| Variable      | Description   | Default value                     |
+| ------------- | ------------- | --------------------------------- |
+| title         | Title         | File basename (without extension) |
+| section       | Section       | Root directory of the file path   |
+| layout        | Layout        | See _Layout fallback logic_       |
+| date          | Date          |                                   |
+| menu          | Menu          |                                   |
+| tags          | Tags          |                                   |
+| categories    | Categories    |                                   |
+| permalink     | Permalink     |                                   |
 
 #### Page example
 
