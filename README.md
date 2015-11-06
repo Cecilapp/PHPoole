@@ -159,16 +159,18 @@ Menu keys:
 
 Contains all variables setted in the page's front matter.
 
-| Variable      | Description   | Example       |
-| ------------- | ------------- | ------------- |
-| title         | Title         | "Post 1"      |
-| section       | Section       | "blog"        |
-| id            | Unique id     | "blog/post-1" |
-| pathname      | Full path     | "blog/post-1" |
-| path          | Path          | "blog"        |
-| name          | Name          | "post-1"      |
-| pages         | Pages list    | _Collection_  |
-| ...           |               |               |
+| Variable      | Description      | Example       |
+| ------------- | ---------------- | ------------- |
+| title         | Title            | "Post 1"      |
+| section       | Section          | "blog"        |
+| id            | Unique id        | "blog/post-1" |
+| pathname      | Full path        | "blog/post-1" |
+| path          | Path             | "blog"        |
+| name          | Name             | "post-1"      |
+| pages         | Pages collection | _Collection_  |
+| tags          | Tags array       | [TA, TB]      |
+| categories    | Categories array | [CA, CB]      |
+| ...           |                  |               |
 
 **Paginator variables**
 
@@ -176,8 +178,6 @@ Contains all variables setted in the page's front matter.
 | -------------- | ------------------------- |
 | paginator.prev | Path to the previous page |
 | paginator.next | Path to the next page     |
-
-_WIP_
 
 **PHPoole variables**
 
