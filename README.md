@@ -143,35 +143,49 @@ A layout is a [Twig](http://twig.sensiolabs.org) template.
 
 **Site variables**
 
-| Variable      | Description   |
-| ------------- | ------------- |
-| title         | Title         |
+Contains all variables under _site_ key in config array (see _Default options_).
 
-_WIP_
+| Variable      | Description       |
+| ------------- | ----------------- |
+| site.menus    | Menus collections |
+| site.pages    | Pages collections |
+
+Menu keys:
+* site.menus._id_.name
+* site.menus._id_.url
+* site.menus._id_.weight
 
 **Page variables**
 
-| Variable      | Description   |
-| ------------- | ------------- |
-| title         | Title         |
+Contains all variables setted in the page's front matter.
 
-_WIP_
+| Variable      | Description   | Example       |
+| ------------- | ------------- | ------------- |
+| title         | Title         | "Post 1"      |
+| section       | Section       | "blog"        |
+| id            | Unique id     | "blog/post-1" |
+| pathname      | Full path     | "blog/post-1" |
+| path          | Path          | "blog"        |
+| name          | Name          | "post-1"      |
+| pages         | Pages list    | _Collection_  |
+| ...           |               |               |
 
 **Paginator variables**
 
-| Variable      | Description   |
-| ------------- | ------------- |
-| title         | Title         |
+| Variable       | Description               |
+| -------------- | ------------------------- |
+| paginator.prev | Path to the previous page |
+| paginator.next | Path to the next page     |
 
 _WIP_
 
 **PHPoole variables**
 
-| Variable      | Description   |
-| ------------- | ------------- |
-| title         | Title         |
-
-_WIP_
+| Variable          | Description                 |
+| ----------------- | --------------------------- |
+| phpoole.url       | URL to the official website |
+| phpoole.version   | Current version             |  
+| phpoole.poweredby | "PHPoole v" + version       |
 
 #### Layout example
 
