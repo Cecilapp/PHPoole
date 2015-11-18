@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{ page.title }}</title>
+</head>
+<body>
+{% include 'include/menu.html' %}
+
+<div class="content container">
+    <h1>{{ plural }}</h1>
+    <ul>
+        {% for name, term in page.terms %}
+        <li><h2><a href="{{ url(page.plural ~ '/' ~ name) }}">{{ name }}</a> ({{ term|length }})</h2>
+            <ul>
+                {% for page in term %}
+                <li><a href="{{ url(page) }}">{{ page.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+</body>
+</html>
