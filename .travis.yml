@@ -3,14 +3,17 @@ language: php
 php:
     - 5.5
     - 5.6
+    - 7.0
     - hhvm
 
+install:
+    - composer self-update
+
 before_script:
-    - travis_retry composer self-update
-    - travis_retry composer install --no-interaction
+    - composer install --no-interaction
 
 script:
-    - phpunit --coverage-text --coverage-clover=coverage.clover
+    - phpunit --coverage-clover=coverage.clover
 
 after_script:
     - wget https://scrutinizer-ci.com/ocular.phar
