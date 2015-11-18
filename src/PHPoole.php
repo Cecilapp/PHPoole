@@ -110,13 +110,13 @@ class PHPoole implements EventsCapableInterface
      */
     public function __construct($sourceDir = null, $destDir = null, $options = [])
     {
-        if ($sourceDir == null) {
+        if ($sourceDir === null) {
             $sourceDir = getcwd();
         }
         if (!is_dir($sourceDir)) {
             throw new \Exception(sprintf("'%s' is not a valid source directory.", $sourceDir));
         }
-        if ($destDir == null) {
+        if ($destDir === null) {
             $destDir = $sourceDir;
         }
         if (!is_dir($destDir)) {
@@ -577,7 +577,7 @@ class PHPoole implements EventsCapableInterface
     protected function addHomePage()
     {
         if (!$this->pageCollection->has('index')) {
-            $filtered = $this->pageCollection->filter(function ($item) {
+            $filtered = $this->pageCollection->filter(function (Page $item) {
                 /* @var $item Page */
                 if ($item->getNodeType() == 'page' || $item->getNodeType() == '') {
                     return true;
@@ -893,7 +893,7 @@ class PHPoole implements EventsCapableInterface
                     '_default/section.html',
                     '_default/list.html',
                 ];
-                if ($page->getSection() != null) {
+                if ($page->getSection() !== null) {
                     $layouts = array_merge([sprintf('section/%s.html', $page->getSection())], $layouts);
                 }
                 break;
@@ -903,7 +903,7 @@ class PHPoole implements EventsCapableInterface
                     '_default/taxonomy.html',
                     '_default/list.html',
                 ];
-                if ($page->getVariable('singular') != null) {
+                if ($page->getVariable('singular') !== null) {
                     $layouts = array_merge([sprintf('taxonomy/%s.html', $page->getVariable('singular'))], $layouts);
                 }
                 break;
@@ -912,7 +912,7 @@ class PHPoole implements EventsCapableInterface
                     // 'taxonomy/$singular.terms.html'
                     '_default/terms.html',
                 ];
-                if ($page->getVariable('singular') != null) {
+                if ($page->getVariable('singular') !== null) {
                     $layouts = array_merge([sprintf('taxonomy/%s.terms.html', $page->getVariable('singular'))], $layouts);
                 }
                 break;
@@ -925,14 +925,14 @@ class PHPoole implements EventsCapableInterface
                     // 'page.html'
                     '_default/page.html',
                 ];
-                if ($page->getSection() != null) {
+                if ($page->getSection() !== null) {
                     $layouts = array_merge([sprintf('%s/page.html', $page->getSection())], $layouts);
                     if ($page->getLayout() != null) {
                         $layouts = array_merge([sprintf('%s/%s.html', $page->getSection(), $page->getLayout())], $layouts);
                     }
                 } else {
                     $layouts = array_merge(['page.html'], $layouts);
-                    if ($page->getLayout() != null) {
+                    if ($page->getLayout() !== null) {
                         $layouts = array_merge([sprintf('%s.html', $page->getLayout())], $layouts);
                     }
                 }
