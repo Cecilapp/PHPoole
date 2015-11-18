@@ -11,8 +11,7 @@ namespace PHPoole\Page;
 use PHPoole\Collection\AbstractCollection;
 
 /**
- * Class Collection
- * @package PHPoole\Page
+ * Class Collection.
  */
 class Collection extends AbstractCollection
 {

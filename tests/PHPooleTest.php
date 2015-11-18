@@ -8,10 +8,10 @@
 
 namespace PHPoole\Test;
 
-use PHPoole\PHPoole;
-use PHPoole\Page\Page;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\Converter;
+use PHPoole\Page\Page;
+use PHPoole\PHPoole;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -28,7 +28,7 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
         //$this->sourceDir = (__DIR__ . '/fixtures/website');
         //$this->destDir   = $this->sourceDir;
         $this->iterator = $this->createContentIterator();
-        $this->file     = $this->createFile();
+        $this->file = $this->createFile();
     }
 
     /*
@@ -43,14 +43,14 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
     {
         return Finder::create()
             ->files()
-            ->in(__DIR__ . '/fixtures/content')
+            ->in(__DIR__.'/fixtures/content')
             ->name('*.md');
     }
 
     public function createFile()
     {
         return new SplFileInfo(
-            __DIR__ . '/fixtures/content/Section1/Page1.md',
+            __DIR__.'/fixtures/content/Section1/Page1.md',
             'Section1',
             'Section1/Page1.md'
         );
@@ -67,7 +67,7 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
             'options' => [
                 'option1' => 'Option 1',
                 'option2' => 'Option 2',
-            ]
+            ],
         ];
         $phpoole = (new PHPoole())->setOptions($options);
         $this->assertEquals($options, $phpoole->getOptions());
@@ -81,12 +81,11 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
         $this->assertContainsOnlyInstancesOf('Symfony\Component\Finder\SplFileInfo', $iterator);
     }
 
-
     public function testParsePage()
     {
         $parsed = (new Page($this->file))->parse();
-        $this->assertStringEqualsFile(__DIR__ . '/fixtures/content_parsed/Page1.md/frontmatter.yaml', $parsed->getFrontmatter());
-        $this->assertStringEqualsFile(__DIR__ . '/fixtures/content_parsed/Page1.md/body.md', $parsed->getBody());
+        $this->assertStringEqualsFile(__DIR__.'/fixtures/content_parsed/Page1.md/frontmatter.yaml', $parsed->getFrontmatter());
+        $this->assertStringEqualsFile(__DIR__.'/fixtures/content_parsed/Page1.md/body.md', $parsed->getBody());
     }
 
     public function testAddPageToCollection()
@@ -160,7 +159,7 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
         $page->setId('id-of-page')
             ->setTitle('title-of-page');
         $pageCollection->add($page);
-        
+
         $this->assertNotNull($pageCollection->get('id-of-page'));
     }
 }

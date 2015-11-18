@@ -12,15 +12,14 @@ use PHPoole\Collection\AbstractCollection;
 use PHPoole\Collection\ItemInterface;
 
 /**
- * Class Menu
- * @package PHPoole\Menu
+ * Class Menu.
  */
 class Menu extends AbstractCollection implements ItemInterface
 {
     protected $name;
 
     /**
-     * Set menu name
+     * Set menu name.
      *
      * @param string $name
      */
@@ -30,7 +29,7 @@ class Menu extends AbstractCollection implements ItemInterface
     }
 
     /**
-     * Return menu name
+     * Return menu name.
      *
      * @return string
      */
@@ -40,14 +39,16 @@ class Menu extends AbstractCollection implements ItemInterface
     }
 
     /**
-     * Add menu entry
+     * Add menu entry.
      *
      * @param ItemInterface $item
+     *
      * @return self
      */
     public function add(ItemInterface $item)
     {
         $this->items[$item->getId()] = $item;
+
         return $this;
     }
 }

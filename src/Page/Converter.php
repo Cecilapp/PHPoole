@@ -8,20 +8,20 @@
 
 namespace PHPoole\Page;
 
-use Symfony\Component\Yaml\Yaml;
 use ParsedownExtra;
+use Symfony\Component\Yaml\Yaml;
 
 /**
- * Class Converter
- * @package PHPoole\Page
+ * Class Converter.
  */
 class Converter
 {
     /**
-     * Converts frontmatter
+     * Converts frontmatter.
      *
      * @param $string
      * @param string $type
+     *
      * @return array
      */
     public function convertFrontmatter($string, $type = 'yaml')
@@ -36,9 +36,10 @@ class Converter
     }
 
     /**
-     * Converts body
+     * Converts body.
      *
      * @param $string
+     *
      * @return string
      */
     public function convertBody($string)

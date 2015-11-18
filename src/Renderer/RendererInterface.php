@@ -9,46 +9,49 @@
 namespace PHPoole\Renderer;
 
 /**
- * Interface RendererInterface
- * @package PHPoole\Renderer
+ * Interface RendererInterface.
  */
 interface RendererInterface
 {
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string|array $templatesPath
      */
-    public function __construct($templatesPath = array());
+    public function __construct($templatesPath = []);
 
     /**
-     * Add templates path
+     * Add templates path.
      *
      * @param $path
+     *
      * @return void
      */
     public function addPath($path);
 
     /**
-     * Add global variable
+     * Add global variable.
      *
      * @param $name
      * @param $value
+     *
      * @return void
      */
     public function addGlobal($name, $value);
 
     /**
-     * Rendering
+     * Rendering.
      *
      * @param $template
      * @param $variables
+     *
      * @return self
      */
     public function render($template, $variables);
 
     /**
      * @param $pathname
+     *
      * @return bool
      */
     public function save($pathname);

@@ -11,16 +11,15 @@ namespace PHPoole;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\Converter;
 use PHPoole\Page\Page;
+use PHPoole\Plugin\PluginAwareTrait;
 use PHPoole\Renderer\RendererInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Zend\EventManager\EventsCapableInterface;
-use PHPoole\Plugin\PluginAwareTrait;
 
 /**
- * Class PHPoole
- * @package PHPoole
+ * Class PHPoole.
  */
 class PHPoole implements EventsCapableInterface
 {
@@ -28,87 +27,88 @@ class PHPoole implements EventsCapableInterface
 
     const VERSION = '1.0.x-dev';
     /**
-     * Source directory
+     * Source directory.
      *
      * @var string
      */
     protected $sourceDir;
     /**
-     * Destination directory
+     * Destination directory.
      *
      * @var string
      */
     protected $destDir;
     /**
-     * Array of options
+     * Array of options.
      *
      * @var array
      */
     protected $options;
     /**
-     * Content iterator
+     * Content iterator.
      *
      * @var Finder
      */
     protected $contentIterator;
     /**
-     * Pages collection
+     * Pages collection.
      *
      * @var PageCollection
      */
     protected $pageCollection;
     /**
-     * Site variables
+     * Site variables.
      *
      * @var array
      */
     protected $site;
     /**
-     * Array of site sections
+     * Array of site sections.
      *
      * @var array
      */
     protected $sections;
     /**
-     * Collection of site menus
+     * Collection of site menus.
      *
      * @var Collection\CollectionInterface
      */
     protected $menus;
     /**
-     * Collection of taxonomies menus
+     * Collection of taxonomies menus.
      *
      * @var Collection\CollectionInterface
      */
     protected $taxonomies;
     /**
-     * Twig renderer
+     * Twig renderer.
      *
      * @var RendererInterface
      */
     protected $renderer;
     /**
-     * The theme name
+     * The theme name.
      *
      * @var null
      */
     protected $theme = null;
     /**
-     * Symfony\Component\Filesystem
+     * Symfony\Component\Filesystem.
      *
      * @var Filesystem
      */
     protected $fs;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param null $sourceDir
-     * @param null $destDir
+     * @param null  $sourceDir
+     * @param null  $destDir
      * @param array $options
+     *
      * @throws \Exception
      */
-    public function __construct($sourceDir = null, $destDir = null, $options = array())
+    public function __construct($sourceDir = null, $destDir = null, $options = [])
     {
         if ($sourceDir == null) {
             $sourceDir = getcwd();
@@ -123,7 +123,7 @@ class PHPoole implements EventsCapableInterface
             throw new \Exception(sprintf("'%s' is not a valid destination directory.", $destDir));
         }
         $this->sourceDir = $sourceDir;
-        $this->destDir   = $destDir;
+        $this->destDir = $destDir;
 
         $options = array_replace_recursive([
             'site' => [
@@ -172,21 +172,24 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Creates a new PHPoole instance
+     * Creates a new PHPoole instance.
      *
      * @return PHPoole
      */
     public static function create()
     {
         $class = new \ReflectionClass(get_called_class());
+
         return $class->newInstanceArgs(func_get_args());
     }
 
     /**
-     * Set options
+     * Set options.
      *
-     * @param  array $options
+     * @param array $options
+     *
      * @return self
+     *
      * @see    getOptions()
      */
     public function setOptions($options)
@@ -195,25 +198,28 @@ class PHPoole implements EventsCapableInterface
             $this->options = $options;
             $this->trigger('options', $options);
         }
+
         return $this;
     }
 
     /**
-     * Get options
+     * Get options.
      *
      * @return null|array
+     *
      * @see    setOptions()
      */
     public function getOptions()
     {
         if (is_null($this->options)) {
-            $this->setOptions(array());
+            $this->setOptions([]);
         }
+
         return $this->options;
     }
 
     /**
-     * Builds a new website
+     * Builds a new website.
      */
     public function build()
     {
@@ -237,14 +243,14 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Locates content
+     * Locates content.
      *
      * @see build()
      */
     protected function locateContent()
     {
         try {
-            $dir    = $this->sourceDir.'/'.$this->getOptions()['content']['dir'];
+            $dir = $this->sourceDir.'/'.$this->getOptions()['content']['dir'];
             $params = compact('dir');
             $this->triggerPre(__FUNCTION__, $params);
             $this->contentIterator = Finder::create()
@@ -262,7 +268,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Builds pages collection from content iterator
+     * Builds pages collection from content iterator.
      *
      * @see build()
      */
@@ -283,7 +289,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Converts all pages
+     * Converts all pages.
      */
     protected function convertPages()
     {
@@ -303,10 +309,11 @@ class PHPoole implements EventsCapableInterface
     /**
      * Converts page content:
      * * Yaml frontmatter -> PHP array
-     * * Mardown body -> HTML
+     * * Mardown body -> HTML.
      *
-     * @param Page $page
+     * @param Page   $page
      * @param string $format
+     *
      * @return Page
      */
     public function convertPage($page, $format = 'yaml')
@@ -329,11 +336,12 @@ class PHPoole implements EventsCapableInterface
         $page->setHtml($html);
         // setting page variables
         $page->setVariables($variables);
+
         return $page;
     }
 
     /**
-     * Builds sections
+     * Builds sections.
      *
      * @see build()
      */
@@ -348,18 +356,18 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Builds taxonomies
+     * Builds taxonomies.
      *
      * @see build()
      */
     protected function buildTaxonomies()
     {
-        /**
+        /*
          * Builds collections
          */
         if (array_key_exists('taxonomies', $this->getOptions()['site'])) {
             $this->taxonomies = new Taxonomy\Collection();
-            $siteTaxonomies   = $this->getOptions()['site']['taxonomies'];
+            $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
             // adds each vocabulary collection to the taxonomies collection
             foreach ($siteTaxonomies as $plural => $singular) {
                 $this->taxonomies->add(new Taxonomy\Vocabulary($plural));
@@ -389,14 +397,14 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Adds a node page
+     * Adds a node page.
      *
-     * @param string $type The node type
-     * @param string $title The node title
-     * @param string $path The node path
-     * @param array $pages Pages collections as array
-     * @param array $variables
-     * @param int $menu
+     * @param string $type      The node type
+     * @param string $title     The node title
+     * @param string $path      The node path
+     * @param array  $pages     Pages collections as array
+     * @param array  $variables
+     * @param int    $menu
      */
     protected function addNodePage(
         $type,
@@ -405,25 +413,25 @@ class PHPoole implements EventsCapableInterface
         $pages,
         $variables = [],
         $menu = 0
-    ){
-        $paginateMax  = $this->getOptions()['site']['paginate']['max'];
+    ) {
+        $paginateMax = $this->getOptions()['site']['paginate']['max'];
         $paginatePath = $this->getOptions()['site']['paginate']['path'];
         // paginate
         if (isset($paginateMax) && count($pages) > $paginateMax) {
             $paginateCount = ceil(count($pages) / $paginateMax);
             for ($i = 0; $i < $paginateCount; $i++) {
-                $pagesInPaginator = array_slice($pages, ($i * $paginateMax),  ($i * $paginateMax) + $paginateMax);
+                $pagesInPaginator = array_slice($pages, ($i * $paginateMax), ($i * $paginateMax) + $paginateMax);
                 // first
                 if ($i == 0) {
                     $page = (new Page())
                         ->setId(Page::urlize(sprintf('%s/index', $path)))
                         ->setPathname(Page::urlize(sprintf('%s', $path)))
                         ->setVariable('aliases', [
-                            sprintf('%s/%s/%s', $path, $paginatePath, 1)
+                            sprintf('%s/%s/%s', $path, $paginatePath, 1),
                         ]);
                     if ($menu) {
                         $page->setVariable('menu', [
-                            'main' => ['weight' => $menu]
+                            'main' => ['weight' => $menu],
                         ]);
                     }
                 // others
@@ -462,7 +470,7 @@ class PHPoole implements EventsCapableInterface
                 ->setVariable('pages', $pages);
             if ($menu) {
                 $page->setVariable('menu', [
-                    'main' => ['weight' => $menu]
+                    'main' => ['weight' => $menu],
                 ]);
             }
             if (!empty($variables)) {
@@ -475,7 +483,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Adds section pages to collection
+     * Adds section pages to collection.
      *
      * @see build()
      */
@@ -493,7 +501,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Adds taxonomy pages
+     * Adds taxonomy pages.
      *
      * @see build()
      */
@@ -501,7 +509,7 @@ class PHPoole implements EventsCapableInterface
     {
         $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
         foreach ($this->taxonomies as $plural => $terms) {
-            /**
+            /*
              * Create $plural/$term pages (list of pages)
              * ex: /tags/tag-1/
              */
@@ -517,7 +525,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Adds taxonomy terms pages
+     * Adds taxonomy terms pages.
      *
      * @see build()
      */
@@ -525,7 +533,7 @@ class PHPoole implements EventsCapableInterface
     {
         $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
         foreach ($this->taxonomies as $plural => $terms) {
-            /**
+            /*
              * Create $plural pages (list of terms)
              * ex: /tags/
              */
@@ -550,7 +558,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Adds virtual pages to collection
+     * Adds virtual pages to collection.
      *
      * @see build()
      */
@@ -562,18 +570,19 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Adds homepage to collection
+     * Adds homepage to collection.
      *
      * @see build()
      */
     protected function addHomePage()
     {
         if (!$this->pageCollection->has('index')) {
-            $filtered = $this->pageCollection->filter(function($item) {
+            $filtered = $this->pageCollection->filter(function ($item) {
                 /* @var $item Page */
                 if ($item->getNodeType() == 'page' || $item->getNodeType() == '') {
                     return true;
                 }
+
                 return false;
             });
             $this->addNodePage('homepage', 'Home', '', $filtered->toArray(), [], 1);
@@ -581,7 +590,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Adds 404 page to collection
+     * Adds 404 page to collection.
      *
      * @see build()
      */
@@ -597,7 +606,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Adds redirect pages
+     * Adds redirect pages.
      *
      * @see build()
      */
@@ -622,7 +631,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Builds menus
+     * Builds menus.
      *
      * @see build()
      */
@@ -635,7 +644,7 @@ class PHPoole implements EventsCapableInterface
         foreach ($this->pageCollection as $page) {
             if (!empty($page['menu'])) {
                 // single
-                /**
+                /*
                  * ex:
                  * menu: main
                  */
@@ -648,7 +657,7 @@ class PHPoole implements EventsCapableInterface
                     $menu->add($item);
                 }
                 // multiple
-                /**
+                /*
                  * ex:
                  * menu:
                  *     main:
@@ -668,11 +677,11 @@ class PHPoole implements EventsCapableInterface
                 }
             }
         }
-        /**
+        /*
          * Removing/adding/replacing menus entries from options array
          */
         if (isset($this->getOptions()['site']['menu'])) {
-            foreach($this->getOptions()['site']['menu'] as $name => $value) {
+            foreach ($this->getOptions()['site']['menu'] as $name => $value) {
                 /* @var $menu Menu\Menu */
                 $menu = $this->menus->get($name);
                 if (isset($value['disabled']) && $value['disabled']) {
@@ -691,7 +700,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Adds site variables
+     * Adds site variables.
      *
      * @see build()
      */
@@ -708,7 +717,7 @@ class PHPoole implements EventsCapableInterface
      * Pages rendering:
      * 1. Iterates pages collection
      * 2. Applies Twig templates
-     * 3. Saves rendered files
+     * 3. Saves rendered files.
      *
      * @see build()
      */
@@ -741,10 +750,11 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Render a page
+     * Render a page.
      *
      * @param Page $page
      * @param $dir
+     *
      * @throws \Exception
      *
      * @see renderPages()
@@ -774,7 +784,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Copy static directory content to site root
+     * Copy static directory content to site root.
      *
      * @see build()
      */
@@ -797,10 +807,11 @@ class PHPoole implements EventsCapableInterface
 
     /**
      * Uses a theme?
-     * If yes, set $theme variable
+     * If yes, set $theme variable.
+     *
+     * @throws \Exception
      *
      * @return bool
-     * @throws \Exception
      */
     protected function isTheme()
     {
@@ -811,23 +822,27 @@ class PHPoole implements EventsCapableInterface
             $themesDir = $this->sourceDir.'/'.$this->getOptions()['themes']['dir'];
             if ($this->fs->exists($themesDir.'/'.$this->getOptions()['theme'])) {
                 $this->theme = $this->getOptions()['theme'];
+
                 return true;
             }
             throw new \Exception(sprintf("Theme directory '%s' not found!", $themesDir));
         }
+
         return false;
     }
 
     /**
-     * Layout file finder
+     * Layout file finder.
      *
      * @param Page $page
-     * @return string
+     *
      * @throws \Exception
+     *
+     * @return string
      */
     protected function layoutFinder(Page $page)
     {
-        $layout  = 'unknown';
+        $layout = 'unknown';
         $layouts = $this->layoutFallback($page);
 
         if ($page->getLayout() == 'redirect') {
@@ -854,10 +869,12 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Layout fall-back
+     * Layout fall-back.
      *
      * @param $page
+     *
      * @return array
+     *
      * @see layoutFinder()
      */
     protected function layoutFallback(Page $page)
@@ -920,6 +937,7 @@ class PHPoole implements EventsCapableInterface
                     }
                 }
         }
+
         return $layouts;
     }
 }

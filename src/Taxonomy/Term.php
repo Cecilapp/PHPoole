@@ -12,15 +12,14 @@ use PHPoole\Collection\AbstractCollection;
 use PHPoole\Collection\ItemInterface;
 
 /**
- * Class Term
- * @package PHPoole\Taxonomy
+ * Class Term.
  */
 class Term extends AbstractCollection implements ItemInterface
 {
     protected $name;
 
     /**
-     * Create term
+     * Create term.
      *
      * @param string $name
      */
@@ -30,7 +29,7 @@ class Term extends AbstractCollection implements ItemInterface
     }
 
     /**
-     * Return term name
+     * Return term name.
      *
      * @return string
      */

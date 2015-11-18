@@ -11,8 +11,7 @@ namespace PHPoole\Page;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * Class Parser
- * @package PHPoole\Page
+ * Class Parser.
  */
 class Parser
 {
@@ -30,7 +29,7 @@ class Parser
     protected $body;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param SplFileInfo $file
      */
@@ -48,8 +47,9 @@ class Parser
      * -->
      * Lorem Ipsum.
      *
-     * @return $this
      * @throws \RuntimeException
+     *
+     * @return $this
      */
     public function parse()
     {
@@ -60,28 +60,29 @@ class Parser
             // parse front matter
             preg_match(
                 '/^'
-                . '(<!--|---|\+++){1}[\r\n|\n]*' // $matches[1] = front matter open
-                . '(.*)[\r\n|\n]+'               // $matches[2] = front matter
-                . '(-->|---|\+++){1}[\r\n|\n]*'  // $matches[3] = front matter close
-                . '(.+)'                         // $matches[4] = body
-                . '/s',
+                .'(<!--|---|\+++){1}[\r\n|\n]*' // $matches[1] = front matter open
+                .'(.*)[\r\n|\n]+'               // $matches[2] = front matter
+                .'(-->|---|\+++){1}[\r\n|\n]*'  // $matches[3] = front matter close
+                .'(.+)'                         // $matches[4] = body
+                .'/s',
                 $this->file->getContents(),
                 $matches
             );
             // if not front matter, set body only
             if (!$matches) {
                 $this->body = $this->file->getContents();
+
                 return $this;
             }
             $this->frontmatter = trim($matches[2]);
-            $this->body        = trim($matches[4]);
+            $this->body = trim($matches[4]);
         }
 
         return $this;
     }
 
     /**
-     * Get frontmatter
+     * Get frontmatter.
      *
      * @return string
      */
@@ -91,7 +92,7 @@ class Parser
     }
 
     /**
-     * Get body
+     * Get body.
      *
      * @return string
      */

@@ -9,8 +9,7 @@
 namespace PHPoole\Collection;
 
 /**
- * Class AbstractItem
- * @package PHPoole\Collection
+ * Class AbstractItem.
  */
 abstract class AbstractItem implements ItemInterface
 {
@@ -20,7 +19,7 @@ abstract class AbstractItem implements ItemInterface
     protected $id;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * Set an item identifier or the object hash by default
      *
@@ -36,7 +35,7 @@ abstract class AbstractItem implements ItemInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getId()
     {

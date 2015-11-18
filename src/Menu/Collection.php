@@ -11,20 +11,20 @@ namespace PHPoole\Menu;
 use PHPoole\Collection\AbstractCollection;
 
 /**
- * Class Collection
- * @package PHPoole\Menu
+ * Class Collection.
  */
 class Collection extends AbstractCollection
 {
     /**
      * Return menu (and create it if not exists)
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get($id)
     {
         if (!$this->has($id)) {
             $this->add(new Menu($id));
         }
+
         return $this->items[$id];
     }
 }

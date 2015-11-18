@@ -11,8 +11,7 @@ namespace PHPoole\Renderer;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Class Twig
- * @package PHPoole\Renderer
+ * Class Twig.
  */
 class Twig implements RendererInterface
 {
@@ -50,7 +49,7 @@ class Twig implements RendererInterface
             $this->templatesDir = $templatesPath;
         }
 
-        $loaderFS    = new \Twig_Loader_Filesystem($this->templatesDir);
+        $loaderFS = new \Twig_Loader_Filesystem($this->templatesDir);
         /*
         $loaderArray = new \Twig_Loader_Array(array(
             'redirect.html' => '<!DOCTYPE html>
@@ -69,7 +68,7 @@ class Twig implements RendererInterface
             [
                 'autoescape'       => false,
                 'strict_variables' => $this->twigStrict,
-                'debug'            => $this->twigDebug
+                'debug'            => $this->twigDebug,
             ]
         );
         $this->twig->addExtension(new \Twig_Extension_Debug());
@@ -80,8 +79,9 @@ class Twig implements RendererInterface
         $excerptFilter = new \Twig_SimpleFilter('excerpt', function ($string, $length = 450, $suffix = '…') {
             $str = trim(strip_tags($string));
             if (mb_strlen($str) > $length) {
-                $string = mb_substr($string, 0, $length) . $suffix;
+                $string = mb_substr($string, 0, $length).$suffix;
             }
+
             return $string;
         });
         $this->twig->addFilter($excerptFilter);
@@ -90,7 +90,8 @@ class Twig implements RendererInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @throws \Twig_Error_Loader
      */
     public function addPath($path)
@@ -104,7 +105,7 @@ class Twig implements RendererInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function addGlobal($name, $value)
     {
@@ -112,23 +113,24 @@ class Twig implements RendererInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function render($template, $variables)
     {
         $this->rendered = $this->twig->render($template, $variables);
+
         return $this;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function save($pathname)
     {
         if (!is_dir($dir = dirname($pathname))) {
             $this->fs->mkdir($dir);
         }
-        if (false!== @file_put_contents($pathname, $this->rendered)) {
+        if (false !== @file_put_contents($pathname, $this->rendered)) {
             return true;
         }
     }

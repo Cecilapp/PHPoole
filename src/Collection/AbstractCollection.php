@@ -8,33 +8,32 @@
 
 namespace PHPoole\Collection;
 
-use DomainException;
 use ArrayIterator;
 use Closure;
+use DomainException;
 
 /**
- * Class AbstractCollection
- * @package PHPoole\Collection
+ * Class AbstractCollection.
  */
 abstract class AbstractCollection implements CollectionInterface
 {
     /**
      * @var array
      */
-    protected $items = array();
+    protected $items = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param array $items
      */
-    public function __construct($items = array())
+    public function __construct($items = [])
     {
         $this->items = $items;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function has($id)
     {
@@ -42,7 +41,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function add(ItemInterface $item)
     {
@@ -53,11 +52,12 @@ abstract class AbstractCollection implements CollectionInterface
             ));
         }
         $this->items[$item->getId()] = $item;
+
         return $this;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function replace($id, ItemInterface $item)
     {
@@ -72,7 +72,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function remove($id)
     {
@@ -87,18 +87,19 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get($id)
     {
         if (!$this->has($id)) {
-            return null;
+            return;
         }
+
         return $this->items[$id];
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function keys()
     {
@@ -106,7 +107,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function count()
     {
@@ -114,7 +115,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function toArray()
     {
@@ -122,7 +123,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getIterator()
     {
@@ -130,7 +131,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function usort(Closure $callback)
     {
@@ -138,7 +139,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function filter(Closure $callback)
     {
@@ -146,7 +147,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function map(Closure $callback)
     {
@@ -154,9 +155,10 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * Implement ArrayAccess
+     * Implement ArrayAccess.
      *
      * @param mixed $offset
+     *
      * @return bool
      */
     public function offsetExists($offset)
@@ -165,9 +167,10 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * Implement ArrayAccess
+     * Implement ArrayAccess.
      *
      * @param mixed $offset
+     *
      * @return null|CollectionInterface
      */
     public function offsetGet($offset)
@@ -176,7 +179,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * Implement ArrayAccess
+     * Implement ArrayAccess.
      *
      * @param mixed $offset
      * @param mixed $value
@@ -187,7 +190,7 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * Implement ArrayAccess
+     * Implement ArrayAccess.
      *
      * @param mixed $offset
      */
@@ -197,12 +200,12 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * Returns a string representation of this object
+     * Returns a string representation of this object.
      *
      * @return string
      */
     public function __toString()
     {
-        return __CLASS__ . '@' . spl_object_hash($this);
+        return __CLASS__.'@'.spl_object_hash($this);
     }
 }

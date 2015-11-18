@@ -11,21 +11,21 @@ namespace PHPoole\Test;
 use PHPoole\PHPoole;
 use Symfony\Component\Filesystem\Filesystem;
 
-class PHPooleBuildTest extends \PHPUnit_Framework_TestCase
+class PHPooleBuild extends \PHPUnit_Framework_TestCase
 {
     protected $wsSourceDir;
     protected $wsDestinationDir;
 
     public function setUp()
     {
-        $this->wsSourceDir      = __DIR__ . '/fixtures/website';
+        $this->wsSourceDir = __DIR__.'/fixtures/website';
         $this->wsDestinationDir = $this->wsSourceDir;
     }
 
     public function tearDown()
     {
         $fs = new Filesystem();
-        $fs->remove($this->wsDestinationDir . '/_site');
+        $fs->remove($this->wsDestinationDir.'/_site');
     }
 
     public function testBuid()
@@ -42,8 +42,8 @@ class PHPooleBuildTest extends \PHPUnit_Framework_TestCase
                             'url'       => 'test',
                             'weight'    => -100,
                             'disabled'  => true,
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ]
         )->build();

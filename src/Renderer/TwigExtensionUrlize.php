@@ -7,13 +7,12 @@ use Cocur\Slugify\Slugify;
 use PHPoole\Page\Page;
 
 /**
- * Class TwigExtensionUrlize
- * @package PHPoole\Renderer
+ * Class TwigExtensionUrlize.
  */
 class TwigExtensionUrlize extends SlugifyExtension
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -21,7 +20,7 @@ class TwigExtensionUrlize extends SlugifyExtension
     }
 
     /**
-     * Name of this extension
+     * Name of this extension.
      *
      * @return string
      */
@@ -37,9 +36,9 @@ class TwigExtensionUrlize extends SlugifyExtension
      */
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('urlize', array($this, 'slugifyFilter')),
-        );
+        return [
+            new \Twig_SimpleFilter('urlize', [$this, 'slugifyFilter']),
+        ];
     }
 
     /**
@@ -49,16 +48,17 @@ class TwigExtensionUrlize extends SlugifyExtension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('url', array($this, 'createUrl'), array('needs_environment' => true)),
-        );
+        return [
+            new \Twig_SimpleFunction('url', [$this, 'createUrl'], ['needs_environment' => true]),
+        ];
     }
 
     /**
-     * Create an URL
+     * Create an URL.
      *
      * @param \Twig_Environment $env
-     * @param null $value
+     * @param null              $value
+     *
      * @return string
      */
     public function createUrl(\Twig_Environment $env, $value = null)
@@ -70,7 +70,7 @@ class TwigExtensionUrlize extends SlugifyExtension
         }
 
         $baseurl = $env->getGlobals()['site']['baseurl'];
-        $url     = rtrim($baseurl, '/') . '/' . ltrim($value, '/');
+        $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
 
         return $url;
     }

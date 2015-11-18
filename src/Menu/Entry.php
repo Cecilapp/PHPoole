@@ -8,51 +8,56 @@
 
 namespace PHPoole\Menu;
 
-use PHPoole\Collection\AbstractItem;
 use ArrayAccess;
+use PHPoole\Collection\AbstractItem;
 use PHPoole\Collection\ItemArrayAccessTrait;
 
 /**
- * Class Entry
- * @package PHPoole\Menu
+ * Class Entry.
  */
 class Entry extends AbstractItem implements ArrayAccess
 {
     use ItemArrayAccessTrait;
 
     /**
-     * Set menu entry name
+     * Set menu entry name.
      *
      * @param $value
+     *
      * @return $this
      */
     public function setName($value)
     {
         $this->properties['name'] = $value;
+
         return $this;
     }
 
     /**
-     * Set menu entry URL
+     * Set menu entry URL.
      *
      * @param $value
+     *
      * @return $this
      */
     public function setUrl($value)
     {
         $this->properties['url'] = $value;
+
         return $this;
     }
 
     /**
-     * Set menu entry weight
+     * Set menu entry weight.
      *
      * @param $value
+     *
      * @return $this
      */
     public function setWeight($value)
     {
         $this->properties['weight'] = $value;
+
         return $this;
     }
 }

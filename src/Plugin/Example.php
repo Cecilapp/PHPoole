@@ -15,9 +15,10 @@ class Example extends AbstractPlugin
 {
     public function attach(EventManagerInterface $events)
     {
-        $this->handles[] = $events->attach('options', array($this, 'onOptions'));
-        $this->handles[] = $events->attach('locateContent.pre', array($this, 'onLocateContentPre'));
-        $this->handles[] = $events->attach('locateContent.post', array($this, 'onLocateContentPost'));
+        $this->handles[] = $events->attach('options', [$this, 'onOptions']);
+        $this->handles[] = $events->attach('locateContent.pre', [$this, 'onLocateContentPre']);
+        $this->handles[] = $events->attach('locateContent.post', [$this, 'onLocateContentPost']);
+
         return $this;
     }
 

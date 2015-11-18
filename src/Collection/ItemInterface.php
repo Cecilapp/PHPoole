@@ -9,13 +9,12 @@
 namespace PHPoole\Collection;
 
 /**
- * Interface ItemInterface
- * @package PHPoole\Collection
+ * Interface ItemInterface.
  */
 interface ItemInterface
 {
     /**
-     * Return the item identifier
+     * Return the item identifier.
      *
      * @return string
      */
