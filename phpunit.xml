@@ -7,6 +7,7 @@
         >
     <php>
         <ini name="error_reporting" value="-1" />
+        <ini name="date.timezone" value="Europe/Paris" />
     </php>
     <testsuites>
         <testsuite name="PHPoole-library test suite">
