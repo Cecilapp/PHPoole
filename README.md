@@ -242,3 +242,15 @@ PHP script options to define how to build the website.
     ],
 ]
 ```
+
+Packaging Phar file
+-------------------
+1. Install [Box](https://github.com/box-project/box2)
+2. Run the following command:
+
+    $ box build -v
+
+License
+-------
+
+PHPoole-library is free software distributed under the terms of the MIT license.
