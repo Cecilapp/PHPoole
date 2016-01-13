@@ -5,7 +5,7 @@
     "Herrera\\Box\\Compactor\\Php"
   ],
   "directories": [
-    "lib"
+    "src"
   ],
   "extract": true,
   "files": [
