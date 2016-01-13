@@ -61,18 +61,20 @@ To create a new website, you need 3 things:
 Organize your content:
 ```
 .
-├─ content             <- Contains Mardown files
-|  ├─ Blog             <- A section named "Blog"
-|  |  └─ Post 1.md     <- A page in the "Blog" section
-|  ├─ Project          <- A section named "Project"
-|  |  └─ Post 1.md     <- A page in the "Project" section
-|  └─ About.md         <- A page in the root
-├─ layouts             <- Contains Twig templates
-|  ├─ _default         <- Contains default templates
-|  |  ├─ list.html     <- Used by a _list_ node type (ie: section)
-|  |  ├─ page.html     <- Used by the _page_ node type
-|  ├─ index.html       <- Used by the _homepage_ node type
-└─ static              <- Contains static files
+├─ content               <- Contains Mardown files
+|  ├─ Blog               <- A section named "Blog"
+|  |  ├─ Post 1.md       <- A page in the "Blog" section
+|  |  └─ Post 2.md       <- A page in the "Blog" section
+|  ├─ Project            <- A section named "Project"
+|  |  └─ Project 1.md    <- A page in the "Project" section
+|  └─ About.md           <- A page in the root
+├─ layouts               <- Contains Twig templates
+|  ├─ _default           <- Contains default templates
+|  |  ├─ list.html       <- Used by a _list_ node type (ie: section)
+|  |  └─ page.html       <- Used by the _page_ node type
+|  └─ index.html         <- Used by the _homepage_ node type
+└─ static                <- Contains static files
+   └─ robots.txt         <- A static file
 ```
 
 Create a PHP script:
@@ -97,7 +99,20 @@ PHPoole::create(
 exec('php -S localhost:8000 -t _site'); // Run a local server
 ```
 
-By default, the static website is created in the _./_site_ directory.
+By default, the static website is created in the _./_site_ directory:
+```
+.
+├─ blog
+|  ├─ index.html
+|  ├─ post-1.html
+|  └─ post-2.html
+├─ project
+|  ├─ index.html
+|  └─ project-1.html
+├─ about.hml
+├─ index.html
+└─ robots.txt
+```
 
 ### Content
 
