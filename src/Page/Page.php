@@ -44,7 +44,7 @@ class Page extends AbstractItem implements \ArrayAccess
     /**
      * @var string
      *
-     * 'homepage', 'list' or 'page'
+     * 'homepage', 'section', 'taxonomy', 'terms' or 'page'
      */
     protected $nodeType = 'page';
 
