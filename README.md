@@ -157,27 +157,30 @@ Contains all variables under _site_ key in config array (see [_Default options_]
 | site.menus    | Menus collections |
 | site.pages    | Pages collections |
 
-Menu keys:
-* site.menus._id_.name
-* site.menus._id_.url
-* site.menus._id_.weight
+Menu entry keys:
+
+| Variable               | Description  |
+| ---------------------- | ------------ |
+| site.menus._id_.name   | Entry name   |
+| site.menus._id_.url    | Entry URL    |
+| site.menus._id_.weight | Entry weight |
 
 **Page variables**
 
 Contains all variables setted in the page's [front matter](#front-matter).
 
-| Variable      | Description                      | Example       |
-| ------------- | -------------------------------- | ------------- |
-| title         | Title                            | "Post 1"      |
-| section       | Section                          | "blog"        |
-| id            | Unique id                        | "blog/post-1" |
-| pathname      | Full path                        | "blog/post-1" |
-| path          | Path                             | "blog"        |
-| name          | Name                             | "post-1"      |
-| pages         | Pages collection (for node page) | _Collection_  |
-| tags          | Tags array                       | [Ta, Tb]      |
-| categories    | Categories array                 | [Ca, Cb]      |
-| ...           |                                  |               |
+| Variable        | Description                      | Example       |
+| --------------- | -------------------------------- | ------------- |
+| page.title      | Title                            | "Post 1"      |
+| page.section    | Section                          | "blog"        |
+| page.id         | Unique id                        | "blog/post-1" |
+| page.pathname   | Full path                        | "blog/post-1" |
+| page.path       | Path                             | "blog"        |
+| page.name       | Name                             | "post-1"      |
+| page.pages      | Pages collection (for node page) | _Collection_  |
+| page.tags       | Tags array                       | [Ta, Tb]      |
+| page.categories | Categories array                 | [Ca, Cb]      |
+| ...             |                                  |               |
 
 **Paginator variables**
 
