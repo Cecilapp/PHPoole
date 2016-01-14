@@ -222,34 +222,40 @@ Contains all variables setted in the page's [front matter](#page-front-matter).
 ##### _url_
 
 Creates an URL.
-
-ie: _{{ url('tags/' ~ tag) }}_, _{{ url(page) }}_
+```
+{{ url('tags/' ~ tag) }}
+{{ url(page) }}
+```
 
 #### Twig filters
 
 ##### _excerpt_
 
 Truncates a string to 450 char and add '…'.
-
-ie: _{{ string|excerpt }}_
+```
+{{ string|excerpt }}
+```
 
 ##### _sortByWeight_
 
 Sorts a menu entries collection by weight.
-
-ie: _{{ menu|sortByWeight }}_
+```
+{{ menu|sortByWeight }}
+```
 
 ##### _sortByDate_
 
 Sorts a pages collection by date.
-
-ie: _{{ pages|sortByDate }}_
+```
+{{ pages|sortByDate }}
+```
 
 ##### _bySection_
 
 Filters a pages collection by section name.
-
-ie: _{{ pages|bySection('blog') }}_
+```
+{{ pages|bySection('blog') }}
+```
 
 ### Options
 
