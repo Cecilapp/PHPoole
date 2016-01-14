@@ -97,13 +97,17 @@ By default, the static website is created in the _./_site_ directory:
 ```
 ./_site
 ├─ blog
-|  ├─ index.html
-|  ├─ post-1.html
-|  └─ post-2.html
+|  ├─ post-1
+|  |  └─ index.html
+|  ├─ post-2
+|  |  └─ index.html
+|  └─ index.html
 ├─ project
-|  ├─ index.html
-|  └─ project-1.html
-├─ about.hml
+|  ├─ project-1
+|  |  └─ index.html
+|  └─ index.html
+├─ about
+|  └─ index.hml
 ├─ index.html
 └─ robots.txt
 ```
