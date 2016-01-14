@@ -567,6 +567,7 @@ class PHPoole implements EventsCapableInterface
         $this->addHomePage();
         $this->add404Page();
         $this->addRedirectPages();
+        $this->addSitemapPage();
     }
 
     /**
@@ -601,6 +602,21 @@ class PHPoole implements EventsCapableInterface
             $page->setId('404')
                 ->setTitle('Page not found!')
                 ->setLayout('404');
+            $this->pageCollection->add($page);
+        }
+    }
+
+    /**
+     * Adds sitemap page to collection.
+     *
+     * @see build()
+     */
+    protected function addSitemapPage()
+    {
+        if (!$this->pageCollection->has('sitemap')) {
+            $page = new Page();
+            $page->setId('sitemap')
+                ->setLayout('sitemap');
             $this->pageCollection->add($page);
         }
     }
@@ -766,14 +782,17 @@ class PHPoole implements EventsCapableInterface
         $this->renderer->render($this->layoutFinder($page), [
             'page' => $page,
         ]);
-        // destination of the 404 page
+        // pathname of the 404 page
         if ($page->getId() == '404') {
             $pathname = $dir.'/404.html';
+        // pathname of the sitemap page
+        } else if ($page->getId() == 'sitemap') {
+            $pathname = $dir.'/sitemap.xml';
         } else {
-            // destination of an index/list from on a content file instead of a virtual page
+            // pathname of a node page (not a virtual page)
             if ($page->getName() == 'index') {
                 $pathname = $dir.'/'.$page->getPath().'/'.$this->getOptions()['output']['filename'];
-            // destination of a page
+            // pathname of a page
             } else {
                 $pathname = $dir.'/'.$page->getPathname().'/'.$this->getOptions()['output']['filename'];
             }
@@ -843,11 +862,15 @@ class PHPoole implements EventsCapableInterface
     protected function layoutFinder(Page $page)
     {
         $layout = 'unknown';
-        $layouts = $this->layoutFallback($page);
-
+        
         if ($page->getLayout() == 'redirect') {
             return $page->getLayout().'.html';
         }
+        if ($page->getLayout() == 'sitemap') {
+            return 'sitemap.xml';
+        }
+
+        $layouts = $this->layoutFallback($page);
 
         // is layout exists in local layout dir?
         $layoutsDir = $this->sourceDir.'/'.$this->getOptions()['layouts']['dir'];
