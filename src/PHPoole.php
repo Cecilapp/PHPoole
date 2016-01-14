@@ -788,7 +788,7 @@ class PHPoole implements EventsCapableInterface
         if ($page->getId() == '404') {
             $pathname = $dir.'/404.html';
         // pathname of the sitemap page
-        } else if ($page->getId() == 'sitemap') {
+        } elseif ($page->getId() == 'sitemap') {
             $pathname = $dir.'/sitemap.xml';
         } else {
             // pathname of a node page (not a virtual page)
@@ -864,7 +864,7 @@ class PHPoole implements EventsCapableInterface
     protected function layoutFinder(Page $page)
     {
         $layout = 'unknown';
-        
+
         if ($page->getLayout() == 'redirect') {
             return $page->getLayout().'.html';
         }
