@@ -1,5 +1,4 @@
-![PHPoole logo](https://avatars2.githubusercontent.com/u/5618939?s=50 "Logo created by Cards Against Humanity") PHPoole-library
-===============
+# ![PHPoole logo](https://avatars2.githubusercontent.com/u/5618939?s=50 "Logo created by Cards Against Humanity") PHPoole-library
 
 > An intuitive PHP library to create a static Website.
 
@@ -14,8 +13,7 @@ It converts [Markdown](http://daringfireball.net/projects/markdown/) files into 
 
 You can easily create a blog, a personal website, a simple corporate website, etc.
 
-Features
---------
+## Features
 
 * No database, files only (host your site anywhere)
 * Fully configurable (Through options and plugins system - _WIP_)
@@ -25,13 +23,11 @@ Features
 * Configurable taxonomies (categories, tags, etc.)
 * Paginator (for homepage, sections and taxonomies)
 
-Requirements
-------------
+## Requirements
 
 Please see the [composer.json](composer.json) file.
 
-Installation
-------------
+## Installation
 
 ### Manually
 
@@ -43,20 +39,18 @@ Run the following command:
 
     $ composer require narno/phpoole-library:1.0.X-dev
 
-Demo
-----
+## Demo
 
 Try the [demo](https://github.com/Narno/PHPoole-demo).
 
-Usage
------
+## Usage
 
 ### Overview
 
 To create a new website, you need 3 things:
- * pages (content)
- * templates (layouts)
- * a build script (PHP)
+ * pages (Markdown files)
+ * templates (Twig files)
+ * a build script (PHP script)
 
 Organize your content:
 ```
@@ -70,7 +64,7 @@ Organize your content:
 |  └─ About.md           <- A page in the root
 ├─ layouts               <- Contains Twig templates
 |  ├─ _default           <- Contains default templates
-|  |  ├─ list.html       <- Used by a _list_ node type (ie: section)
+|  |  ├─ list.html       <- Used by a _list_ node type (ie: "section")
 |  |  └─ page.html       <- Used by the _page_ node type
 |  └─ index.html         <- Used by the _homepage_ node type
 └─ static                <- Contains static files
@@ -80,9 +74,9 @@ Organize your content:
 Create a PHP script:
 ```php
 <?php
-date_default_timezone_set('Europe/Paris');
+date_default_timezone_set('Europe/Paris'); // default time zone
 require_once 'vendor/autoload.php'; // Composer
-//require_once 'phar://phpoole-library.phar'; // Phar
+//require_once 'phar://phpoole-library.phar'; // Phar file
 use PHPoole\PHPoole;
 
 PHPoole::create(
@@ -101,7 +95,7 @@ exec('php -S localhost:8000 -t _site'); // Run a local server
 
 By default, the static website is created in the _./_site_ directory:
 ```
-.
+./_site
 ├─ blog
 |  ├─ index.html
 |  ├─ post-1.html
@@ -116,12 +110,14 @@ By default, the static website is created in the _./_site_ directory:
 
 ### Content
 
-The content is represented by Markdown files organized in folders.
+The content is represented by [Markdown](http://daringfireball.net/projects/markdown/) files organized in folders.
 Folders in the root are called "section" (ie: "Blog", "Project", etc.).
 
-A page can contain a [front matter](#front-matter) ([YAML](http://www.yaml.org/spec/1.2/spec.html#Preview)) and/or a [body](#body) ([Markdown](http://daringfireball.net/projects/markdown/syntax)).
+#### Pages 
 
-#### Front matter
+A page can contain a [front matter](#page-front-matter) ([YAML](http://www.yaml.org/spec/1.2/spec.html#Preview)) and/or a [body](#page-body) ([Markdown](http://daringfireball.net/projects/markdown/syntax)).
+
+##### Page front matter
 
 Any file that contains a YAML front matter will be processed to extract some variables. The front matter must be the first thing in the file and must be a valid YAML.
 
@@ -138,11 +134,11 @@ Any file that contains a YAML front matter will be processed to extract some var
 | categories    | Categories    | _Empty_                           |
 | permalink     | Permalink     | _To Do_                           |
 
-#### Body
+##### Page body
 
 Body is the main content of the page, it could be in Markdown or in plain text.
 
-#### Page example
+##### Page example
 
 ```yml
 ---
@@ -182,7 +178,7 @@ Menu entry keys:
 
 **Page variables**
 
-Contains all variables setted in the page's [front matter](#front-matter).
+Contains all variables setted in the page's [front matter](#page-front-matter).
 
 | Variable        | Description                      | Example       |
 | --------------- | -------------------------------- | ------------- |
@@ -221,9 +217,43 @@ Contains all variables setted in the page's [front matter](#front-matter).
 <b>{{ page.customvar }}</p>
 ```
 
+#### Twig functions
+
+##### _url_
+
+Creates an URL.
+
+ie: _{{ url('tags/' ~ tag) }}_, _{{ url(page) }}_
+
+#### Twig filters
+
+##### _excerpt_
+
+Truncates a string to 450 char and add '…'.
+
+ie: _{{ string|excerpt }}_
+
+##### _sortByWeight_
+
+Sorts a menu entries collection by weight.
+
+ie: _{{ menu|sortByWeight }}_
+
+##### _sortByDate_
+
+Sorts a pages collection by date.
+
+ie: _{{ pages|sortByDate }}_
+
+##### _bySection_
+
+Filters a pages collection by section name.
+
+ie: _{{ pages|bySection('blog') }}_
+
 ### Options
 
-PHP script options to define how to build the website.
+PHP array of options used to define how to build the website.
 
 #### Default options
 
@@ -269,14 +299,14 @@ PHP script options to define how to build the website.
 ]
 ```
 
-Packaging the Phar file
------------------------
+## Packaging the Phar file
+
 1. Install [Box](https://github.com/box-project/box2)
 2. Run the following command:
-
+```
     $ box build -v
+```
 
-License
--------
+## License
 
 PHPoole-library is a free software distributed under the terms of the MIT license.
