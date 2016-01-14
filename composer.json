@@ -1,8 +1,8 @@
 {
   "name": "narno/phpoole-library",
   "type": "library",
-  "description": "A PHP library to generate a static website.",
-  "keywords": ["static", "website", "generator"],
+  "description": "An intuitive PHP library to create a static Website.",
+  "keywords": ["static", "website", "generator", "flat file", "markdown", "twig"],
   "homepage": "https://github.com/Narno/PHPoole-library",
   "license": "MIT",
   "authors": [
