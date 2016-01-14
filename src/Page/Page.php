@@ -19,7 +19,7 @@ class Page extends AbstractItem implements \ArrayAccess
 {
     use PageVariablesTrait;
 
-    const SLUGIFY_PATTERN = '/([^a-z0-9\/]|-)+/';
+    const SLUGIFY_PATTERN = '/(^\/|[^a-z0-9\/]|-)+/';
 
     /**
      * @var SplFileInfo
