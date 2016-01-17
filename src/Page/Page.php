@@ -77,7 +77,7 @@ class Page extends AbstractItem implements \ArrayAccess
      */
     protected $layout;
     /**
-     * @var timestamp
+     * @var integer Unix timestamp
      */
     protected $date;
 
@@ -129,7 +129,7 @@ class Page extends AbstractItem implements \ArrayAccess
             // section - ie: "blog"
             $this->section = explode('/', $this->path)[0];
             // date
-            $this->date = filemtime($this->file->getFilename()));
+            $this->date = filemtime($this->file->getPathname());
         } else {
             $this->virtual = true;
         }
