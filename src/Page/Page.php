@@ -325,6 +325,34 @@ class Page extends AbstractItem implements \ArrayAccess
     }
 
     /**
+     * Set date.
+     *
+     * @param $date
+     *
+     * @return $this
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date.
+     *
+     * @return string
+     */
+    public function getDate()
+    {
+        if (empty($this->date) && $this->file != null) {
+            $this->date = filemtime($this->file->getPathname());
+        }
+
+        return $this->date;
+    }
+
+    /**
      * Set ID.
      *
      * @param $id
