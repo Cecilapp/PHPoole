@@ -101,6 +101,8 @@ class Page extends AbstractItem implements \ArrayAccess
      */
     public function __construct(SplFileInfo $file = null)
     {
+        parent::__construct();
+
         $this->file = $file;
 
         if ($this->file instanceof SplFileInfo) {
