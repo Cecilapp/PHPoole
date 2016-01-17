@@ -325,7 +325,9 @@ class PHPoole implements EventsCapableInterface
         // converts body
         $html = (new Converter())
             ->convertBody($page->getBody());
-        // setting page properties
+        /*
+         * setting page properties
+         */
         if (!empty($variables['title'])) {
             $page->setTitle($variables['title']);
             unset($variables['title']);
@@ -333,6 +335,10 @@ class PHPoole implements EventsCapableInterface
         if (!empty($variables['section'])) {
             $page->setSection($variables['section']);
             unset($variables['section']);
+        }
+        if (!empty($variables['date'])) {
+            $page->setDate($variables['date']);
+            unset($variables['date']);
         }
         $page->setHtml($html);
         // setting page variables
