@@ -26,6 +26,7 @@ class PHPooleBuild extends \PHPUnit_Framework_TestCase
     {
         $fs = new Filesystem();
         $fs->remove($this->wsDestinationDir.'/_site');
+        $fs->remove($this->wsDestinationDir.'/layouts/_cache');
     }
 
     public function testBuid()

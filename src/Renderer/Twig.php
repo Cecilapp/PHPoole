@@ -39,6 +39,10 @@ class Twig implements RendererInterface
      * @var bool
      */
     protected $twigDebug = true;
+    /*
+     * @var string|bool
+     */
+    protected $twigCache = false;
 
     /**
      * {@inheritdoc}
@@ -48,6 +52,7 @@ class Twig implements RendererInterface
         if (!empty($templatesPath)) {
             $this->templatesDir = $templatesPath;
         }
+        $this->twigCache = $this->templatesDir . '/_cache';
 
         $loaderFS = new \Twig_Loader_Filesystem($this->templatesDir);
         $loaderArray = new \Twig_Loader_Array(array(
@@ -67,6 +72,7 @@ class Twig implements RendererInterface
                 'autoescape'       => false,
                 'strict_variables' => $this->twigStrict,
                 'debug'            => $this->twigDebug,
+                'cache'            => $this->twigCache,
             ]
         );
         $this->twig->addExtension(new \Twig_Extension_Debug());
