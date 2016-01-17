@@ -50,7 +50,6 @@ class Twig implements RendererInterface
         }
 
         $loaderFS = new \Twig_Loader_Filesystem($this->templatesDir);
-        /*
         $loaderArray = new \Twig_Loader_Array(array(
             'redirect.html' => '<!DOCTYPE html>
 <html>
@@ -61,10 +60,9 @@ class Twig implements RendererInterface
 </head>
 </html>',
         ));
-        */
-        //$loader = new \Twig_Loader_Chain(array($loaderArray, $loaderFS));
-        //$this->twig = new \Twig_Environment($loader,
-        $this->twig = new \Twig_Environment($loaderFS,
+        $loader = new \Twig_Loader_Chain(array($loaderArray, $loaderFS));
+        $this->twig = new \Twig_Environment($loader,
+        //$this->twig = new \Twig_Environment($loaderFS,
             [
                 'autoescape'       => false,
                 'strict_variables' => $this->twigStrict,
