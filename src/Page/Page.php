@@ -76,6 +76,10 @@ class Page extends AbstractItem implements \ArrayAccess
      * @var string
      */
     protected $layout;
+    /**
+     * @var timestamp
+     */
+    protected $date;
 
     /**
      * @var string
@@ -124,6 +128,8 @@ class Page extends AbstractItem implements \ArrayAccess
             $this->title = basename($this->file->getBasename(), '.'.$this->fileExtension);
             // section - ie: "blog"
             $this->section = explode('/', $this->path)[0];
+            // date
+            $this->date = filemtime($this->file->getFilename()));
         } else {
             $this->virtual = true;
         }
