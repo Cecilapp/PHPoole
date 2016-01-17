@@ -11,6 +11,7 @@ namespace PHPoole;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\Converter;
 use PHPoole\Page\Page;
+use PHPoole\Page\NodeTypeEnum;
 use PHPoole\Plugin\PluginAwareTrait;
 use PHPoole\Renderer\RendererInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -493,7 +494,7 @@ class PHPoole implements EventsCapableInterface
             $menu = 100;
             foreach ($this->sections as $node => $pages) {
                 if (!$this->pageCollection->has($node)) {
-                    $this->addNodePage('section', $node, $node, $pages, [], $menu);
+                    $this->addNodePage(NodeTypeEnum::SECTION, $node, $node, $pages, [], $menu);
                 }
                 $menu += 10;
             }
@@ -517,7 +518,7 @@ class PHPoole implements EventsCapableInterface
                 foreach ($terms as $node => $pages) {
                     if (!$this->pageCollection->has($node)) {
                         /* @var $pages Collection\CollectionInterface */
-                        $this->addNodePage('taxonomy', $node, "$plural/$node", $pages->toArray(), ['singular' => $siteTaxonomies[$plural]]);
+                        $this->addNodePage(NodeTypeEnum::TAXONOMY, $node, "$plural/$node", $pages->toArray(), ['singular' => $siteTaxonomies[$plural]]);
                     }
                 }
             }
@@ -582,13 +583,13 @@ class PHPoole implements EventsCapableInterface
         if (!$this->pageCollection->has('index')) {
             $filtered = $this->pageCollection->filter(function (Page $item) {
                 /* @var $item Page */
-                if ($item->getNodeType() == 'page' || $item->getNodeType() == '') {
+                if ($item->getNodeType() == NodeTypeEnum::PAGE) {
                     return true;
                 }
 
                 return false;
             });
-            $this->addNodePage('homepage', 'Home', '', $filtered->toArray(), [], 1);
+            $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $filtered->toArray(), [], 1);
         }
     }
 
@@ -905,14 +906,14 @@ class PHPoole implements EventsCapableInterface
     protected function layoutFallback(Page $page)
     {
         switch ($page->getNodeType()) {
-            case 'homepage':
+            case NodeTypeEnum::HOMEPAGE:
                 $layouts = [
                     'index.html',
                     '_default/list.html',
                     '_default/page.html',
                 ];
                 break;
-            case 'section':
+            case NodeTypeEnum::SECTION:
                 $layouts = [
                     // 'section/$section.html'
                     '_default/section.html',
@@ -922,7 +923,7 @@ class PHPoole implements EventsCapableInterface
                     $layouts = array_merge([sprintf('section/%s.html', $page->getSection())], $layouts);
                 }
                 break;
-            case 'taxonomy':
+            case NodeTypeEnum::TAXONOMY:
                 $layouts = [
                     // 'taxonomy/$singular.html'
                     '_default/taxonomy.html',
@@ -932,7 +933,7 @@ class PHPoole implements EventsCapableInterface
                     $layouts = array_merge([sprintf('taxonomy/%s.html', $page->getVariable('singular'))], $layouts);
                 }
                 break;
-            case 'terms':
+            case NodeTypeEnum::TERMS:
                 $layouts = [
                     // 'taxonomy/$singular.terms.html'
                     '_default/terms.html',
@@ -941,7 +942,7 @@ class PHPoole implements EventsCapableInterface
                     $layouts = array_merge([sprintf('taxonomy/%s.terms.html', $page->getVariable('singular'))], $layouts);
                 }
                 break;
-            case 'page':
+            case NodeTypeEnum::PAGE:
             default:
                 $layouts = [
                     // '$section/page.html'

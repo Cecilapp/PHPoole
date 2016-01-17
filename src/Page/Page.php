@@ -9,6 +9,7 @@
 namespace PHPoole\Page;
 
 use Cocur\Slugify\Slugify;
+use MyCLabs\Enum\Enum;
 use PHPoole\Collection\AbstractItem;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -43,10 +44,9 @@ class Page extends AbstractItem implements \ArrayAccess
      */
     protected $virtual = false;
     /**
-     * @var string
-     * @todo should be an SplEnum? ('homepage', 'section', 'taxonomy', 'terms', 'page')
+     * @var Enum
      */
-    protected $nodeType = 'page';
+    protected $nodeType;
 
     /**
      * @var string
@@ -170,7 +170,7 @@ class Page extends AbstractItem implements \ArrayAccess
      */
     public function setNodeType($nodeType)
     {
-        $this->nodeType = $nodeType;
+        $this->nodeType = new NodeTypeEnum($nodeType);
 
         return $this;
     }
