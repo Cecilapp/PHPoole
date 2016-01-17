@@ -340,6 +340,10 @@ class PHPoole implements EventsCapableInterface
             $page->setDate($variables['date']);
             unset($variables['date']);
         }
+        if (!empty($variables['permalink'])) {
+            $page->setPermalink($variables['permalink']);
+            unset($variables['permalink']);
+        }
         $page->setHtml($html);
         // setting page variables
         $page->setVariables($variables);
@@ -648,7 +652,7 @@ class PHPoole implements EventsCapableInterface
                         ->setPathname(Page::urlize($redirect))
                         ->setTitle($redirect)
                         ->setLayout('redirect')
-                        ->setVariable('destination', $page->getPathname());
+                        ->setVariable('destination', $page->getPermalink());
                     $this->pageCollection->add($redirectPage);
                 }
             }
@@ -676,7 +680,7 @@ class PHPoole implements EventsCapableInterface
                 if (is_string($page['menu'])) {
                     $item = (new Menu\Entry($page->getId()))
                         ->setName($page->getTitle())
-                        ->setUrl($page->getPathname());
+                        ->setUrl($page->getPermalink());
                     /* @var $menu Menu\Menu */
                     $menu = $this->menus->get($page['menu']);
                     $menu->add($item);
@@ -693,7 +697,7 @@ class PHPoole implements EventsCapableInterface
                     foreach ($page['menu'] as $name => $value) {
                         $item = (new Menu\Entry($page->getId()))
                             ->setName($page->getTitle())
-                            ->setUrl($page->getPathname())
+                            ->setUrl($page->getPermalink())
                             ->setWeight($value['weight']);
                         /* @var $menu Menu\Menu */
                         $menu = $this->menus->get($name);
@@ -803,7 +807,11 @@ class PHPoole implements EventsCapableInterface
                 $pathname = $dir.'/'.$page->getPath().'/'.$this->getOptions()['output']['filename'];
             // pathname of a page
             } else {
-                $pathname = $dir.'/'.$page->getPathname().'/'.$this->getOptions()['output']['filename'];
+                if (empty(pathinfo($page->getPermalink(), PATHINFO_EXTENSION))) {
+                    $pathname = $dir.'/'.$page->getPermalink().'/'.$this->getOptions()['output']['filename'];
+                } else {
+                    $pathname = $dir.'/'.$page->getPermalink();
+                }
             }
         }
         $pathname = preg_replace('#/+#', '/', $pathname); // remove unnecessary slashes

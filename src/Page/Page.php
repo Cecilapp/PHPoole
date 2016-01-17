@@ -80,6 +80,10 @@ class Page extends AbstractItem implements \ArrayAccess
      * @var integer Unix timestamp
      */
     protected $date;
+    /**
+     * @var string
+     */
+    protected $permalink;
 
     /**
      * @var string
@@ -132,6 +136,8 @@ class Page extends AbstractItem implements \ArrayAccess
             $this->section = explode('/', $this->path)[0];
             // date
             $this->date = filemtime($this->file->getPathname());
+            // permalink
+            $this->permalink = $this->pathname;
         } else {
             $this->virtual = true;
         }
@@ -350,6 +356,34 @@ class Page extends AbstractItem implements \ArrayAccess
         }
 
         return $this->date;
+    }
+
+    /**
+     * Set permalink.
+     *
+     * @param $permalink
+     *
+     * @return $this
+     */
+    public function setPermalink($permalink)
+    {
+        $this->permalink = $permalink;
+
+        return $this;
+    }
+
+    /**
+     * Get permalink.
+     *
+     * @return string
+     */
+    public function getPermalink()
+    {
+        if (empty($this->permalink)) {
+            $this->permalink = $this->getPathname();
+        }
+
+        return $this->permalink;
     }
 
     /**
