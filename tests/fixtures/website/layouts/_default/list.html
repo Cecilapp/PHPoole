@@ -9,8 +9,11 @@
 {% include 'include/menu.html' %}
 
 <ul>
-    {% for p in page.pages %}
-    <li><a href="{{ url(p) }}">{{ p.title }}</a></li>
+    {% for p in page.pages|bySection(page.pathname) %}
+    <li>
+        <a href="{{ url(p) }}">{{ p.title }}</a>
+        {{ p.content|excerpt }}
+    </li>
     {% endfor %}
 </ul>
 
