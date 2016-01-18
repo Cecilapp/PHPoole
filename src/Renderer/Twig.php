@@ -80,7 +80,7 @@ class Twig implements RendererInterface
         $this->twig->addExtension(new TwigExtensionUrlize());
 
         // excerpt filter
-        $excerptFilter = new \Twig_SimpleFilter('excerpt', function ($string, $length = 450, $suffix = '…') {
+        $excerptFilter = new \Twig_SimpleFilter('excerpt', function($string, $length = 450, $suffix = '…') {
             $str = trim(strip_tags($string));
             if (mb_strlen($str) > $length) {
                 $string = mb_substr($string, 0, $length).$suffix;
