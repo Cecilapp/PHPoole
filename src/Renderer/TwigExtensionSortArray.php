@@ -110,12 +110,12 @@ class TwigExtensionSortArray extends \Twig_Extension
     /**
      * Filter by section.
      *
-     * @param \PHPoole\Page\Collection $pages
-     * @param string                   $section
+     * @param \PHPoole\Page\Collection|array $pages
+     * @param string                         $section
      *
      * @return array
      */
-    public function bySection(\PHPoole\Page\Collection $pages, $section)
+    public function bySection($pages, $section)
     {
         $filtered = [];
 
