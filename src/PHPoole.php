@@ -752,7 +752,7 @@ class PHPoole implements EventsCapableInterface
     /**
      * Render a page.
      *
-     * @param Page $page
+     * @param Page   $page
      * @param string $dir
      *
      * @throws \Exception
