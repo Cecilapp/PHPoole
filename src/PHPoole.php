@@ -10,8 +10,8 @@ namespace PHPoole;
 
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\Converter;
-use PHPoole\Page\Page;
 use PHPoole\Page\NodeTypeEnum;
+use PHPoole\Page\Page;
 use PHPoole\Plugin\PluginAwareTrait;
 use PHPoole\Renderer\RendererInterface;
 use Symfony\Component\Filesystem\Filesystem;
