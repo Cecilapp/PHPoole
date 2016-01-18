@@ -77,7 +77,7 @@ class Page extends AbstractItem implements \ArrayAccess
      */
     protected $layout;
     /**
-     * @var integer Unix timestamp
+     * @var int Unix timestamp
      */
     protected $date;
     /**

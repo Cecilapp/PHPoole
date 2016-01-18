@@ -52,10 +52,10 @@ class Twig implements RendererInterface
         if (!empty($templatesPath)) {
             $this->templatesDir = $templatesPath;
         }
-        $this->twigCache = $this->templatesDir . '/_cache';
+        $this->twigCache = $this->templatesDir.'/_cache';
 
         $loaderFS = new \Twig_Loader_Filesystem($this->templatesDir);
-        $loaderArray = new \Twig_Loader_Array(array(
+        $loaderArray = new \Twig_Loader_Array([
             'redirect.html' => '<!DOCTYPE html>
 <html>
 <head lang="en">
@@ -64,8 +64,8 @@ class Twig implements RendererInterface
     <meta http-equiv="refresh" content="0;url={{ url(page.destination) }}" />
 </head>
 </html>',
-        ));
-        $loader = new \Twig_Loader_Chain(array($loaderArray, $loaderFS));
+        ]);
+        $loader = new \Twig_Loader_Chain([$loaderArray, $loaderFS]);
         $this->twig = new \Twig_Environment($loader,
         //$this->twig = new \Twig_Environment($loaderFS,
             [
