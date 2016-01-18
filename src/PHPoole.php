@@ -344,6 +344,10 @@ class PHPoole implements EventsCapableInterface
             $page->setPermalink($variables['permalink']);
             unset($variables['permalink']);
         }
+        if (!empty($variables['layout'])) {
+            $page->setLayout($variables['layout']);
+            unset($variables['layout']);
+        }
         $page->setHtml($html);
         // setting page variables
         $page->setVariables($variables);
@@ -578,9 +582,7 @@ class PHPoole implements EventsCapableInterface
     protected function addVirtualPages()
     {
         $this->addHomePage();
-        $this->add404Page();
         $this->addRedirectPages();
-        $this->addSitemapPage();
     }
 
     /**
@@ -600,37 +602,6 @@ class PHPoole implements EventsCapableInterface
                 return false;
             });
             $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $filtered->toArray(), [], 1);
-        }
-    }
-
-    /**
-     * Adds 404 page to collection.
-     *
-     * @see build()
-     */
-    protected function add404Page()
-    {
-        if (!$this->pageCollection->has('404')) {
-            $page = new Page();
-            $page->setId('404')
-                ->setTitle('Page not found!')
-                ->setLayout('404');
-            $this->pageCollection->add($page);
-        }
-    }
-
-    /**
-     * Adds sitemap page to collection.
-     *
-     * @see build()
-     */
-    protected function addSitemapPage()
-    {
-        if (!$this->pageCollection->has('sitemap')) {
-            $page = new Page();
-            $page->setId('sitemap')
-                ->setLayout('sitemap');
-            $this->pageCollection->add($page);
         }
     }
 
@@ -795,25 +766,19 @@ class PHPoole implements EventsCapableInterface
         $this->renderer->render($this->layoutFinder($page), [
             'page' => $page,
         ]);
-        // pathname of the 404 page
-        if ($page->getId() == '404') {
-            $pathname = $dir.'/404.html';
-        // pathname of the sitemap page
-        } elseif ($page->getId() == 'sitemap') {
-            $pathname = $dir.'/sitemap.xml';
+
+        // force pathname of a none virtual node page
+        if ($page->getName() == 'index') {
+            $pathname = $dir.'/'.$page->getPath().'/'.$this->getOptions()['output']['filename'];
+        // pathname of a page
         } else {
-            // pathname of a node page (not a virtual page)
-            if ($page->getName() == 'index') {
-                $pathname = $dir.'/'.$page->getPath().'/'.$this->getOptions()['output']['filename'];
-            // pathname of a page
+            if (empty(pathinfo($page->getPermalink(), PATHINFO_EXTENSION))) {
+                $pathname = $dir.'/'.$page->getPermalink().'/'.$this->getOptions()['output']['filename'];
             } else {
-                if (empty(pathinfo($page->getPermalink(), PATHINFO_EXTENSION))) {
-                    $pathname = $dir.'/'.$page->getPermalink().'/'.$this->getOptions()['output']['filename'];
-                } else {
-                    $pathname = $dir.'/'.$page->getPermalink();
-                }
+                $pathname = $dir.'/'.$page->getPermalink();
             }
         }
+
         $pathname = preg_replace('#/+#', '/', $pathname); // remove unnecessary slashes
         $this->renderer->save($pathname);
         echo $pathname."\n";
@@ -882,9 +847,6 @@ class PHPoole implements EventsCapableInterface
 
         if ($page->getLayout() == 'redirect') {
             return $page->getLayout().'.html';
-        }
-        if ($page->getLayout() == 'sitemap') {
-            return 'sitemap.xml';
         }
 
         $layouts = $this->layoutFallback($page);
