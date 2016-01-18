@@ -21,12 +21,15 @@ trait PageVariablesTrait
     /**
      * Set variables.
      *
-     * @param $variables
+     * @param array $variables
      *
      * @return $this
      */
     public function setVariables($variables)
     {
+        if (!is_array($variables)) {
+            $variables = [];
+        }
         $this->variables = $variables;
 
         return $this;

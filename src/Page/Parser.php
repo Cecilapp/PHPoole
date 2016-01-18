@@ -63,7 +63,7 @@ class Parser
                 .'(<!--|---|\+++){1}[\r\n|\n]*' // $matches[1] = front matter open
                 .'(.*)[\r\n|\n]+'               // $matches[2] = front matter
                 .'(-->|---|\+++){1}[\r\n|\n]*'  // $matches[3] = front matter close
-                .'(.+)'                         // $matches[4] = body
+                .'(.*)'                         // $matches[4] = body
                 .'/s',
                 $this->file->getContents(),
                 $matches
