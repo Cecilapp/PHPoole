@@ -43,7 +43,7 @@ trait PluginAwareTrait
      * Trigger event.
      *
      * @param string $eventName
-     * @param array $params
+     * @param array  $params
      */
     protected function trigger($eventName, array $params = [])
     {
@@ -55,7 +55,7 @@ trait PluginAwareTrait
      * Trigger "pre" event.
      *
      * @param string $eventName
-     * @param array $params
+     * @param array  $params
      *
      * @see   trigger()
      */
@@ -68,7 +68,7 @@ trait PluginAwareTrait
      * Trigger "post" event.
      *
      * @param string $eventName
-     * @param array $params
+     * @param array  $params
      *
      * @see   trigger()
      */
@@ -81,7 +81,7 @@ trait PluginAwareTrait
      * Trigger "exception" event.
      *
      * @param string $eventName
-     * @param array $params
+     * @param array  $params
      *
      * @see   trigger()
      */

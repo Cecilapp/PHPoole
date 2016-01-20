@@ -8,7 +8,6 @@
 
 namespace PHPoole;
 
-use MyCLabs\Enum\Enum;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\Converter;
 use PHPoole\Page\NodeTypeEnum;
@@ -418,12 +417,12 @@ class PHPoole implements EventsCapableInterface
      * A node page is a virtual page created from/with
      * the list of children pages.
      *
-     * @param NodeTypeEnum $type    Node type
-     * @param string $title         Page title
-     * @param string $path          Page path
-     * @param array  $pages         Pages collection as array
-     * @param array  $variables     Page variables
-     * @param int    $menu          Weight of the menu entry
+     * @param NodeTypeEnum $type      Node type
+     * @param string       $title     Page title
+     * @param string       $path      Page path
+     * @param array        $pages     Pages collection as array
+     * @param array        $variables Page variables
+     * @param int          $menu      Weight of the menu entry
      */
     protected function addNodePage(
         $type,

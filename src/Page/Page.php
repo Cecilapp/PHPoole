@@ -9,7 +9,6 @@
 namespace PHPoole\Page;
 
 use Cocur\Slugify\Slugify;
-use MyCLabs\Enum\Enum;
 use PHPoole\Collection\AbstractItem;
 use Symfony\Component\Finder\SplFileInfo;
 
