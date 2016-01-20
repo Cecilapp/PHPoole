@@ -922,7 +922,6 @@ class PHPoole implements EventsCapableInterface
                     $layouts = array_merge([sprintf('taxonomy/%s.terms.html', $page->getVariable('singular'))], $layouts);
                 }
                 break;
-            //case NodeTypeEnum::PAGE:
             default:
                 $layouts = [
                     // '$section/page.html'

@@ -15,7 +15,6 @@ use MyCLabs\Enum\Enum;
  */
 class NodeTypeEnum extends Enum
 {
-    //const PAGE = 'page';
     const HOMEPAGE = 'homepage';
     const SECTION = 'section';
     const TAXONOMY = 'taxonomy';
