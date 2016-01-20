@@ -417,12 +417,12 @@ class PHPoole implements EventsCapableInterface
      * A node page is a virtual page created from/with
      * the list of children pages.
      *
-     * @param NodeTypeEnum $type      Node type
-     * @param string       $title     Page title
-     * @param string       $path      Page path
-     * @param array        $pages     Pages collection as array
-     * @param array        $variables Page variables
-     * @param int          $menu      Weight of the menu entry
+     * @param string $type      Node type, see NodeTypeEnum
+     * @param string $title     Page title
+     * @param string $path      Page path
+     * @param array  $pages     Pages collection as array
+     * @param array  $variables Page variables
+     * @param int    $menu      Weight of the menu entry
      */
     protected function addNodePage(
         $type,
@@ -600,11 +600,7 @@ class PHPoole implements EventsCapableInterface
         if (!$this->pageCollection->has('index')) {
             $filtered = $this->pageCollection->filter(function (Page $item) {
                 /* @var $item Page */
-                if ($item->getNodeType() === null) {
-                    return true;
-                }
-
-                return false;
+                return $item->getNodeType() === null;
             });
             $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $filtered->toArray(), [], 1);
         }
