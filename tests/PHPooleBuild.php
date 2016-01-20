@@ -46,6 +46,7 @@ class PHPooleBuild extends \PHPUnit_Framework_TestCase
                         ],
                     ],
                 ],
+                'paginate' => 'disabled',
             ]
         )->build();
     }

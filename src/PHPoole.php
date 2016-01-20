@@ -432,10 +432,12 @@ class PHPoole implements EventsCapableInterface
         array $variables = [],
         $menu = 0
     ) {
-        $paginateMax = $this->getOptions()['site']['paginate']['max'];
-        $paginatePath = $this->getOptions()['site']['paginate']['path'];
+        $paginate = $this->getOptions()['site']['paginate'];
+        $disabled = (!array_key_exists('paginate', $paginate) || $paginate == 'disabled') ? true : false;
+        $paginateMax = $paginate['max'];
+        $paginatePath = $paginate['path'];
         // paginate
-        if (isset($paginateMax) && count($pages) > $paginateMax) {
+        if (!$disabled && (isset($paginateMax) && count($pages) > $paginateMax)) {
             $paginateCount = ceil(count($pages) / $paginateMax);
             for ($i = 0; $i < $paginateCount; $i++) {
                 $pagesInPaginator = array_slice($pages, ($i * $paginateMax), ($i * $paginateMax) + $paginateMax);
