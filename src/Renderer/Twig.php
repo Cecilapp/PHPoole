@@ -67,7 +67,6 @@ class Twig implements RendererInterface
         ]);
         $loader = new \Twig_Loader_Chain([$loaderArray, $loaderFS]);
         $this->twig = new \Twig_Environment($loader,
-        //$this->twig = new \Twig_Environment($loaderFS,
             [
                 'autoescape'       => false,
                 'strict_variables' => $this->twigStrict,
@@ -76,7 +75,8 @@ class Twig implements RendererInterface
             ]
         );
         $this->twig->addExtension(new \Twig_Extension_Debug());
-        $this->twig->addExtension(new TwigExtensionSortArray());
+        $this->twig->addExtension(new TwigExtensionSorts());
+        $this->twig->addExtension(new TwigExtensionFilters());
         $this->twig->addExtension(new TwigExtensionUrlize());
 
         // excerpt filter
