@@ -46,7 +46,7 @@ class Page extends AbstractItem implements \ArrayAccess
     /**
      * @var Enum
      */
-    protected $nodeType = NodeTypeEnum::PAGE;
+    protected $nodeType;
 
     /**
      * @var string

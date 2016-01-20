@@ -595,7 +595,7 @@ class PHPoole implements EventsCapableInterface
         if (!$this->pageCollection->has('index')) {
             $filtered = $this->pageCollection->filter(function (Page $item) {
                 /* @var $item Page */
-                if ($item->getNodeType() == NodeTypeEnum::PAGE) {
+                if ($item->getNodeType() === null) {
                     return true;
                 }
 
@@ -918,7 +918,7 @@ class PHPoole implements EventsCapableInterface
                     $layouts = array_merge([sprintf('taxonomy/%s.terms.html', $page->getVariable('singular'))], $layouts);
                 }
                 break;
-            case NodeTypeEnum::PAGE:
+            //case NodeTypeEnum::PAGE:
             default:
                 $layouts = [
                     // '$section/page.html'
