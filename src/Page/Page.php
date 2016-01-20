@@ -44,7 +44,7 @@ class Page extends AbstractItem implements \ArrayAccess
      */
     protected $virtual = false;
     /**
-     * @var NodeTypeEnum
+     * @var string
      */
     protected $nodeType;
 
