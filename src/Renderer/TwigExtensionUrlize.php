@@ -64,7 +64,7 @@ class TwigExtensionUrlize extends SlugifyExtension
     public function createUrl(\Twig_Environment $env, $value = null)
     {
         if ($value instanceof Page) {
-            $value = $value->getPathname();
+            $value = $value->getPermalink();
         } else {
             $value = $this->slugifyFilter($value);
         }
