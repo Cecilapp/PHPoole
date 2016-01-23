@@ -265,8 +265,9 @@ class PHPoole implements EventsCapableInterface
                 throw new \Exception(__FUNCTION__.': result must be an instance of Symfony\Component\Finder.');
             }
         } catch (\Exception $e) {
-            $params = compact('dir', 'e');
-            $this->triggerException(__FUNCTION__, $params);
+            //$params = compact('dir', 'e');
+            //$this->triggerException(__FUNCTION__, $params);
+            echo $e->getMessage()."\n";
         }
     }
 
