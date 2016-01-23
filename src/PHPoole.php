@@ -316,7 +316,7 @@ class PHPoole implements EventsCapableInterface
     /**
      * Converts page content:
      * * Yaml frontmatter to PHP array
-     * * Mardown body to HTML
+     * * Mardown body to HTML.
      *
      * @param Page   $page
      * @param string $format
@@ -713,7 +713,7 @@ class PHPoole implements EventsCapableInterface
      * Pages rendering:
      * 1. Iterates Pages collection
      * 2. Applies Twig templates
-     * 3. Saves rendered files
+     * 3. Saves rendered files.
      *
      * @see renderPage()
      * @see build()
