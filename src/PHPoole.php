@@ -261,8 +261,8 @@ class PHPoole implements EventsCapableInterface
                 ->in($params['dir'])
                 ->name('*.'.$this->getOptions()['content']['ext']);
             $this->triggerPost(__FUNCTION__, $params);
-            if ($this->contentIterator instanceof Finder) {
-                throw new \Exception('Result must be an instance of Finder.');
+            if (!$this->contentIterator instanceof Finder) {
+                throw new \Exception(__FUNCTION__.': result must be an instance of Symfony\Component\Finder.');
             }
         } catch (\Exception $e) {
             $params = compact('dir', 'e');
