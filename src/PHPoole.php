@@ -423,12 +423,12 @@ class PHPoole implements EventsCapableInterface
      * A node page is a virtual page created from/with
      * the list of children pages.
      *
-     * @param string $type      Node type, see NodeTypeEnum
-     * @param string $title     Page title
-     * @param string $path      Page path
-     * @param array  $pages     Pages collection as array
-     * @param array  $variables Page variables
-     * @param int    $menu      Weight of the menu entry
+     * @param string $type       Node type, see NodeTypeEnum
+     * @param string $title      Page title
+     * @param string $path       Page path
+     * @param array  $pages      Pages collection as array
+     * @param array  $variables  Page variables
+     * @param int    $menuWeight Weight of the menu entry
      */
     protected function addNodePage(
         $type,
@@ -436,7 +436,7 @@ class PHPoole implements EventsCapableInterface
         $path,
         array $pages,
         array $variables = [],
-        $menu = 0
+        $menuWeight = 0
     ) {
         $paginate = $this->getOptions()['site']['paginate'];
         $disabled = (!array_key_exists('paginate', $paginate) || $paginate == 'disabled') ? true : false;
@@ -455,9 +455,9 @@ class PHPoole implements EventsCapableInterface
                         ->setVariable('aliases', [
                             sprintf('%s/%s/%s', $path, $paginatePath, 1),
                         ]);
-                    if ($menu) {
+                    if ($menuWeight) {
                         $page->setVariable('menu', [
-                            'main' => ['weight' => $menu],
+                            'main' => ['weight' => $menuWeight],
                         ]);
                     }
                 // others
@@ -494,9 +494,9 @@ class PHPoole implements EventsCapableInterface
                 ->setTitle(ucfirst($title))
                 ->setNodeType($type)
                 ->setVariable('pages', $pages);
-            if ($menu) {
+            if ($menuWeight) {
                 $page->setVariable('menu', [
-                    'main' => ['weight' => $menu],
+                    'main' => ['weight' => $menuWeight],
                 ]);
             }
             if (!empty($variables)) {
