@@ -228,10 +228,10 @@ class PHPoole implements EventsCapableInterface
         $this->locateContent();
         $this->addPagesFromContent();
         $this->convertPages();
-
-        $this->buildSections();
-        $this->buildTaxonomies();
-
+        // generates sections and taxonomies
+        $this->generateSections();
+        $this->generateTaxonomies();
+        // adds pages from generators to Pages collection
         $this->addSectionPages();
         $this->addTaxonomyPages();
         $this->addTaxonomyTermsPages();
