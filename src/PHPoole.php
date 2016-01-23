@@ -224,8 +224,9 @@ class PHPoole implements EventsCapableInterface
      */
     public function build()
     {
+        // locates content, creates Pages collection and parses pages content
         $this->locateContent();
-        $this->buildPagesFromContent();
+        $this->addPagesFromContent();
         $this->convertPages();
 
         $this->buildSections();
@@ -234,10 +235,11 @@ class PHPoole implements EventsCapableInterface
         $this->addSectionPages();
         $this->addTaxonomyPages();
         $this->addTaxonomyTermsPages();
-        $this->addVirtualPages();
-
-        $this->buildMenus();
-
+        $this->addHomePage();
+        $this->addRedirectPages();
+        // generates menus
+        $this->generateMenus();
+        // rendering
         $this->addSiteVars();
         $this->renderPages();
         $this->copyStatic();
@@ -269,11 +271,11 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Builds pages collection from content iterator.
+     * Adds pages to Pages collection from content iterator.
      *
      * @see build()
      */
-    protected function buildPagesFromContent()
+    protected function addPagesFromContent()
     {
         $this->pageCollection = new PageCollection();
         if (count($this->contentIterator) <= 0) {
@@ -290,7 +292,10 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Converts all pages.
+     * Converts content of all pages.
+     *
+     * @see convertPage()
+     * @see build()
      */
     protected function convertPages()
     {
@@ -309,8 +314,8 @@ class PHPoole implements EventsCapableInterface
 
     /**
      * Converts page content:
-     * * Yaml frontmatter -> PHP array
-     * * Mardown body -> HTML.
+     * * Yaml frontmatter to PHP array
+     * * Mardown body to HTML
      *
      * @param Page   $page
      * @param string $format
@@ -326,7 +331,7 @@ class PHPoole implements EventsCapableInterface
         $html = (new Converter())
             ->convertBody($page->getBody());
         /*
-         * setting page properties
+         * Setting default page properties
          */
         if (!empty($variables['title'])) {
             $page->setTitle($variables['title']);
@@ -356,11 +361,11 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Builds sections.
+     * Generates sections.
      *
      * @see build()
      */
-    protected function buildSections()
+    protected function generateSections()
     {
         /* @var $page Page */
         foreach ($this->pageCollection as $page) {
@@ -371,11 +376,11 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Builds taxonomies.
+     * Generates taxonomies.
      *
      * @see build()
      */
-    protected function buildTaxonomies()
+    protected function generateTaxonomies()
     {
         /*
          * Builds collections
@@ -580,17 +585,6 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Adds virtual pages to collection.
-     *
-     * @see build()
-     */
-    protected function addVirtualPages()
-    {
-        $this->addHomePage();
-        $this->addRedirectPages();
-    }
-
-    /**
      * Adds homepage to collection.
      *
      * @see build()
@@ -632,11 +626,11 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Builds menus.
+     * Generates menus.
      *
      * @see build()
      */
-    protected function buildMenus()
+    protected function generateMenus()
     {
         $this->menus = new Menu\Collection();
 
@@ -716,10 +710,11 @@ class PHPoole implements EventsCapableInterface
 
     /**
      * Pages rendering:
-     * 1. Iterates pages collection
+     * 1. Iterates Pages collection
      * 2. Applies Twig templates
-     * 3. Saves rendered files.
+     * 3. Saves rendered files
      *
+     * @see renderPage()
      * @see build()
      */
     protected function renderPages()
