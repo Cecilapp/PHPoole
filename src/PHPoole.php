@@ -677,20 +677,22 @@ class PHPoole implements EventsCapableInterface
          * Removing/adding/replacing menus entries from options array
          */
         if (isset($this->getOptions()['site']['menu'])) {
-            foreach ($this->getOptions()['site']['menu'] as $name => $value) {
+            foreach ($this->getOptions()['site']['menu'] as $name => $entry) {
                 /* @var $menu Menu\Menu */
                 $menu = $this->menus->get($name);
-                if (isset($value['disabled']) && $value['disabled']) {
-                    if (isset($value['id']) && $menu->has($value['id'])) {
-                        $menu->remove($value['id']);
+                foreach ($entry as $property) {
+                    if (isset($property['disabled']) && $property['disabled']) {
+                        if (isset($property['id']) && $menu->has($property['id'])) {
+                            $menu->remove($property['id']);
+                        }
+                        continue;
                     }
-                    continue;
+                    $item = (new Menu\Entry($property['id']))
+                        ->setName($property['name'])
+                        ->setUrl($property['url'])
+                        ->setWeight($property['weight']);
+                    $menu->add($item);
                 }
-                $item = (new Menu\Entry($value['id']))
-                    ->setName($value['name'])
-                    ->setUrl($value['url'])
-                    ->setWeight($value['weight']);
-                $menu->add($item);
             }
         }
     }

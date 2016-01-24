@@ -38,11 +38,16 @@ class PHPooleBuild extends \PHPUnit_Framework_TestCase
                 'site' => [
                     'menu' => [
                         'main' => [
-                            'id'        => 'homepage',
-                            'name'      => 'TEST',
-                            'url'       => 'test',
-                            'weight'    => -100,
-                            'disabled'  => true,
+                            'about' => [
+                                'id'        => 'about',
+                                'disabled'  => true,
+                            ],
+                            'test' => [
+                                'id'        => 'test',
+                                'name'      => 'Test',
+                                'url'       => 'test',
+                                'weight'    => 999,
+                            ]
                         ],
                     ],
                 ],
