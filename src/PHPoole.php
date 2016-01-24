@@ -446,29 +446,31 @@ class PHPoole implements EventsCapableInterface
      */
     protected function generateTaxonomiesTerms()
     {
-        $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
-        foreach ($this->taxonomies as $plural => $terms) {
-            if (count($terms) > 0) {
-                /*
-                 * Create $plural pages (list of terms)
-                 * ex: /tags/
-                 */
-                $page = (new Page())
-                    ->setId(strtolower($plural))
-                    ->setPathname(strtolower($plural))
-                    ->setTitle($plural)
-                    ->setNodeType('terms')
-                    ->setVariable('plural', $plural)
-                    ->setVariable('singular', $siteTaxonomies[$plural])
-                    ->setVariable('terms', $terms);
-                // add page only if a template exist
-                try {
-                    $this->layoutFinder($page);
-                    $this->pageCollection->add($page);
-                } catch (\Exception $e) {
-                    echo $e->getMessage()."\n";
-                    // do not add page
-                    unset($page);
+        if (array_key_exists('taxonomies', $this->getOptions()['site'])) {
+            $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
+            foreach ($this->taxonomies as $plural => $terms) {
+                if (count($terms) > 0) {
+                    /*
+                     * Create $plural pages (list of terms)
+                     * ex: /tags/
+                     */
+                    $page = (new Page())
+                        ->setId(strtolower($plural))
+                        ->setPathname(strtolower($plural))
+                        ->setTitle($plural)
+                        ->setNodeType('terms')
+                        ->setVariable('plural', $plural)
+                        ->setVariable('singular', $siteTaxonomies[$plural])
+                        ->setVariable('terms', $terms);
+                    // add page only if a template exist
+                    try {
+                        $this->layoutFinder($page);
+                        $this->pageCollection->add($page);
+                    } catch (\Exception $e) {
+                        echo $e->getMessage()."\n";
+                        // do not add page
+                        unset($page);
+                    }
                 }
             }
         }
