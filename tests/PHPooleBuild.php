@@ -48,7 +48,7 @@ class PHPooleBuild extends \PHPUnit_Framework_TestCase
                                 'name'      => 'Test',
                                 'url'       => 'test',
                                 'weight'    => 999,
-                            ]
+                            ],
                         ],
                     ],
                 ],
