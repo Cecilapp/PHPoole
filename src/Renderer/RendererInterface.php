@@ -57,6 +57,7 @@ interface RendererInterface
      * @return bool
      */
     public function save($pathname);
+
     /**
      * Validates template.
      *

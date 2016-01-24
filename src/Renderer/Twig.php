@@ -147,6 +147,7 @@ class Twig implements RendererInterface
         try {
             $this->twig->parse($this->twig->tokenize($template));
             return true;
+
         } catch (\Twig_Error_Syntax $e) {
             return false;
         }
