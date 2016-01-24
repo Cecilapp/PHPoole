@@ -392,7 +392,6 @@ class PHPoole implements EventsCapableInterface
      */
     protected function generateTaxonomies()
     {
-
         if (array_key_exists('taxonomies', $this->getOptions()['site'])) {
             // collects taxonomies from pages
             $this->taxonomies = new Taxonomy\Collection();
@@ -474,7 +473,6 @@ class PHPoole implements EventsCapableInterface
             }
         }
     }
-
 
     /**
      * Generates homepage.
