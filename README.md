@@ -136,7 +136,6 @@ Any file that contains a YAML front matter will be processed to extract some var
 | menu          | Menu          | Homepage and sections             |
 | tags          | Tags          | _Empty_                           |
 | categories    | Categories    | _Empty_                           |
-| permalink     | Permalink     | _To Do_                           |
 
 ##### Page body
 
