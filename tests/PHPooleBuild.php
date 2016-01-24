@@ -9,6 +9,7 @@
 namespace PHPoole\Test;
 
 use PHPoole\PHPoole;
+use PHPoole\Plugin\Example;
 use Symfony\Component\Filesystem\Filesystem;
 
 class PHPooleBuild extends \PHPUnit_Framework_TestCase
@@ -53,6 +54,7 @@ class PHPooleBuild extends \PHPUnit_Framework_TestCase
                 ],
                 'paginate' => 'disabled',
             ]
-        )->build();
+        )->addPlugin(new Example()) // add a plugin
+        ->build();
     }
 }
