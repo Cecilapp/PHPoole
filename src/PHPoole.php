@@ -224,24 +224,22 @@ class PHPoole implements EventsCapableInterface
      */
     public function build()
     {
-        // locates content, creates Pages collection and parses pages content
+        // locates content
         $this->locateContent();
+        // creates Pages collection from content
         $this->addPagesFromContent();
+        // converts Pages content
         $this->convertPages();
-        // generates sections and taxonomies
+        // generates virtual content
         $this->generateSections();
         $this->generateTaxonomies();
-        // adds pages from generators to Pages collection
-        $this->addSectionPages();
-        $this->addTaxonomyPages();
-        $this->addTaxonomyTermsPages();
-        $this->addHomePage();
-        $this->addRedirectPages();
-        // generates menus
+        $this->generateTaxonomiesTerms();
+        $this->generateHomepage();
+        $this->generatesAliases();
         $this->generateMenus();
         // rendering
-        $this->addSiteVars();
         $this->renderPages();
+        // copies static files
         $this->copyStatic();
     }
 
@@ -368,10 +366,21 @@ class PHPoole implements EventsCapableInterface
      */
     protected function generateSections()
     {
+        // collects sections
         /* @var $page Page */
         foreach ($this->pageCollection as $page) {
             if ($page->getSection() != '') {
                 $this->sections[$page->getSection()][] = $page;
+            }
+        }
+        // adds node pages
+        if (count($this->sections) > 0) {
+            $menu = 100;
+            foreach ($this->sections as $node => $pages) {
+                if (!$this->pageCollection->has($node)) {
+                    $this->addNodePage(NodeTypeEnum::SECTION, $node, $node, $pages, [], $menu);
+                }
+                $menu += 10;
             }
         }
     }
@@ -383,10 +392,9 @@ class PHPoole implements EventsCapableInterface
      */
     protected function generateTaxonomies()
     {
-        /*
-         * Builds collections
-         */
+
         if (array_key_exists('taxonomies', $this->getOptions()['site'])) {
+            // collects taxonomies from pages
             $this->taxonomies = new Taxonomy\Collection();
             $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
             // adds each vocabulary collection to the taxonomies collection
@@ -412,6 +420,98 @@ class PHPoole implements EventsCapableInterface
                                 ->add($page);
                         }
                     }
+                }
+            }
+            // adds node pages
+            foreach ($this->taxonomies as $plural => $terms) {
+                /*
+                 * Create $plural/$term pages (list of pages)
+                 * ex: /tags/tag-1/
+                 */
+                if (count($terms) > 0) {
+                    foreach ($terms as $node => $pages) {
+                        if (!$this->pageCollection->has($node)) {
+                            /* @var $pages Collection\CollectionInterface */
+                            $this->addNodePage(NodeTypeEnum::TAXONOMY, $node, "$plural/$node", $pages->toArray(), ['singular' => $siteTaxonomies[$plural]]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Generates taxonomies terms.
+     *
+     * @see build()
+     */
+    protected function generateTaxonomiesTerms()
+    {
+        $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
+        foreach ($this->taxonomies as $plural => $terms) {
+            if (count($terms) > 0) {
+                /*
+                 * Create $plural pages (list of terms)
+                 * ex: /tags/
+                 */
+                $page = (new Page())
+                    ->setId(strtolower($plural))
+                    ->setPathname(strtolower($plural))
+                    ->setTitle($plural)
+                    ->setNodeType('terms')
+                    ->setVariable('plural', $plural)
+                    ->setVariable('singular', $siteTaxonomies[$plural])
+                    ->setVariable('terms', $terms);
+                // add page only if a template exist
+                try {
+                    $this->layoutFinder($page);
+                    $this->pageCollection->add($page);
+                } catch (\Exception $e) {
+                    echo $e->getMessage()."\n";
+                    // do not add page
+                    unset($page);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Generates homepage.
+     *
+     * @see build()
+     */
+    protected function generateHomepage()
+    {
+        if (!$this->pageCollection->has('index')) {
+            $filtered = $this->pageCollection->filter(function (Page $item) {
+                /* @var $item Page */
+                return $item->getNodeType() === null;
+            });
+            $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $filtered->toArray(), [], 1);
+        }
+    }
+
+    /**
+     * Generates aliases.
+     *
+     * @see build()
+     */
+    protected function generatesAliases()
+    {
+        /* @var $page Page */
+        foreach ($this->pageCollection as $page) {
+            if ($page->hasVariable('aliases')) {
+                $aliases = $page->getVariable('aliases');
+                foreach ($aliases as $alias) {
+                    /* @var $redirectPage Page */
+                    $aliasPage = new Page();
+                    $aliasPage->setId($alias)
+                        ->setPathname(Page::urlize($alias))
+                        ->setTitle($alias)
+                        ->setLayout('redirect')
+                        ->setVariable('destination', $page->getPermalink());
+                    $this->pageCollection->add($aliasPage);
                 }
             }
         }
@@ -509,124 +609,6 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Adds section pages to collection.
-     *
-     * @see build()
-     */
-    protected function addSectionPages()
-    {
-        if (count($this->sections) > 0) {
-            $menu = 100;
-            foreach ($this->sections as $node => $pages) {
-                if (!$this->pageCollection->has($node)) {
-                    $this->addNodePage(NodeTypeEnum::SECTION, $node, $node, $pages, [], $menu);
-                }
-                $menu += 10;
-            }
-        }
-    }
-
-    /**
-     * Adds taxonomy pages.
-     *
-     * @see build()
-     */
-    protected function addTaxonomyPages()
-    {
-        $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
-        foreach ($this->taxonomies as $plural => $terms) {
-            /*
-             * Create $plural/$term pages (list of pages)
-             * ex: /tags/tag-1/
-             */
-            if (count($terms) > 0) {
-                foreach ($terms as $node => $pages) {
-                    if (!$this->pageCollection->has($node)) {
-                        /* @var $pages Collection\CollectionInterface */
-                        $this->addNodePage(NodeTypeEnum::TAXONOMY, $node, "$plural/$node", $pages->toArray(), ['singular' => $siteTaxonomies[$plural]]);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Adds taxonomy terms pages.
-     *
-     * @see build()
-     */
-    protected function addTaxonomyTermsPages()
-    {
-        $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
-        foreach ($this->taxonomies as $plural => $terms) {
-            if (count($terms) > 0) {
-                /*
-                 * Create $plural pages (list of terms)
-                 * ex: /tags/
-                 */
-                $page = (new Page())
-                    ->setId(strtolower($plural))
-                    ->setPathname(strtolower($plural))
-                    ->setTitle($plural)
-                    ->setNodeType('terms')
-                    ->setVariable('plural', $plural)
-                    ->setVariable('singular', $siteTaxonomies[$plural])
-                    ->setVariable('terms', $terms);
-                // add page only if a template exist
-                try {
-                    $this->layoutFinder($page);
-                    $this->pageCollection->add($page);
-                } catch (\Exception $e) {
-                    echo $e->getMessage()."\n";
-                    // do not add page
-                    unset($page);
-                }
-            }
-        }
-    }
-
-    /**
-     * Adds homepage to collection.
-     *
-     * @see build()
-     */
-    protected function addHomePage()
-    {
-        if (!$this->pageCollection->has('index')) {
-            $filtered = $this->pageCollection->filter(function (Page $item) {
-                /* @var $item Page */
-                return $item->getNodeType() === null;
-            });
-            $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $filtered->toArray(), [], 1);
-        }
-    }
-
-    /**
-     * Adds redirect pages.
-     *
-     * @see build()
-     */
-    protected function addRedirectPages()
-    {
-        /* @var $page Page */
-        foreach ($this->pageCollection as $page) {
-            if ($page->hasVariable('aliases')) {
-                $redirects = $page->getVariable('aliases');
-                foreach ($redirects as $redirect) {
-                    /* @var $redirectPage Page */
-                    $redirectPage = new Page();
-                    $redirectPage->setId($redirect)
-                        ->setPathname(Page::urlize($redirect))
-                        ->setTitle($redirect)
-                        ->setLayout('redirect')
-                        ->setVariable('destination', $page->getPermalink());
-                    $this->pageCollection->add($redirectPage);
-                }
-            }
-        }
-    }
-
-    /**
      * Generates menus.
      *
      * @see build()
@@ -698,20 +680,6 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Adds site variables.
-     *
-     * @see build()
-     */
-    protected function addSiteVars()
-    {
-        $this->site = array_merge(
-            $this->getOptions()['site'],
-            ['menus' => $this->menus],
-            ['pages' => $this->pageCollection]
-        );
-    }
-
-    /**
      * Pages rendering:
      * 1. Iterates Pages collection
      * 2. Applies Twig templates
@@ -722,16 +690,22 @@ class PHPoole implements EventsCapableInterface
      */
     protected function renderPages()
     {
-        // prepare renderer
+        // prepares global site variables
+        $this->site = array_merge(
+            $this->getOptions()['site'],
+            ['menus' => $this->menus],
+            ['pages' => $this->pageCollection]
+        );
+        // prepares renderer
         if (!is_dir($this->sourceDir.'/'.$this->getOptions()['layouts']['dir'])) {
             throw new \Exception(sprintf("'%s' is not a valid layouts directory", $this->getOptions()['layouts']['dir']));
         }
         $this->renderer = new Renderer\Twig($this->sourceDir.'/'.$this->getOptions()['layouts']['dir']);
-        // add theme templates
+        // adds theme templates
         if ($this->isTheme()) {
             $this->renderer->addPath($this->sourceDir.'/'.$this->getOptions()['themes']['dir'].'/'.$this->theme.'/layouts');
         }
-        // add global variables
+        // adds global variables
         $this->renderer->addGlobal('site', $this->site);
         $this->renderer->addGlobal('phpoole', [
             'url'       => 'http://phpoole.narno.org/#v2',
