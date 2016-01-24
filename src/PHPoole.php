@@ -484,11 +484,11 @@ class PHPoole implements EventsCapableInterface
     protected function generateHomepage()
     {
         if (!$this->pageCollection->has('index')) {
-            $filtered = $this->pageCollection->filter(function (Page $item) {
-                /* @var $item Page */
-                return $item->getNodeType() === null;
+            $filteredPages = $this->pageCollection->filter(function (Page $page) {
+                /* @var $page Page */
+                return $page->getNodeType() === null;
             });
-            $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $filtered->toArray(), [], 1);
+            $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $filteredPages->toArray(), [], 1);
         }
     }
 
@@ -619,6 +619,10 @@ class PHPoole implements EventsCapableInterface
 
         /* @var $page Page */
         // @todo use collection filter?
+        //$filteredPages = $this->pageCollection->filter(function (Page $page) {
+        //    /* @var $page Page */
+        //    return $page->getVariable('menu') !== null;
+        //});
         foreach ($this->pageCollection as $page) {
             if (!empty($page['menu'])) {
                 // single
