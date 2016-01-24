@@ -227,7 +227,7 @@ class PHPoole implements EventsCapableInterface
         // locates content
         $this->locateContent();
         // creates Pages collection from content
-        $this->addPagesFromContent();
+        $this->createPagesFromContent();
         // converts Pages content
         $this->convertPages();
         // generates virtual content
@@ -270,11 +270,11 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * Adds pages to Pages collection from content iterator.
+     * Create Pages collection from content iterator.
      *
      * @see build()
      */
-    protected function addPagesFromContent()
+    protected function createPagesFromContent()
     {
         $this->pageCollection = new PageCollection();
         if (count($this->contentIterator) <= 0) {
