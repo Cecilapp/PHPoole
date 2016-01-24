@@ -138,4 +138,17 @@ class Twig implements RendererInterface
             return true;
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validate($template)
+    {
+        try {
+            $this->twig->parse($this->twig->tokenize($template));
+            return true;
+        } catch (\Twig_Error_Syntax $e) {
+            return false;
+        }
+    }
 }
