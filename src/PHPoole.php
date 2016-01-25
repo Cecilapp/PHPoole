@@ -233,7 +233,6 @@ class PHPoole implements EventsCapableInterface
         // generates virtual content
         $this->generateSections();
         $this->generateTaxonomies();
-        $this->generateTaxonomiesTerms();
         $this->generateHomepage();
         $this->generatesAliases();
         $this->generateMenus();
@@ -423,42 +422,26 @@ class PHPoole implements EventsCapableInterface
             }
             // adds node pages
             foreach ($this->taxonomies as $plural => $terms) {
-                /*
-                 * Create $plural/$term pages (list of pages)
-                 * ex: /tags/tag-1/
-                 */
                 if (count($terms) > 0) {
+                    /*
+                     * Creates $plural/$term pages (list of pages)
+                     * ex: /tags/tag-1/
+                     */
                     foreach ($terms as $node => $pages) {
                         if (!$this->pageCollection->has($node)) {
                             /* @var $pages Collection\CollectionInterface */
                             $this->addNodePage(NodeTypeEnum::TAXONOMY, $node, "$plural/$node", $pages->toArray(), ['singular' => $siteTaxonomies[$plural]]);
                         }
                     }
-                }
-            }
-        }
-    }
-
-    /**
-     * Generates taxonomies terms.
-     *
-     * @see build()
-     */
-    protected function generateTaxonomiesTerms()
-    {
-        if (array_key_exists('taxonomies', $this->getOptions()['site'])) {
-            $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
-            foreach ($this->taxonomies as $plural => $terms) {
-                if (count($terms) > 0) {
                     /*
-                     * Create $plural pages (list of terms)
+                     * Creates $plural pages (list of terms)
                      * ex: /tags/
                      */
                     $page = (new Page())
                         ->setId(strtolower($plural))
                         ->setPathname(strtolower($plural))
                         ->setTitle($plural)
-                        ->setNodeType('terms')
+                        ->setNodeType(NodeTypeEnum::TERMS)
                         ->setVariable('plural', $plural)
                         ->setVariable('singular', $siteTaxonomies[$plural])
                         ->setVariable('terms', $terms);
