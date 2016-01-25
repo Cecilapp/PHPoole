@@ -59,7 +59,7 @@ class PHPooleBuild extends \PHPUnit_Framework_TestCase
                     ],
                 ],
             ]
-        )->addPlugin(new Example()) // add a plugin
+        )->addPlugin(new Example())
         ->build();
     }
 }
