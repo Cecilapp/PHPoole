@@ -361,6 +361,7 @@ class PHPoole implements EventsCapableInterface
     /**
      * Generates sections.
      *
+     * @see addNodePage()
      * @see build()
      */
     protected function generateSections()
@@ -387,6 +388,7 @@ class PHPoole implements EventsCapableInterface
     /**
      * Generates taxonomies.
      *
+     * @see addNodePage()
      * @see build()
      */
     protected function generateTaxonomies()
@@ -462,6 +464,7 @@ class PHPoole implements EventsCapableInterface
     /**
      * Generates homepage.
      *
+     * @see addNodePage()
      * @see build()
      */
     protected function generateHomepage()
