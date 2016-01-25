@@ -392,9 +392,24 @@ class PHPoole implements EventsCapableInterface
         }
         // adds node pages
         if (count($this->sections) > 0) {
+            $callback = function ($a, $b) {
+                if (!isset($a['date'])) {
+                    return -1;
+                }
+                if (!isset($b['date'])) {
+                    return 1;
+                }
+                if ($a['date'] == $b['date']) {
+                    return 0;
+                }
+
+                return ($a['date'] > $b['date']) ? -1 : 1;
+            };
             $menu = 100;
+
             foreach ($this->sections as $node => $pages) {
                 if (!$this->pageCollection->has($node)) {
+                    usort($pages, $callback);
                     $this->addNodePage(NodeTypeEnum::SECTION, $node, $node, $pages, [], $menu);
                 }
                 $menu += 10;
@@ -491,7 +506,16 @@ class PHPoole implements EventsCapableInterface
                 /* @var $page Page */
                 return $page->getNodeType() === null && $page->getSection() == $this->getOption('paginate.homepage.section');
             });
-            $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $filteredPages->toArray(), [], 1);
+
+            $callback = function ($a, $b) {
+                if ($a['date'] == $b['date']) {
+                    return 0;
+                }
+                return ($a['date'] > $b['date']) ? -1 : 1;
+            };
+            $pages = $filteredPages->usort($callback)->toArray();
+
+            $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $pages, [], 1);
         }
     }
 
