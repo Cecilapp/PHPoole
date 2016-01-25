@@ -346,7 +346,7 @@ class Page extends AbstractItem implements \ArrayAccess
     /**
      * Get date.
      *
-     * @return integer
+     * @return int
      */
     public function getDate()
     {
