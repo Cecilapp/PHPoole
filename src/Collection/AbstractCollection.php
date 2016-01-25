@@ -133,9 +133,16 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function usort(Closure $callback)
+    public function usort(Closure $callback = null)
     {
-        usort($this->items, $callback);
+        $items = $this->items;
+        $callback ? uasort($items, $callback) : uasort($items, function ($a, $b) {
+            if ($a == $b) {
+                return 0;
+            }
+            return ($a < $b) ? -1 : 1;
+        });
+        return new static($items);
     }
 
     /**

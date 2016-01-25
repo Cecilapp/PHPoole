@@ -96,11 +96,11 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
     /**
      * Implements usort.
      *
-     * @param Closure $callback
+     * @param Closure|null $callback
      *
-     * @return null
+     * @return CollectionInterface
      */
-    public function usort(Closure $callback);
+    public function usort(Closure $callback = null);
 
     /**
      * Filters items using a callback function.
