@@ -486,7 +486,7 @@ class PHPoole implements EventsCapableInterface
         if (!$this->pageCollection->has('index')) {
             $filteredPages = $this->pageCollection->filter(function (Page $page) {
                 /* @var $page Page */
-                return $page->getNodeType() === null;
+                return ($page->getNodeType() === null && $page->getSection() == $this->getOptions()['homepage_section']);
             });
             $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $filteredPages->toArray(), [], 1);
         }
