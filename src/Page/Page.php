@@ -256,7 +256,7 @@ class Page extends AbstractItem implements \ArrayAccess
     /**
      * Set path name.
      *
-     * @param $pathname
+     * @param string $pathname
      *
      * @return $this
      */
@@ -346,7 +346,7 @@ class Page extends AbstractItem implements \ArrayAccess
     /**
      * Get date.
      *
-     * @return string
+     * @return int
      */
     public function getDate()
     {
@@ -432,7 +432,7 @@ class Page extends AbstractItem implements \ArrayAccess
     /**
      * Set HTML.
      *
-     * @param $html
+     * @param string $html
      *
      * @return $this
      */
