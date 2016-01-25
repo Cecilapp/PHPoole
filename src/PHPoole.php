@@ -18,6 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Zend\EventManager\EventsCapableInterface;
+use Dflydev\DotAccessData\Data;
 
 /**
  * Class PHPoole.
@@ -213,10 +214,26 @@ class PHPoole implements EventsCapableInterface
     public function getOptions()
     {
         if (is_null($this->options)) {
-            $this->setOptions([]);
+            $this->setOptions(array());
         }
 
         return $this->options;
+    }
+
+    /**
+     * Get an option.
+     *
+     * @param  string $key
+     * @param  string $default
+     *
+     * @return array|mixed|null
+     *
+     * @see    getOptions()
+     */
+    public function getOption($key, $default = '')
+    {
+        $data = new Data($this->getOptions());
+        return $data->get($key, $default);
     }
 
     /**
@@ -250,13 +267,13 @@ class PHPoole implements EventsCapableInterface
     protected function locateContent()
     {
         try {
-            $dir = $this->sourceDir.'/'.$this->getOptions()['content']['dir'];
+            $dir = $this->sourceDir.'/'.$this->getOption('content.dir');
             $params = compact('dir');
             $this->triggerPre(__FUNCTION__, $params);
             $this->contentIterator = Finder::create()
                 ->files()
                 ->in($params['dir'])
-                ->name('*.'.$this->getOptions()['content']['ext']);
+                ->name('*.'.$this->getOption('content.ext'));
             $this->triggerPost(__FUNCTION__, $params);
             if (!$this->contentIterator instanceof Finder) {
                 throw new \Exception(__FUNCTION__.': result must be an instance of Symfony\Component\Finder.');
@@ -304,7 +321,7 @@ class PHPoole implements EventsCapableInterface
         /* @var $page Page */
         foreach ($this->pageCollection as $page) {
             if (!$page->isVirtual()) {
-                $page = $this->convertPage($page, $this->getOptions()['frontmatter']['format']);
+                $page = $this->convertPage($page, $this->getOption('frontmatter.format'));
                 $this->pageCollection->replace($page->getId(), $page);
             }
         }
@@ -341,7 +358,7 @@ class PHPoole implements EventsCapableInterface
         }
         if (!empty($variables['date'])) {
             $page->setDate($variables['date']);
-            unset($variables['date']);
+            //unset($variables['date']);
         }
         if (!empty($variables['permalink'])) {
             $page->setPermalink($variables['permalink']);
@@ -393,10 +410,10 @@ class PHPoole implements EventsCapableInterface
      */
     protected function generateTaxonomies()
     {
-        if (array_key_exists('taxonomies', $this->getOptions()['site'])) {
+        if (array_key_exists('taxonomies', $this->getOption('site'))) {
             // collects taxonomies from pages
             $this->taxonomies = new Taxonomy\Collection();
-            $siteTaxonomies = $this->getOptions()['site']['taxonomies'];
+            $siteTaxonomies = $this->getOption('site.taxonomies');
             // adds each vocabulary collection to the taxonomies collection
             foreach ($siteTaxonomies as $plural => $singular) {
                 $this->taxonomies->add(new Taxonomy\Vocabulary($plural));
@@ -472,7 +489,7 @@ class PHPoole implements EventsCapableInterface
         if (!$this->pageCollection->has('index')) {
             $filteredPages = $this->pageCollection->filter(function (Page $page) {
                 /* @var $page Page */
-                return $page->getNodeType() === null && $page->getSection() == $this->getOptions()['homepage_section'];
+                return $page->getNodeType() === null && $page->getSection() == $this->getOption('paginate.homepage.section');
             });
             $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $filteredPages->toArray(), [], 1);
         }
@@ -524,8 +541,8 @@ class PHPoole implements EventsCapableInterface
         array $variables = [],
         $menuWeight = 0
     ) {
-        $paginate = $this->getOptions()['site']['paginate'];
-        echo $disabled = ($paginate == 'disabled') ? true : false;
+        $paginate = $this->getOption('site.paginate');
+        $disabled = ($paginate == 'disabled') ? true : false;
         $paginateMax = $paginate['max'];
         $paginatePath = $paginate['path'];
         // paginate
@@ -647,8 +664,8 @@ class PHPoole implements EventsCapableInterface
         /*
          * Removing/adding/replacing menus entries from options array
          */
-        if (isset($this->getOptions()['site']['menu'])) {
-            foreach ($this->getOptions()['site']['menu'] as $name => $entry) {
+        if ($this->getOption('site.menu') !== null) {
+            foreach ($this->getOption('site.menu') as $name => $entry) {
                 /* @var $menu Menu\Menu */
                 $menu = $this->menus->get($name);
                 foreach ($entry as $property) {
@@ -681,18 +698,18 @@ class PHPoole implements EventsCapableInterface
     {
         // prepares global site variables
         $this->site = array_merge(
-            $this->getOptions()['site'],
+            $this->getOption('site'),
             ['menus' => $this->menus],
             ['pages' => $this->pageCollection]
         );
         // prepares renderer
-        if (!is_dir($this->sourceDir.'/'.$this->getOptions()['layouts']['dir'])) {
-            throw new \Exception(sprintf("'%s' is not a valid layouts directory", $this->getOptions()['layouts']['dir']));
+        if (!is_dir($this->sourceDir.'/'.$this->getOption('layouts.dir'))) {
+            throw new \Exception(sprintf("'%s' is not a valid layouts directory", $this->getOption('layouts.dir')));
         }
-        $this->renderer = new Renderer\Twig($this->sourceDir.'/'.$this->getOptions()['layouts']['dir']);
+        $this->renderer = new Renderer\Twig($this->sourceDir.'/'.$this->getOption('layouts.dir'));
         // adds theme templates
         if ($this->isTheme()) {
-            $this->renderer->addPath($this->sourceDir.'/'.$this->getOptions()['themes']['dir'].'/'.$this->theme.'/layouts');
+            $this->renderer->addPath($this->sourceDir.'/'.$this->getOption('themes.dir').'/'.$this->theme.'/layouts');
         }
         // adds global variables
         $this->renderer->addGlobal('site', $this->site);
@@ -703,7 +720,7 @@ class PHPoole implements EventsCapableInterface
         ]);
 
         // start rendering
-        $dir = $this->destDir.'/'.$this->getOptions()['output']['dir'];
+        $dir = $this->destDir.'/'.$this->getOption('output.dir');
         $this->fs->mkdir($dir);
         /* @var $page Page */
         foreach ($this->pageCollection as $page) {
@@ -731,11 +748,11 @@ class PHPoole implements EventsCapableInterface
 
         // force pathname of a none virtual node page
         if ($page->getName() == 'index') {
-            $pathname = $dir.'/'.$page->getPath().'/'.$this->getOptions()['output']['filename'];
+            $pathname = $dir.'/'.$page->getPath().'/'.$this->getOption('output.filename');
         // pathname of a page
         } else {
             if (empty(pathinfo($page->getPermalink(), PATHINFO_EXTENSION))) {
-                $pathname = $dir.'/'.$page->getPermalink().'/'.$this->getOptions()['output']['filename'];
+                $pathname = $dir.'/'.$page->getPermalink().'/'.$this->getOption('output.filename');
             } else {
                 $pathname = $dir.'/'.$page->getPermalink();
             }
@@ -753,16 +770,16 @@ class PHPoole implements EventsCapableInterface
      */
     protected function copyStatic()
     {
-        $dir = $this->destDir.'/'.$this->getOptions()['output']['dir'];
+        $dir = $this->destDir.'/'.$this->getOption('output.dir');
         // copy theme static dir if exists
         if ($this->isTheme()) {
-            $themeStaticDir = $this->sourceDir.'/'.$this->getOptions()['themes']['dir'].'/'.$this->theme.'/static';
+            $themeStaticDir = $this->sourceDir.'/'.$this->getOption('themes.dir').'/'.$this->theme.'/static';
             if ($this->fs->exists($themeStaticDir)) {
                 $this->fs->mirror($themeStaticDir, $dir, null, ['override' => true]);
             }
         }
         // copy static dir if exists
-        $staticDir = $this->sourceDir.'/'.$this->getOptions()['static']['dir'];
+        $staticDir = $this->sourceDir.'/'.$this->getOption('static.dir');
         if ($this->fs->exists($staticDir)) {
             $this->fs->mirror($staticDir, $dir, null, ['override' => true]);
         }
@@ -781,10 +798,10 @@ class PHPoole implements EventsCapableInterface
         if ($this->theme !== null) {
             return true;
         }
-        if (isset($this->getOptions()['theme'])) {
-            $themesDir = $this->sourceDir.'/'.$this->getOptions()['themes']['dir'];
-            if ($this->fs->exists($themesDir.'/'.$this->getOptions()['theme'])) {
-                $this->theme = $this->getOptions()['theme'];
+        if ($this->getOption('theme') !== '') {
+            $themesDir = $this->sourceDir.'/'.$this->getOption('themes.dir');
+            if ($this->fs->exists($themesDir.'/'.$this->getOption('theme'))) {
+                $this->theme = $this->getOption('theme');
 
                 return true;
             }
@@ -814,7 +831,6 @@ class PHPoole implements EventsCapableInterface
         $layouts = $this->layoutFallback($page);
 
         // is layout exists in local layout dir?
-        $layoutsDir = $this->sourceDir.'/'.$this->getOptions()['layouts']['dir'];
         foreach ($layouts as $layout) {
             if ($this->fs->exists($layoutsDir.'/'.$layout)) {
                 return $layout;
@@ -822,7 +838,7 @@ class PHPoole implements EventsCapableInterface
         }
         // is layout exists in layout theme dir?
         if ($this->isTheme()) {
-            $themeDir = $this->sourceDir.'/'.$this->getOptions()['themes']['dir'].'/'.$this->theme.'/layouts';
+            $themeDir = $this->sourceDir.'/'.$this->getOption('themes.dir').'/'.$this->theme.'/layouts';
             foreach ($layouts as $layout) {
                 if ($this->fs->exists($themeDir.'/'.$layout)) {
                     return $layout;
