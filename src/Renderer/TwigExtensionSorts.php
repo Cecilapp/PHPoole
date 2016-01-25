@@ -61,12 +61,11 @@ class TwigExtensionSorts extends \Twig_Extension
             return ($a['weight'] < $b['weight']) ? -1 : 1;
         };
 
-        if ($array instanceof \PHPoole\Collection\CollectionInterface) {
-            $array->usort($callback);
-        } else {
-            if (is_array($array)) {
-                usort($array, $callback);
-            }
+        if ($array instanceof \PHPoole\Collection\AbstractCollection) {
+            $array = $array->toArray();
+        }
+        if (is_array($array)) {
+            usort($array, $callback);
         }
 
         return $array;
