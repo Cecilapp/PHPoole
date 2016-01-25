@@ -52,7 +52,8 @@ class PHPooleBuild extends \PHPUnit_Framework_TestCase
                         ],
                     ],
                 ],
-                'paginate' => 'disabled', // disable pagination
+                //'paginate' => 'disabled', // disable pagination
+                'homepage_section' => 'blog',
             ]
         )->addPlugin(new Example()) // add a plugin
         ->build();

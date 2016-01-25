@@ -9,14 +9,34 @@
 {% include 'include/menu.html' %}
 
 <p>Pages:</p>
+{% if page.paginator %}
 <ul>
-    {% for item in page.pages|filterBySection(page.pathname) %}
+    {% for item in page.paginator.pages %}
     <li>
         <a href="{{ url(item) }}">{{ item.title }}</a>
         {{ item.content|excerpt }}
     </li>
     {% endfor %}
 </ul>
+<p>
+    {% if page.paginator.prev %}
+    <a href="{{ url(page.paginator.prev) }}">Prev</a>
+    {% endif %}
+    {% if page.paginator.prev and page.paginator.next %}|{% endif %}
+    {% if page.paginator.next %}
+    <a href="{{ url(page.paginator.next) }}">Next</a>
+    {% endif %}
+</p>
+{% else %}
+<ul>
+    {% for item in page.pages %}
+    <li>
+        <a href="{{ url(item) }}">{{ item.title }}</a>
+        {{ item.content|excerpt }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 <p>layout: _default/list.html</p>
 </body>

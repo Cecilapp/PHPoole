@@ -539,7 +539,7 @@ class PHPoole implements EventsCapableInterface
         $menuWeight = 0
     ) {
         $paginate = $this->getOptions()['site']['paginate'];
-        $disabled = (!array_key_exists('paginate', $paginate) || $paginate == 'disabled') ? true : false;
+        echo $disabled = ($paginate == 'disabled') ? true : false;
         $paginateMax = $paginate['max'];
         $paginatePath = $paginate['path'];
         // paginate
@@ -567,7 +567,7 @@ class PHPoole implements EventsCapableInterface
                         ->setPathname(Page::urlize(sprintf('%s/%s/%s', $path, $paginatePath, $i + 1)));
                 }
                 // paginator
-                $paginator = [];
+                $paginator = ['pages' => $pagesInPaginator];
                 if ($i > 0) {
                     $paginator += ['prev'  => Page::urlize(sprintf('%s/%s/%s', $path, $paginatePath, $i))];
                 }
@@ -577,7 +577,6 @@ class PHPoole implements EventsCapableInterface
                 // common properties/variables
                 $page->setTitle(ucfirst($title))
                     ->setNodeType($type)
-                    ->setVariable('pages', $pagesInPaginator)
                     ->setVariable('paginator', $paginator);
                 if (!empty($variables)) {
                     foreach ($variables as $key => $value) {
