@@ -831,6 +831,7 @@ class PHPoole implements EventsCapableInterface
         $layouts = $this->layoutFallback($page);
 
         // is layout exists in local layout dir?
+        $layoutsDir = $this->sourceDir.'/'.$this->getOption('layouts.dir');
         foreach ($layouts as $layout) {
             if ($this->fs->exists($layoutsDir.'/'.$layout)) {
                 return $layout;
