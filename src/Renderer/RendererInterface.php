@@ -53,7 +53,7 @@ interface RendererInterface
     /**
      * Saves rendered template.
      *
-     * @param $pathname
+     * @param string $pathname
      *
      * @return bool
      */
