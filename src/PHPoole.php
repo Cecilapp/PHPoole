@@ -8,6 +8,7 @@
 
 namespace PHPoole;
 
+use Dflydev\DotAccessData\Data;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\Converter;
 use PHPoole\Page\NodeTypeEnum;
@@ -18,7 +19,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Zend\EventManager\EventsCapableInterface;
-use Dflydev\DotAccessData\Data;
 
 /**
  * Class PHPoole.
@@ -214,7 +214,7 @@ class PHPoole implements EventsCapableInterface
     public function getOptions()
     {
         if (is_null($this->options)) {
-            $this->setOptions(array());
+            $this->setOptions([]);
         }
 
         return $this->options;
@@ -223,8 +223,8 @@ class PHPoole implements EventsCapableInterface
     /**
      * Get an option.
      *
-     * @param  string $key
-     * @param  string $default
+     * @param string $key
+     * @param string $default
      *
      * @return array|mixed|null
      *
@@ -233,6 +233,7 @@ class PHPoole implements EventsCapableInterface
     public function getOption($key, $default = '')
     {
         $data = new Data($this->getOptions());
+
         return $data->get($key, $default);
     }
 
@@ -511,6 +512,7 @@ class PHPoole implements EventsCapableInterface
                 if ($a['date'] == $b['date']) {
                     return 0;
                 }
+
                 return ($a['date'] > $b['date']) ? -1 : 1;
             };
             $pages = $filteredPages->usort($callback)->toArray();
