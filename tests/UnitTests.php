@@ -16,7 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
-class PHPooleTest extends \PHPUnit_Framework_TestCase
+class UnitTests extends \PHPUnit_Framework_TestCase
 {
     //protected $sourceDir;
     //protected $destDir;
