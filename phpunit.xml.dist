@@ -10,11 +10,11 @@
         <ini name="date.timezone" value="Europe/Paris" />
     </php>
     <testsuites>
-        <testsuite name="PHPoole-library test suite">
-            <directory>./tests/</directory>
+        <testsuite name="Unit_tests">
+            <file>./tests/UnitTests.php</file>
         </testsuite>
-        <testsuite name="PHPoole-library build test">
-            <file>./tests/PHPooleBuild.php</file>
+        <testsuite name="Build_test">
+            <file>./tests/Build.php</file>
         </testsuite>
     </testsuites>
     <filter>
