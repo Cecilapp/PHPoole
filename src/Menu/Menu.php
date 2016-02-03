@@ -21,11 +21,15 @@ class Menu extends AbstractCollection implements ItemInterface
     /**
      * Set menu name.
      *
-     * @param string $name
+     * @param $name
+     *
+     * @return $this
      */
-    public function __construct($name)
+    public function setId($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**

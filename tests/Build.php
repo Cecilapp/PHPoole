@@ -26,7 +26,7 @@ class PHPooleBuild extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         $fs = new Filesystem();
-        $fs->remove($this->wsDestinationDir.'/_site');
+        //$fs->remove($this->wsDestinationDir.'/_site');
         $fs->remove($this->wsDestinationDir.'/layouts/_cache');
     }
 

@@ -19,13 +19,17 @@ class Vocabulary extends AbstractCollection implements ItemInterface
     protected $name;
 
     /**
-     * Create vocabulary.
+     * Set vocabulary name.
      *
      * @param string $name
+     *
+     * @return $this
      */
-    public function __construct($name)
+    public function setId($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**

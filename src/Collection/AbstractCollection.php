@@ -148,6 +148,29 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
+     * Sort items by date
+     *
+     * @return AbstractCollection|CollectionInterface|static
+     */
+    public function sortByDate()
+    {
+        return $this->usort(function ($a, $b)
+        {
+            if (!isset($a['date'])) {
+                return -1;
+            }
+            if (!isset($b['date'])) {
+                return 1;
+            }
+            if ($a['date'] == $b['date']) {
+                return 0;
+            }
+
+            return ($a['date'] > $b['date']) ? -1 : 1;
+        });
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function filter(Closure $callback)

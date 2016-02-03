@@ -34,7 +34,7 @@ class Twig implements RendererInterface
     /**
      * @var bool
      */
-    protected $twigStrict = false;
+    protected $twigStrict = true;
     /**
      * @var bool
      */
