@@ -148,14 +148,13 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * Sort items by date
+     * Sort items by date.
      *
      * @return AbstractCollection|CollectionInterface|static
      */
     public function sortByDate()
     {
-        return $this->usort(function ($a, $b)
-        {
+        return $this->usort(function ($a, $b) {
             if (!isset($a['date'])) {
                 return -1;
             }

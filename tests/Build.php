@@ -12,7 +12,7 @@ use PHPoole\PHPoole;
 use PHPoole\Plugin\Example;
 use Symfony\Component\Filesystem\Filesystem;
 
-class PHPooleBuild extends \PHPUnit_Framework_TestCase
+class Build extends \PHPUnit_Framework_TestCase
 {
     protected $wsSourceDir;
     protected $wsDestinationDir;
