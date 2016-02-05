@@ -34,8 +34,8 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * AbstractCollection constructor.
      *
-     * @param string|null  $id
-     * @param array        $items
+     * @param string|null $id
+     * @param array       $items
      */
     public function __construct($id = null, $items = [])
     {
