@@ -104,8 +104,6 @@ class Page extends AbstractItem implements \ArrayAccess
      */
     public function __construct(SplFileInfo $file = null)
     {
-        parent::__construct();
-
         $this->file = $file;
 
         if ($this->file instanceof SplFileInfo) {
@@ -137,8 +135,12 @@ class Page extends AbstractItem implements \ArrayAccess
             $this->date = filemtime($this->file->getPathname());
             // permalink
             $this->permalink = $this->pathname;
+
+            parent::__construct($this->id);
         } else {
             $this->virtual = true;
+
+            parent::__construct();
         }
     }
 

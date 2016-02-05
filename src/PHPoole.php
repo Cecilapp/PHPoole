@@ -419,7 +419,7 @@ class PHPoole implements EventsCapableInterface
             $siteTaxonomies = $this->getOption('site.taxonomies');
             // adds each vocabulary collection to the taxonomies collection
             foreach ($siteTaxonomies as $plural => $singular) {
-                $this->taxonomies->add((new Taxonomy\Vocabulary())->setId($plural));
+                $this->taxonomies->add(new Taxonomy\Vocabulary($plural));
             }
             /* @var $page Page */
             foreach ($this->pageCollection as $page) {
@@ -432,7 +432,7 @@ class PHPoole implements EventsCapableInterface
                         foreach ($page[$plural] as $term) {
                             // adds each terms to the vocabulary collection
                             $this->taxonomies->get($plural)
-                                ->add((new Taxonomy\Term())->setId($term));
+                                ->add(new Taxonomy\Term($term));
                             // adds each pages to the term collection
                             $this->taxonomies
                                 ->get($plural)
@@ -452,15 +452,11 @@ class PHPoole implements EventsCapableInterface
                      */
                     /* @var $pages PageCollection */
                     foreach ($terms as $term => $pages) {
-
-                        //var_dump($pages->sortByDate());
-
                         if (!$this->pageCollection->has($term)) {
                             /* @var $pages PageCollection */
                             $this->addNodePage(NodeTypeEnum::TAXONOMY,
                                 $term,
                                 "$plural/$term",
-                                //$pages->toArray(),
                                 $pages->sortByDate()->toArray(),
                                 ['singular' => $siteTaxonomies[$plural]]
                             );
@@ -478,6 +474,7 @@ class PHPoole implements EventsCapableInterface
                         ->setVariable('plural', $plural)
                         ->setVariable('singular', $siteTaxonomies[$plural])
                         ->setVariable('terms', $terms);
+
                     // add page only if a template exist
                     try {
                         $this->layoutFinder($page);
@@ -506,14 +503,7 @@ class PHPoole implements EventsCapableInterface
                 return $page->getNodeType() === null && $page->getSection() == $this->getOption('paginate.homepage.section');
             });
 
-            $callback = function ($a, $b) {
-                if ($a['date'] == $b['date']) {
-                    return 0;
-                }
-
-                return ($a['date'] > $b['date']) ? -1 : 1;
-            };
-            $pages = $filteredPages->usort($callback)->toArray();
+            $pages = $filteredPages->sortByDate()->toArray();
 
             $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $pages, [], 1);
         }

@@ -18,18 +18,56 @@ use DomainException;
 abstract class AbstractCollection implements CollectionInterface
 {
     /**
+     * Collections's identifier
+     *
+     * @var null
+     */
+    protected $id = null;
+
+    /**
+     * Collection's items
+     *
      * @var array
      */
     protected $items = [];
 
     /**
-     * Constructor.
+     * AbstractCollection constructor.
      *
+     * @param null $id
      * @param array $items
      */
-    public function __construct($items = [])
+    public function __construct($id = null, $items = [])
     {
+        if (empty($id)) {
+            $this->id = spl_object_hash($this);
+        } else {
+            $this->id = $id;
+        }
         $this->items = $items;
+    }
+
+    /**
+     * If parameter is empty uses the object hash
+     * {@inheritdoc}
+     */
+    public function setId($id)
+    {
+        if (empty($id)) {
+            $this->id = spl_object_hash($this);
+        } else {
+            $this->id = $id;
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -144,7 +182,7 @@ abstract class AbstractCollection implements CollectionInterface
             return ($a < $b) ? -1 : 1;
         });
 
-        return new static($items);
+        return new static(self::getId(), $items);
     }
 
     /**
@@ -172,10 +210,11 @@ abstract class AbstractCollection implements CollectionInterface
 
     /**
      * {@inheritdoc}
+     * @return AbstractCollection
      */
     public function filter(Closure $callback)
     {
-        return new static(array_filter($this->items, $callback));
+        return new static(self::getId(), array_filter($this->items, $callback));
     }
 
     /**
@@ -183,7 +222,7 @@ abstract class AbstractCollection implements CollectionInterface
      */
     public function map(Closure $callback)
     {
-        return new static(array_map($callback, $this->items));
+        return new static(self::getId(), array_map($callback, $this->items));
     }
 
     /**

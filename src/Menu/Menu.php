@@ -16,38 +16,9 @@ use PHPoole\Collection\ItemInterface;
  */
 class Menu extends AbstractCollection implements ItemInterface
 {
-    protected $name;
-
-    /**
-     * Set menu name.
-     *
-     * @param $name
-     *
-     * @return $this
-     */
-    public function setId($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Return menu name.
-     *
-     * @return string
-     */
-    public function getId()
-    {
-        return $this->name;
-    }
-
     /**
      * Add menu entry.
-     *
-     * @param ItemInterface $item
-     *
-     * @return self
+     * {@inheritdoc}
      */
     public function add(ItemInterface $item)
     {

@@ -16,29 +16,4 @@ use PHPoole\Collection\ItemInterface;
  */
 class Term extends AbstractCollection implements ItemInterface
 {
-    protected $name;
-
-    /**
-     * Set term name.
-     *
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setId($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Return term name.
-     *
-     * @return string
-     */
-    public function getId()
-    {
-        return $this->name;
-    }
 }

@@ -20,6 +20,22 @@ use IteratorAggregate;
 interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
 {
     /**
+     * Set the collection identifier.
+     *
+     * @param $id
+     *
+     * @return self
+     */
+    public function setId($id);
+
+    /**
+     * Return the collection identifier.
+     *
+     * @return string
+     */
+    public function getId();
+
+    /**
      * Does the item exist?
      *
      * @param string $id
