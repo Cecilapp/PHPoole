@@ -18,14 +18,14 @@ use DomainException;
 abstract class AbstractCollection implements CollectionInterface
 {
     /**
-     * Collections's identifier
+     * Collections's identifier.
      *
      * @var null
      */
     protected $id = null;
 
     /**
-     * Collection's items
+     * Collection's items.
      *
      * @var array
      */
@@ -34,7 +34,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * AbstractCollection constructor.
      *
-     * @param null $id
+     * @param null  $id
      * @param array $items
      */
     public function __construct($id = null, $items = [])
@@ -186,14 +186,13 @@ abstract class AbstractCollection implements CollectionInterface
     }
 
     /**
-     * Sort items by date
+     * Sort items by date.
      *
      * @return AbstractCollection|CollectionInterface|static
      */
     public function sortByDate()
     {
-        return $this->usort(function ($a, $b)
-        {
+        return $this->usort(function ($a, $b) {
             if (!isset($a['date'])) {
                 return -1;
             }
@@ -210,6 +209,7 @@ abstract class AbstractCollection implements CollectionInterface
 
     /**
      * {@inheritdoc}
+     *
      * @return AbstractCollection
      */
     public function filter(Closure $callback)
