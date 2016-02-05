@@ -31,7 +31,7 @@ class TwigExtensionFilters extends \Twig_Extension
     public function getFilters()
     {
         $filters = [
-                new \Twig_SimpleFilter('filterBySection', [$this, 'filterBySection']),
+            new \Twig_SimpleFilter('filterBySection', [$this, 'filterBySection']),
         ];
 
         return $filters;
