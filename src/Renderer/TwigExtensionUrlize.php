@@ -69,13 +69,12 @@ class TwigExtensionUrlize extends SlugifyExtension
             $value = $value->getPermalink();
             $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
         } else {
-            if (preg_match("~^(?:f|ht)tps?://~i", $value)) {
+            if (preg_match('~^(?:f|ht)tps?://~i', $value)) {
                 $url = $value;
             } else {
                 $value = $this->slugifyFilter($value);
                 $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
             }
-
         }
 
         return $url;
