@@ -22,7 +22,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
     /**
      * Set the collection identifier.
      *
-     * @param $id
+     * @param string $id
      *
      * @return self
      */
