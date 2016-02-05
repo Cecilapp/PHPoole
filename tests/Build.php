@@ -27,7 +27,7 @@ class Build extends \PHPUnit_Framework_TestCase
     {
         $fs = new Filesystem();
         $fs->remove($this->wsDestinationDir.'/_site');
-        $fs->remove($this->wsDestinationDir.'/layouts/_cache');
+        $fs->remove(__DIR__.'/../_cache');
     }
 
     public function testBuid()
