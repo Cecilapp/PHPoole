@@ -4,11 +4,13 @@
     <url>
         <loc>{{ url(page) }}</loc>
         <lastmod>{{ page.date|date('Y-m-dTH:i:sP') }}</lastmod>
+{% if page.sitemap is defined %}
 {% if page.sitemap.changefreq %}
         <changefreq>{{ page.sitemap.changefreq }}</changefreq>
 {% endif %}
 {% if page.sitemap.priority %}
         <priority>{{ page.sitemap.priority }}</priority>
+{% endif %}
 {% endif %}
     </url>
 {% endfor %}

@@ -16,34 +16,9 @@ use PHPoole\Collection\ItemInterface;
  */
 class Vocabulary extends AbstractCollection implements ItemInterface
 {
-    protected $name;
-
     /**
-     * Create vocabulary.
-     *
-     * @param string $name
-     */
-    public function __construct($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * Return vocabulary name.
-     *
-     * @return string
-     */
-    public function getId()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Adds term to vocabulary.
-     *
-     * @param ItemInterface $item
-     *
-     * @return $this
+     * Adds term to a Vocabulary collection.
+     * {@inheritdoc}
      */
     public function add(ItemInterface $item)
     {

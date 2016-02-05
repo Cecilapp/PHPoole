@@ -11,7 +11,7 @@
 <div class="content container">
     <h1 class="page-title">{{ page.singular|title }} "{{ page.title }}"</h1>
     <ul>
-        {% for term in page.pages|sortByDate %}
+        {% for term in page.pagination.pages|sortByDate %}
         <li>
             <a href="{{ url(term) }}">{{ term.title }}</a>
         </li>

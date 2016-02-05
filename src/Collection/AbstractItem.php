@@ -14,24 +14,35 @@ namespace PHPoole\Collection;
 abstract class AbstractItem implements ItemInterface
 {
     /**
+     * Item identifier.
+     *
      * @var string
      */
     protected $id;
 
     /**
-     * Constructor.
+     * AbstractItem constructor.
      *
-     * Set an item identifier or the object hash by default
-     *
-     * @param null $id The item identifier
+     * @param null $id
      */
     public function __construct($id = null)
+    {
+        $this->setId($id);
+    }
+
+    /**
+     * If parameter is empty uses the object hash
+     * {@inheritdoc}
+     */
+    public function setId($id)
     {
         if (empty($id)) {
             $this->id = spl_object_hash($this);
         } else {
             $this->id = $id;
         }
+
+        return $this;
     }
 
     /**

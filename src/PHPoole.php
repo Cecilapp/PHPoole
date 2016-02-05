@@ -393,24 +393,11 @@ class PHPoole implements EventsCapableInterface
         }
         // adds node pages
         if (count($this->sections) > 0) {
-            $callback = function ($a, $b) {
-                if (!isset($a['date'])) {
-                    return -1;
-                }
-                if (!isset($b['date'])) {
-                    return 1;
-                }
-                if ($a['date'] == $b['date']) {
-                    return 0;
-                }
-
-                return ($a['date'] > $b['date']) ? -1 : 1;
-            };
             $menu = 100;
 
             foreach ($this->sections as $node => $pages) {
                 if (!$this->pageCollection->has($node)) {
-                    usort($pages, $callback);
+                    usort($pages, 'PHPoole\Page\Sort::byDate');
                     $this->addNodePage(NodeTypeEnum::SECTION, $node, $node, $pages, [], $menu);
                 }
                 $menu += 10;
@@ -456,16 +443,23 @@ class PHPoole implements EventsCapableInterface
                 }
             }
             // adds node pages
+            /* @var $terms \PHPoole\Taxonomy\Vocabulary */
             foreach ($this->taxonomies as $plural => $terms) {
                 if (count($terms) > 0) {
                     /*
                      * Creates $plural/$term pages (list of pages)
                      * ex: /tags/tag-1/
                      */
-                    foreach ($terms as $node => $pages) {
-                        if (!$this->pageCollection->has($node)) {
-                            /* @var $pages Collection\CollectionInterface */
-                            $this->addNodePage(NodeTypeEnum::TAXONOMY, $node, "$plural/$node", $pages->toArray(), ['singular' => $siteTaxonomies[$plural]]);
+                    /* @var $pages PageCollection */
+                    foreach ($terms as $term => $pages) {
+                        if (!$this->pageCollection->has($term)) {
+                            /* @var $pages PageCollection */
+                            $this->addNodePage(NodeTypeEnum::TAXONOMY,
+                                $term,
+                                "$plural/$term",
+                                $pages->sortByDate()->toArray(),
+                                ['singular' => $siteTaxonomies[$plural]]
+                            );
                         }
                     }
                     /*
@@ -480,6 +474,7 @@ class PHPoole implements EventsCapableInterface
                         ->setVariable('plural', $plural)
                         ->setVariable('singular', $siteTaxonomies[$plural])
                         ->setVariable('terms', $terms);
+
                     // add page only if a template exist
                     try {
                         $this->layoutFinder($page);
@@ -508,14 +503,7 @@ class PHPoole implements EventsCapableInterface
                 return $page->getNodeType() === null && $page->getSection() == $this->getOption('paginate.homepage.section');
             });
 
-            $callback = function ($a, $b) {
-                if ($a['date'] == $b['date']) {
-                    return 0;
-                }
-
-                return ($a['date'] > $b['date']) ? -1 : 1;
-            };
-            $pages = $filteredPages->usort($callback)->toArray();
+            $pages = $filteredPages->sortByDate()->toArray();
 
             $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $pages, [], 1);
         }
@@ -575,7 +563,7 @@ class PHPoole implements EventsCapableInterface
         if (!$disabled && (isset($paginateMax) && count($pages) > $paginateMax)) {
             $paginateCount = ceil(count($pages) / $paginateMax);
             for ($i = 0; $i < $paginateCount; $i++) {
-                $pagesInPaginator = array_slice($pages, ($i * $paginateMax), ($i * $paginateMax) + $paginateMax);
+                $pagesInPagination = array_slice($pages, ($i * $paginateMax), ($i * $paginateMax) + $paginateMax);
                 // first
                 if ($i == 0) {
                     $page = (new Page())
@@ -595,18 +583,19 @@ class PHPoole implements EventsCapableInterface
                         ->setId(Page::urlize(sprintf('%s/%s/%s/index', $path, $paginatePath, $i + 1)))
                         ->setPathname(Page::urlize(sprintf('%s/%s/%s', $path, $paginatePath, $i + 1)));
                 }
-                // paginator
-                $paginator = ['pages' => $pagesInPaginator];
+                // pagination
+                $pagination = ['pages' => $pagesInPagination];
                 if ($i > 0) {
-                    $paginator += ['prev'  => Page::urlize(sprintf('%s/%s/%s', $path, $paginatePath, $i))];
+                    $pagination += ['prev' => Page::urlize(sprintf('%s/%s/%s', $path, $paginatePath, $i))];
                 }
                 if ($i < $paginateCount - 1) {
-                    $paginator += ['next'  => Page::urlize(sprintf('%s/%s/%s', $path, $paginatePath, $i + 2))];
+                    $pagination += ['next' => Page::urlize(sprintf('%s/%s/%s', $path, $paginatePath, $i + 2))];
                 }
                 // common properties/variables
                 $page->setTitle(ucfirst($title))
                     ->setNodeType($type)
-                    ->setVariable('paginator', $paginator);
+                    ->setVariable('pages', $pages)
+                    ->setVariable('pagination', $pagination);
                 if (!empty($variables)) {
                     foreach ($variables as $key => $value) {
                         $page->setVariable($key, $value);
@@ -621,7 +610,8 @@ class PHPoole implements EventsCapableInterface
                 ->setPathname(Page::urlize(sprintf('%s', $path)))
                 ->setTitle(ucfirst($title))
                 ->setNodeType($type)
-                ->setVariable('pages', $pages);
+                ->setVariable('pages', $pages)
+                ->setVariable('pagination', ['pages' => $pages]);
             if ($menuWeight) {
                 $page->setVariable('menu', [
                     'main' => ['weight' => $menuWeight],
