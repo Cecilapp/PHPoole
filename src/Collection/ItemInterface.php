@@ -16,11 +16,11 @@ interface ItemInterface
     /**
      * Set the item identifier.
      *
-     * @param $id
+     * @param string|null $id
      *
      * @return self
      */
-    public function setId($id);
+    public function setId($id = null);
 
     /**
      * Return the item identifier.

@@ -50,10 +50,6 @@ class Page extends AbstractItem implements \ArrayAccess
     /**
      * @var string
      */
-    protected $id;
-    /**
-     * @var string
-     */
     protected $pathname;
     /**
      * @var string
@@ -385,30 +381,6 @@ class Page extends AbstractItem implements \ArrayAccess
         }
 
         return $this->permalink;
-    }
-
-    /**
-     * Set ID.
-     *
-     * @param $id
-     *
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * Get ID.
-     *
-     * @return string
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**

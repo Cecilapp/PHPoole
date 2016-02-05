@@ -47,7 +47,7 @@ abstract class AbstractCollection implements CollectionInterface
      * If parameter is empty uses the object hash
      * {@inheritdoc}
      */
-    public function setId($id)
+    public function setId($id = null)
     {
         if (empty($id)) {
             $this->id = spl_object_hash($this);
