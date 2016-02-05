@@ -277,6 +277,6 @@ abstract class AbstractCollection implements CollectionInterface
      */
     public function __toString()
     {
-        return __CLASS__.'@'.spl_object_hash($this);
+        return json_encode($this->items)."\n";
     }
 }
