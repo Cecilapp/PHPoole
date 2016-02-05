@@ -34,16 +34,12 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * AbstractCollection constructor.
      *
-     * @param null  $id
-     * @param array $items
+     * @param string|null  $id
+     * @param array        $items
      */
     public function __construct($id = null, $items = [])
     {
-        if (empty($id)) {
-            $this->id = spl_object_hash($this);
-        } else {
-            $this->id = $id;
-        }
+        $this->setId($id);
         $this->items = $items;
     }
 
@@ -188,7 +184,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * Sort items by date.
      *
-     * @return AbstractCollection|CollectionInterface|static
+     * @return AbstractCollection
      */
     public function sortByDate()
     {

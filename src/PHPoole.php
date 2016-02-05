@@ -280,8 +280,8 @@ class PHPoole implements EventsCapableInterface
                 throw new \Exception(__FUNCTION__.': result must be an instance of Symfony\Component\Finder.');
             }
         } catch (\Exception $e) {
-            //$params = compact('dir', 'e');
-            //$this->triggerException(__FUNCTION__, $params);
+            $params = compact('dir', 'e');
+            $this->triggerException(__FUNCTION__, $params);
             echo $e->getMessage()."\n";
         }
     }
@@ -295,7 +295,6 @@ class PHPoole implements EventsCapableInterface
     {
         $this->pageCollection = new PageCollection();
         if (count($this->contentIterator) <= 0) {
-            //throw new \Exception('No content files found.');
             return;
         }
         /* @var $file SplFileInfo */
@@ -316,7 +315,6 @@ class PHPoole implements EventsCapableInterface
     protected function convertPages()
     {
         if (count($this->pageCollection) <= 0) {
-            //throw new \Exception('No pages found.');
             return;
         }
         /* @var $page Page */
@@ -456,7 +454,7 @@ class PHPoole implements EventsCapableInterface
                             /* @var $pages PageCollection */
                             $this->addNodePage(NodeTypeEnum::TAXONOMY,
                                 $term,
-                                "$plural/$term",
+                                sprintf('%s/%s', $plural, $term),
                                 $pages->sortByDate()->toArray(),
                                 ['singular' => $siteTaxonomies[$plural]]
                             );
@@ -756,8 +754,6 @@ class PHPoole implements EventsCapableInterface
      */
     protected function renderPage(Page $page, $dir)
     {
-        //echo '- page layout: '.$page->getLayout() . "\n";
-        //echo '- used layout: '.$this->layoutFinder($page) . "\n";
         $this->renderer->render($this->layoutFinder($page), [
             'page' => $page,
         ]);
