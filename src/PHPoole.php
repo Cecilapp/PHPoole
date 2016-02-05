@@ -678,7 +678,7 @@ class PHPoole implements EventsCapableInterface
         /*
          * Removing/adding/replacing menus entries from options array
          */
-        if ($this->getOption('site.menu') !== null) {
+        if ($this->getOption('site.menu') !== '') {
             foreach ($this->getOption('site.menu') as $name => $entry) {
                 /* @var $menu Menu\Menu */
                 $menu = $this->menus->get($name);
