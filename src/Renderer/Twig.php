@@ -47,14 +47,11 @@ class Twig implements RendererInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct($templatesPath = '')
+    public function __construct($templatesPath = [])
     {
-        if (!empty($templatesPath)) {
-            $this->templatesDir = $templatesPath;
-        }
-        $this->twigCache = $this->templatesDir.'/_cache';
+        $this->twigCache = '_cache';
 
-        $loaderFS = new \Twig_Loader_Filesystem($this->templatesDir);
+        $loaderFS = new \Twig_Loader_Filesystem($templatesPath);
         $loaderArray = new \Twig_Loader_Array([
             'redirect.html' => '<!DOCTYPE html>
 <html>
@@ -91,21 +88,6 @@ class Twig implements RendererInterface
         $this->twig->addFilter($excerptFilter);
 
         $this->fs = new Filesystem();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \Twig_Error_Loader
-     */
-    public function addPath($path)
-    {
-        if (is_dir($path)) {
-            /* @var $loader \Twig_Loader_Filesystem */
-            $loader = $this->twig->getLoader();
-            $loader->addPath($path);
-            $this->twig->setLoader($loader);
-        }
     }
 
     /**

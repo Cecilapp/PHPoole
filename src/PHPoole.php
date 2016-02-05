@@ -710,6 +710,7 @@ class PHPoole implements EventsCapableInterface
      */
     protected function renderPages()
     {
+        $paths = [];
         // prepares global site variables
         $this->site = array_merge(
             $this->getOption('site'),
@@ -719,12 +720,13 @@ class PHPoole implements EventsCapableInterface
         // prepares renderer
         if (!is_dir($this->sourceDir.'/'.$this->getOption('layouts.dir'))) {
             throw new \Exception(sprintf("'%s' is not a valid layouts directory", $this->getOption('layouts.dir')));
+        } else {
+            $paths[] = $this->sourceDir.'/'.$this->getOption('layouts.dir');
         }
-        $this->renderer = new Renderer\Twig($this->sourceDir.'/'.$this->getOption('layouts.dir'));
-        // adds theme templates
         if ($this->isTheme()) {
-            $this->renderer->addPath($this->sourceDir.'/'.$this->getOption('themes.dir').'/'.$this->theme.'/layouts');
+            $paths[] = $this->sourceDir.'/'.$this->getOption('themes.dir').'/'.$this->theme.'/layouts';
         }
+        $this->renderer = new Renderer\Twig($paths);
         // adds global variables
         $this->renderer->addGlobal('site', $this->site);
         $this->renderer->addGlobal('phpoole', [

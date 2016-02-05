@@ -23,15 +23,6 @@ interface RendererInterface
     public function __construct($templatesPath = []);
 
     /**
-     * Add templates path.
-     *
-     * @param $path
-     *
-     * @return void
-     */
-    public function addPath($path);
-
-    /**
      * Add global variable.
      *
      * @param $name
