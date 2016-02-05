@@ -63,14 +63,20 @@ class TwigExtensionUrlize extends SlugifyExtension
      */
     public function createUrl(\Twig_Environment $env, $value = null)
     {
+        $baseurl = $env->getGlobals()['site']['baseurl'];
+
         if ($value instanceof Page) {
             $value = $value->getPermalink();
+            $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
         } else {
-            $value = $this->slugifyFilter($value);
-        }
+            if (preg_match("~^(?:f|ht)tps?://~i", $value)) {
+                $url = $value;
+            } else {
+                $value = $this->slugifyFilter($value);
+                $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
+            }
 
-        $baseurl = $env->getGlobals()['site']['baseurl'];
-        $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
+        }
 
         return $url;
     }

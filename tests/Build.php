@@ -46,7 +46,7 @@ class Build extends \PHPUnit_Framework_TestCase
                             'test' => [
                                 'id'        => 'test',
                                 'name'      => 'Test',
-                                'url'       => 'test',
+                                'url'       => 'http://narno.org',
                                 'weight'    => 999,
                             ],
                         ],
