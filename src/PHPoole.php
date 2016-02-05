@@ -395,7 +395,7 @@ class PHPoole implements EventsCapableInterface
 
             foreach ($this->sections as $node => $pages) {
                 if (!$this->pageCollection->has($node)) {
-                    usort($pages, 'PHPoole\Page\Sort::byDate');
+                    usort($pages, 'PHPoole\Page\Utils::sortByDate');
                     $this->addNodePage(NodeTypeEnum::SECTION, $node, $node, $pages, [], $menu);
                 }
                 $menu += 10;

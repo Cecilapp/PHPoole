@@ -9,11 +9,11 @@
 namespace PHPoole\Page;
 
 /**
- * Class Sort.
+ * Class Utils.
  */
-class Sort
+class Utils
 {
-    public static function byDate($a, $b)
+    public static function sortByDate($a, $b)
     {
         if (!isset($a['date'])) {
             return -1;
