@@ -27,7 +27,7 @@ class PHPoole implements EventsCapableInterface
 {
     use PluginAwareTrait;
 
-    const VERSION = '1.0.x-dev';
+    const VERSION = '1.1.x-dev';
     /**
      * Source directory.
      *
@@ -731,8 +731,8 @@ class PHPoole implements EventsCapableInterface
         $this->renderer->addGlobal('site', $this->site);
         $this->renderer->addGlobal('phpoole', [
             'url'       => 'http://phpoole.narno.org/#v2',
-            'version'   => self::VERSION,
-            'poweredby' => 'PHPoole v'.self::VERSION,
+            'version'   => self::getVersion(),
+            'poweredby' => 'PHPoole v'.self::getVersion(),
         ]);
 
         // start rendering
@@ -933,5 +933,24 @@ class PHPoole implements EventsCapableInterface
         }
 
         return $layouts;
+    }
+
+    /**
+     * Return version.
+     *
+     * @return string
+     */
+    protected static function getVersion()
+    {
+        $version = self::VERSION;
+
+        if (file_exists(__DIR__.'/../composer.json')) {
+            @$composer = json_decode(file_get_contents(__DIR__.'/../composer.json'), true);
+            if (isset($composer['version'])) {
+                $version = $composer['version'];
+            }
+        }
+
+        return $version;
     }
 }
