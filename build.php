@@ -5,11 +5,11 @@ if (php_sapi_name() !== 'cli') {
 }
 date_default_timezone_set('Europe/Paris');
 require_once 'vendor/autoload.php';
+use GitWrapper\GitWrapper;
 use PHPoole\PHPoole;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use GitWrapper\GitWrapper;
+use Symfony\Component\Yaml\Yaml;
 
 $getopt = getopt('e::p::');
 
@@ -31,9 +31,8 @@ if (!$prod) {
     echo "Start server http://localhost:8000\n";
     echo "Ctrl-C to stop it\n";
     exec('php -S localhost:8000 -t _site');
-
 } else {
-// publish?
+    // publish?
     if (isset($getopt['p'])) {
         echo "Publishing...\n";
         //
