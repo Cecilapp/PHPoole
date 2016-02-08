@@ -101,7 +101,7 @@ body {
 }
 .navbar .navbar-links .navbar-link {
     padding: 0 15px;
-    border-right: 1px solid rgba(255,255,255,0.3);
+    border-right: 1px solid rgba(0,0,0,0.3);
 }
 .navbar .navbar-links .navbar-link:last-child {
     border-right: none;
@@ -110,9 +110,7 @@ body {
     height: 100%;
     width: 100%;
     min-height: 450px;
-    color: #fff;
     text-align: center;
-    background-color: #428bca;
 }
 .main-header-content {
     position: absolute;
@@ -143,7 +141,7 @@ body {
     padding: 15px 20px 16px;
     vertical-align: top;
     cursor: pointer;
-    border: 1px solid #fff;
+    border: 1px solid rgba(0,0,0,0.3);
     border-radius: 3px;
     text-decoration: none;
     -webkit-tap-highlight-color: transparent;
@@ -151,11 +149,11 @@ body {
     animation: fadein 2s;
     text-shadow: none;
     color: #333;
-    background-color: #fff;
+    background-color: rgba(0,0,0,0.3);
     font-size: 22px;
 }
 .main-header-btn:hover {
-    box-shadow: 0 0 50px rgba(255,255,255,0.3);
+    box-shadow: 0 0 50px rgba(0,0,0,0.3);
 }
 .main-info {
     *zoom: 1;
@@ -167,7 +165,7 @@ body {
     margin-left: auto;
     padding-left: 0;
     padding-right: 0;
-    background-color: #fff;
+    background-color: rgba(0,0,0,0.1);
 }
 .main-info:before,
 .main-info:after {

@@ -1,0 +1,10 @@
+site:
+    title: PHPoole
+    baseurl: http://narno.org/PHPoole-library
+frontmatter:
+    format: yaml
+github:
+    username: Narno
+    email: arnaud@ligny.org
+    repository: PHPoole-library
+    branch: gh-pages
