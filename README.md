@@ -2,9 +2,9 @@
 
 > An intuitive PHP library to create a static Website.
 
-[![Build Status](https://travis-ci.org/Narno/PHPoole-library.svg?branch=master)](https://travis-ci.org/Narno/PHPoole-library)
-[![Code Coverage](https://scrutinizer-ci.com/g/Narno/PHPoole-library/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Narno/PHPoole-library/?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Narno/PHPoole-library/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Narno/PHPoole-library/?branch=master)
+[![Build Status](https://travis-ci.org/Narno/PHPoole-library.svg?branch=develop)](https://travis-ci.org/Narno/PHPoole-library)
+[![Code Coverage](https://scrutinizer-ci.com/g/Narno/PHPoole-library/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/Narno/PHPoole-library/?branch=develop)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Narno/PHPoole-library/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/Narno/PHPoole-library/?branch=develop)
 [![Code Climate](https://codeclimate.com/github/Narno/PHPoole-library/badges/gpa.svg)](https://codeclimate.com/github/Narno/PHPoole-library)
 
 _PHPoole-library_ is inspired by [Jekyll](http://jekyllrb.com/) and [Hugo](http://gohugo.io/).
