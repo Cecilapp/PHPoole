@@ -9,7 +9,7 @@
 namespace PHPoole\Test;
 
 use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\Converter;
+use PHPoole\Converter\Converter;
 use PHPoole\Page\Page;
 use PHPoole\PHPoole;
 use Symfony\Component\Filesystem\Filesystem;
