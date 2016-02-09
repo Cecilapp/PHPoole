@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPoole\Page;
+namespace PHPoole\Converter;
 
 use ParsedownExtra;
 use Symfony\Component\Yaml\Yaml;
@@ -17,12 +17,7 @@ use Symfony\Component\Yaml\Yaml;
 class Converter
 {
     /**
-     * Converts frontmatter.
-     *
-     * @param $string
-     * @param string $type
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function convertFrontmatter($string, $type = 'yaml')
     {
@@ -36,11 +31,7 @@ class Converter
     }
 
     /**
-     * Converts body.
-     *
-     * @param $string
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function convertBody($string)
     {

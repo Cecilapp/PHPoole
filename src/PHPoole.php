@@ -9,8 +9,8 @@
 namespace PHPoole;
 
 use Dflydev\DotAccessData\Data;
+use PHPoole\Converter\Converter;
 use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\Converter;
 use PHPoole\Page\NodeTypeEnum;
 use PHPoole\Page\Page;
 use PHPoole\Plugin\PluginAwareTrait;
