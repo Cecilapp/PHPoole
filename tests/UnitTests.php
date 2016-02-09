@@ -8,8 +8,8 @@
 
 namespace PHPoole\Test;
 
-use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Converter\Converter;
+use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\Page;
 use PHPoole\PHPoole;
 use Symfony\Component\Filesystem\Filesystem;
