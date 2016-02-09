@@ -20,14 +20,14 @@ class Section
     /**
      * @var array
      */
-    static private $pages = [];
+    private static $pages = [];
 
     /**
-     * @param  PageCollection $pageCollection
+     * @param PageCollection $pageCollection
      *
      * @return array
      */
-    static public function Generate(PageCollection $pageCollection)
+    public static function Generate(PageCollection $pageCollection)
     {
         $sections = [];
 
