@@ -65,12 +65,6 @@ class PHPoole implements EventsCapableInterface
      */
     protected $site;
     /**
-     * Array of site sections.
-     *
-     * @var array
-     */
-    protected $sections;
-    /**
      * Collection of site menus.
      *
      * @var Collection\CollectionInterface
@@ -416,24 +410,16 @@ class PHPoole implements EventsCapableInterface
      */
     protected function generateSections()
     {
-        // collects sections
-        /* @var $page Page */
-        foreach ($this->pageCollection as $page) {
-            if ($page->getSection() != '') {
-                $this->sections[$page->getSection()][] = $page;
-            }
-        }
-        // adds node pages
-        if (count($this->sections) > 0) {
-            $menu = 100;
-
-            foreach ($this->sections as $node => $pages) {
-                if (!$this->pageCollection->has($node)) {
-                    usort($pages, 'PHPoole\Page\Utils::sortByDate');
-                    $this->addNodePage(NodeTypeEnum::SECTION, $node, $node, $pages, [], $menu);
-                }
-                $menu += 10;
-            }
+        $generatedPages = Generator\Section::Generate($this->pageCollection);
+        foreach ($generatedPages as $page) {
+            $this->addNodePage(
+                $page['type'],
+                $page['title'],
+                $page['path'],
+                $page['pages'],
+                $page['variables'],
+                $page['menu']
+            );
         }
     }
 
