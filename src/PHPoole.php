@@ -180,9 +180,9 @@ class PHPoole implements EventsCapableInterface
     /**
      * @param null $sourceDir
      *
-     * @return $this
-     *
      * @throws \Exception
+     *
+     * @return $this
      */
     public function setSource($sourceDir = null)
     {
@@ -201,9 +201,9 @@ class PHPoole implements EventsCapableInterface
     /**
      * @param null $destDir
      *
-     * @return $this
-     *
      * @throws \Exception
+     *
+     * @return $this
      */
     public function setDestination($destDir = null)
     {
