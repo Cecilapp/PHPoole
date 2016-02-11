@@ -391,7 +391,6 @@ class PHPoole implements EventsCapableInterface
         }
         if (!empty($variables['date'])) {
             $page->setDate($variables['date']);
-            //unset($variables['date']);
         }
         if (!empty($variables['permalink'])) {
             $page->setPermalink($variables['permalink']);
