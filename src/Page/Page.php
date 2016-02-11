@@ -348,7 +348,7 @@ class Page extends AbstractItem implements \ArrayAccess
      */
     public function getDate()
     {
-        if (empty($this->date) && $this->file != null) {
+        if (empty($this->date) && $this->file !== null) {
             $this->date = filemtime($this->file->getPathname());
         }
 

@@ -950,7 +950,7 @@ class PHPoole implements EventsCapableInterface
                 ];
                 if ($page->getSection() !== null) {
                     $layouts = array_merge([sprintf('%s/page.html', $page->getSection())], $layouts);
-                    if ($page->getLayout() != null) {
+                    if ($page->getLayout() !== null) {
                         $layouts = array_merge([sprintf('%s/%s.html', $page->getSection(), $page->getLayout())], $layouts);
                     }
                 } else {
