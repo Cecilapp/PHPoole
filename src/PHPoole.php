@@ -534,21 +534,9 @@ class PHPoole implements EventsCapableInterface
      */
     protected function generatesAliases()
     {
-        /* @var $page Page */
-        foreach ($this->pageCollection as $page) {
-            if ($page->hasVariable('aliases')) {
-                $aliases = $page->getVariable('aliases');
-                foreach ($aliases as $alias) {
-                    /* @var $redirectPage Page */
-                    $aliasPage = new Page();
-                    $aliasPage->setId($alias)
-                        ->setPathname(Page::urlize($alias))
-                        ->setTitle($alias)
-                        ->setLayout('redirect')
-                        ->setVariable('destination', $page->getPermalink());
-                    $this->pageCollection->add($aliasPage);
-                }
-            }
+        $generatedPages = Generator\Alias::Generate($this->pageCollection);
+        foreach ($generatedPages as $page) {
+            $this->pageCollection->add($page);
         }
     }
 

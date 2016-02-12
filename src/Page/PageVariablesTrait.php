@@ -85,7 +85,7 @@ trait PageVariablesTrait
             return $this->variables[$name];
         }
 
-        return;
+        return false;
     }
 
     /**

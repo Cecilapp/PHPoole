@@ -23,9 +23,7 @@ class Section
     private static $pages = [];
 
     /**
-     * @param PageCollection $pageCollection
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public static function Generate(PageCollection $pageCollection)
     {
