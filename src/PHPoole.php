@@ -385,7 +385,6 @@ class PHPoole implements EventsCapableInterface
         }
         if (!empty($variables['date'])) {
             $page->setDate($variables['date']);
-            //unset($variables['date']);
         }
         if (!empty($variables['permalink'])) {
             $page->setPermalink($variables['permalink']);
@@ -642,11 +641,6 @@ class PHPoole implements EventsCapableInterface
         $this->menus = new Menu\Collection();
 
         /* @var $page Page */
-        // @todo use collection filter?
-        //$filteredPages = $this->pageCollection->filter(function (Page $page) {
-        //    /* @var $page Page */
-        //    return $page->getVariable('menu') !== null;
-        //});
         foreach ($this->pageCollection as $page) {
             if (!empty($page['menu'])) {
                 // single

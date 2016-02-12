@@ -28,7 +28,6 @@ class Entry extends AbstractItem implements ArrayAccess
      */
     public function setName($value)
     {
-        //$this->properties['name'] = $value;
         $this->offsetSet('name', $value);
 
         return $this;
@@ -43,7 +42,6 @@ class Entry extends AbstractItem implements ArrayAccess
      */
     public function setUrl($value)
     {
-        //$this->properties['url'] = $value;
         $this->offsetSet('url', $value);
 
         return $this;
@@ -58,7 +56,6 @@ class Entry extends AbstractItem implements ArrayAccess
      */
     public function setWeight($value)
     {
-        //$this->properties['weight'] = $value;
         $this->offsetSet('weight', $value);
 
         return $this;
