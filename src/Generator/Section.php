@@ -25,7 +25,7 @@ class Section
     /**
      * {@inheritdoc}
      */
-    public static function Generate(PageCollection $pageCollection)
+    public static function generate(PageCollection $pageCollection)
     {
         $sections = [];
 

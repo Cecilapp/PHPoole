@@ -24,7 +24,7 @@ class Alias
     /**
      * {@inheritdoc}
      */
-    public static function Generate(PageCollection $pageCollection)
+    public static function generate(PageCollection $pageCollection)
     {
         /* @var $page Page */
         foreach ($pageCollection as $page) {

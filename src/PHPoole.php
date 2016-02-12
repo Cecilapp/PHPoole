@@ -410,7 +410,7 @@ class PHPoole implements EventsCapableInterface
      */
     protected function generateSections()
     {
-        $generatedPages = Generator\Section::Generate($this->pageCollection);
+        $generatedPages = Generator\Section::generate($this->pageCollection);
         foreach ($generatedPages as $page) {
             $this->addNodePage(
                 $page['type'],
@@ -534,7 +534,7 @@ class PHPoole implements EventsCapableInterface
      */
     protected function generateAliases()
     {
-        $generatedPages = Generator\Alias::Generate($this->pageCollection);
+        $generatedPages = Generator\Alias::generate($this->pageCollection);
         foreach ($generatedPages as $page) {
             $this->pageCollection->add($page);
         }
