@@ -9,7 +9,6 @@
 namespace PHPoole\Generator;
 
 use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\NodeTypeEnum;
 use PHPoole\Page\Page;
 
 /**
