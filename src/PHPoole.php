@@ -280,7 +280,7 @@ class PHPoole implements EventsCapableInterface
         $this->generateSections();
         $this->generateTaxonomies();
         $this->generateHomepage();
-        $this->generatesAliases();
+        $this->generateAliases();
         $this->generateMenus();
         // rendering
         $this->renderPages();
@@ -532,7 +532,7 @@ class PHPoole implements EventsCapableInterface
      *
      * @see build()
      */
-    protected function generatesAliases()
+    protected function generateAliases()
     {
         $generatedPages = Generator\Alias::Generate($this->pageCollection);
         foreach ($generatedPages as $page) {
