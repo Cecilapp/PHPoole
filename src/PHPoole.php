@@ -65,12 +65,6 @@ class PHPoole implements EventsCapableInterface
      */
     protected $site;
     /**
-     * Array of site sections.
-     *
-     * @var array
-     */
-    protected $sections;
-    /**
      * Collection of site menus.
      *
      * @var Collection\CollectionInterface
@@ -286,7 +280,7 @@ class PHPoole implements EventsCapableInterface
         $this->generateSections();
         $this->generateTaxonomies();
         $this->generateHomepage();
-        $this->generatesAliases();
+        $this->generateAliases();
         $this->generateMenus();
         // rendering
         $this->renderPages();
@@ -415,24 +409,16 @@ class PHPoole implements EventsCapableInterface
      */
     protected function generateSections()
     {
-        // collects sections
-        /* @var $page Page */
-        foreach ($this->pageCollection as $page) {
-            if ($page->getSection() != '') {
-                $this->sections[$page->getSection()][] = $page;
-            }
-        }
-        // adds node pages
-        if (count($this->sections) > 0) {
-            $menu = 100;
-
-            foreach ($this->sections as $node => $pages) {
-                if (!$this->pageCollection->has($node)) {
-                    usort($pages, 'PHPoole\Page\Utils::sortByDate');
-                    $this->addNodePage(NodeTypeEnum::SECTION, $node, $node, $pages, [], $menu);
-                }
-                $menu += 10;
-            }
+        $generatedPages = Generator\Section::generate($this->pageCollection);
+        foreach ($generatedPages as $page) {
+            $this->addNodePage(
+                $page['type'],
+                $page['title'],
+                $page['path'],
+                $page['pages'],
+                $page['variables'],
+                $page['menu']
+            );
         }
     }
 
@@ -545,23 +531,11 @@ class PHPoole implements EventsCapableInterface
      *
      * @see build()
      */
-    protected function generatesAliases()
+    protected function generateAliases()
     {
-        /* @var $page Page */
-        foreach ($this->pageCollection as $page) {
-            if ($page->hasVariable('aliases')) {
-                $aliases = $page->getVariable('aliases');
-                foreach ($aliases as $alias) {
-                    /* @var $redirectPage Page */
-                    $aliasPage = new Page();
-                    $aliasPage->setId($alias)
-                        ->setPathname(Page::urlize($alias))
-                        ->setTitle($alias)
-                        ->setLayout('redirect')
-                        ->setVariable('destination', $page->getPermalink());
-                    $this->pageCollection->add($aliasPage);
-                }
-            }
+        $generatedPages = Generator\Alias::generate($this->pageCollection);
+        foreach ($generatedPages as $page) {
+            $this->pageCollection->add($page);
         }
     }
 
