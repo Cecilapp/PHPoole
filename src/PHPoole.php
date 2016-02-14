@@ -158,7 +158,7 @@ class PHPoole implements EventsCapableInterface
 
         if ($notificationCallback == null) {
             $this->notificationCallback = function ($code, $message = '', $items_count = 0, $items_max = 0, $verbose = false) {
-                switch($code) {
+                switch ($code) {
                     case 'CREATE':
                     case 'CONVERT':
                     case 'RENDER':
@@ -170,7 +170,7 @@ class PHPoole implements EventsCapableInterface
                     case 'RENDER_PROGRESS':
                     case 'COPY_PROGRESS':
                         if ($items_count > 0) {
-                            $length = (int)(($items_count/$items_max)*100);
+                            $length = (int) (($items_count / $items_max) * 100);
                             printf("\r  %d%% (%u/%u) %s", $length, $items_count, $items_max, $message);
                         } else {
                             printf("\r  %s", $message);
