@@ -100,7 +100,7 @@ class PHPoole implements EventsCapableInterface
      *
      * @param array $options
      */
-    public function __construct($options = [])
+    public function __construct($options = [], $notificationCallback = null)
     {
         // backward compatibility
         $args = func_get_args();
@@ -154,6 +154,32 @@ class PHPoole implements EventsCapableInterface
         ], $options);
         if (!empty($options)) {
             $this->setOptions($options);
+        }
+
+        if ($notificationCallback == null) {
+            $this->notificationCallback = function ($code, $message = '', $items_count = 0, $items_max = 0, $verbose = false) {
+                switch($code) {
+                    case 'CREATE':
+                    case 'CONVERT':
+                    case 'RENDER':
+                    case 'COPY':
+                        printf("\n> %s\n", $message);
+                        break;
+                    case 'CREATE_PROGRESS':
+                    case 'CONVERT_PROGRESS':
+                    case 'RENDER_PROGRESS':
+                    case 'COPY_PROGRESS':
+                        if ($items_count > 0) {
+                            $length = (int)(($items_count/$items_max)*100);
+                            printf("\r  %d%% (%u/%u) %s", $length, $items_count, $items_max, $message);
+                        } else {
+                            printf("\r  %s", $message);
+                        }
+                        break;
+                }
+            };
+        } else {
+            $this->notificationCallback = $notificationCallback;
         }
 
         $this->fs = new Filesystem();
@@ -325,12 +351,18 @@ class PHPoole implements EventsCapableInterface
         if (count($this->contentIterator) <= 0) {
             return;
         }
+        call_user_func_array($this->notificationCallback, ['CREATE', 'Creating pages']);
+        $max = count($this->contentIterator);
+        $count = 0;
         /* @var $file SplFileInfo */
-        /* @var $page Page */
         foreach ($this->contentIterator as $file) {
+            $count++;
+            /* @var $page Page */
             $page = (new Page($file))
                 ->parse();
             $this->pageCollection->add($page);
+            $message = ($count == $max) ? 'done!' : $page->getName();
+            call_user_func_array($this->notificationCallback, ['CREATE_PROGRESS', $message, $count, $max]);
         }
     }
 
@@ -345,11 +377,17 @@ class PHPoole implements EventsCapableInterface
         if (count($this->pageCollection) <= 0) {
             return;
         }
+        call_user_func_array($this->notificationCallback, ['CONVERT', 'Converting pages']);
+        $max = count($this->pageCollection);
+        $count = 0;
         /* @var $page Page */
         foreach ($this->pageCollection as $page) {
             if (!$page->isVirtual()) {
+                $count++;
                 $page = $this->convertPage($page, $this->getOption('frontmatter.format'));
                 $this->pageCollection->replace($page->getId(), $page);
+                $message = ($count == $max) ? 'done!' : $page->getName();
+                call_user_func_array($this->notificationCallback, ['CONVERT_PROGRESS', $message, $count, $max]);
             }
         }
     }
@@ -740,9 +778,15 @@ class PHPoole implements EventsCapableInterface
         // start rendering
         $dir = $this->destDir.'/'.$this->getOption('output.dir');
         $this->fs->mkdir($dir);
+        call_user_func_array($this->notificationCallback, ['RENDER', 'Rendering pages']);
+        $max = count($this->pageCollection);
+        $count = 0;
         /* @var $page Page */
         foreach ($this->pageCollection as $page) {
-            $this->renderPage($page, $dir);
+            $count++;
+            $pathname = $this->renderPage($page, $dir);
+            $message = ($count == $max) ? 'done!' : $pathname;
+            call_user_func_array($this->notificationCallback, ['RENDER_PROGRESS', $message, $count, $max]);
         }
     }
 
@@ -776,7 +820,8 @@ class PHPoole implements EventsCapableInterface
 
         $pathname = preg_replace('#/+#', '/', $pathname); // remove unnecessary slashes
         $this->renderer->save($pathname);
-        echo $pathname."\n";
+        //echo $pathname."\n";
+        return $pathname;
     }
 
     /**
@@ -786,6 +831,7 @@ class PHPoole implements EventsCapableInterface
      */
     protected function copyStatic()
     {
+        call_user_func_array($this->notificationCallback, ['COPY', 'Copy static files']);
         $dir = $this->destDir.'/'.$this->getOption('output.dir');
         // copy theme static dir if exists
         if ($this->isTheme()) {
@@ -799,6 +845,7 @@ class PHPoole implements EventsCapableInterface
         if ($this->fs->exists($staticDir)) {
             $this->fs->mirror($staticDir, $dir, null, ['override' => true]);
         }
+        call_user_func_array($this->notificationCallback, ['COPY_PROGRESS', 'done!']);
     }
 
     /**
