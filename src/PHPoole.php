@@ -820,6 +820,7 @@ class PHPoole implements EventsCapableInterface
 
         $pathname = preg_replace('#/+#', '/', $pathname); // remove unnecessary slashes
         $this->renderer->save($pathname);
+
         return $pathname;
     }
 
