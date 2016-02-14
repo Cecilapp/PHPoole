@@ -156,7 +156,7 @@ class PHPoole implements EventsCapableInterface
             $this->setOptions($options);
         }
 
-        if ($notificationCallback == null) {
+        if ($notificationCallback === null) {
             $this->notificationCallback = function ($code, $message = '', $items_count = 0, $items_max = 0, $verbose = false) {
                 switch ($code) {
                     case 'CREATE':
@@ -820,7 +820,6 @@ class PHPoole implements EventsCapableInterface
 
         $pathname = preg_replace('#/+#', '/', $pathname); // remove unnecessary slashes
         $this->renderer->save($pathname);
-        //echo $pathname."\n";
         return $pathname;
     }
 
