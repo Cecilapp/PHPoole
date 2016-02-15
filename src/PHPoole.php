@@ -738,6 +738,7 @@ class PHPoole implements EventsCapableInterface
         ]);
 
         // start rendering
+        echo "Page rendering\n";
         $dir = $this->destDir.'/'.$this->getOption('output.dir');
         $this->fs->mkdir($dir);
         /* @var $page Page */
@@ -776,7 +777,7 @@ class PHPoole implements EventsCapableInterface
 
         $pathname = preg_replace('#/+#', '/', $pathname); // remove unnecessary slashes
         $this->renderer->save($pathname);
-        echo $pathname."\n";
+        echo "- $pathname\n";
     }
 
     /**
