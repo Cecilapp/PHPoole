@@ -15,7 +15,7 @@ use PHPoole\Page\Page;
 /**
  * Class Section.
  */
-class Section
+class Section implements GeneratorInterface
 {
     /**
      * @var array

@@ -14,7 +14,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class Converter.
  */
-class Converter
+class Converter implements ConverterInterface
 {
     /**
      * {@inheritdoc}

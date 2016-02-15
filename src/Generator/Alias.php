@@ -14,7 +14,7 @@ use PHPoole\Page\Page;
 /**
  * Class Alias.
  */
-class Alias
+class Alias implements GeneratorInterface
 {
     /**
      * @var array
