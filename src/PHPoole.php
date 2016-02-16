@@ -94,13 +94,17 @@ class PHPoole implements EventsCapableInterface
      * @var Filesystem
      */
     protected $fs;
+    /**
+     * @var \Closure
+     */
+    protected $messageCallback;
 
     /**
      * PHPoole constructor.
      *
      * @param array $options
      */
-    public function __construct($options = [])
+    public function __construct($options = [], $messageCallback = null)
     {
         // backward compatibility
         $args = func_get_args();
@@ -154,6 +158,32 @@ class PHPoole implements EventsCapableInterface
         ], $options);
         if (!empty($options)) {
             $this->setOptions($options);
+        }
+
+        if ($messageCallback === null) {
+            $this->messageCallback = function ($code, $message = '', $items_count = 0, $items_max = 0, $verbose = false) {
+                switch ($code) {
+                    case 'CREATE':
+                    case 'CONVERT':
+                    case 'RENDER':
+                    case 'COPY':
+                        printf("\n> %s\n", $message);
+                        break;
+                    case 'CREATE_PROGRESS':
+                    case 'CONVERT_PROGRESS':
+                    case 'RENDER_PROGRESS':
+                    case 'COPY_PROGRESS':
+                        if ($items_count > 0) {
+                            $length = (int) (($items_count / $items_max) * 100);
+                            printf("\r  %d%% (%u/%u) %s", $length, $items_count, $items_max, $message);
+                        } else {
+                            printf("\r  %s", $message);
+                        }
+                        break;
+                }
+            };
+        } else {
+            $this->messageCallback = $messageCallback;
         }
 
         $this->fs = new Filesystem();
@@ -325,12 +355,18 @@ class PHPoole implements EventsCapableInterface
         if (count($this->contentIterator) <= 0) {
             return;
         }
+        call_user_func_array($this->messageCallback, ['CREATE', 'Creating pages']);
+        $max = count($this->contentIterator);
+        $count = 0;
         /* @var $file SplFileInfo */
-        /* @var $page Page */
         foreach ($this->contentIterator as $file) {
+            $count++;
+            /* @var $page Page */
             $page = (new Page($file))
                 ->parse();
             $this->pageCollection->add($page);
+            $message = ($count == $max) ? 'done!' : $page->getName();
+            call_user_func_array($this->messageCallback, ['CREATE_PROGRESS', $message, $count, $max]);
         }
     }
 
@@ -345,12 +381,21 @@ class PHPoole implements EventsCapableInterface
         if (count($this->pageCollection) <= 0) {
             return;
         }
+        call_user_func_array($this->messageCallback, ['CONVERT', 'Converting pages']);
+        $max = count($this->pageCollection);
+        $count = 0;
         /* @var $page Page */
         foreach ($this->pageCollection as $page) {
             if (!$page->isVirtual()) {
-                if (false !== $page = $this->convertPage($page, $this->getOption('frontmatter.format'))) {
-                    $this->pageCollection->replace($page->getId(), $page);
+                $count++;
+                if (false !== $convertedPage = $this->convertPage($page, $this->getOption('frontmatter.format'))) {
+                    $this->pageCollection->replace($page->getId(), $convertedPage);
+
+                } else {
+                    $count--;
                 }
+                $message = ($count == $max) ? 'done!' : $page->getName();
+                call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', $message, $count, $max]);
             }
         }
     }
@@ -371,7 +416,8 @@ class PHPoole implements EventsCapableInterface
         try {
             $variables = (new Converter())->convertFrontmatter($page->getFrontmatter(), $format);
         } catch (\Exception $e) {
-            printf("- Unable to convert frontmatter of '%s': %s\n", $page->getId(), $e->getMessage());
+            $message = sprintf("Unable to convert frontmatter of '%s': %s\n", $page->getId(), $e->getMessage());
+            call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', $message]);
 
             return false;
         }
@@ -744,12 +790,17 @@ class PHPoole implements EventsCapableInterface
         ]);
 
         // start rendering
-        echo "Page rendering\n";
         $dir = $this->destDir.'/'.$this->getOption('output.dir');
         $this->fs->mkdir($dir);
+        call_user_func_array($this->messageCallback, ['RENDER', 'Rendering pages']);
+        $max = count($this->pageCollection);
+        $count = 0;
         /* @var $page Page */
         foreach ($this->pageCollection as $page) {
-            $this->renderPage($page, $dir);
+            $count++;
+            $pathname = $this->renderPage($page, $dir);
+            $message = ($count == $max) ? 'done!' : $pathname;
+            call_user_func_array($this->messageCallback, ['RENDER_PROGRESS', $message, $count, $max]);
         }
     }
 
@@ -783,7 +834,8 @@ class PHPoole implements EventsCapableInterface
 
         $pathname = preg_replace('#/+#', '/', $pathname); // remove unnecessary slashes
         $this->renderer->save($pathname);
-        printf("- %s\n", $pathname);
+
+        return $pathname;
     }
 
     /**
@@ -793,6 +845,7 @@ class PHPoole implements EventsCapableInterface
      */
     protected function copyStatic()
     {
+        call_user_func_array($this->messageCallback, ['COPY', 'Copy static files']);
         $dir = $this->destDir.'/'.$this->getOption('output.dir');
         // copy theme static dir if exists
         if ($this->isTheme()) {
@@ -806,6 +859,7 @@ class PHPoole implements EventsCapableInterface
         if ($this->fs->exists($staticDir)) {
             $this->fs->mirror($staticDir, $dir, null, ['override' => true]);
         }
+        call_user_func_array($this->messageCallback, ['COPY_PROGRESS', 'done!']);
     }
 
     /**
