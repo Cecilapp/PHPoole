@@ -371,7 +371,7 @@ class PHPoole implements EventsCapableInterface
         try {
             $variables = (new Converter())->convertFrontmatter($page->getFrontmatter(), $format);
         } catch (\Exception $e) {
-            echo "[ERROR] Unable to convert frontmatter of '{$page->getId()}': {$e->getMessage()}\n";
+            printf("- Unable to convert frontmatter of '%s': %s\n", $page->getId(), $e->getMessage());
 
             return false;
         }
@@ -783,7 +783,7 @@ class PHPoole implements EventsCapableInterface
 
         $pathname = preg_replace('#/+#', '/', $pathname); // remove unnecessary slashes
         $this->renderer->save($pathname);
-        echo "- $pathname\n";
+        printf("- %s\n", $pathname);
     }
 
     /**
