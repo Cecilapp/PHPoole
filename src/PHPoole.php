@@ -372,6 +372,7 @@ class PHPoole implements EventsCapableInterface
             $variables = (new Converter())->convertFrontmatter($page->getFrontmatter(), $format);
         } catch (\Exception $e) {
             echo "[ERROR] Unable to convert frontmatter of '{$page->getId()}': {$e->getMessage()}\n";
+
             return false;
         }
         // converts body
