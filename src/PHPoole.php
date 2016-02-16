@@ -161,7 +161,7 @@ class PHPoole implements EventsCapableInterface
         }
 
         if ($messageCallback === null) {
-            $this->messageCallback = function ($code, $message = '', $items_count = 0, $items_max = 0, $verbose = false) {
+            $this->messageCallback = function ($code, $message = '', $itemsCount = 0, $itemsMax = 0, $verbose = true) {
                 switch ($code) {
                     case 'CREATE':
                     case 'CONVERT':
@@ -173,9 +173,9 @@ class PHPoole implements EventsCapableInterface
                     case 'CONVERT_PROGRESS':
                     case 'RENDER_PROGRESS':
                     case 'COPY_PROGRESS':
-                        if ($items_count > 0) {
-                            $length = (int) (($items_count / $items_max) * 100);
-                            printf("\r  %d%% (%u/%u) %s", $length, $items_count, $items_max, $message);
+                        if ($itemsCount > 0 && $verbose !== false) {
+                            $length = (int) (($itemsCount / $itemsMax) * 100);
+                            printf("\r  %d%% (%u/%u) %s", $length, $itemsCount, $itemsMax, $message);
                         } else {
                             printf("\r  %s", $message);
                         }
