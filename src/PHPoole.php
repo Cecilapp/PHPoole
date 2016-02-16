@@ -390,7 +390,6 @@ class PHPoole implements EventsCapableInterface
                 $count++;
                 if (false !== $convertedPage = $this->convertPage($page, $this->getOption('frontmatter.format'))) {
                     $this->pageCollection->replace($page->getId(), $convertedPage);
-
                 } else {
                     $count--;
                 }
