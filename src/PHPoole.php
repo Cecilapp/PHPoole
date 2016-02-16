@@ -348,8 +348,9 @@ class PHPoole implements EventsCapableInterface
         /* @var $page Page */
         foreach ($this->pageCollection as $page) {
             if (!$page->isVirtual()) {
-                $page = $this->convertPage($page, $this->getOption('frontmatter.format'));
-                $this->pageCollection->replace($page->getId(), $page);
+                if (false !== $page = $this->convertPage($page, $this->getOption('frontmatter.format'))) {
+                    $this->pageCollection->replace($page->getId(), $page);
+                }
             }
         }
     }
@@ -367,8 +368,12 @@ class PHPoole implements EventsCapableInterface
     public function convertPage($page, $format = 'yaml')
     {
         // converts frontmatter
-        $variables = (new Converter())
-            ->convertFrontmatter($page->getFrontmatter(), $format);
+        try {
+            $variables = (new Converter())->convertFrontmatter($page->getFrontmatter(), $format);
+        } catch (\Exception $e) {
+            echo "[ERROR] Unable to convert frontmatter of '{$page->getId()}': {$e->getMessage()}\n";
+            return false;
+        }
         // converts body
         $html = (new Converter())
             ->convertBody($page->getBody());
