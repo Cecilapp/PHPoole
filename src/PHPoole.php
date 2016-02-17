@@ -198,8 +198,7 @@ class PHPoole implements EventsCapableInterface
 
         $this->generators = (new GeneratorRegistry())
             ->addGenerator(new Section(), 1)
-            ->addGenerator(new Alias(), 10)
-        ;
+            ->addGenerator(new Alias(), 10);
     }
 
     /**
