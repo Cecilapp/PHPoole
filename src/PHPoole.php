@@ -340,10 +340,8 @@ class PHPoole implements EventsCapableInterface
         }
 
         // generates virtual content
-        //$this->generateSections();
         $this->generateTaxonomies();
         $this->generateHomepage();
-        //$this->generateAliases();
         $this->generateMenus();
         // rendering
         $this->renderPages();
@@ -398,7 +396,7 @@ class PHPoole implements EventsCapableInterface
             $page = (new Page($file))
                 ->parse();
             $this->pageCollection->add($page);
-            $message = ($count == $max) ? 'done!' : $page->getName();
+            $message = ($count == $max) ? '' : $page->getName();
             call_user_func_array($this->messageCallback, ['CREATE_PROGRESS', $message, $count, $max]);
         }
     }
@@ -417,6 +415,7 @@ class PHPoole implements EventsCapableInterface
         call_user_func_array($this->messageCallback, ['CONVERT', 'Converting pages']);
         $max = count($this->pageCollection);
         $count = 0;
+        $countError = 0;
         /* @var $page Page */
         foreach ($this->pageCollection as $page) {
             if (!$page->isVirtual()) {
@@ -424,10 +423,10 @@ class PHPoole implements EventsCapableInterface
                 if (false !== $convertedPage = $this->convertPage($page, $this->getOption('frontmatter.format'))) {
                     $this->pageCollection->replace($page->getId(), $convertedPage);
                 } else {
-                    $count--;
+                    $countError++;
                 }
-                $message = ($count == $max) ? 'done!' : $page->getName();
-                call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', $message, $count, $max]);
+                $message = ($count == $max) ? '' : $page->getName();
+                call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', $message, $count - $countError, $max]);
             }
         }
     }
@@ -483,27 +482,6 @@ class PHPoole implements EventsCapableInterface
         $page->setVariables($variables);
 
         return $page;
-    }
-
-    /**
-     * Generates sections.
-     *
-     * @see addNodePage()
-     * @see build()
-     */
-    protected function generateSections()
-    {
-        $generatedPages = Generator\Section::generate($this->pageCollection);
-        foreach ($generatedPages as $page) {
-            $this->addNodePage(
-                $page['type'],
-                $page['title'],
-                $page['path'],
-                $page['pages'],
-                $page['variables'],
-                $page['menu']
-            );
-        }
     }
 
     /**
@@ -607,19 +585,6 @@ class PHPoole implements EventsCapableInterface
             $pages = $filteredPages->sortByDate()->toArray();
 
             $this->addNodePage(NodeTypeEnum::HOMEPAGE, 'Home', '', $pages, [], 1);
-        }
-    }
-
-    /**
-     * Generates aliases.
-     *
-     * @see build()
-     */
-    protected function generateAliases()
-    {
-        $generatedPages = Generator\Alias::generate($this->pageCollection);
-        foreach ($generatedPages as $page) {
-            $this->pageCollection->add($page);
         }
     }
 
@@ -831,7 +796,7 @@ class PHPoole implements EventsCapableInterface
         foreach ($this->pageCollection as $page) {
             $count++;
             $pathname = $this->renderPage($page, $dir);
-            $message = ($count == $max) ? 'done!' : $pathname;
+            $message = ($count == $max) ? '' : $pathname;
             call_user_func_array($this->messageCallback, ['RENDER_PROGRESS', $message, $count, $max]);
         }
     }
@@ -891,7 +856,7 @@ class PHPoole implements EventsCapableInterface
         if ($this->fs->exists($staticDir)) {
             $this->fs->mirror($staticDir, $dir, null, ['override' => true]);
         }
-        call_user_func_array($this->messageCallback, ['COPY_PROGRESS', 'done!']);
+        call_user_func_array($this->messageCallback, ['COPY_PROGRESS', '100%']);
     }
 
     /**
