@@ -19,7 +19,7 @@ class GeneratorRegistry extends \SplObjectStorage
      */
     public function hasGenerator(GeneratorInterface $generator)
     {
-        return parent::contains($generator);
+        return $this->contains($generator);
     }
 
     /**
@@ -40,7 +40,7 @@ class GeneratorRegistry extends \SplObjectStorage
                 get_class($generator)
             ));
         }
-        parent::attach($generator);
+        $this->attach($generator, $priority);
 
         return $this;
     }
@@ -54,8 +54,8 @@ class GeneratorRegistry extends \SplObjectStorage
      */
     public function removeGenerator(GeneratorInterface $generator)
     {
-        if (parent::contains($generator)) {
-            parent::detach($generator);
+        if ($this->contains($generator)) {
+            $this->detach($generator);
         }
 
         return $this;
