@@ -10,6 +10,10 @@ namespace PHPoole;
 
 use Dflydev\DotAccessData\Data;
 use PHPoole\Converter\Converter;
+use PHPoole\Generator\Alias;
+use PHPoole\Generator\GeneratorInterface;
+use PHPoole\Generator\GeneratorRegistry;
+use PHPoole\Generator\Section;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\NodeTypeEnum;
 use PHPoole\Page\Page;
@@ -98,13 +102,17 @@ class PHPoole implements EventsCapableInterface
      * @var \Closure
      */
     protected $messageCallback;
+    /**
+     * @var GeneratorRegistry
+     */
+    protected $generators;
 
     /**
      * PHPoole constructor.
      *
      * @param array $options
      */
-    public function __construct($options = [], $messageCallback = null)
+    public function __construct($options = [], \Closure $messageCallback = null)
     {
         // backward compatibility
         $args = func_get_args();
@@ -187,6 +195,11 @@ class PHPoole implements EventsCapableInterface
         }
 
         $this->fs = new Filesystem();
+
+        $this->generators = (new GeneratorRegistry())
+            ->addGenerator(new Section(), 1)
+            ->addGenerator(new Alias(), 10)
+        ;
     }
 
     /**
@@ -306,11 +319,32 @@ class PHPoole implements EventsCapableInterface
         $this->createPagesFromContent();
         // converts Pages content
         $this->convertPages();
+
+        /* @var GeneratorInterface $generator */
+        foreach ($this->generators as $generator) {
+            $generatedPages = $generator->generate($this->pageCollection);
+            /* @var Page $page */
+            foreach ($generatedPages as $page) {
+                if ($page['type']) {
+                    $this->addNodePage(
+                        $page['type'],
+                        $page['title'],
+                        $page['path'],
+                        $page['pages'],
+                        $page['variables'],
+                        $page['menu']
+                    );
+                } else {
+                    $this->pageCollection->add($page);
+                }
+            }
+        }
+
         // generates virtual content
-        $this->generateSections();
+        //$this->generateSections();
         $this->generateTaxonomies();
         $this->generateHomepage();
-        $this->generateAliases();
+        //$this->generateAliases();
         $this->generateMenus();
         // rendering
         $this->renderPages();

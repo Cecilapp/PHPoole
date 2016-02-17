@@ -19,12 +19,12 @@ class Alias implements GeneratorInterface
     /**
      * @var array
      */
-    private static $pages = [];
+    protected $pages = [];
 
     /**
      * {@inheritdoc}
      */
-    public static function generate(PageCollection $pageCollection)
+    public function generate(PageCollection $pageCollection)
     {
         /* @var $page Page */
         foreach ($pageCollection as $page) {
@@ -38,11 +38,11 @@ class Alias implements GeneratorInterface
                         ->setTitle($alias)
                         ->setLayout('redirect')
                         ->setVariable('destination', $page->getPermalink());
-                    self::$pages[] = $aliasPage;
+                    $this->pages[] = $aliasPage;
                 }
             }
         }
 
-        return self::$pages;
+        return $this->pages;
     }
 }

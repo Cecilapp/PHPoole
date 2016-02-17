@@ -20,12 +20,12 @@ class Section implements GeneratorInterface
     /**
      * @var array
      */
-    private static $pages = [];
+    protected $pages = [];
 
     /**
      * {@inheritdoc}
      */
-    public static function generate(PageCollection $pageCollection)
+    public function generate(PageCollection $pageCollection)
     {
         $sections = [];
 
@@ -43,7 +43,7 @@ class Section implements GeneratorInterface
             foreach ($sections as $node => $pages) {
                 if (!$pageCollection->has($node)) {
                     usort($pages, 'PHPoole\Page\Utils::sortByDate');
-                    self::$pages[] = [
+                    $this->pages[] = [
                         'type'      => NodeTypeEnum::SECTION,
                         'title'     => $node,
                         'path'      => $node,
@@ -56,6 +56,6 @@ class Section implements GeneratorInterface
             }
         }
 
-        return self::$pages;
+        return $this->pages;
     }
 }

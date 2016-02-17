@@ -20,5 +20,5 @@ interface GeneratorInterface
      *
      * @return array
      */
-    public static function generate(PageCollection $pageCollection);
+    public function generate(PageCollection $pageCollection);
 }
