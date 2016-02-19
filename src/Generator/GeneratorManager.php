@@ -40,22 +40,22 @@ class GeneratorManager extends \SplPriorityQueue
     }
 
     /**
-     * Generates.
+     * Process each generators.
      *
-     * @param PageCollection $pages
+     * @param PageCollection $pageCollection
      *
-     * @return array|PageCollection
+     * @return PageCollection
      */
-    public function generate(PageCollection $pages)
+    public function generate(PageCollection $pageCollection)
     {
         $this->top();
         while ($this->valid()) {
             /* @var GeneratorInterface $generator */
             $generator = $this->current();
-            $pages = $generator->generate($pages);
+            $pageCollection = $generator->generate($pageCollection);
             $this->next();
         }
 
-        return $pages;
+        return $pageCollection;
     }
 }

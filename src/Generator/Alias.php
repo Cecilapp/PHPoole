@@ -17,11 +17,6 @@ use PHPoole\Page\Page;
 class Alias implements GeneratorInterface
 {
     /**
-     * @var array
-     */
-    protected $pages = [];
-
-    /**
      * {@inheritdoc}
      */
     public function generate(PageCollection $pageCollection)
@@ -31,18 +26,18 @@ class Alias implements GeneratorInterface
             if ($page->hasVariable('aliases')) {
                 $aliases = $page->getVariable('aliases');
                 foreach ($aliases as $alias) {
-                    /* @var $redirectPage Page */
-                    $aliasPage = new Page();
-                    $aliasPage->setId($alias)
+                    /* @var $aliasPage Page */
+                    $aliasPage = (new Page())
+                        ->setId($alias)
                         ->setPathname(Page::urlize($alias))
                         ->setTitle($alias)
                         ->setLayout('redirect')
                         ->setVariable('destination', $page->getPermalink());
-                    $this->pages[] = $aliasPage;
+                    $pageCollection->add($aliasPage);
                 }
             }
         }
 
-        return $this->pages;
+        return $pageCollection;
     }
 }

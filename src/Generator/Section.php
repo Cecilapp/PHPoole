@@ -18,11 +18,6 @@ use PHPoole\Page\Page;
 class Section implements GeneratorInterface
 {
     /**
-     * @var array
-     */
-    protected $pages = [];
-
-    /**
      * {@inheritdoc}
      */
     public function generate(PageCollection $pageCollection)
@@ -36,26 +31,30 @@ class Section implements GeneratorInterface
                 $sections[$page->getSection()][] = $page;
             }
         }
-        // adds node pages
+        // adds node pages to collection
         if (count($sections) > 0) {
-            $menu = 100;
-
+            $menuWeight = 100;
             foreach ($sections as $node => $pages) {
                 if (!$pageCollection->has($node)) {
                     usort($pages, 'PHPoole\Page\Utils::sortByDate');
-                    $this->pages[] = [
-                        'type'      => NodeTypeEnum::SECTION,
-                        'title'     => $node,
-                        'path'      => $node,
-                        'pages'     => $pages,
-                        'variables' => [],
-                        'menu'      => $menu,
-                    ];
+                    $page = (new Page())
+                        ->setId(Page::urlize(sprintf('%s/index', $node)))
+                        ->setPathname(Page::urlize(sprintf('%s', $node)))
+                        ->setTitle(ucfirst($node))
+                        ->setNodeType(NodeTypeEnum::SECTION)
+                        ->setVariable('pages', $pages); // children pages
+                        //->setVariable('pagination', ['pages' => $pages]);
+                    if ($menuWeight) {
+                        $page->setVariable('menu', [
+                            'main' => ['weight' => $menuWeight],
+                        ]);
+                    }
+                    $pageCollection->add($page);
                 }
-                $menu += 10;
+                $menuWeight += 10;
             }
         }
 
-        return $this->pages;
+        return $pageCollection;
     }
 }
