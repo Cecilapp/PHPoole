@@ -35,11 +35,12 @@ class GeneratorManager extends \SplPriorityQueue
         if ($priority1 === $priority2) {
             return 0;
         }
+
         return $priority1 > $priority2 ? -1 : 1;
     }
 
     /**
-     * Generates
+     * Generates.
      *
      * @param PageCollection $pages
      *
@@ -48,7 +49,7 @@ class GeneratorManager extends \SplPriorityQueue
     public function generate(PageCollection $pages)
     {
         $this->top();
-        while($this->valid()){
+        while ($this->valid()) {
             /* @var GeneratorInterface $generator */
             $generator = $this->current();
             $pages = $generator->generate($pages);
