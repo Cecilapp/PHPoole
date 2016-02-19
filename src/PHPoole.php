@@ -12,7 +12,7 @@ use Dflydev\DotAccessData\Data;
 use PHPoole\Converter\Converter;
 use PHPoole\Generator\Alias;
 use PHPoole\Generator\GeneratorInterface;
-use PHPoole\Generator\GeneratorRegistry;
+use PHPoole\Generator\GeneratorManager;
 use PHPoole\Generator\Section;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\NodeTypeEnum;
@@ -116,7 +116,7 @@ class PHPoole implements EventsCapableInterface
     {
         // backward compatibility
         $args = func_get_args();
-        if (count($args) > 1) {
+        if (count($args) > 2) {
             $this->setSource($args[0]);
             $this->setDestination($args[1]);
             $options = $args[2];
@@ -196,7 +196,7 @@ class PHPoole implements EventsCapableInterface
 
         $this->fs = new Filesystem();
 
-        $this->generators = (new GeneratorRegistry())
+        $this->generators = (new GeneratorManager())
             ->addGenerator(new Section(), 1)
             ->addGenerator(new Alias(), 10);
     }
@@ -338,6 +338,8 @@ class PHPoole implements EventsCapableInterface
                 }
             }
         }
+        //
+        //$this->generators->generate($this->pageCollection);
 
         // generates virtual content
         $this->generateTaxonomies();
