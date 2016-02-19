@@ -117,12 +117,12 @@ class PHPoole implements EventsCapableInterface
         // backward compatibility
         $args = func_get_args();
         if (count($args) > 2) {
-            $this->setSource($args[0]);
-            $this->setDestination($args[1]);
+            $this->setSourceDir($args[0]);
+            $this->setDestDir($args[1]);
             $options = $args[2];
         } else {
-            $this->setSource(null);
-            $this->setDestination(null);
+            $this->setSourceDir(null);
+            $this->setDestDir(null);
         }
 
         $data = new Data([
@@ -219,7 +219,7 @@ class PHPoole implements EventsCapableInterface
      *
      * @return $this
      */
-    public function setSource($sourceDir = null)
+    public function setSourceDir($sourceDir = null)
     {
         if ($sourceDir === null) {
             $sourceDir = getcwd();
@@ -240,7 +240,7 @@ class PHPoole implements EventsCapableInterface
      *
      * @return $this
      */
-    public function setDestination($destDir = null)
+    public function setDestDir($destDir = null)
     {
         if ($destDir === null) {
             $destDir = $this->sourceDir;
