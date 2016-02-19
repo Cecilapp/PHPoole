@@ -125,7 +125,7 @@ class PHPoole implements EventsCapableInterface
             $this->setDestination(null);
         }
 
-        $options = array_replace_recursive([
+        $data = new Data([
             'site' => [
                 'title'       => 'PHPoole',
                 'baseline'    => 'A PHPoole website',
@@ -163,10 +163,9 @@ class PHPoole implements EventsCapableInterface
             'themes' => [
                 'dir' => 'themes',
             ],
-        ], $options);
-        if (!empty($options)) {
-            $this->setOptions($options);
-        }
+        ]);
+        $data->import($options);
+        $this->setOptions($data);
 
         if ($messageCallback === null) {
             $this->messageCallback = function ($code, $message = '', $itemsCount = 0, $itemsMax = 0, $verbose = true) {
@@ -258,17 +257,17 @@ class PHPoole implements EventsCapableInterface
     /**
      * Set options.
      *
-     * @param array $options
+     * @param  Data $data
      *
-     * @return self
+     * @return $this
      *
      * @see    getOptions()
      */
-    public function setOptions($options)
+    public function setOptions(Data $data)
     {
-        if ($this->options !== $options) {
-            $this->options = $options;
-            $this->trigger('options', $options);
+        if ($this->options !== $data) {
+            $this->options = $data;
+            $this->trigger('options', $data->export());
         }
 
         return $this;
@@ -277,21 +276,21 @@ class PHPoole implements EventsCapableInterface
     /**
      * Get options.
      *
-     * @return null|array
+     * @return Data
      *
      * @see    setOptions()
      */
     public function getOptions()
     {
         if (is_null($this->options)) {
-            $this->setOptions([]);
+            $this->setOptions(new Data());
         }
 
         return $this->options;
     }
 
     /**
-     * Get an option.
+     * return an option value.
      *
      * @param string $key
      * @param string $default
@@ -302,9 +301,7 @@ class PHPoole implements EventsCapableInterface
      */
     public function getOption($key, $default = '')
     {
-        $data = new Data($this->getOptions());
-
-        return $data->get($key, $default);
+        return $this->getOptions()->get($key, $default);
     }
 
     /**
