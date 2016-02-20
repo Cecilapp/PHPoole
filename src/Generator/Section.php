@@ -42,8 +42,8 @@ class Section implements GeneratorInterface
                         ->setPathname(Page::urlize(sprintf('%s', $node)))
                         ->setTitle(ucfirst($node))
                         ->setNodeType(NodeTypeEnum::SECTION)
-                        ->setVariable('pages', $pages);
-                        $page->setVariable('menu', [
+                        ->setVariable('pages', $pages)
+                        ->setVariable('menu', [
                             'main' => ['weight' => $menuWeight],
                         ]);
                     $pageCollection->add($page);
