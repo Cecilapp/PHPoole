@@ -12,6 +12,7 @@ use Dflydev\DotAccessData\Data;
 use PHPoole\Converter\Converter;
 use PHPoole\Generator\Alias;
 use PHPoole\Generator\GeneratorManager;
+use PHPoole\Generator\Homepage;
 use PHPoole\Generator\Section;
 use PHPoole\Generator\Taxonomy;
 use PHPoole\Page\Collection as PageCollection;
@@ -198,7 +199,8 @@ class PHPoole implements EventsCapableInterface
         $this->generators = (new GeneratorManager())
             ->addGenerator(new Section(), 0)
             ->addGenerator(new Alias(), 10)
-            ->addGenerator(new Taxonomy($this->getOptions()), 20);
+            ->addGenerator(new Taxonomy($this->getOptions()), 20)
+            ->addGenerator(new Homepage($this->getOptions()), 30);
     }
 
     /**
@@ -318,7 +320,6 @@ class PHPoole implements EventsCapableInterface
         $this->convertPages();
         // generates virtual pages
         $this->generateVirtualPages();
-        $this->generateHomepage();
         // generates menus
         $this->generateMenus();
         // rendering
