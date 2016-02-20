@@ -260,7 +260,7 @@ class PHPoole implements EventsCapableInterface
     /**
      * Set options.
      *
-     * @param  Data $data
+     * @param Data $data
      *
      * @return $this
      *
@@ -468,7 +468,8 @@ class PHPoole implements EventsCapableInterface
      *
      * @see build()
      */
-    protected function generateVirtualPages() {
+    protected function generateVirtualPages()
+    {
         $this->pageCollection = $this->generators->generate($this->pageCollection);
     }
 
