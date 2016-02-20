@@ -8,6 +8,7 @@
 
 namespace PHPoole\Test;
 
+use Dflydev\DotAccessData\Data;
 use PHPoole\Converter\Converter;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\Page;
@@ -63,14 +64,14 @@ class UnitTests extends \PHPUnit_Framework_TestCase
 
     public function testOptions()
     {
-        $options = [
+        $data = new Data([
             'options' => [
                 'option1' => 'Option 1',
                 'option2' => 'Option 2',
             ],
-        ];
-        $phpoole = (new PHPoole())->setOptions($options);
-        $this->assertEquals($options, $phpoole->getOptions());
+        ]);
+        $phpoole = (new PHPoole())->setOptions($data);
+        $this->assertEquals($data, $phpoole->getOptions());
     }
 
     public function testContentIterator()
