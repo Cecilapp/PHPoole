@@ -43,7 +43,7 @@ class Section implements GeneratorInterface
                         ->setTitle(ucfirst($node))
                         ->setNodeType(NodeTypeEnum::SECTION)
                         ->setVariable('pages', $pages);
-                        $page->setVariable('menu', [
+                    $page->setVariable('menu', [
                             'main' => ['weight' => $menuWeight],
                         ]);
                     $pageCollection->add($page);
