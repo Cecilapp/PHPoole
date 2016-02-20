@@ -16,7 +16,7 @@ use PHPoole\Page\Collection as PageCollection;
 interface GeneratorInterface
 {
     /**
-     * @param  PageCollection $pageCollection
+     * @param PageCollection $pageCollection
      *
      * @return PageCollection
      */
