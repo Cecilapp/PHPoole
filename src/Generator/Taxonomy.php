@@ -105,7 +105,6 @@ class Taxonomy implements GeneratorInterface
 
                     // add page only if a template exist
                     try {
-                        //$this->layoutFinder($page);
                         $pageCollection->add($page);
                     } catch (\Exception $e) {
                         echo $e->getMessage()."\n";
