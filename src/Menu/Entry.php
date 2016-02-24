@@ -15,10 +15,8 @@ use PHPoole\Collection\ItemArrayAccessTrait;
 /**
  * Class Entry.
  */
-class Entry extends AbstractItem implements ArrayAccess
+class Entry extends AbstractItem
 {
-    use ItemArrayAccessTrait;
-
     /**
      * Set menu entry name.
      *
