@@ -74,7 +74,7 @@ class PageItem extends AbstractItem
      *
      * @param $name
      *
-     * @return mixed|boolean
+     * @return mixed|bool
      */
     public function getVariable($name)
     {

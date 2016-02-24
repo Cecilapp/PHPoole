@@ -9,7 +9,6 @@
 namespace PHPoole\Page;
 
 use Cocur\Slugify\Slugify;
-use PHPoole\Collection\AbstractItem;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**

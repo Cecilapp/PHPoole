@@ -8,9 +8,7 @@
 
 namespace PHPoole\Menu;
 
-use ArrayAccess;
 use PHPoole\Collection\AbstractItem;
-use PHPoole\Collection\ItemArrayAccessTrait;
 
 /**
  * Class Entry.
