@@ -134,7 +134,7 @@ class UnitTests extends \PHPUnit_Framework_TestCase
         $page = $pageCollection->get('section1/page1');
         $this->assertObjectHasAttribute('title', $page);
         $this->assertObjectHasAttribute('html', $page);
-        $this->assertObjectHasAttribute('variables', $page);
+        $this->assertObjectHasAttribute('properties', $page);
         $this->assertSame('Page 1', $page->getTitle());
         $this->assertSame('<p>Content of page 1.</p>', $page->getContent());
         //$this->assertEquals(1427839200, $page['date'], '', 5);}

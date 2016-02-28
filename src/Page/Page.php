@@ -9,16 +9,13 @@
 namespace PHPoole\Page;
 
 use Cocur\Slugify\Slugify;
-use PHPoole\Collection\AbstractItem;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Class Page.
  */
-class Page extends AbstractItem implements \ArrayAccess
+class Page extends PageItem
 {
-    use PageVariablesTrait;
-
     const SLUGIFY_PATTERN = '/(^\/|[^a-z0-9\/]|-)+/';
 
     /**
