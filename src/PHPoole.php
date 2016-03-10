@@ -34,6 +34,56 @@ class PHPoole implements EventsCapableInterface
 
     const VERSION = '1.1.x-dev';
     /**
+     * Default options.
+     *
+     * @var array
+     */
+    protected static $defaultOptions = [
+        'site' => [
+            'title'       => 'PHPoole',
+            'baseline'    => 'A PHPoole website',
+            'baseurl'     => 'http://localhost:8000/',
+            'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            'taxonomies'  => [
+                'tags'       => 'tag',
+                'categories' => 'category',
+            ],
+            'paginate' => [
+                'max'  => 5,
+                'path' => 'page',
+            ],
+        ],
+        'content' => [
+            'dir' => 'content',
+            'ext' => 'md',
+        ],
+        'frontmatter' => [
+            'format' => 'yaml',
+        ],
+        'body' => [
+            'format' => 'md',
+        ],
+        'static' => [
+            'dir' => 'static',
+        ],
+        'layouts' => [
+            'dir' => 'layouts',
+        ],
+        'output' => [
+            'dir'      => '_site',
+            'filename' => 'index.html',
+        ],
+        'themes' => [
+            'dir' => 'themes',
+        ],
+    ];
+    /**
+     * Array of options.
+     *
+     * @var array
+     */
+    protected $options;
+    /**
      * Source directory.
      *
      * @var string
@@ -45,12 +95,6 @@ class PHPoole implements EventsCapableInterface
      * @var string
      */
     protected $destDir;
-    /**
-     * Array of options.
-     *
-     * @var array
-     */
-    protected $options;
     /**
      * Content iterator.
      *
@@ -126,45 +170,7 @@ class PHPoole implements EventsCapableInterface
             $this->setDestDir(null);
         }
 
-        $data = new Data([
-            'site' => [
-                'title'       => 'PHPoole',
-                'baseline'    => 'A PHPoole website',
-                'baseurl'     => 'http://localhost:8000/',
-                'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                'taxonomies'  => [
-                    'tags'       => 'tag',
-                    'categories' => 'category',
-                ],
-                'paginate' => [
-                    'max'  => 5,
-                    'path' => 'page',
-                ],
-            ],
-            'content' => [
-                'dir' => 'content',
-                'ext' => 'md',
-            ],
-            'frontmatter' => [
-                'format' => 'yaml',
-            ],
-            'body' => [
-                'format' => 'md',
-            ],
-            'static' => [
-                'dir' => 'static',
-            ],
-            'layouts' => [
-                'dir' => 'layouts',
-            ],
-            'output' => [
-                'dir'      => '_site',
-                'filename' => 'index.html',
-            ],
-            'themes' => [
-                'dir' => 'themes',
-            ],
-        ]);
+        $data = new Data(self::$defaultOptions);
         $data->import($options);
         $this->setOptions($data);
 
