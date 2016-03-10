@@ -283,6 +283,9 @@ class PHPoole implements EventsCapableInterface
         return $this->getOptions()->get($key, $default);
     }
 
+    /**
+     * @param \Closure $messageCallback
+     */
     public function setMessageCallback($messageCallback = null)
     {
         if ($messageCallback === null) {
