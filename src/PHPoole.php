@@ -177,12 +177,6 @@ class PHPoole implements EventsCapableInterface
         $this->setMessageCallback($messageCallback);
 
         $this->fs = new Filesystem();
-
-        $this->generators = (new GeneratorManager())
-            ->addGenerator(new Section(), 0)
-            ->addGenerator(new Alias(), 10)
-            ->addGenerator(new Taxonomy($this->getOptions()), 20)
-            ->addGenerator(new Homepage($this->getOptions()), 30);
     }
 
     /**
@@ -340,6 +334,15 @@ class PHPoole implements EventsCapableInterface
         $this->copyStatic();
     }
 
+    protected function setupGenerators()
+    {
+        $this->generators = (new GeneratorManager())
+            ->addGenerator(new Section(), 0)
+            ->addGenerator(new Alias(), 10)
+            ->addGenerator(new Taxonomy($this->getOptions()), 20)
+            ->addGenerator(new Homepage($this->getOptions()), 30);
+    }
+
     /**
      * Locates content.
      *
@@ -482,6 +485,7 @@ class PHPoole implements EventsCapableInterface
      */
     protected function generateVirtualPages()
     {
+        $this->setupGenerators();
         $this->pageCollection = $this->generators->generate($this->pageCollection);
     }
 
