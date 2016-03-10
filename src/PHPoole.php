@@ -485,6 +485,7 @@ class PHPoole implements EventsCapableInterface
      */
     protected function generateVirtualPages()
     {
+        call_user_func_array($this->messageCallback, ['GENERATE', 'Generating pages']);
         $this->setupGenerators();
         $this->pageCollection = $this->generators->generate($this->pageCollection);
     }
