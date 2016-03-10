@@ -174,31 +174,7 @@ class PHPoole implements EventsCapableInterface
         $data->import($options);
         $this->setOptions($data);
 
-        if ($messageCallback === null) {
-            $this->messageCallback = function ($code, $message = '', $itemsCount = 0, $itemsMax = 0, $verbose = true) {
-                switch ($code) {
-                    case 'CREATE':
-                    case 'CONVERT':
-                    case 'RENDER':
-                    case 'COPY':
-                        printf("\n> %s\n", $message);
-                        break;
-                    case 'CREATE_PROGRESS':
-                    case 'CONVERT_PROGRESS':
-                    case 'RENDER_PROGRESS':
-                    case 'COPY_PROGRESS':
-                        if ($itemsCount > 0 && $verbose !== false) {
-                            $length = (int) (($itemsCount / $itemsMax) * 100);
-                            printf("\r  %d%% (%u/%u) %s", $length, $itemsCount, $itemsMax, $message);
-                        } else {
-                            printf("\r  %s", $message);
-                        }
-                        break;
-                }
-            };
-        } else {
-            $this->messageCallback = $messageCallback;
-        }
+        $this->setMessageCallback($messageCallback);
 
         $this->fs = new Filesystem();
 
@@ -311,6 +287,36 @@ class PHPoole implements EventsCapableInterface
     public function getOption($key, $default = '')
     {
         return $this->getOptions()->get($key, $default);
+    }
+
+    public function setMessageCallback($messageCallback = null)
+    {
+        if ($messageCallback === null) {
+            $messageCallback = function ($code, $message = '', $itemsCount = 0, $itemsMax = 0, $verbose = true) {
+                switch ($code) {
+                    case 'CREATE':
+                    case 'CONVERT':
+                    case 'GENERATE':
+                    case 'RENDER':
+                    case 'COPY':
+                        printf("\n> %s\n", $message);
+                        break;
+                    case 'CREATE_PROGRESS':
+                    case 'CONVERT_PROGRESS':
+                    case 'GENERATE_PROGRESS':
+                    case 'RENDER_PROGRESS':
+                    case 'COPY_PROGRESS':
+                        if ($itemsCount > 0 && $verbose !== false) {
+                            $length = (int) (($itemsCount / $itemsMax) * 100);
+                            printf("\r  %d%% (%u/%u) %s", $length, $itemsCount, $itemsMax, $message);
+                        } else {
+                            printf("\r  %s", $message);
+                        }
+                        break;
+                }
+            };
+        }
+        $this->messageCallback = $messageCallback;
     }
 
     /**
