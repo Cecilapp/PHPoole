@@ -319,3 +319,5 @@ PHP array of options used to define how to build the website.
 ## License
 
 PHPoole-library is a free software distributed under the terms of the MIT license.
+
+PHPoole logo designed by [Cécile Ricordeau](http://www.cecillie.fr).
