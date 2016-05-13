@@ -81,8 +81,6 @@ trait PageVariablesTrait
         if ($this->hasVariable($name)) {
             return $this->variables[$name];
         }
-
-        return;
     }
 
     /**
