@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/Narno/PHPoole-library/badge.svg?branch=develop)](https://coveralls.io/github/Narno/PHPoole-library?branch=develop)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Narno/PHPoole-library/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/Narno/PHPoole-library/?branch=develop)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/adbaa5309cd749fc9e095ca47d347586)](https://www.codacy.com/app/Narno/PHPoole-library)
-[![StyleCI](https://styleci.io/repos/32327575/shield)](https://styleci.io/repos/32327575)
+[![StyleCI](https://styleci.io/repos/12738012/shield)](https://styleci.io/repos/12738012)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/f4c44315-d370-499e-8f61-d6d1ce0cadde/mini.png)](https://insight.sensiolabs.com/projects/f4c44315-d370-499e-8f61-d6d1ce0cadde)
 
 _PHPoole-library_ is inspired by [Jekyll](http://jekyllrb.com/) and [Hugo](http://gohugo.io/).
