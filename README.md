@@ -1,4 +1,4 @@
-# ![PHPoole logo](https://avatars2.githubusercontent.com/u/5618939?s=50 "Logo created by Cards Against Humanity") PHPoole-library
+# ![PHPoole logo](https://avatars2.githubusercontent.com/u/5618939?s=50 "Logo created by Cécile Ricordeau") PHPoole-library
 
 > An intuitive PHP library to create a static Website.
 
