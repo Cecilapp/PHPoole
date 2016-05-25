@@ -390,10 +390,9 @@ class PHPoole implements EventsCapableInterface
         foreach ($this->contentIterator as $file) {
             $count++;
             /* @var $page Page */
-            $page = (new Page($file))
-                ->parse();
+            $page = (new Page($file))->parse();
             $this->pageCollection->add($page);
-            $message = ($count == $max) ? '' : $page->getName();
+            $message = $page->getName();
             call_user_func_array($this->messageCallback, ['CREATE_PROGRESS', $message, $count, $max]);
         }
     }
@@ -422,7 +421,7 @@ class PHPoole implements EventsCapableInterface
                 } else {
                     $countError++;
                 }
-                $message = ($count == $max) ? '' : $page->getName();
+                $message = $page->getName();
                 call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', $message, $count - $countError, $max]);
             }
         }
@@ -609,7 +608,7 @@ class PHPoole implements EventsCapableInterface
         foreach ($this->pageCollection as $page) {
             $count++;
             $pathname = $this->renderPage($page, $dir);
-            $message = ($count == $max) ? '' : $pathname;
+            $message = $pathname;
             call_user_func_array($this->messageCallback, ['RENDER_PROGRESS', $message, $count, $max]);
         }
     }
@@ -669,7 +668,7 @@ class PHPoole implements EventsCapableInterface
         if ($this->fs->exists($staticDir)) {
             $this->fs->mirror($staticDir, $dir, null, ['override' => true]);
         }
-        call_user_func_array($this->messageCallback, ['COPY_PROGRESS', '100%']);
+        call_user_func_array($this->messageCallback, ['COPY_PROGRESS', 'Done']);
     }
 
     /**
