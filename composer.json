@@ -1,11 +1,11 @@
 {
   "name": "narno/phpoole-library",
-  "type": "library",
   "description": "An intuitive PHP library to create a static Website.",
-  "version" : "dev-develop",
   "keywords": ["static", "website", "generator", "flat file", "markdown", "twig"],
   "homepage": "https://github.com/Narno/PHPoole-library",
   "license": "MIT",
+  "type": "library",
+  "version" : "1.1.x-dev",
   "authors": [
     {
       "name": "Arnaud Ligny",
