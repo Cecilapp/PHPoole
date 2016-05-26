@@ -44,7 +44,7 @@ class GeneratorManager extends \SplPriorityQueue
      * Process each generators.
      *
      * @param PageCollection $pageCollection
-     * @param \Closure $messageCallback
+     * @param \Closure       $messageCallback
      *
      * @return null|PageCollection
      */
@@ -63,7 +63,7 @@ class GeneratorManager extends \SplPriorityQueue
                 $pages->add($page);
             }
             $message = get_class($generator).': '.count($generatedPages);
-            $count = ($max-$this->key());
+            $count = ($max - $this->key());
             call_user_func_array($messageCallback, ['GENERATE_PROGRESS', $message, $count, $max]);
             $this->next();
         }
