@@ -46,7 +46,7 @@ class GeneratorManager extends \SplPriorityQueue
      * @param PageCollection $pageCollection
      * @param \Closure       $messageCallback
      *
-     * @return null|PageCollection
+     * @return PageCollection
      */
     public function generate(PageCollection $pageCollection, \Closure $messageCallback)
     {
