@@ -2,7 +2,7 @@
   "name": "narno/phpoole-library",
   "type": "library",
   "description": "An intuitive PHP library to create a static Website.",
-  "version" : "1.1.x-dev",
+  "version" : "dev-develop",
   "keywords": ["static", "website", "generator", "flat file", "markdown", "twig"],
   "homepage": "https://github.com/Narno/PHPoole-library",
   "license": "MIT",
@@ -15,19 +15,19 @@
     }
   ],
   "require": {
-    "php": ">=5.5",
-    "symfony/finder": "2.*",
-    "symfony/filesystem": "2.*",
-    "cocur/slugify": "1.*",
-    "symfony/yaml": "2.*",
-    "erusev/parsedown-extra": "0.7.*",
-    "twig/twig": "1.*",
-    "zendframework/zend-eventmanager": "2.*",
+    "php": "^5.5|^7.0",
+    "symfony/finder": "^2.8",
+    "symfony/filesystem": "^2.8",
+    "cocur/slugify": "^1.4",
+    "symfony/yaml": "^2.8",
+    "erusev/parsedown-extra": "^0.7",
+    "twig/twig": "^1.24",
+    "zendframework/zend-eventmanager": "^2.6",
     "myclabs/php-enum": "^1.4",
-    "dflydev/dot-access-configuration": "1.0.1"
+    "dflydev/dot-access-configuration": "^1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "4.8.*",
+    "phpunit/phpunit": "^4.8",
     "satooshi/php-coveralls": "dev-master"
   },
   "autoload": {
