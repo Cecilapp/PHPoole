@@ -8,6 +8,7 @@
 
 namespace PHPoole\Generator;
 
+use PHPoole\Collection\CollectionInterface;
 use PHPoole\Page\Collection as PageCollection;
 
 class GeneratorManager extends \SplPriorityQueue
@@ -43,19 +44,30 @@ class GeneratorManager extends \SplPriorityQueue
      * Process each generators.
      *
      * @param PageCollection $pageCollection
+     * @param \Closure $messageCallback
      *
-     * @return PageCollection
+     * @return null|PageCollection
      */
-    public function generate(PageCollection $pageCollection)
+    public function generate(PageCollection $pageCollection, \Closure $messageCallback)
     {
+        $pages = new PageCollection();
+        $max = $this->count();
+
         $this->top();
         while ($this->valid()) {
             /* @var GeneratorInterface $generator */
             $generator = $this->current();
-            $pageCollection = $generator->generate($pageCollection);
+            /* @var $generatedPages CollectionInterface */
+            $generatedPages = $generator->generate($pageCollection);
+            foreach ($generatedPages as $page) {
+                $pages->add($page);
+            }
+            $message = get_class($generator).': '.count($generatedPages);
+            $count = ($max-$this->key());
+            call_user_func_array($messageCallback, ['GENERATE_PROGRESS', $message, $count, $max]);
             $this->next();
         }
 
-        return $pageCollection;
+        return $pages;
     }
 }

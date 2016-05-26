@@ -22,6 +22,7 @@ class Section implements GeneratorInterface
      */
     public function generate(PageCollection $pageCollection)
     {
+        $generatedPages = new PageCollection();
         $sections = [];
 
         // collects sections
@@ -46,12 +47,12 @@ class Section implements GeneratorInterface
                         ->setVariable('menu', [
                             'main' => ['weight' => $menuWeight],
                         ]);
-                    $pageCollection->add($page);
+                    $generatedPages->add($page);
                 }
                 $menuWeight += 10;
             }
         }
 
-        return $pageCollection;
+        return $generatedPages;
     }
 }

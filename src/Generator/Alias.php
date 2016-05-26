@@ -21,6 +21,8 @@ class Alias implements GeneratorInterface
      */
     public function generate(PageCollection $pageCollection)
     {
+        $generatedPages = new PageCollection();
+
         /* @var $page Page */
         foreach ($pageCollection as $page) {
             if ($page->hasVariable('aliases')) {
@@ -33,11 +35,11 @@ class Alias implements GeneratorInterface
                         ->setTitle($alias)
                         ->setLayout('redirect')
                         ->setVariable('destination', $page->getPermalink());
-                    $pageCollection->add($aliasPage);
+                    $generatedPages->add($aliasPage);
                 }
             }
         }
 
-        return $pageCollection;
+        return $generatedPages;
     }
 }

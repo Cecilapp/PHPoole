@@ -36,10 +36,12 @@ class Homepage implements GeneratorInterface
      */
     public function generate(PageCollection $pageCollection)
     {
+        $generatedPages = new PageCollection();
+
         if (!$pageCollection->has('index')) {
             $filteredPages = $pageCollection->filter(function (Page $page) {
                 return $page->getNodeType() === null
-                    && $page->getSection() == $this->options->get('paginate.homepage.section');
+                && $page->getSection() == $this->options->get('paginate.homepage.section');
             });
             $pages = $filteredPages->sortByDate()->toArray();
 
@@ -53,9 +55,9 @@ class Homepage implements GeneratorInterface
                 ->setVariable('menu', [
                     'main' => ['weight' => 1],
                 ]);
-            $pageCollection->add($page);
+            $generatedPages->add($page);
         }
 
-        return $pageCollection;
+        return $generatedPages;
     }
 }

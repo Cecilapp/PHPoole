@@ -38,6 +38,8 @@ class Taxonomy implements GeneratorInterface
      */
     public function generate(PageCollection $pageCollection)
     {
+        $generatedPages = new PageCollection();
+
         if (array_key_exists('taxonomies', $this->options->get('site'))) {
             // collects taxonomies from pages
             $this->taxonomies = new \PHPoole\Taxonomy\Collection();
@@ -87,7 +89,7 @@ class Taxonomy implements GeneratorInterface
                                 ->setVariable('pages', $pages)
                                 ->setVariable('singular', $siteTaxonomies[$plural])
                                 ->setVariable('pagination', ['pages' => $pages]);
-                            $pageCollection->add($page);
+                            $generatedPages->add($page);
                         }
                     }
                     /*
@@ -105,7 +107,7 @@ class Taxonomy implements GeneratorInterface
 
                     // add page only if a template exist
                     try {
-                        $pageCollection->add($page);
+                        $generatedPages->add($page);
                     } catch (\Exception $e) {
                         echo $e->getMessage()."\n";
                         // do not add page
@@ -115,6 +117,6 @@ class Taxonomy implements GeneratorInterface
             }
         }
 
-        return $pageCollection;
+        return $generatedPages;
     }
 }

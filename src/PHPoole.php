@@ -9,6 +9,7 @@
 namespace PHPoole;
 
 use Dflydev\DotAccessData\Data;
+use PHPoole\Collection\CollectionInterface;
 use PHPoole\Converter\Converter;
 use PHPoole\Generator\Alias;
 use PHPoole\Generator\GeneratorManager;
@@ -489,7 +490,11 @@ class PHPoole implements EventsCapableInterface
     {
         call_user_func_array($this->messageCallback, ['GENERATE', 'Generating pages']);
         $this->setupGenerators();
-        $this->pageCollection = $this->generators->generate($this->pageCollection);
+        /* @var $generatedPages CollectionInterface */
+        $generatedPages = $this->generators->generate($this->pageCollection, $this->messageCallback);
+        foreach ($generatedPages as $page) {
+            $this->pageCollection->add($page);
+        }
     }
 
     /**
