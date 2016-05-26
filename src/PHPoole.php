@@ -33,7 +33,7 @@ class PHPoole implements EventsCapableInterface
 {
     use PluginAwareTrait;
 
-    const VERSION = '1.1.x-dev';
+    const VERSION = '1.1.0';
     /**
      * Default options.
      *
@@ -600,7 +600,7 @@ class PHPoole implements EventsCapableInterface
         $this->renderer->addGlobal('phpoole', [
             'url'       => 'http://narno.org/PHPoole-library/#v'.self::getVersion(),
             'version'   => self::getVersion(),
-            'poweredby' => 'PHPoole v'.self::getVersion(),
+            'poweredby' => 'PHPoole-library v'.self::getVersion(),
         ]);
 
         // start rendering
