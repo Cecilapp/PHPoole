@@ -26,8 +26,8 @@ class UnitTests extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->sourceDir = (__DIR__ . '/fixtures/website');
-        $this->destDir   = $this->sourceDir;
+        $this->sourceDir = (__DIR__.'/fixtures/website');
+        $this->destDir = $this->sourceDir;
         $this->iterator = $this->createContentIterator();
         $this->file = $this->createFile();
     }
@@ -35,7 +35,7 @@ class UnitTests extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         $fs = new Filesystem();
-        $fs->remove($this->destDir . '/_site');
+        $fs->remove($this->destDir.'/_site');
     }
 
     public function createContentIterator()
