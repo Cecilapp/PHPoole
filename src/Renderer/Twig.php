@@ -49,8 +49,6 @@ class Twig implements RendererInterface
      */
     public function __construct($templatesPath = [])
     {
-        //$this->twigCache = '_cache';
-
         $loaderFS = new \Twig_Loader_Filesystem($templatesPath);
         $loaderArray = new \Twig_Loader_Array([
             'redirect.html' => '<!DOCTYPE html>
