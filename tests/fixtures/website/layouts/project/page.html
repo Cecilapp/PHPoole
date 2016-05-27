@@ -2,8 +2,10 @@
 
 {% block content %}
 {{ page.content }}
+{% if page.categories is defined %}
 {% for category in page.categories %}
 <a href="{{ url('categories/' ~ category) }}">#{{ category }}</a>&nbsp;
 {% endfor %}
+{% endif %}
 <p>layout: project/page.html</p>
 {% endblock %}

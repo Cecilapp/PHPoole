@@ -5,10 +5,11 @@
     <title>{{ page.title }}</title>
 </head>
 <body>
+<h1>{{ page.title }}</h1>
 {% include 'include/menu.html' %}
 
 <div class="content container">
-    <h1>{{ plural }}</h1>
+    <h2>{{ page.plural }}</h2>
     <ul>
         {% for name, term in page.terms %}
         <li><h2><a href="{{ url(page.plural ~ '/' ~ name) }}">{{ name }}</a> ({{ term|length }})</h2>
@@ -21,6 +22,6 @@
         {% endfor %}
     </ul>
 </div>
-
+<p>layout: _default/terms.html</p>
 </body>
 </html>

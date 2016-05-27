@@ -6,23 +6,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPoole\Page;
+namespace PHPoole\Converter;
 
 use ParsedownExtra;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class Converter.
  */
-class Converter
+class Converter implements ConverterInterface
 {
     /**
-     * Converts frontmatter.
-     *
-     * @param $string
-     * @param string $type
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function convertFrontmatter($string, $type = 'yaml')
     {
@@ -31,16 +27,16 @@ class Converter
                 return parse_ini_string($string);
             case 'yaml':
             default:
-                return Yaml::parse($string);
+                try {
+                    return Yaml::parse($string);
+                } catch (ParseException $e) {
+                    throw new \Exception($e->getMessage());
+                }
         }
     }
 
     /**
-     * Converts body.
-     *
-     * @param $string
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function convertBody($string)
     {

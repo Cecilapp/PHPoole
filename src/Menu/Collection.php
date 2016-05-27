@@ -16,7 +16,7 @@ use PHPoole\Collection\AbstractCollection;
 class Collection extends AbstractCollection
 {
     /**
-     * Return menu (and create it if not exists)
+     * Return a Menu collection (creates it if not exists)
      * {@inheritdoc}
      */
     public function get($id)

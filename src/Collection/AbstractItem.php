@@ -11,27 +11,37 @@ namespace PHPoole\Collection;
 /**
  * Class AbstractItem.
  */
-abstract class AbstractItem implements ItemInterface
+abstract class AbstractItem implements ItemInterface, \ArrayAccess
 {
     /**
-     * @var string
+     * Item properties.
+     *
+     * @var array
      */
-    protected $id;
+    protected $properties = [];
 
     /**
-     * Constructor.
+     * AbstractItem constructor.
      *
-     * Set an item identifier or the object hash by default
-     *
-     * @param null $id The item identifier
+     * @param null $id
      */
     public function __construct($id = null)
     {
+        $this->setId($id);
+    }
+
+    /**
+     * If parameter is empty uses the object hash
+     * {@inheritdoc}
+     */
+    public function setId($id = null)
+    {
         if (empty($id)) {
-            $this->id = spl_object_hash($this);
-        } else {
-            $this->id = $id;
+            $id = spl_object_hash($this);
         }
+        $this->offsetSet('id', $id);
+
+        return $this;
     }
 
     /**
@@ -39,6 +49,51 @@ abstract class AbstractItem implements ItemInterface
      */
     public function getId()
     {
-        return $this->id;
+        return $this->offsetGet('id');
+    }
+
+    /**
+     * Implement ArrayAccess.
+     *
+     * @param mixed $offset
+     *
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return array_key_exists($offset, $this->properties);
+    }
+
+    /**
+     * Implement ArrayAccess.
+     *
+     * @param mixed $offset
+     *
+     * @return null
+     */
+    public function offsetGet($offset)
+    {
+        return $this->properties[$offset];
+    }
+
+    /**
+     * Implement ArrayAccess.
+     *
+     * @param mixed $offset
+     * @param mixed $value
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->properties[$offset] = $value;
+    }
+
+    /**
+     * Implement ArrayAccess.
+     *
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->properties[$offset]);
     }
 }

@@ -8,15 +8,16 @@
 
 namespace PHPoole\Test;
 
+use Dflydev\DotAccessData\Data;
+use PHPoole\Converter\Converter;
 use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\Converter;
 use PHPoole\Page\Page;
 use PHPoole\PHPoole;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
-class PHPooleTest extends \PHPUnit_Framework_TestCase
+class UnitTests extends \PHPUnit_Framework_TestCase
 {
     //protected $sourceDir;
     //protected $destDir;
@@ -63,14 +64,14 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
 
     public function testOptions()
     {
-        $options = [
+        $data = new Data([
             'options' => [
                 'option1' => 'Option 1',
                 'option2' => 'Option 2',
             ],
-        ];
-        $phpoole = (new PHPoole())->setOptions($options);
-        $this->assertEquals($options, $phpoole->getOptions());
+        ]);
+        $phpoole = (new PHPoole())->setOptions($data);
+        $this->assertEquals($data, $phpoole->getOptions());
     }
 
     public function testContentIterator()
@@ -133,7 +134,7 @@ class PHPooleTest extends \PHPUnit_Framework_TestCase
         $page = $pageCollection->get('section1/page1');
         $this->assertObjectHasAttribute('title', $page);
         $this->assertObjectHasAttribute('html', $page);
-        $this->assertObjectHasAttribute('variables', $page);
+        $this->assertObjectHasAttribute('properties', $page);
         $this->assertSame('Page 1', $page->getTitle());
         $this->assertSame('<p>Content of page 1.</p>', $page->getContent());
         //$this->assertEquals(1427839200, $page['date'], '', 5);}

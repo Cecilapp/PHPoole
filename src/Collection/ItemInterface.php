@@ -14,6 +14,15 @@ namespace PHPoole\Collection;
 interface ItemInterface
 {
     /**
+     * Set the item identifier.
+     *
+     * @param string|null $id
+     *
+     * @return self
+     */
+    public function setId($id = null);
+
+    /**
      * Return the item identifier.
      *
      * @return string

@@ -18,18 +18,52 @@ use DomainException;
 abstract class AbstractCollection implements CollectionInterface
 {
     /**
+     * Collections's identifier.
+     *
+     * @var null
+     */
+    protected $id = null;
+
+    /**
+     * Collection's items.
+     *
      * @var array
      */
     protected $items = [];
 
     /**
-     * Constructor.
+     * AbstractCollection constructor.
      *
-     * @param array $items
+     * @param string|null $id
+     * @param array       $items
      */
-    public function __construct($items = [])
+    public function __construct($id = null, $items = [])
     {
+        $this->setId($id);
         $this->items = $items;
+    }
+
+    /**
+     * If parameter is empty uses the object hash
+     * {@inheritdoc}
+     */
+    public function setId($id = null)
+    {
+        if (empty($id)) {
+            $this->id = spl_object_hash($this);
+        } else {
+            $this->id = $id;
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -133,17 +167,50 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function usort(Closure $callback)
+    public function usort(Closure $callback = null)
     {
-        usort($this->items, $callback);
+        $items = $this->items;
+        $callback ? uasort($items, $callback) : uasort($items, function ($a, $b) {
+            if ($a == $b) {
+                return 0;
+            }
+
+            return ($a < $b) ? -1 : 1;
+        });
+
+        return new static(self::getId(), $items);
+    }
+
+    /**
+     * Sort items by date.
+     *
+     * @return AbstractCollection
+     */
+    public function sortByDate()
+    {
+        return $this->usort(function ($a, $b) {
+            if (!isset($a['date'])) {
+                return -1;
+            }
+            if (!isset($b['date'])) {
+                return 1;
+            }
+            if ($a['date'] == $b['date']) {
+                return 0;
+            }
+
+            return ($a['date'] > $b['date']) ? -1 : 1;
+        });
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return AbstractCollection
      */
     public function filter(Closure $callback)
     {
-        return new static(array_filter($this->items, $callback));
+        return new static(self::getId(), array_filter($this->items, $callback));
     }
 
     /**
@@ -151,7 +218,7 @@ abstract class AbstractCollection implements CollectionInterface
      */
     public function map(Closure $callback)
     {
-        return new static(array_map($callback, $this->items));
+        return new static(self::getId(), array_map($callback, $this->items));
     }
 
     /**
@@ -206,6 +273,6 @@ abstract class AbstractCollection implements CollectionInterface
      */
     public function __toString()
     {
-        return __CLASS__.'@'.spl_object_hash($this);
+        return json_encode($this->items)."\n";
     }
 }

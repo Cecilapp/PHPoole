@@ -9,9 +9,10 @@
 namespace PHPoole\Test;
 
 use PHPoole\PHPoole;
+use PHPoole\Plugin\Example;
 use Symfony\Component\Filesystem\Filesystem;
 
-class PHPooleBuild extends \PHPUnit_Framework_TestCase
+class Build extends \PHPUnit_Framework_TestCase
 {
     protected $wsSourceDir;
     protected $wsDestinationDir;
@@ -26,6 +27,7 @@ class PHPooleBuild extends \PHPUnit_Framework_TestCase
     {
         $fs = new Filesystem();
         $fs->remove($this->wsDestinationDir.'/_site');
+        $fs->remove(__DIR__.'/../_cache');
     }
 
     public function testBuid()
@@ -37,15 +39,27 @@ class PHPooleBuild extends \PHPUnit_Framework_TestCase
                 'site' => [
                     'menu' => [
                         'main' => [
-                            'id'        => 'homepage',
-                            'name'      => 'TEST',
-                            'url'       => 'test',
-                            'weight'    => -100,
-                            'disabled'  => true,
+                            'about' => [
+                                'id'        => 'about',
+                                'disabled'  => true,
+                            ],
+                            'test' => [
+                                'id'        => 'test',
+                                'name'      => 'Test',
+                                'url'       => 'http://narno.org',
+                                'weight'    => 999,
+                            ],
                         ],
                     ],
                 ],
+                'paginate' => [
+                    //'disabled' => true,
+                    'homepage' => [
+                        'section' => 'blog',
+                    ],
+                ],
             ]
-        )->build();
+        )->addPlugin(new Example())
+        ->build();
     }
 }

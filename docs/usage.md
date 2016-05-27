@@ -1,61 +1,6 @@
-<<<<<<< HEAD
-# ![PHPoole logo](https://avatars2.githubusercontent.com/u/5618939?s=50 "Logo created by Cécile Ricordeau") PHPoole-library
-=======
-# ![PHPoole logo](https://avatars2.githubusercontent.com/u/5618939?s=50 "Logo created by Cards Against Humanity") PHPoole-library
->>>>>>> master
+# Usage
 
-> An intuitive PHP library to create a static Website.
-
-[![Build Status](https://travis-ci.org/Narno/PHPoole-library.svg?branch=develop)](https://travis-ci.org/Narno/PHPoole-library)
-[![Coverage Status](https://coveralls.io/repos/github/Narno/PHPoole-library/badge.svg?branch=develop)](https://coveralls.io/github/Narno/PHPoole-library?branch=develop)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Narno/PHPoole-library/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/Narno/PHPoole-library/?branch=develop)
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/adbaa5309cd749fc9e095ca47d347586)](https://www.codacy.com/app/Narno/PHPoole-library)
-[![StyleCI](https://styleci.io/repos/32327575/shield)](https://styleci.io/repos/32327575)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/f4c44315-d370-499e-8f61-d6d1ce0cadde/mini.png)](https://insight.sensiolabs.com/projects/f4c44315-d370-499e-8f61-d6d1ce0cadde)
-
-_PHPoole-library_ is inspired by [Jekyll](http://jekyllrb.com/) and [Hugo](http://gohugo.io/).
-
-It converts [Markdown](http://daringfireball.net/projects/markdown/) files into a static HTML web site, with the help of [Twig](http://twig.sensiolabs.org), a flexible and fast template engine.
-
-You can easily create a blog, a personal website, a simple corporate website, etc.
-
-## Features
-
-* No database, files only (host your site anywhere)
-* Fully configurable (Through options and plugins system - _WIP_)
-* Flexible template engine ([Twig](http://twig.sensiolabs.org/doc/templates.html))
-* Theme support
-* Dynamic menu creation
-* Configurable taxonomies (categories, tags, etc.)
-* Paginator (for homepage, sections and taxonomies)
-
-## Requirements
-
-Please see the [composer.json](composer.json) file.
-
-## Installation
-
-Run the following command:
-
-    $ composer require narno/phpoole-library
-
-<<<<<<< HEAD
-## Documentation
-
-* [Usage](docs/usage.md)
-* [Package the Phar file](docs/phar.md)
-
-## Demo
-
-Try the [demo](https://github.com/Narno/PHPoole-demo).
-=======
-## Demo
-
-Try the [demo](https://github.com/Narno/PHPoole-demo).
-
-## Usage
-
-### Overview
+## Overview
 
 To create a new website, you need 3 things:
  * pages (Markdown files)
@@ -121,20 +66,17 @@ By default, the static website is created in the _./_site_ directory:
 ├─ index.html
 └─ robots.txt
 ```
->>>>>>> master
 
-## License
+## Content
 
-<<<<<<< HEAD
-=======
 The content is represented by [Markdown](http://daringfireball.net/projects/markdown/) files organized in folders.
 Folders in the root are called "section" (ie: "Blog", "Project", etc.).
 
-#### Pages 
+### Pages 
 
 A page can contain a [front matter](#page-front-matter) ([YAML](http://www.yaml.org/spec/1.2/spec.html#Preview)) and/or a [body](#page-body) ([Markdown](http://daringfireball.net/projects/markdown/syntax)).
 
-##### Page front matter
+#### Page front matter
 
 Any file that contains a YAML front matter will be processed to extract some variables. The front matter must be the first thing in the file and must be a valid YAML.
 
@@ -149,12 +91,13 @@ Any file that contains a YAML front matter will be processed to extract some var
 | menu          | Menu          | Homepage and sections             |
 | tags          | Tags          | _Empty_                           |
 | categories    | Categories    | _Empty_                           |
+| permalink     | Permalink     | _To Do_                           |
 
-##### Page body
+#### Page body
 
 Body is the main content of the page, it could be in Markdown or in plain text.
 
-##### Page example
+#### Page example
 
 ```yml
 ---
@@ -165,15 +108,15 @@ customvar: "Value of customvar"
 _Markdown_ page content.
 ```
 
-### Layouts
+## Layouts
 
 A layout is a [Twig](http://twig.sensiolabs.org) template.
 
-#### Layout fallback logic
+### Layout fallback logic
 
 [_WIP_](https://github.com/Narno/PHPoole-library/blob/master/src%2FPHPoole.php#L880).
 
-#### Layout variables
+### Layout variables
 
 **Site variables**
 
@@ -224,7 +167,7 @@ Contains all variables setted in the page's [front matter](#page-front-matter).
 | phpoole.version   | Current version             |  
 | phpoole.poweredby | "PHPoole v" + version       |
 
-#### Layout example
+### Layout example
 
 ```html
 <h1>{{ page.title }} | {{ site.title }}</h1>
@@ -233,9 +176,9 @@ Contains all variables setted in the page's [front matter](#page-front-matter).
 <b>{{ page.customvar }}</p>
 ```
 
-#### Twig functions
+### Twig functions
 
-##### _url_
+#### _url_
 
 Creates an URL.
 ```
@@ -243,41 +186,41 @@ Creates an URL.
 {{ url(page) }}
 ```
 
-#### Twig filters
+### Twig filters
 
-##### _excerpt_
+#### _excerpt_
 
 Truncates a string to 450 char and add '…'.
 ```
 {{ string|excerpt }}
 ```
 
-##### _sortByWeight_
+#### _sortByWeight_
 
 Sorts a menu entries collection by weight.
 ```
 {{ menu|sortByWeight }}
 ```
 
-##### _sortByDate_
+#### _sortByDate_
 
 Sorts a pages collection by date.
 ```
 {{ pages|sortByDate }}
 ```
 
-##### _bySection_
+#### _bySection_
 
 Filters a pages collection by section name.
 ```
 {{ pages|bySection('blog') }}
 ```
 
-### Options
+## Options
 
 PHP array of options used to define how to build the website.
 
-#### Default options
+### Default options
 
 ```php
 [
@@ -320,18 +263,3 @@ PHP array of options used to define how to build the website.
     ],
 ]
 ```
-
-## Packaging the Phar file
-
-1. Install [Box](https://github.com/box-project/box2)
-2. Run the following command:
-```
-    $ box build -v
-```
-
-## License
-
->>>>>>> master
-PHPoole-library is a free software distributed under the terms of the MIT license.
-
-PHPoole logo designed by [Cécile Ricordeau](http://www.cecillie.fr).

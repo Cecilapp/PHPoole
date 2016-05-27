@@ -9,9 +9,9 @@
 namespace PHPoole\Renderer;
 
 /**
- * Class TwigExtensionSortArray.
+ * Class TwigExtensionSorts.
  */
-class TwigExtensionSortArray extends \Twig_Extension
+class TwigExtensionSorts extends \Twig_Extension
 {
     /**
      * Name of this extension.
@@ -20,7 +20,7 @@ class TwigExtensionSortArray extends \Twig_Extension
      */
     public function getName()
     {
-        return 'sort_array';
+        return 'sorts';
     }
 
     /**
@@ -33,7 +33,6 @@ class TwigExtensionSortArray extends \Twig_Extension
         $filters = [
             new \Twig_SimpleFilter('sortByWeight', [$this, 'sortByWeight']),
             new \Twig_SimpleFilter('sortByDate', [$this, 'sortByDate']),
-            new \Twig_SimpleFilter('bySection', [$this, 'bySection']),
         ];
 
         return $filters;
@@ -62,12 +61,11 @@ class TwigExtensionSortArray extends \Twig_Extension
             return ($a['weight'] < $b['weight']) ? -1 : 1;
         };
 
-        if ($array instanceof \PHPoole\Collection\CollectionInterface) {
-            $array->usort($callback);
-        } else {
-            if (is_array($array)) {
-                usort($array, $callback);
-            }
+        if ($array instanceof \PHPoole\Collection\AbstractCollection) {
+            $array = $array->toArray();
+        }
+        if (is_array($array)) {
+            usort($array, $callback);
         }
 
         return $array;
@@ -105,28 +103,5 @@ class TwigExtensionSortArray extends \Twig_Extension
         }
 
         return $array;
-    }
-
-    /**
-     * Filter by section.
-     *
-     * @param \PHPoole\Page\Collection $pages
-     * @param string                   $section
-     *
-     * @return array
-     */
-    public function bySection(\PHPoole\Page\Collection $pages, $section)
-    {
-        $filtered = [];
-
-        foreach ($pages as $page) {
-            if ($page instanceof \PHPoole\Page\Page) {
-                if ($page->getSection() == $section) {
-                    $filtered[] = $page;
-                }
-            }
-        }
-
-        return $filtered;
     }
 }

@@ -17,17 +17,10 @@ interface RendererInterface
      * Constructor.
      *
      * @param string|array $templatesPath
-     */
-    public function __construct($templatesPath = []);
-
-    /**
-     * Add templates path.
-     *
-     * @param $path
      *
      * @return void
      */
-    public function addPath($path);
+    public function __construct($templatesPath = []);
 
     /**
      * Add global variable.
@@ -42,7 +35,7 @@ interface RendererInterface
     /**
      * Rendering.
      *
-     * @param $template
+     * @param string $template
      * @param $variables
      *
      * @return self
@@ -50,9 +43,20 @@ interface RendererInterface
     public function render($template, $variables);
 
     /**
-     * @param $pathname
+     * Saves rendered template.
+     *
+     * @param string $pathname
      *
      * @return bool
      */
     public function save($pathname);
+
+    /**
+     * Validates template.
+     *
+     * @param $template
+     *
+     * @return bool
+     */
+    public function validate($template);
 }

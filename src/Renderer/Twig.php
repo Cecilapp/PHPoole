@@ -34,24 +34,25 @@ class Twig implements RendererInterface
     /**
      * @var bool
      */
-    protected $twigStrict = false;
+    protected $twigStrict = true;
     /**
      * @var bool
      */
     protected $twigDebug = true;
+    /*
+     * @var string|bool
+     */
+    protected $twigCache = false;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct($templatesPath = '')
+    public function __construct($templatesPath = [])
     {
-        if (!empty($templatesPath)) {
-            $this->templatesDir = $templatesPath;
-        }
+        //$this->twigCache = '_cache';
 
-        $loaderFS = new \Twig_Loader_Filesystem($this->templatesDir);
-        /*
-        $loaderArray = new \Twig_Loader_Array(array(
+        $loaderFS = new \Twig_Loader_Filesystem($templatesPath);
+        $loaderArray = new \Twig_Loader_Array([
             'redirect.html' => '<!DOCTYPE html>
 <html>
 <head lang="en">
@@ -60,19 +61,19 @@ class Twig implements RendererInterface
     <meta http-equiv="refresh" content="0;url={{ url(page.destination) }}" />
 </head>
 </html>',
-        ));
-        */
-        //$loader = new \Twig_Loader_Chain(array($loaderArray, $loaderFS));
-        //$this->twig = new \Twig_Environment($loader,
-        $this->twig = new \Twig_Environment($loaderFS,
+        ]);
+        $loader = new \Twig_Loader_Chain([$loaderArray, $loaderFS]);
+        $this->twig = new \Twig_Environment($loader,
             [
                 'autoescape'       => false,
                 'strict_variables' => $this->twigStrict,
                 'debug'            => $this->twigDebug,
+                'cache'            => $this->twigCache,
             ]
         );
         $this->twig->addExtension(new \Twig_Extension_Debug());
-        $this->twig->addExtension(new TwigExtensionSortArray());
+        $this->twig->addExtension(new TwigExtensionSorts());
+        $this->twig->addExtension(new TwigExtensionFilters());
         $this->twig->addExtension(new TwigExtensionUrlize());
 
         // excerpt filter
@@ -87,21 +88,6 @@ class Twig implements RendererInterface
         $this->twig->addFilter($excerptFilter);
 
         $this->fs = new Filesystem();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \Twig_Error_Loader
-     */
-    public function addPath($path)
-    {
-        if (is_dir($path)) {
-            /* @var $loader \Twig_Loader_Filesystem */
-            $loader = $this->twig->getLoader();
-            $loader->addPath($path);
-            $this->twig->setLoader($loader);
-        }
     }
 
     /**
@@ -132,6 +118,20 @@ class Twig implements RendererInterface
         }
         if (false !== @file_put_contents($pathname, $this->rendered)) {
             return true;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validate($template)
+    {
+        try {
+            $this->twig->parse($this->twig->tokenize($template));
+
+            return true;
+        } catch (\Twig_Error_Syntax $e) {
+            return false;
         }
     }
 }
