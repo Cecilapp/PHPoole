@@ -79,9 +79,9 @@ class PHPoole implements EventsCapableInterface
         ],
     ];
     /**
-     * Array of options.
+     * Options.
      *
-     * @var array
+     * @var Data
      */
     protected $options;
     /**

@@ -22,11 +22,11 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
     /**
      * Set the collection identifier.
      *
-     * @param string|null $id
+     * @param string $id
      *
      * @return self
      */
-    public function setId($id = null);
+    public function setId($id = '');
 
     /**
      * Return the collection identifier.

@@ -34,7 +34,7 @@ abstract class AbstractItem implements ItemInterface, \ArrayAccess
      * If parameter is empty uses the object hash
      * {@inheritdoc}
      */
-    public function setId($id = null)
+    public function setId($id = '')
     {
         if (empty($id)) {
             $id = spl_object_hash($this);

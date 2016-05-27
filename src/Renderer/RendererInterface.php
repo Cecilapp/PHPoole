@@ -17,8 +17,6 @@ interface RendererInterface
      * Constructor.
      *
      * @param string|array $templatesPath
-     *
-     * @return void
      */
     public function __construct($templatesPath = []);
 
