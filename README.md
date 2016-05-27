@@ -2,9 +2,9 @@
 
 > An intuitive PHP library to create a static Website.
 
-[![Build Status](https://travis-ci.org/Narno/PHPoole-library.svg?branch=develop)](https://travis-ci.org/Narno/PHPoole-library)
-[![Coverage Status](https://coveralls.io/repos/github/Narno/PHPoole-library/badge.svg?branch=develop)](https://coveralls.io/github/Narno/PHPoole-library?branch=develop)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Narno/PHPoole-library/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/Narno/PHPoole-library/?branch=develop)
+[![Build Status](https://travis-ci.org/Narno/PHPoole-library.svg?branch=master)](https://travis-ci.org/Narno/PHPoole-library)
+[![Coverage Status](https://coveralls.io/repos/github/Narno/PHPoole-library/badge.svg?branch=master)](https://coveralls.io/github/Narno/PHPoole-library?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Narno/PHPoole-library/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Narno/PHPoole-library/?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/adbaa5309cd749fc9e095ca47d347586)](https://www.codacy.com/app/Narno/PHPoole-library)
 [![StyleCI](https://styleci.io/repos/32327575/shield)](https://styleci.io/repos/32327575)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/f4c44315-d370-499e-8f61-d6d1ce0cadde/mini.png)](https://insight.sensiolabs.com/projects/f4c44315-d370-499e-8f61-d6d1ce0cadde)
