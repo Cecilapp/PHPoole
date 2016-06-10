@@ -62,7 +62,7 @@ class GeneratorManager extends \SplPriorityQueue
             foreach ($generatedPages as $page) {
                 $pages->add($page);
             }
-            $message = get_class($generator).': '.count($generatedPages);
+            $message = substr(strrchr(get_class($generator), '\\'), 1).': '.count($generatedPages);
             $count = ($max - $this->key());
             call_user_func_array($messageCallback, ['GENERATE_PROGRESS', $message, $count, $max]);
             $this->next();
