@@ -613,7 +613,7 @@ class PHPoole implements EventsCapableInterface
         foreach ($this->pageCollection as $page) {
             $count++;
             $pathname = $this->renderPage($page, $dir);
-            $message = substr($pathname, strlen($this->destDir)+1);
+            $message = substr($pathname, strlen($this->destDir) + 1);
             call_user_func_array($this->messageCallback, ['RENDER_PROGRESS', $message, $count, $max]);
         }
     }
