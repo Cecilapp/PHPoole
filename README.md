@@ -17,13 +17,13 @@ You can easily create a blog, a personal website, a simple corporate website, et
 
 ## Features
 
-* No database, files only (host your site anywhere)
+* No database, files only (host your Website anywhere)
 * Fully configurable (Through options and plugins system - _WIP_)
 * Flexible template engine ([Twig](http://twig.sensiolabs.org/doc/templates.html))
 * Theme support
 * Dynamic menu creation
 * Configurable taxonomies (categories, tags, etc.)
-* Paginator (for homepage, sections and taxonomies)
+* Paginator (for homepage, sections and taxonomies - _WIP_)
 
 ## Requirements
 
@@ -32,13 +32,16 @@ Please see the [composer.json](composer.json) file.
 ## Installation
 
 Run the following command:
-
-    $ composer require narno/phpoole-library
+```
+$ composer require narno/phpoole-library
+```
 
 ## Documentation
 
-* [Usage](docs/usage.md)
-* [Package the Phar file](docs/phar.md)
+* [Overview](docs/1.Overview.md)
+* [Content](docs/2.Content.md)
+* [Layouts](docs/3.Layouts.md)
+* [Options](docs/4.Options.md)
 
 ## Demo
 
