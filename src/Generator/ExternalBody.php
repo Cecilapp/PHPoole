@@ -20,7 +20,7 @@ class ExternalBody implements GeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(PageCollection $pageCollection)
+    public function generate(PageCollection $pageCollection, \Closure $messageCallback)
     {
         $generatedPages = new PageCollection();
 
@@ -30,14 +30,19 @@ class ExternalBody implements GeneratorInterface
 
         /* @var $page Page */
         foreach ($filteredPages as $page) {
-            if (false === $pageContent = @file_get_contents($page->getVariable('external'), false)) {
-                throw new \Exception(sprintf("Cannot get contents from %s\n", $page->getVariable('external')));
-            }
-            $html = (new Converter())
-                ->convertBody($pageContent);
-            $page->setHtml($html);
+            try {
+                $pageContent = file_get_contents($page->getVariable('external'), false);
+                $html = (new Converter())
+                    ->convertBody($pageContent);
+                $page->setHtml($html);
 
-            $generatedPages->add($page);
+                $generatedPages->add($page);
+            } catch (\Exception $e) {
+                $error = sprintf("Cannot get contents from %s", $page->getVariable('external'));
+                $message = sprintf("> Unable to generate '%s': %s", $page->getId(), $error);
+                call_user_func_array($messageCallback, ['GENERATE_PROGRESS', $message]);
+            }
+
         }
 
         return $generatedPages;

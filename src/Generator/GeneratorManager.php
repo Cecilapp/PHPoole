@@ -58,7 +58,7 @@ class GeneratorManager extends \SplPriorityQueue
             /* @var GeneratorInterface $generator */
             $generator = $this->current();
             /* @var $generatedPages CollectionInterface */
-            $generatedPages = $generator->generate($pageCollection);
+            $generatedPages = $generator->generate($pageCollection, $messageCallback);
             foreach ($generatedPages as $page) {
                 $pages->add($page);
             }

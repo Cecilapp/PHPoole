@@ -17,8 +17,9 @@ interface GeneratorInterface
 {
     /**
      * @param PageCollection $pageCollection
+     * @param \Closure $messageCallback
      *
      * @return PageCollection
      */
-    public function generate(PageCollection $pageCollection);
+    public function generate(PageCollection $pageCollection, \Closure $messageCallback);
 }

@@ -152,7 +152,7 @@ class PHPoole implements EventsCapableInterface
     /**
      * @var GeneratorManager
      */
-    protected $generators;
+    protected $generatorManager;
 
     /**
      * PHPoole constructor.
@@ -340,7 +340,7 @@ class PHPoole implements EventsCapableInterface
 
     protected function setupGenerators()
     {
-        $this->generators = (new GeneratorManager())
+        $this->generatorManager = (new GeneratorManager())
             ->addGenerator(new Section(), 0)
             ->addGenerator(new Alias(), 10)
             ->addGenerator(new Taxonomy($this->getOptions()), 20)
@@ -448,7 +448,7 @@ class PHPoole implements EventsCapableInterface
         try {
             $variables = (new Converter())->convertFrontmatter($page->getFrontmatter(), $format);
         } catch (\Exception $e) {
-            $message = sprintf("Unable to convert frontmatter of '%s': %s\n", $page->getId(), $e->getMessage());
+            $message = sprintf("> Unable to convert frontmatter of '%s': %s", $page->getId(), $e->getMessage());
             call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', $message]);
 
             return false;
@@ -495,7 +495,7 @@ class PHPoole implements EventsCapableInterface
         call_user_func_array($this->messageCallback, ['GENERATE', 'Generating pages']);
         $this->setupGenerators();
         /* @var $generatedPages CollectionInterface */
-        $generatedPages = $this->generators->generate($this->pageCollection, $this->messageCallback);
+        $generatedPages = $this->generatorManager->generate($this->pageCollection, $this->messageCallback);
         foreach ($generatedPages as $page) {
             /* @var $page Page */
             if ($this->pageCollection->has($page->getId())) {

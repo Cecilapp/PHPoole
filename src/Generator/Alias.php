@@ -19,7 +19,7 @@ class Alias implements GeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(PageCollection $pageCollection)
+    public function generate(PageCollection $pageCollection, \Closure $messageCallback)
     {
         $generatedPages = new PageCollection();
 
