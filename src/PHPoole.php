@@ -345,8 +345,7 @@ class PHPoole implements EventsCapableInterface
             ->addGenerator(new Alias(), 10)
             ->addGenerator(new Taxonomy($this->getOptions()), 20)
             ->addGenerator(new Homepage($this->getOptions()), 30)
-            ->addGenerator(new ExternalBody(), 40)
-        ;
+            ->addGenerator(new ExternalBody(), 40);
     }
 
     /**
