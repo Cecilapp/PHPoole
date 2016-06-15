@@ -428,7 +428,7 @@ class PHPoole implements EventsCapableInterface
             }
         }
         if ($countError > 0) {
-            call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', sprintf("Errors: %s", $countError)]);
+            call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', sprintf('Errors: %s', $countError)]);
         }
     }
 
