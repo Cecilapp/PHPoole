@@ -305,10 +305,9 @@ class PHPoole implements EventsCapableInterface
                     case 'RENDER_PROGRESS':
                     case 'COPY_PROGRESS':
                         if ($itemsCount > 0 && $verbose !== false) {
-                            $length = (int) (($itemsCount / $itemsMax) * 100);
-                            printf("\r  %d%% (%u/%u) %s", $length, $itemsCount, $itemsMax, $message);
+                            printf("  (%u/%u) %s\n", $itemsCount, $itemsMax, $message);
                         } else {
-                            printf("\r  %s", $message);
+                            printf("  %s\n", $message);
                         }
                         break;
                 }
@@ -423,8 +422,11 @@ class PHPoole implements EventsCapableInterface
                     $countError++;
                 }
                 $message = $page->getName();
-                call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', $message, $count - $countError, $max]);
+                call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', $message, $count, $max]);
             }
+        }
+        if ($countError > 0) {
+            call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', "Errors: $countError"]);
         }
     }
 
