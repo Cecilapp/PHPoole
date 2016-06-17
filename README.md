@@ -9,6 +9,12 @@
 [![StyleCI](https://styleci.io/repos/32327575/shield)](https://styleci.io/repos/32327575)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/f4c44315-d370-499e-8f61-d6d1ce0cadde/mini.png)](https://insight.sensiolabs.com/projects/f4c44315-d370-499e-8f61-d6d1ce0cadde)
 
+
+[![Latest Stable Version](https://poser.pugx.org/narno/phpoole-library/v/stable)](https://packagist.org/packages/narno/phpoole-library)
+[![Latest Unstable Version](https://poser.pugx.org/narno/phpoole-library/v/unstable)](https://packagist.org/packages/narno/phpoole-library)
+[![Total Downloads](https://poser.pugx.org/narno/phpoole-library/downloads)](https://packagist.org/packages/narno/phpoole-library)
+[![License](https://poser.pugx.org/narno/phpoole-library/license)](https://packagist.org/packages/narno/phpoole-library)
+
 _PHPoole-library_ is inspired by [Jekyll](http://jekyllrb.com/) and [Hugo](http://gohugo.io/).
 
 It converts [Markdown](http://daringfireball.net/projects/markdown/) files into a static HTML web site, with the help of [Twig](http://twig.sensiolabs.org), a flexible and fast template engine.
