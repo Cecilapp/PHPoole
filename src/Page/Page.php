@@ -146,7 +146,9 @@ class Page extends PageItem
      */
     public static function urlize($string)
     {
-        return Slugify::create(self::SLUGIFY_PATTERN)->slugify($string);
+        return Slugify::create([
+            'regexp'   => self::SLUGIFY_PATTERN,
+        ])->slugify($string);
     }
 
     /**

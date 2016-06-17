@@ -16,7 +16,9 @@ class TwigExtensionUrlize extends SlugifyExtension
      */
     public function __construct()
     {
-        parent::__construct(Slugify::create(Page::SLUGIFY_PATTERN));
+        parent::__construct(Slugify::create([
+            'regexp' => Page::SLUGIFY_PATTERN]
+        ));
     }
 
     /**
