@@ -1,6 +1,6 @@
 # ![PHPoole logo](https://avatars2.githubusercontent.com/u/5618939?s=50 "Logo created by Cécile Ricordeau") PHPoole-library
 
-> An intuitive PHP library to create a static Website.
+> An intuitive PHP library to create a static website.
 
 [![Build Status](https://travis-ci.org/PHPoole/PHPoole-library.svg?branch=master)](https://travis-ci.org/PHPoole/PHPoole-library)
 [![Coverage Status](https://coveralls.io/repos/github/Narno/PHPoole-library/badge.svg?branch=master)](https://coveralls.io/github/Narno/PHPoole-library?branch=master)
@@ -23,7 +23,7 @@ You can easily create a blog, a personal website, a simple corporate website, et
 
 ## Features
 
-* No database, files only (host your Website anywhere)
+* No database, files only (host your website anywhere)
 * Fully configurable (Through options and plugins system - _WIP_)
 * Flexible template engine ([Twig](http://twig.sensiolabs.org/doc/templates.html))
 * Theme support
