@@ -15,7 +15,7 @@
 [![Total Downloads](https://poser.pugx.org/narno/phpoole-library/downloads)](https://packagist.org/packages/narno/phpoole-library)
 [![License](https://poser.pugx.org/narno/phpoole-library/license)](https://packagist.org/packages/narno/phpoole-library)
 
-_PHPoole-library_ is inspired by [Jekyll](http://jekyllrb.com/) and [Hugo](http://gohugo.io/).
+_PHPoole-library_ is inspired by [Jekyll](http://jekyllrb.com/) and [Hugo](http://gohugo.io/) and it is the core library of [**PHPoole**](https://github.com/Narno/PHPoole) CLI.
 
 It converts [Markdown](http://daringfireball.net/projects/markdown/) files into a static HTML web site, with the help of [Twig](http://twig.sensiolabs.org), a flexible and fast template engine.
 
