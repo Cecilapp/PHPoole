@@ -2,7 +2,7 @@
 
 > An intuitive PHP library to create a static Website.
 
-[![Build Status](https://travis-ci.org/Narno/PHPoole-library.svg?branch=master)](https://travis-ci.org/Narno/PHPoole-library)
+[![Build Status](https://travis-ci.org/PHPoole/PHPoole-library.svg?branch=master)](https://travis-ci.org/PHPoole/PHPoole-library)
 [![Coverage Status](https://coveralls.io/repos/github/Narno/PHPoole-library/badge.svg?branch=master)](https://coveralls.io/github/Narno/PHPoole-library?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Narno/PHPoole-library/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Narno/PHPoole-library/?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/adbaa5309cd749fc9e095ca47d347586)](https://www.codacy.com/app/Narno/PHPoole-library)
