@@ -607,7 +607,7 @@ class PHPoole implements EventsCapableInterface
         // adds global variables
         $this->renderer->addGlobal('site', $this->site);
         $this->renderer->addGlobal('phpoole', [
-            'url'       => 'http://narno.org/PHPoole-library/#v'.self::getVersion(),
+            'url'       => 'http://phpoole.org/#v'.self::getVersion(),
             'version'   => self::getVersion(),
             'poweredby' => 'PHPoole-library v'.self::getVersion(),
         ]);
