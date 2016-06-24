@@ -1,1 +1,0 @@
-Caractères spéciaux !
