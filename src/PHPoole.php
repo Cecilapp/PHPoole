@@ -9,12 +9,12 @@
 namespace PHPoole;
 
 use Dflydev\DotAccessData\Data;
-use PHPoole\Collection\CollectionInterface;
 use PHPoole\Converter\Converter;
 use PHPoole\Generator\Alias;
 use PHPoole\Generator\ExternalBody;
 use PHPoole\Generator\GeneratorManager;
 use PHPoole\Generator\Homepage;
+use PHPoole\Generator\Pagination;
 use PHPoole\Generator\Section;
 use PHPoole\Generator\Taxonomy;
 use PHPoole\Page\Collection as PageCollection;
@@ -341,11 +341,12 @@ class PHPoole implements EventsCapableInterface
     protected function setupGenerators()
     {
         $this->generatorManager = (new GeneratorManager())
-            ->addGenerator(new Section(), 0)
-            ->addGenerator(new Alias(), 10)
+            ->addGenerator(new Section(), 10)
             ->addGenerator(new Taxonomy($this->getOptions()), 20)
             ->addGenerator(new Homepage($this->getOptions()), 30)
-            ->addGenerator(new ExternalBody(), 40);
+            ->addGenerator(new Pagination($this->getOptions()), 40)
+            ->addGenerator(new Alias(), 50)
+            ->addGenerator(new ExternalBody(), 35);
     }
 
     /**
@@ -494,16 +495,7 @@ class PHPoole implements EventsCapableInterface
     {
         call_user_func_array($this->messageCallback, ['GENERATE', 'Generating pages']);
         $this->setupGenerators();
-        /* @var $generatedPages CollectionInterface */
-        $generatedPages = $this->generatorManager->generate($this->pageCollection, $this->messageCallback);
-        foreach ($generatedPages as $page) {
-            /* @var $page Page */
-            if ($this->pageCollection->has($page->getId())) {
-                $this->pageCollection->replace($page->getId(), $page);
-            } else {
-                $this->pageCollection->add($page);
-            }
-        }
+        $this->pageCollection = $this->generatorManager->process($this->pageCollection, $this->messageCallback);
     }
 
     /**
