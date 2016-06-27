@@ -74,7 +74,7 @@ class PageItem extends AbstractItem
      *
      * @param string $name
      *
-     * @return null|false
+     * @return mixed|false
      */
     public function getVariable($name)
     {
@@ -95,5 +95,7 @@ class PageItem extends AbstractItem
         if ($this->offsetExists($name)) {
             $this->offsetUnset($name);
         }
+
+        return $this;
     }
 }
