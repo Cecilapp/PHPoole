@@ -10,8 +10,8 @@ namespace PHPoole\Generator;
 
 use Dflydev\DotAccessData\Data;
 use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\Page;
 use PHPoole\Page\NodeTypeEnum;
+use PHPoole\Page\Page;
 
 /**
  * Class Pagination.
