@@ -672,7 +672,7 @@ class PHPoole implements EventsCapableInterface
         // copy static dir if exists
         $staticDir = $this->sourceDir.'/'.$this->getOption('static.dir');
         if ($this->fs->exists($staticDir)) {
-            $finder = new Finder;
+            $finder = new Finder();
             $finder->files()->filter(function (\SplFileInfo $file) {
                 if (in_array($file->getBasename(), $this->getOption('static.exclude'))) {
                     return false;
