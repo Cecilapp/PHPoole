@@ -58,6 +58,11 @@ class Build extends \PHPUnit_Framework_TestCase
                         'section' => 'blog',
                     ],
                 ],
+                'static' => [
+                    'exclude' => [
+                        'test.txt',
+                    ],
+                ],
             ]
         )->addPlugin(new Example())
         ->build();
