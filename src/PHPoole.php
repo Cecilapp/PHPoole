@@ -675,8 +675,7 @@ class PHPoole implements EventsCapableInterface
             $finder = new Finder();
             $finder->files()->filter(function (\SplFileInfo $file) {
                 if (is_array($this->getOption('static.exclude'))
-                    && in_array($file->getBasename(), $this->getOption('static.exclude')))
-                {
+                    && in_array($file->getBasename(), $this->getOption('static.exclude'))) {
                     return false;
                 }
             })->in($staticDir);
