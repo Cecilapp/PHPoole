@@ -25,3 +25,6 @@ script:
 # run coveralls
 after_script:
   - php vendor/bin/coveralls -v
+# deploy docs
+after_success:
+  - bash deploy.sh
