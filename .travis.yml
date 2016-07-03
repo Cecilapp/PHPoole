@@ -26,5 +26,11 @@ script:
 after_script:
   - php vendor/bin/coveralls -v
 # deploy docs
-after_success:
-  - bash deploy.sh
+deploy:
+  provider: script
+  script: deploy.sh
+  skip_cleanup: true
+  overwrite: true
+  on:
+    branch: master
+    php: '5.6'
