@@ -31,11 +31,45 @@ class TwigExtensionSorts extends \Twig_Extension
     public function getFilters()
     {
         $filters = [
+            new \Twig_SimpleFilter('sortByTitle', [$this, 'sortByTitle']),
             new \Twig_SimpleFilter('sortByWeight', [$this, 'sortByWeight']),
             new \Twig_SimpleFilter('sortByDate', [$this, 'sortByDate']),
         ];
 
         return $filters;
+    }
+
+    /**
+     * Sort by title.
+     *
+     * @param $array|\PHPoole\Collection\CollectionInterface
+     *
+     * @return mixed
+     */
+    public function sortByTitle($array)
+    {
+        $callback = function ($a, $b) {
+            if (!isset($a['title'])) {
+                return 1;
+            }
+            if (!isset($b['title'])) {
+                return -1;
+            }
+            if ($a['title'] == $b['title']) {
+                return 0;
+            }
+
+            return ($a['title'] < $b['title']) ? -1 : 1;
+        };
+
+        if ($array instanceof \PHPoole\Collection\AbstractCollection) {
+            $array = $array->toArray();
+        }
+        if (is_array($array)) {
+            usort($array, $callback);
+        }
+
+        return $array;
     }
 
     /**
