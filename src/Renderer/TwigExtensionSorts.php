@@ -59,7 +59,7 @@ class TwigExtensionSorts extends \Twig_Extension
                 return 0;
             }
 
-            return ($a['title'] < $b['title']) ? -1 : 1;
+            return ($a['title'] > $b['title']) ? -1 : 1;
         };
 
         if ($array instanceof \PHPoole\Collection\AbstractCollection) {
