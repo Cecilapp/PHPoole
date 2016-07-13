@@ -508,12 +508,13 @@ class PHPoole implements EventsCapableInterface
         $this->menus = new Menu\Collection();
 
         /**
-         * Collects pages with menu entry
-         * @var $page Page
+         * Collects pages with menu entry.
+         *
+         * @var Page
          */
         foreach ($this->pageCollection as $page) {
             if (!empty($page['menu'])) {
-                /**
+                /*
                  * Single case
                  * ie:
                  * menu: main
@@ -526,7 +527,7 @@ class PHPoole implements EventsCapableInterface
                     $menu = $this->menus->get($page['menu']);
                     $menu->add($item);
                 }
-                /**
+                /*
                  * Multiple case
                  * ie:
                  * menu:
@@ -548,7 +549,7 @@ class PHPoole implements EventsCapableInterface
             }
         }
 
-        /**
+        /*
          * Removing/adding/replacing menus entries from options array
          * ie:
          * ['site' => [
