@@ -507,12 +507,15 @@ class PHPoole implements EventsCapableInterface
     {
         $this->menus = new Menu\Collection();
 
-        /* @var $page Page */
+        /**
+         * Collects pages with menu entry
+         * @var $page Page
+         */
         foreach ($this->pageCollection as $page) {
             if (!empty($page['menu'])) {
-                // single
-                /*
-                 * ex:
+                /**
+                 * Single case
+                 * ie:
                  * menu: main
                  */
                 if (is_string($page['menu'])) {
@@ -523,9 +526,9 @@ class PHPoole implements EventsCapableInterface
                     $menu = $this->menus->get($page['menu']);
                     $menu->add($item);
                 }
-                // multiple
-                /*
-                 * ex:
+                /**
+                 * Multiple case
+                 * ie:
                  * menu:
                  *     main:
                  *         weight: 1000
@@ -544,20 +547,36 @@ class PHPoole implements EventsCapableInterface
                 }
             }
         }
-        /*
+
+        /**
          * Removing/adding/replacing menus entries from options array
+         * ie:
+         * ['site' => [
+         *     'menu' => [
+         *         'main' => [
+         *             'test' => [
+         *                 'id'     => 'test',
+         *                 'name'   => 'Test website',
+         *                 'url'    => 'http://test.org',
+         *                 'weight' => 999,
+         *             ],
+         *         ],
+         *     ],
+         * ]]
          */
-        if ($this->getOption('site.menu') !== '') {
+        if (!empty($this->getOption('site.menu'))) {
             foreach ($this->getOption('site.menu') as $name => $entry) {
                 /* @var $menu Menu\Menu */
                 $menu = $this->menus->get($name);
                 foreach ($entry as $property) {
+                    // remove disable entries
                     if (isset($property['disabled']) && $property['disabled']) {
                         if (isset($property['id']) && $menu->has($property['id'])) {
                             $menu->remove($property['id']);
                         }
                         continue;
                     }
+                    // add new entries
                     $item = (new Menu\Entry($property['id']))
                         ->setName($property['name'])
                         ->setUrl($property['url'])

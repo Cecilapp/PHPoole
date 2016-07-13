@@ -39,15 +39,21 @@ class Build extends \PHPUnit_Framework_TestCase
                 'site' => [
                     'menu' => [
                         'main' => [
-                            'about' => [
-                                'id'        => 'about',
-                                'disabled'  => true,
+                            'index' => [
+                                'id'     => 'index',
+                                'name'   => 'Da home!',
+                                'url'    => '',
+                                'weight' => 1,
                             ],
-                            'test' => [
-                                'id'        => 'test',
-                                'name'      => 'Test',
-                                'url'       => 'http://narno.org',
-                                'weight'    => 999,
+                            'about' => [
+                                'id'       => 'about',
+                                'disabled' => true,
+                            ],
+                            'narno' => [
+                                'id'     => 'narno',
+                                'name'   => 'narno.org',
+                                'url'    => 'http://narno.org',
+                                'weight' => 999,
                             ],
                         ],
                     ],
