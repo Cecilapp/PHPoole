@@ -41,13 +41,23 @@ class Taxonomy implements GeneratorInterface
         $generatedPages = new PageCollection();
 
         if (array_key_exists('taxonomies', $this->options->get('site'))) {
-            // collects taxonomies from pages
-            $this->taxonomies = new \PHPoole\Taxonomy\Collection();
             $siteTaxonomies = $this->options->get('site.taxonomies');
+
+            $disabled = array_key_exists('disabled', $siteTaxonomies) && $siteTaxonomies['disabled'];
+            if ($disabled) {
+                return $generatedPages;
+            }
+
+            // prepares taxonomies collection
+            $this->taxonomies = new \PHPoole\Taxonomy\Collection();
             // adds each vocabulary collection to the taxonomies collection
             foreach ($siteTaxonomies as $plural => $singular) {
-                $this->taxonomies->add(new \PHPoole\Taxonomy\Vocabulary($plural));
+                if ($plural != 'disable') {
+                    $this->taxonomies->add(new \PHPoole\Taxonomy\Vocabulary($plural));
+                }
             }
+
+            // collects taxonomies from pages
             /* @var $page Page */
             foreach ($pageCollection as $page) {
                 foreach ($siteTaxonomies as $plural => $singular) {
