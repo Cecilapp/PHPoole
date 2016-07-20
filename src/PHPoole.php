@@ -507,7 +507,7 @@ class PHPoole implements EventsCapableInterface
     {
         $this->menus = new Menu\Collection();
 
-        /**
+        /*
          * Collects pages with menu entry.
          *
          * @var Page
