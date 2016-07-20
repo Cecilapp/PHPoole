@@ -861,9 +861,9 @@ class PHPoole implements EventsCapableInterface
      *
      * @param string $command The command.
      *
-     * @return string The trimmed output from the command.
-     *
      * @throws \RuntimeException If the command failed.
+     *
+     * @return string The trimmed output from the command.
      */
     private function runGitCommand($command)
     {
