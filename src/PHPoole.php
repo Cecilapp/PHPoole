@@ -25,6 +25,7 @@ use PHPoole\Renderer\RendererInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Process\Process;
 use Zend\EventManager\EventsCapableInterface;
 
 /**
@@ -35,6 +36,7 @@ class PHPoole implements EventsCapableInterface
     use PluginAwareTrait;
 
     const VERSION = '1.1.x-dev';
+
     /**
      * Default options.
      *
@@ -619,8 +621,8 @@ class PHPoole implements EventsCapableInterface
         // adds global variables
         $this->renderer->addGlobal('site', $this->site);
         $this->renderer->addGlobal('phpoole', [
-            'url'       => 'http://phpoole.org/#v'.self::getVersion(),
-            'version'   => self::getVersion(),
+            'url'       => 'http://phpoole.org/#v'.$this->getVersion(),
+            'version'   => $this->getVersion(),
             'poweredby' => 'PHPoole-library v'.self::getVersion(),
         ]);
 
@@ -845,17 +847,36 @@ class PHPoole implements EventsCapableInterface
      *
      * @return string
      */
-    protected static function getVersion()
+    protected function getVersion()
     {
-        $version = self::VERSION;
-
-        if (file_exists(__DIR__.'/../composer.json')) {
-            $composer = json_decode(file_get_contents(__DIR__.'/../composer.json'), true);
-            if (isset($composer['version'])) {
-                $version = $composer['version'];
-            }
+        try {
+            return $this->runGitCommand('git describe --tags HEAD');
+        } catch (\RuntimeException $exception) {
+            return self::VERSION;
         }
+    }
 
-        return $version;
+    /**
+     * Runs a Git command on the repository.
+     *
+     * @param string $command The command.
+     *
+     * @return string The trimmed output from the command.
+     *
+     * @throws \RuntimeException If the command failed.
+     */
+    private function runGitCommand($command)
+    {
+        $process = new Process($command, __DIR__);
+        if (0 === $process->run()) {
+            return trim($process->getOutput());
+        }
+        throw new \RuntimeException(
+            sprintf(
+                'The tag or commit hash could not be retrieved from "%s": %s',
+                __DIR__,
+                $process->getErrorOutput()
+            )
+        );
     }
 }
