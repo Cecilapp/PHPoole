@@ -23,13 +23,13 @@ You can easily create a blog, a personal website, a simple corporate website, et
 
 ## Features
 
-* No database, files only (host your website anywhere)
-* Fully configurable (Through options and plugins system - _WIP_)
+* No database, files only
+* Fully configurable
 * Flexible template engine ([Twig](http://twig.sensiolabs.org/doc/templates.html))
 * Theme support
 * Dynamic menu creation
 * Configurable taxonomies (categories, tags, etc.)
-* Paginator (for homepage, sections and taxonomies - _WIP_)
+* Pagination (for node page)
 
 ## Requirements
 
@@ -42,14 +42,12 @@ Run the following command:
 $ composer require narno/phpoole-library
 ```
 
-## Documentation
+## Usage
 
 * [Overview](docs/1.Overview.md)
 * [Content](docs/2.Content.md)
 * [Layouts](docs/3.Layouts.md)
 * [Options](docs/4.Options.md)
-
-## Demo
 
 Try the [demo](https://github.com/Narno/PHPoole-demo).
 
@@ -57,4 +55,4 @@ Try the [demo](https://github.com/Narno/PHPoole-demo).
 
 PHPoole-library is a free software distributed under the terms of the MIT license.
 
-PHPoole logo designed by [Cécile Ricordeau](http://www.cecillie.fr).
+Logo created by [Cécile Ricordeau](http://www.cecillie.fr).
