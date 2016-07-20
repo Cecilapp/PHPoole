@@ -45,8 +45,8 @@ class Pagination implements GeneratorInterface
         /* @var $page Page */
         foreach ($filteredPages as $page) {
             $paginate = $this->options->get('site.paginate');
-            $disabled = ($paginate == 'disabled') ? true : false;
 
+            $disabled = array_key_exists('disabled', $paginate) && $paginate['disabled'];
             if ($disabled) {
                 return $generatedPages;
             }

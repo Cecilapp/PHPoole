@@ -41,7 +41,8 @@ class Homepage implements GeneratorInterface
         if (!$pageCollection->has('index')) {
             $filteredPages = $pageCollection->filter(function (Page $page) {
                 return $page->getNodeType() === null
-                && $page->getSection() == $this->options->get('paginate.homepage.section');
+                && $page->getSection() == $this->options->get('site.paginate.homepage.section')
+                && !empty($page->getBody());
             });
             $pages = $filteredPages->sortByDate()->toArray();
 

@@ -57,11 +57,11 @@ class Build extends \PHPUnit_Framework_TestCase
                             ],
                         ],
                     ],
-                ],
-                'paginate' => [
-                    //'disabled' => true,
-                    'homepage' => [
-                        'section' => 'blog',
+                    'paginate' => [
+                        'disabled' => false,
+                        'homepage' => [
+                            'section' => 'blog',
+                        ],
                     ],
                 ],
                 'static' => [
