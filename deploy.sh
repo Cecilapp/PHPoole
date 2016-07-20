@@ -12,7 +12,7 @@ if [ $TRAVIS_PHP_VERSION != "5.6" -o "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAV
     exit 0
 fi
 
-echo "Starting to update gh-pages..."
+echo "Starting to update documentation..."
 
 cp -R $SOURCE_DOCS_DIR $HOME/$SOURCE_DOCS_DIR
 cd $HOME
@@ -23,6 +23,6 @@ cd gh-pages
 mkdir -p $TARGET_DOCS_DIR
 cp -Rf $HOME/$SOURCE_DOCS_DIR/* $TARGET_DOCS_DIR
 git add -f .
-git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to gh-pages"
+git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to TARGET_DOCS_DIR"
 git push -fq origin $TARGET_BRANCH > /dev/null
 exit 0
