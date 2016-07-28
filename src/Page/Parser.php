@@ -15,6 +15,8 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class Parser
 {
+    // https://regex101.com/r/xH7cL3/1
+    const PATTERN = '^\s*(?:<!--|---|\+++){1}[\n\r\s]*(.*?)[\n\r\s]*(?:-->|---|\+++){1}[\s\n\r]*(.*)$';
     /**
      * @var SplFileInfo
      */
@@ -42,10 +44,12 @@ class Parser
      * Parse the contents of the file.
      *
      * Example:
-     * <!--
-     * title = Title
-     * -->
-     * Lorem Ipsum.
+     *
+     *     ---
+     *     title: Title
+     *     date: 2016-07-29
+     *     ---
+     *     Lorem Ipsum.
      *
      * @throws \RuntimeException
      *
@@ -59,12 +63,7 @@ class Parser
             }
             // parse front matter
             preg_match(
-                '/^'
-                .'(<!--|---|\+++){1}[\r\n|\n]*' // $matches[1] = front matter open
-                .'(.*)[\r\n|\n]+'               // $matches[2] = front matter
-                .'(-->|---|\+++){1}[\r\n|\n]*'  // $matches[3] = front matter close
-                .'(.*)'                         // $matches[4] = body
-                .'/s',
+                '/'.self::PATTERN.'/s',
                 $this->file->getContents(),
                 $matches
             );
@@ -74,8 +73,8 @@ class Parser
 
                 return $this;
             }
-            $this->frontmatter = trim($matches[2]);
-            $this->body = trim($matches[4]);
+            $this->frontmatter = trim($matches[1]);
+            $this->body = trim($matches[2]);
         }
 
         return $this;
