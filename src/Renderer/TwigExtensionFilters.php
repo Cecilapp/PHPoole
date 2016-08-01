@@ -32,6 +32,7 @@ class TwigExtensionFilters extends \Twig_Extension
     {
         $filters = [
             new \Twig_SimpleFilter('filterBySection', [$this, 'filterBySection']),
+            new \Twig_SimpleFilter('filterBy', [$this, 'filterBy']),
         ];
 
         return $filters;
@@ -40,20 +41,43 @@ class TwigExtensionFilters extends \Twig_Extension
     /**
      * Filter by section.
      *
-     * @param \PHPoole\Page\Collection|array $pages
-     * @param string                         $section
+     * @param \PHPoole\Page\Collection $pages
+     * @param string                   $section
      *
      * @return array
      */
     public function filterBySection($pages, $section)
     {
+        return $this->filterBy($pages, 'section', $section);
+    }
+
+    /**
+     * Filter by variable.
+     *
+     * @param \PHPoole\Page\Collection $pages
+     * @param string                   $variable
+     * @param string                   $value
+     *
+     * @return array
+     */
+    public function filterBy($pages, $variable, $value)
+    {
         $filtered = [];
 
         foreach ($pages as $page) {
             if ($page instanceof \PHPoole\Page\Page) {
-                if ($page->getSection() == $section) {
-                    $filtered[] = $page;
+                $method = 'get'.ucfirst($variable);
+                if (method_exists($page, $method)) {
+                    if ($page->$method() == $value) {
+                        $filtered[] = $page;
+                    }
+                } else {
+                    if ($page->getVariable($variable) == $value) {
+                        $filtered[] = $page;
+                    }
                 }
+            } else {
+                throw new \Exception("'filterBy' available for page only!");
             }
         }
 
