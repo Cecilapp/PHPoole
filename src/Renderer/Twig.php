@@ -47,7 +47,7 @@ class Twig implements RendererInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct($templatesPath = [], $destPath)
+    public function __construct($templatesPath, $destPath)
     {
         $loaderFS = new \Twig_Loader_Filesystem($templatesPath);
         $loaderArray = new \Twig_Loader_Array([
