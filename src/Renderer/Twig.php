@@ -47,7 +47,7 @@ class Twig implements RendererInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct($templatesPath = [])
+    public function __construct($templatesPath = [], $destPath)
     {
         $loaderFS = new \Twig_Loader_Filesystem($templatesPath);
         $loaderArray = new \Twig_Loader_Array([
@@ -73,6 +73,7 @@ class Twig implements RendererInterface
         $this->twig->addExtension(new TwigExtensionSorts());
         $this->twig->addExtension(new TwigExtensionFilters());
         $this->twig->addExtension(new TwigExtensionUrlize());
+        $this->twig->addExtension(new TwigExtensionMinify($destPath));
 
         // excerpt filter
         $excerptFilter = new \Twig_SimpleFilter('excerpt', function ($string, $length = 450, $suffix = '…') {

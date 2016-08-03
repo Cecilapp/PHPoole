@@ -17,8 +17,9 @@ interface RendererInterface
      * Constructor.
      *
      * @param string|array $templatesPath
+     * @param string       $destPath destination path
      */
-    public function __construct($templatesPath = []);
+    public function __construct($templatesPath = [], $destPath);
 
     /**
      * Add global variable.

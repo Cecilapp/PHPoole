@@ -334,10 +334,10 @@ class PHPoole implements EventsCapableInterface
         $this->generateVirtualPages();
         // generates menus
         $this->generateMenus();
-        // rendering
-        $this->renderPages();
         // copies static files
         $this->copyStatic();
+        // rendering
+        $this->renderPages();
     }
 
     protected function setupGenerators()
@@ -617,7 +617,8 @@ class PHPoole implements EventsCapableInterface
         if ($this->isTheme()) {
             $paths[] = $this->sourceDir.'/'.$this->getOption('themes.dir').'/'.$this->theme.'/layouts';
         }
-        $this->renderer = new Renderer\Twig($paths);
+        $dir = $this->destDir.'/'.$this->getOption('output.dir');
+        $this->renderer = new Renderer\Twig($paths, $dir);
         // adds global variables
         $this->renderer->addGlobal('site', $this->site);
         $this->renderer->addGlobal('phpoole', [
@@ -627,7 +628,6 @@ class PHPoole implements EventsCapableInterface
         ]);
 
         // start rendering
-        $dir = $this->destDir.'/'.$this->getOption('output.dir');
         $this->fs->mkdir($dir);
         call_user_func_array($this->messageCallback, ['RENDER', 'Rendering pages']);
         $max = count($this->pageCollection);
