@@ -59,6 +59,8 @@ class TwigExtensionFilters extends \Twig_Extension
      * @param string                   $value
      *
      * @return array
+     *
+     * @throws \Exception
      */
     public function filterBy($pages, $variable, $value)
     {
