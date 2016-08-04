@@ -73,6 +73,8 @@ class TwigExtensionUrlize extends SlugifyExtension
         } else {
             if (preg_match('~^(?:f|ht)tps?://~i', $value)) {
                 $url = $value;
+            } elseif (false !== strpos($value, '.')) {
+                $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
             } else {
                 $value = $this->slugifyFilter($value);
                 $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
