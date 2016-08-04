@@ -56,6 +56,7 @@ class PHPoole implements EventsCapableInterface
                 'max'  => 5,
                 'path' => 'page',
             ],
+            'timezone' => 'Europe/Paris',
         ],
         'content' => [
             'dir' => 'content',
