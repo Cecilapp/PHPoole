@@ -51,7 +51,7 @@ class Twig implements RendererInterface
     {
         $loaderFS = new \Twig_Loader_Filesystem($templatesPath);
         $loaderArray = new \Twig_Loader_Array([
-            'redirect.html' => '<!DOCTYPE html>
+            'redirect.html.twig' => '<!DOCTYPE html>
 <html>
 <head lang="en">
     <link rel="canonical" href="{{ url(page.destination) }}"/>

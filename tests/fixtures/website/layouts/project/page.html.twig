@@ -1,4 +1,4 @@
-{% extends '_default/page.html' %}
+{% extends '_default/page.html.twig' %}
 
 {% block content %}
 {{ page.content }}
@@ -7,5 +7,5 @@
 <a href="{{ url('categories/' ~ category) }}">#{{ category }}</a>&nbsp;
 {% endfor %}
 {% endif %}
-<p>layout: project/page.html</p>
+<p>layout: {{ _self.getTemplateName() }}</p>
 {% endblock %}
