@@ -1,9 +1,9 @@
-{% extends '_default/page.html' %}
+{% extends '_default/page.html.twig' %}
 
 {% block content %}
 {{ page.content }}
 {% for tag in page.tags %}
 <a href="{{ url('tags/' ~ tag) }}">#{{ tag }}</a>&nbsp;
 {% endfor %}
-<p>layout: blog/page.html</p>
+<p>layout: {{ _self.getTemplateName() }}</p>
 {% endblock %}
