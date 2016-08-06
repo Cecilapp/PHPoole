@@ -47,7 +47,7 @@ class Twig implements RendererInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct($templatesPath, $destPath)
+    public function __construct($templatesPath, $options)
     {
         $loaderFS = new \Twig_Loader_Filesystem($templatesPath);
         $loaderArray = new \Twig_Loader_Array([
@@ -73,9 +73,9 @@ class Twig implements RendererInterface
         $this->twig->addExtension(new TwigExtensionSorts());
         $this->twig->addExtension(new TwigExtensionFilters());
         $this->twig->addExtension(new TwigExtensionUrlize());
-        $this->twig->addExtension(new TwigExtensionMinify($destPath));
-        $this->twig->getExtension('core')->setDateFormat('F j, Y');
-        $this->twig->getExtension('core')->setTimezone('Europe/Paris');
+        $this->twig->addExtension(new TwigExtensionMinify($options['destPath']));
+        $this->twig->getExtension('core')->setDateFormat($options['date']['format']);
+        $this->twig->getExtension('core')->setTimezone($options['date']['timezone']);
 
         // excerpt filter
         $excerptFilter = new \Twig_SimpleFilter('excerpt', function ($string, $length = 450, $suffix = '…') {

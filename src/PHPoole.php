@@ -56,7 +56,10 @@ class PHPoole implements EventsCapableInterface
                 'max'  => 5,
                 'path' => 'page',
             ],
-            'timezone' => 'Europe/Paris',
+            'date' => [
+                'format'   => 'F j, Y',
+                'timezone' => 'Europe/Paris',
+            ],
         ],
         'content' => [
             'dir' => 'content',
@@ -619,7 +622,10 @@ class PHPoole implements EventsCapableInterface
             $paths[] = $this->sourceDir.'/'.$this->getOption('themes.dir').'/'.$this->theme.'/layouts';
         }
         $dir = $this->destDir.'/'.$this->getOption('output.dir');
-        $this->renderer = new Renderer\Twig($paths, $dir);
+        $this->renderer = new Renderer\Twig($paths, [
+           'destPath' => $dir,
+           'date'     => $this->getOption('site.date'),
+        ]);
         // adds global variables
         $this->renderer->addGlobal('site', $this->site);
         $this->renderer->addGlobal('phpoole', [
