@@ -74,6 +74,8 @@ class Twig implements RendererInterface
         $this->twig->addExtension(new TwigExtensionFilters());
         $this->twig->addExtension(new TwigExtensionUrlize());
         $this->twig->addExtension(new TwigExtensionMinify($destPath));
+        $this->twig->getExtension('core')->setDateFormat('F j, Y');
+        $this->twig->getExtension('core')->setTimezone('Europe/Paris');
 
         // excerpt filter
         $excerptFilter = new \Twig_SimpleFilter('excerpt', function ($string, $length = 450, $suffix = '…') {
