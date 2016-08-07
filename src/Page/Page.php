@@ -47,6 +47,10 @@ class Page extends PageItem
     /**
      * @var string
      */
+    protected $id;
+    /**
+     * @var string
+     */
     protected $pathname;
     /**
      * @var string

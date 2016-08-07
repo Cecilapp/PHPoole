@@ -11,7 +11,7 @@ namespace PHPoole\Page;
 use PHPoole\Collection\AbstractItem;
 
 /**
- * Class PageItem.
+ * Helper to set and get page variables.
  */
 class PageItem extends AbstractItem
 {
@@ -89,6 +89,8 @@ class PageItem extends AbstractItem
      * Unset a variable.
      *
      * @param $name
+     *
+     * @return $this
      */
     public function unVariable($name)
     {

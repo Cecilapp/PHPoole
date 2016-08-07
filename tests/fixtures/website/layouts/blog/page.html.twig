@@ -3,8 +3,11 @@
 {% block content %}
 <span>{{ page.date|date }}</span>
 {{ page.content }}
+{% if tag is defined %}
 {% for tag in page.tags %}
 <a href="{{ url('tags/' ~ tag) }}">#{{ tag }}</a>&nbsp;
 {% endfor %}
+{% endif %}
+<pre>{{ dump(page) }}</pre>
 <p>layout: {{ _self.getTemplateName() }}</p>
 {% endblock %}
