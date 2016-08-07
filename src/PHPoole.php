@@ -57,7 +57,7 @@ class PHPoole implements EventsCapableInterface
                 'path' => 'page',
             ],
             'date' => [
-                'format'   => 'F j, Y',
+                'format'   => 'j F Y',
                 'timezone' => 'Europe/Paris',
             ],
         ],

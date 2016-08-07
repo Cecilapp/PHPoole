@@ -73,7 +73,7 @@ class Page extends PageItem
      */
     protected $layout;
     /**
-     * @var int Unix timestamp
+     * @var \DateTime
      */
     protected $date;
     /**
@@ -129,7 +129,7 @@ class Page extends PageItem
             // section - ie: "blog"
             $this->section = explode('/', $this->path)[0];
             // date
-            $this->date = filemtime($this->file->getPathname());
+            $this->date = (new \DateTime())->setTimestamp(filemtime($this->file->getPathname()));
             // permalink
             $this->permalink = $this->pathname;
 
@@ -335,26 +335,31 @@ class Page extends PageItem
      *
      * @param $date
      *
+     * @throws \Exception
+     *
      * @return $this
      */
     public function setDate($date)
     {
-        $this->date = $date;
+        try {
+            if (is_int($date)) {
+                $this->date = new \DateTime();
+                $this->date->setTimestamp($date);
+            } else {
+                $this->date = new \DateTime($date);
+            }
+        } catch (\Exception $e) {
+            throw new \Exception(sprintf("Expected date string in '%s'", $this->getId()));
+        }
 
         return $this;
     }
 
     /**
-     * Get date.
-     *
-     * @return int
+     * @return $this|\DateTime
      */
     public function getDate()
     {
-        if (empty($this->date) && $this->file !== null) {
-            $this->date = filemtime($this->file->getPathname());
-        }
-
         return $this->date;
     }
 
