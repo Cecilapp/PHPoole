@@ -63,7 +63,7 @@ class Build extends \PHPUnit_Framework_TestCase
                             'section' => 'blog',
                         ],
                     ],
-                    'taxonomies'  => [
+                    'taxonomies' => [
                         'disabled' => false,
                     ],
                 ],
