@@ -468,21 +468,27 @@ class PHPoole implements EventsCapableInterface
          */
         if (!empty($variables['title'])) {
             $page->setTitle($variables['title']);
+            $page->unVariable('title');
             unset($variables['title']);
         }
         if (!empty($variables['section'])) {
             $page->setSection($variables['section']);
+            $page->unVariable('section');
             unset($variables['section']);
         }
         if (!empty($variables['date'])) {
+            $page->unVariable('date');
             $page->setDate($variables['date']);
+            unset($variables['date']);
         }
         if (!empty($variables['permalink'])) {
             $page->setPermalink($variables['permalink']);
+            $page->unVariable('permalink');
             unset($variables['permalink']);
         }
         if (!empty($variables['layout'])) {
             $page->setLayout($variables['layout']);
+            $page->unVariable('layout');
             unset($variables['layout']);
         }
         $page->setHtml($html);
