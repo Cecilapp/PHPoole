@@ -493,46 +493,7 @@ class PHPoole implements EventsCapableInterface
     {
         $this->menus = new Menu\Collection();
 
-        /*
-         * Collects pages with menu entry.
-         */
-        foreach ($this->pageCollection as $page) {
-            /* @var $page Page */
-            if (!empty($page['menu'])) {
-                /*
-                 * Single case
-                 * ie:
-                 * menu: main
-                 */
-                if (is_string($page['menu'])) {
-                    $item = (new Menu\Entry($page->getId()))
-                        ->setName($page->getTitle())
-                        ->setUrl($page->getPermalink());
-                    /* @var $menu Menu\Menu */
-                    $menu = $this->menus->get($page['menu']);
-                    $menu->add($item);
-                }
-                /*
-                 * Multiple case
-                 * ie:
-                 * menu:
-                 *     main:
-                 *         weight: 1000
-                 *     other
-                 */
-                if (is_array($page['menu'])) {
-                    foreach ($page['menu'] as $name => $value) {
-                        $item = (new Menu\Entry($page->getId()))
-                            ->setName($page->getTitle())
-                            ->setUrl($page->getPermalink())
-                            ->setWeight($value['weight']);
-                        /* @var $menu Menu\Menu */
-                        $menu = $this->menus->get($name);
-                        $menu->add($item);
-                    }
-                }
-            }
-        }
+        $this->generateMenusCollect();
 
         /*
          * Removing/adding/replacing menus entries from options array
@@ -568,6 +529,51 @@ class PHPoole implements EventsCapableInterface
                         ->setUrl($property['url'])
                         ->setWeight($property['weight']);
                     $menu->add($item);
+                }
+            }
+        }
+    }
+
+    /**
+     * Collects pages with menu entry.
+     */
+    protected function generateMenusCollect()
+    {
+        foreach ($this->pageCollection as $page) {
+            /* @var $page Page */
+            if (!empty($page['menu'])) {
+                /*
+                 * Single case
+                 * ie:
+                 * menu: main
+                 */
+                if (is_string($page['menu'])) {
+                    $item = (new Menu\Entry($page->getId()))
+                        ->setName($page->getTitle())
+                        ->setUrl($page->getPermalink());
+                    /* @var $menu Menu\Menu */
+                    $menu = $this->menus->get($page['menu']);
+                    $menu->add($item);
+                } else {
+                    /*
+                     * Multiple case
+                     * ie:
+                     * menu:
+                     *     main:
+                     *         weight: 1000
+                     *     other
+                     */
+                    if (is_array($page['menu'])) {
+                        foreach ($page['menu'] as $name => $value) {
+                            $item = (new Menu\Entry($page->getId()))
+                                ->setName($page->getTitle())
+                                ->setUrl($page->getPermalink())
+                                ->setWeight($value['weight']);
+                            /* @var $menu Menu\Menu */
+                            $menu = $this->menus->get($name);
+                            $menu->add($item);
+                        }
+                    }
                 }
             }
         }
