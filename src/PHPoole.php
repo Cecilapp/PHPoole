@@ -163,7 +163,7 @@ class PHPoole implements EventsCapableInterface
     /**
      * PHPoole constructor.
      *
-     * @param array $options
+     * @param array         $options
      * @param \Closure|null $messageCallback
      */
     public function __construct($options = [], \Closure $messageCallback = null)
@@ -688,6 +688,7 @@ class PHPoole implements EventsCapableInterface
                     && in_array($file->getBasename(), $this->getOption('static.exclude'))) {
                     return false;
                 }
+
                 return true;
             })->in($staticDir);
             $this->fs->mirror($staticDir, $dir, $finder, ['override' => true]);
