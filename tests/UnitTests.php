@@ -121,6 +121,7 @@ class UnitTests extends \PHPUnit_Framework_TestCase
     {
         $pageCollection = new PageCollection();
 
+        /* @var $page Page */
         $page = new Page($this->file);
         $page->parse();
         $pageCollection->add($page);
@@ -130,10 +131,9 @@ class UnitTests extends \PHPUnit_Framework_TestCase
         unset($page);
 
         $page = $pageCollection->get('section1/page1');
-        $this->assertObjectHasAttribute('title', $page);
         $this->assertObjectHasAttribute('html', $page);
         $this->assertObjectHasAttribute('properties', $page);
-        $this->assertSame('Page 1', $page->getTitle());
+        $this->assertSame('Page 1', $page->getVariable('title'));
         $this->assertSame('<p>Content of page 1.</p>', $page->getContent());
         //$this->assertEquals(1427839200, $page['date'], '', 5);}
     }
