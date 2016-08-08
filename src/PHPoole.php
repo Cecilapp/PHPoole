@@ -452,49 +452,22 @@ class PHPoole implements EventsCapableInterface
      */
     public function convertPage($page, $format = 'yaml')
     {
+        $converter = new Converter();
+
         // converts frontmatter
         try {
-            $variables = (new Converter())->convertFrontmatter($page->getFrontmatter(), $format);
+            $variables = $converter->convertFrontmatter($page->getFrontmatter(), $format);
         } catch (\Exception $e) {
             $message = sprintf("> Unable to convert frontmatter of '%s': %s", $page->getId(), $e->getMessage());
             call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', $message]);
 
             return false;
         }
-        // converts body
-        $html = (new Converter())
-            ->convertBody($page->getBody());
-        /*
-         * Setting default page properties
-         */
-        if (!empty($variables['title'])) {
-            $page->setTitle($variables['title']);
-            $page->unVariable('title');
-            unset($variables['title']);
-        }
-        if (!empty($variables['section'])) {
-            $page->setSection($variables['section']);
-            $page->unVariable('section');
-            unset($variables['section']);
-        }
-        if (!empty($variables['date'])) {
-            $page->unVariable('date');
-            $page->setDate($variables['date']);
-            unset($variables['date']);
-        }
-        if (!empty($variables['permalink'])) {
-            $page->setPermalink($variables['permalink']);
-            $page->unVariable('permalink');
-            unset($variables['permalink']);
-        }
-        if (!empty($variables['layout'])) {
-            $page->setLayout($variables['layout']);
-            $page->unVariable('layout');
-            unset($variables['layout']);
-        }
-        $page->setHtml($html);
-        // setting page variables
         $page->setVariables($variables);
+
+        // converts body
+        $html = $converter->convertBody($page->getBody());
+        $page->setHtml($html);
 
         return $page;
     }

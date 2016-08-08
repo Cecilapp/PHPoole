@@ -60,26 +60,6 @@ class Page extends PageItem
      * @var string
      */
     protected $name;
-    /**
-     * @var string
-     */
-    protected $title = 'Default title';
-    /**
-     * @var string
-     */
-    protected $section;
-    /**
-     * @var string
-     */
-    protected $layout;
-    /**
-     * @var \DateTime
-     */
-    protected $date;
-    /**
-     * @var string
-     */
-    protected $permalink;
 
     /**
      * @var string
@@ -125,13 +105,13 @@ class Page extends PageItem
              * front matter default values
              */
             // title - ie: "Post 1"
-            $this->title = basename($this->file->getBasename(), '.'.$this->fileExtension);
+            $this->setTitle(basename($this->file->getBasename(), '.'.$this->fileExtension));
             // section - ie: "blog"
-            $this->section = explode('/', $this->path)[0];
+            $this->setSection(explode('/', $this->path)[0]);
             // date
-            $this->date = (new \DateTime())->setTimestamp(filemtime($this->file->getPathname()));
+            $this->setDate(filemtime($this->file->getPathname()));
             // permalink
-            $this->permalink = $this->pathname;
+            $this->setPermalink($this->pathname);
 
             parent::__construct($this->id);
         } else {
@@ -287,7 +267,7 @@ class Page extends PageItem
      */
     public function setSection($section)
     {
-        $this->section = $section;
+        $this->setVariable('section', $section);
 
         return $this;
     }
@@ -299,11 +279,11 @@ class Page extends PageItem
      */
     public function getSection()
     {
-        if (empty($this->section) && !empty($this->path)) {
-            $this->section = explode('/', $this->path)[0];
+        if (empty($this->getVariable('section')) && !empty($this->path)) {
+            $this->setSection(explode('/', $this->path)[0]);
         }
 
-        return $this->section;
+        return $this->getVariable('section');
     }
 
     /**
@@ -315,7 +295,7 @@ class Page extends PageItem
      */
     public function setTitle($title)
     {
-        $this->title = $title;
+        $this->setVariable('title', $title);
 
         return $this;
     }
@@ -327,7 +307,7 @@ class Page extends PageItem
      */
     public function getTitle()
     {
-        return $this->title;
+        return $this->getVariable('title');
     }
 
     /**
@@ -335,32 +315,21 @@ class Page extends PageItem
      *
      * @param $date
      *
-     * @throws \Exception
-     *
      * @return $this
      */
     public function setDate($date)
     {
-        try {
-            if (is_int($date)) {
-                $this->date = new \DateTime();
-                $this->date->setTimestamp($date);
-            } else {
-                $this->date = new \DateTime($date);
-            }
-        } catch (\Exception $e) {
-            throw new \Exception(sprintf("Expected date string in '%s'", $this->getId()));
-        }
+        $this->setVariable('date', $date);
 
         return $this;
     }
 
     /**
-     * @return $this|\DateTime
+     * @return \DateTime
      */
     public function getDate()
     {
-        return $this->date;
+        return $this->getVariable('date');
     }
 
     /**
@@ -372,7 +341,7 @@ class Page extends PageItem
      */
     public function setPermalink($permalink)
     {
-        $this->permalink = $permalink;
+        $this->setVariable('permalink', $permalink);
 
         return $this;
     }
@@ -384,11 +353,11 @@ class Page extends PageItem
      */
     public function getPermalink()
     {
-        if (empty($this->permalink)) {
-            $this->permalink = $this->getPathname();
+        if (empty($this->getVariable('permalink'))) {
+            $this->setPermalink($this->getPathname());
         }
 
-        return $this->permalink;
+        return $this->getVariable('permalink');
     }
 
     /**
@@ -444,7 +413,7 @@ class Page extends PageItem
      */
     public function setLayout($layout)
     {
-        $this->layout = $layout;
+        $this->setVariable('layout', $layout);
 
         return $this;
     }
@@ -456,6 +425,6 @@ class Page extends PageItem
      */
     public function getLayout()
     {
-        return $this->layout;
+        return $this->getVariable('layout');
     }
 }

@@ -20,14 +20,19 @@ class PageItem extends AbstractItem
      *
      * @param array $variables
      *
+     * @throws \Exception
+     *
      * @return $this
      */
     public function setVariables($variables)
     {
         if (!is_array($variables)) {
-            $variables = [];
+            throw new \Exception('Must be an array!');
         }
-        $this->properties = array_merge_recursive($this->properties, $variables);
+        //$this->properties = array_replace_recursive($this->properties, $variables);
+        foreach ($variables as $key => $value) {
+            $this->setVariable($key, $value);
+        }
 
         return $this;
     }
@@ -48,11 +53,27 @@ class PageItem extends AbstractItem
      * @param $name
      * @param $value
      *
+     * @throws \Exception
+     *
      * @return $this
      */
     public function setVariable($name, $value)
     {
-        $this->offsetSet($name, $value);
+        switch ($name) {
+            case 'date':
+                try {
+                    if (is_int($value)) {
+                        $this->offsetSet('date', (new \DateTime())->setTimestamp($value));
+                    } else {
+                        $this->offsetSet('date', new \DateTime($value));
+                    }
+                } catch (\Exception $e) {
+                    throw new \Exception(sprintf("Expected date string in page '%s'", $this->getName()));
+                }
+                break;
+            default:
+                $this->offsetSet($name, $value);
+        }
 
         return $this;
     }
