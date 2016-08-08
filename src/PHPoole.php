@@ -164,6 +164,7 @@ class PHPoole implements EventsCapableInterface
      * PHPoole constructor.
      *
      * @param array $options
+     * @param \Closure|null $messageCallback
      */
     public function __construct($options = [], \Closure $messageCallback = null)
     {
@@ -442,7 +443,7 @@ class PHPoole implements EventsCapableInterface
     /**
      * Converts page content:
      * * Yaml frontmatter to PHP array
-     * * Mardown body to HTML.
+     * * Markdown body to HTML.
      *
      * @param Page   $page
      * @param string $format
@@ -521,10 +522,9 @@ class PHPoole implements EventsCapableInterface
 
         /*
          * Collects pages with menu entry.
-         *
-         * @var Page
          */
         foreach ($this->pageCollection as $page) {
+            /* @var $page Page */
             if (!empty($page['menu'])) {
                 /*
                  * Single case
@@ -663,6 +663,8 @@ class PHPoole implements EventsCapableInterface
      * @throws \Exception
      *
      * @see renderPages()
+     *
+     * @return string Path to the generated page
      */
     protected function renderPage(Page $page, $dir)
     {
@@ -713,6 +715,7 @@ class PHPoole implements EventsCapableInterface
                     && in_array($file->getBasename(), $this->getOption('static.exclude'))) {
                     return false;
                 }
+                return true;
             })->in($staticDir);
             $this->fs->mirror($staticDir, $dir, $finder, ['override' => true]);
         }
