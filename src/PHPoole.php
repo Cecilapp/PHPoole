@@ -293,7 +293,7 @@ class PHPoole implements EventsCapableInterface
     }
 
     /**
-     * @param \Closure $messageCallback
+     * @param \Closure|null $messageCallback
      */
     public function setMessageCallback($messageCallback = null)
     {
