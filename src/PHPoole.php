@@ -602,8 +602,8 @@ class PHPoole implements EventsCapableInterface
         }
         $dir = $this->destDir.'/'.$this->getOption('output.dir');
         $this->renderer = new Renderer\Twig($paths, [
-           'destPath' => $dir,
-           'date'     => $this->getOption('site.date'),
+            'destPath' => $dir,
+            'date'     => $this->getOption('site.date'),
         ]);
         // adds global variables
         $this->renderer->addGlobal('site', $this->site);
@@ -684,12 +684,8 @@ class PHPoole implements EventsCapableInterface
         if ($this->fs->exists($staticDir)) {
             $finder = new Finder();
             $finder->files()->filter(function (\SplFileInfo $file) {
-                if (is_array($this->getOption('static.exclude'))
-                    && in_array($file->getBasename(), $this->getOption('static.exclude'))) {
-                    return false;
-                }
-
-                return true;
+                return !(is_array($this->getOption('static.exclude'))
+                    && in_array($file->getBasename(), $this->getOption('static.exclude')));
             })->in($staticDir);
             $this->fs->mirror($staticDir, $dir, $finder, ['override' => true]);
         }

@@ -57,5 +57,5 @@ interface RendererInterface
      *
      * @return bool
      */
-    public function validate($template);
+    public function isValid($template);
 }

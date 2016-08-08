@@ -20,9 +20,9 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * Collections's identifier.
      *
-     * @var null
+     * @var string
      */
-    protected $id = null;
+    protected $id = '';
 
     /**
      * Collection's items.

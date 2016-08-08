@@ -23,9 +23,9 @@ abstract class AbstractItem implements ItemInterface, \ArrayAccess
     /**
      * AbstractItem constructor.
      *
-     * @param null $id
+     * @param string $id
      */
-    public function __construct($id = null)
+    public function __construct($id = '')
     {
         $this->setId($id);
     }

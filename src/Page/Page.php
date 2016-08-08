@@ -275,7 +275,7 @@ class Page extends PageItem
     /**
      * Get section.
      *
-     * @return string
+     * @return mixed|false
      */
     public function getSection()
     {
@@ -303,7 +303,7 @@ class Page extends PageItem
     /**
      * Get title.
      *
-     * @return string
+     * @return mixed|false
      */
     public function getTitle()
     {
@@ -325,7 +325,9 @@ class Page extends PageItem
     }
 
     /**
-     * @return \DateTime
+     * Get Date.
+     *
+     * @return \DateTime|false
      */
     public function getDate()
     {
@@ -349,7 +351,7 @@ class Page extends PageItem
     /**
      * Get permalink.
      *
-     * @return string
+     * @return mixed|false
      */
     public function getPermalink()
     {
@@ -421,7 +423,7 @@ class Page extends PageItem
     /**
      * Get layout.
      *
-     * @return string
+     * @return mixed|false
      */
     public function getLayout()
     {

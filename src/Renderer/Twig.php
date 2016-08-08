@@ -125,7 +125,7 @@ class Twig implements RendererInterface
     /**
      * {@inheritdoc}
      */
-    public function validate($template)
+    public function isValid($template)
     {
         try {
             $this->twig->parse($this->twig->tokenize($template));
