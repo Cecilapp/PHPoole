@@ -117,6 +117,7 @@ class Twig implements RendererInterface
         if (!is_dir($dir = dirname($pathname))) {
             $this->fs->mkdir($dir);
         }
+
         return false !== @file_put_contents($pathname, $this->rendered);
     }
 
@@ -130,7 +131,6 @@ class Twig implements RendererInterface
 
             return true;
         } catch (\Twig_Error_Syntax $e) {
-
             return false;
         }
     }
