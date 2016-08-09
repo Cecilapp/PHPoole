@@ -22,11 +22,11 @@ class Taxonomy implements GeneratorInterface
     protected $options;
     /* @var \PHPoole\Taxonomy\Collection $taxonomies */
     protected $taxonomies;
-    /* @var PageCollection */
+    /* @var PageCollection $pageCollection */
     protected $pageCollection;
-    /* @var Data */
+    /* @var array $siteTaxonomies */
     protected $siteTaxonomies;
-    /* @var PageCollection */
+    /* @var PageCollection $generatedPages */
     protected $generatedPages;
 
     /**
@@ -50,8 +50,8 @@ class Taxonomy implements GeneratorInterface
         if (array_key_exists('taxonomies', $this->options->get('site'))) {
             $this->siteTaxonomies = $this->options->get('site.taxonomies');
 
-            $disabled = array_key_exists('disabled', $this->siteTaxonomies) && $this->siteTaxonomies['disabled'];
-            if ($disabled) {
+            // is taxonomies disabled
+            if (array_key_exists('disabled', $this->siteTaxonomies) && $this->siteTaxonomies['disabled']) {
                 return $this->generatedPages;
             }
 
