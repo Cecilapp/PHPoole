@@ -343,6 +343,8 @@ class PHPoole implements EventsCapableInterface
         $this->copyStatic();
         // rendering
         $this->renderPages();
+        // time
+        printf("\n> Time: %s seconds\n", round(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"], 2));
     }
 
     protected function setupGenerators()
