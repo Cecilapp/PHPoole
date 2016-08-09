@@ -24,7 +24,7 @@ class Taxonomy implements GeneratorInterface
     protected $taxonomies;
     /* @var PageCollection */
     protected $pageCollection;
-    /* @var array */
+    /* @var Data */
     protected $siteTaxonomies;
     /* @var PageCollection */
     protected $generatedPages;
@@ -58,9 +58,9 @@ class Taxonomy implements GeneratorInterface
             // prepares taxonomies collection
             $this->taxonomies = new \PHPoole\Taxonomy\Collection('taxonomies');
             // adds each vocabulary collection to the taxonomies collection
-            foreach ($this->siteTaxonomies as $plural => $singular) {
-                if ($plural != 'disable') {
-                    $this->taxonomies->add(new \PHPoole\Taxonomy\Vocabulary($plural));
+            foreach ($this->siteTaxonomies as $vocabulary) {
+                if ($vocabulary != 'disable') {
+                    $this->taxonomies->add(new \PHPoole\Taxonomy\Vocabulary($vocabulary));
                 }
             }
 
