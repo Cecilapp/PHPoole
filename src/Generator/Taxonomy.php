@@ -18,15 +18,15 @@ use PHPoole\Page\Page;
  */
 class Taxonomy implements GeneratorInterface
 {
-    /* @var Data $options */
+    /* @var Data */
     protected $options;
-    /* @var \PHPoole\Taxonomy\Collection $taxonomies */
+    /* @var \PHPoole\Taxonomy\Collection */
     protected $taxonomies;
-    /* @var PageCollection $pageCollection */
+    /* @var PageCollection */
     protected $pageCollection;
-    /* @var array $siteTaxonomies */
+    /* @var array */
     protected $siteTaxonomies;
-    /* @var PageCollection $generatedPages */
+    /* @var PageCollection */
     protected $generatedPages;
 
     /**
