@@ -75,7 +75,7 @@ class Taxonomy implements GeneratorInterface
     }
 
     /**
-     * Collects taxonomies from pages
+     * Collects taxonomies from pages.
      */
     protected function collectTaxonomiesFromPages()
     {
@@ -103,7 +103,7 @@ class Taxonomy implements GeneratorInterface
     }
 
     /**
-     * Creates node pages
+     * Creates node pages.
      */
     protected function createNodePages()
     {
