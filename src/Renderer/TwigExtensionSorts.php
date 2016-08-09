@@ -8,6 +8,9 @@
 
 namespace PHPoole\Renderer;
 
+use PHPoole\Collection\AbstractCollection;
+use PHPoole\Collection\CollectionInterface;
+
 /**
  * Class TwigExtensionSorts.
  */
@@ -42,7 +45,7 @@ class TwigExtensionSorts extends \Twig_Extension
     /**
      * Sort by title.
      *
-     * @param $array|\PHPoole\Collection\CollectionInterface
+     * @param $array|CollectionInterface
      *
      * @return mixed
      */
@@ -62,7 +65,7 @@ class TwigExtensionSorts extends \Twig_Extension
             return ($a['title'] > $b['title']) ? -1 : 1;
         };
 
-        if ($array instanceof \PHPoole\Collection\AbstractCollection) {
+        if ($array instanceof AbstractCollection) {
             $array = $array->toArray();
         }
         if (is_array($array)) {
@@ -75,7 +78,7 @@ class TwigExtensionSorts extends \Twig_Extension
     /**
      * Sort by weight.
      *
-     * @param $array|\PHPoole\Collection\CollectionInterface
+     * @param $array|CollectionInterface
      *
      * @return mixed
      */
@@ -95,7 +98,7 @@ class TwigExtensionSorts extends \Twig_Extension
             return ($a['weight'] < $b['weight']) ? -1 : 1;
         };
 
-        if ($array instanceof \PHPoole\Collection\AbstractCollection) {
+        if ($array instanceof AbstractCollection) {
             $array = $array->toArray();
         }
         if (is_array($array)) {
@@ -108,7 +111,7 @@ class TwigExtensionSorts extends \Twig_Extension
     /**
      * Sort by date.
      *
-     * @param $array|\PHPoole\Collection\CollectionInterface
+     * @param $array|CollectionInterface
      *
      * @return mixed
      */
@@ -128,7 +131,7 @@ class TwigExtensionSorts extends \Twig_Extension
             return ($a['date'] > $b['date']) ? -1 : 1;
         };
 
-        if ($array instanceof \PHPoole\Collection\CollectionInterface) {
+        if ($array instanceof CollectionInterface) {
             $array->usort($callback);
         } else {
             if (is_array($array)) {

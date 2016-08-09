@@ -9,10 +9,13 @@ use MatthiasMullie\Minify;
  */
 class TwigExtensionMinify extends \Twig_Extension
 {
+    /* @var string */
     protected $destPath;
 
     /**
      * Constructor.
+     *
+     * @param string $destPath
      */
     public function __construct($destPath)
     {
@@ -41,6 +44,8 @@ class TwigExtensionMinify extends \Twig_Extension
      * Minify CSS.
      *
      * @param string $path
+     *
+     * @throws \Exception
      *
      * @return string
      */

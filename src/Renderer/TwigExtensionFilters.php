@@ -8,6 +8,8 @@
 
 namespace PHPoole\Renderer;
 
+use PHPoole\Page\Page;
+
 /**
  * Class TwigExtensionFilters.
  */
@@ -67,7 +69,7 @@ class TwigExtensionFilters extends \Twig_Extension
         $filtered = [];
 
         foreach ($pages as $page) {
-            if ($page instanceof \PHPoole\Page\Page) {
+            if ($page instanceof Page) {
                 $method = 'get'.ucfirst($variable);
                 if (method_exists($page, $method)) {
                     if ($page->$method() == $value) {

@@ -12,6 +12,9 @@ use Dflydev\DotAccessData\Data;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\NodeTypeEnum;
 use PHPoole\Page\Page;
+use PHPoole\Taxonomy\Collection as TaxonomyCollection;
+use PHPoole\Taxonomy\Term as Term;
+use PHPoole\Taxonomy\Vocabulary as Vocabulary;
 
 /**
  * Class Taxonomy.
@@ -20,7 +23,7 @@ class Taxonomy implements GeneratorInterface
 {
     /* @var Data */
     protected $options;
-    /* @var \PHPoole\Taxonomy\Collection */
+    /* @var TaxonomyCollection */
     protected $taxonomies;
     /* @var PageCollection */
     protected $pageCollection;
@@ -56,11 +59,11 @@ class Taxonomy implements GeneratorInterface
             }
 
             // prepares taxonomies collection
-            $this->taxonomies = new \PHPoole\Taxonomy\Collection('taxonomies');
+            $this->taxonomies = new TaxonomyCollection('taxonomies');
             // adds each vocabulary collection to the taxonomies collection
             foreach ($this->siteTaxonomies as $vocabulary) {
                 if ($vocabulary != 'disable') {
-                    $this->taxonomies->add(new \PHPoole\Taxonomy\Vocabulary($vocabulary));
+                    $this->taxonomies->add(new Vocabulary($vocabulary));
                 }
             }
 
@@ -90,7 +93,7 @@ class Taxonomy implements GeneratorInterface
                     foreach ($page[$plural] as $term) {
                         // adds each terms to the vocabulary collection
                         $this->taxonomies->get($plural)
-                            ->add(new \PHPoole\Taxonomy\Term($term));
+                            ->add(new Term($term));
                         // adds each pages to the term collection
                         $this->taxonomies
                             ->get($plural)
