@@ -303,15 +303,16 @@ class PHPoole implements EventsCapableInterface
                     case 'CREATE':
                     case 'CONVERT':
                     case 'GENERATE':
-                    case 'RENDER':
                     case 'COPY':
+                    case 'RENDER':
+                    case 'TIME':
                         printf("\n> %s\n", $message);
                         break;
                     case 'CREATE_PROGRESS':
                     case 'CONVERT_PROGRESS':
                     case 'GENERATE_PROGRESS':
-                    case 'RENDER_PROGRESS':
                     case 'COPY_PROGRESS':
+                    case 'RENDER_PROGRESS':
                         if ($itemsCount > 0 && $verbose !== false) {
                             printf("  (%u/%u) %s\n", $itemsCount, $itemsMax, $message);
                         } else {
@@ -344,7 +345,10 @@ class PHPoole implements EventsCapableInterface
         // rendering
         $this->renderPages();
         // time
-        printf("\n> Time: %s seconds\n", round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2));
+        call_user_func_array($this->messageCallback, [
+            'CREATE',
+            sprintf('Time: %s seconds', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2))
+        ]);
     }
 
     protected function setupGenerators()
