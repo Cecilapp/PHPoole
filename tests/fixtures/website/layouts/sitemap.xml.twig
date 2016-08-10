@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {% for page in site.pages %}
+{% if page.name not in ['sitemap', '404', 'rss'] %}
     <url>
         <loc>{{ url(page) }}</loc>
         <lastmod>{{ page.date|date('Y-m-dTH:i:sP') }}</lastmod>
@@ -13,5 +14,6 @@
 {% endif %}
 {% endif %}
     </url>
+{% endif %}
 {% endfor %}
 </urlset>

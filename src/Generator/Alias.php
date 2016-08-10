@@ -33,7 +33,7 @@ class Alias implements GeneratorInterface
                         ->setId($alias)
                         ->setPathname(Page::urlize($alias))
                         ->setTitle($alias)
-                        ->setLayout('redirect')
+                        ->setLayout('redirect.html')
                         ->setVariable('destination', $page->getPermalink());
                     $generatedPages->add($aliasPage);
                 }

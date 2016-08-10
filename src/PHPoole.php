@@ -745,8 +745,8 @@ class PHPoole implements EventsCapableInterface
     {
         $layout = 'unknown';
 
-        if ($page->getLayout() == 'redirect') {
-            return $page->getLayout().'.html.twig';
+        if ($page->getLayout() == 'redirect.html') {
+            return $page->getLayout().'.twig';
         }
 
         $layouts = $this->layoutFallback($page);
@@ -781,6 +781,9 @@ class PHPoole implements EventsCapableInterface
      */
     protected function layoutFallback(Page $page)
     {
+        // remove redundant '.twig' extension
+        $layout = str_replace('.twig', '', $page->getLayout());
+
         switch ($page->getNodeType()) {
             case NodeTypeEnum::HOMEPAGE:
                 $layouts = [
@@ -791,7 +794,7 @@ class PHPoole implements EventsCapableInterface
                 break;
             case NodeTypeEnum::SECTION:
                 $layouts = [
-                    // 'section/$section.html.twig'
+                    // 'section/$section.html.twig',
                     '_default/section.html.twig',
                     '_default/list.html.twig',
                 ];
@@ -801,7 +804,7 @@ class PHPoole implements EventsCapableInterface
                 break;
             case NodeTypeEnum::TAXONOMY:
                 $layouts = [
-                    // 'taxonomy/$singular.html.twig'
+                    // 'taxonomy/$singular.html.twig',
                     '_default/taxonomy.html.twig',
                     '_default/list.html.twig',
                 ];
@@ -811,7 +814,7 @@ class PHPoole implements EventsCapableInterface
                 break;
             case NodeTypeEnum::TERMS:
                 $layouts = [
-                    // 'taxonomy/$singular.terms.html.twig'
+                    // 'taxonomy/$singular.terms.html.twig',
                     '_default/terms.html.twig',
                 ];
                 if ($page->getVariable('singular') !== null) {
@@ -820,21 +823,21 @@ class PHPoole implements EventsCapableInterface
                 break;
             default:
                 $layouts = [
-                    // '$section/page.html.twig'
-                    // '$section/$layout.html.twig'
-                    // '$layout.html.twig'
-                    // 'page.html.twig'
+                    // '$section/page.html.twig',
+                    // '$section/$layout.twig',
+                    // '$layout.twig',
+                    // 'page.html.twig',
                     '_default/page.html.twig',
                 ];
                 if ($page->getSection() !== null) {
                     $layouts = array_merge([sprintf('%s/page.html.twig', $page->getSection())], $layouts);
                     if ($page->getLayout() !== null) {
-                        $layouts = array_merge([sprintf('%s/%s.html.twig', $page->getSection(), $page->getLayout())], $layouts);
+                        $layouts = array_merge([sprintf('%s/%s.twig', $page->getSection(), $layout)], $layouts);
                     }
                 } else {
                     $layouts = array_merge(['page.html.twig'], $layouts);
                     if ($page->getLayout() !== null) {
-                        $layouts = array_merge([sprintf('%s.html.twig', $page->getLayout())], $layouts);
+                        $layouts = array_merge([sprintf('%s.twig', $layout)], $layouts);
                     }
                 }
         }
