@@ -37,6 +37,8 @@ class PHPoole implements EventsCapableInterface
 
     const VERSION = '1.1.x-dev';
 
+    protected $version;
+
     /**
      * Default options.
      *
@@ -847,11 +849,15 @@ class PHPoole implements EventsCapableInterface
      */
     protected function getVersion()
     {
-        try {
-            return $this->runGitCommand('git describe --tags HEAD');
-        } catch (\RuntimeException $exception) {
-            return self::VERSION;
+        if (!isset($this->version)) {
+            try {
+                $this->version = $this->runGitCommand('git describe --tags HEAD');
+            } catch (\RuntimeException $exception) {
+                $this->version = self::VERSION;
+            }
         }
+
+        return $this->version;
     }
 
     /**
@@ -865,16 +871,20 @@ class PHPoole implements EventsCapableInterface
      */
     private function runGitCommand($command)
     {
-        $process = new Process($command, __DIR__);
-        if (0 === $process->run()) {
-            return trim($process->getOutput());
+        try {
+            $process = new Process($command, __DIR__);
+            if (0 === $process->run()) {
+                return trim($process->getOutput());
+            }
+            throw new \RuntimeException(
+                sprintf(
+                    'The tag or commit hash could not be retrieved from "%s": %s',
+                    __DIR__,
+                    $process->getErrorOutput()
+                )
+            );
+        } catch (\RuntimeException $exception) {
+            throw new \RuntimeException('Process error');
         }
-        throw new \RuntimeException(
-            sprintf(
-                'The tag or commit hash could not be retrieved from "%s": %s',
-                __DIR__,
-                $process->getErrorOutput()
-            )
-        );
     }
 }
