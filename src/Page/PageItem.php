@@ -27,9 +27,8 @@ class PageItem extends AbstractItem
     public function setVariables($variables)
     {
         if (!is_array($variables)) {
-            throw new \Exception('Must be an array!');
+            return $this;
         }
-        //$this->properties = array_replace_recursive($this->properties, $variables);
         foreach ($variables as $key => $value) {
             $this->setVariable($key, $value);
         }
