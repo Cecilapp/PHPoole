@@ -5,7 +5,7 @@ SOURCE_BRANCH="master"
 REPO="PHPoole/phpoole.github.io"
 TARGET_BRANCH="source"
 SOURCE_DOCS_DIR="docs"
-TARGET_DOCS_DIR="content/docs"
+TARGET_DOCS_DIR="content/documentation"
 
 if [ $TRAVIS_PHP_VERSION != "5.6" -o "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
     echo "Skipping deploy."
