@@ -41,7 +41,7 @@ class TwigExtensionMinify extends \Twig_Extension
     }
 
     /**
-     * Minify CSS.
+     * Minify a CSS or a JS file.
      *
      * @param string $path
      *
@@ -53,11 +53,21 @@ class TwigExtensionMinify extends \Twig_Extension
     {
         $filePath = $this->destPath.'/'.$path;
         if (is_file($filePath)) {
-            $minifier = new Minify\CSS($filePath);
+            $extension = (new \SplFileInfo($filePath))->getExtension();
+            switch ($extension) {
+                case 'css':
+                    $minifier = new Minify\CSS($filePath);
+                    break;
+                case 'js':
+                    $minifier = new Minify\JS($filePath);
+                    break;
+                default:
+                    throw new \Exception(sprintf("File '%s' should be a '.css' or a '.js'!", $path));
+            }
             $minifier->minify($filePath);
 
             return $path;
         }
-        throw new \Exception(sprintf("File '%s' doesn't exist!", $filePath));
+        throw new \Exception(sprintf("File '%s' doesn't exist!", $path));
     }
 }
