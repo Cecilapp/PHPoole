@@ -41,7 +41,20 @@ class TwigExtensionMinify extends \Twig_Extension
     }
 
     /**
-     * Minify CSS.
+     * {@inheritdoc}
+     */
+    public function getFilters()
+    {
+        $filters = [
+            new \Twig_SimpleFilter('minifyCSS', [$this, 'minifyCss']),
+            new \Twig_SimpleFilter('minifyJS', [$this, 'minifyJs']),
+        ];
+
+        return $filters;
+    }
+
+    /**
+     * Minify a CSS or a JS file.
      *
      * @param string $path
      *
@@ -53,11 +66,35 @@ class TwigExtensionMinify extends \Twig_Extension
     {
         $filePath = $this->destPath.'/'.$path;
         if (is_file($filePath)) {
-            $minifier = new Minify\CSS($filePath);
+            $extension = (new \SplFileInfo($filePath))->getExtension();
+            switch ($extension) {
+                case 'css':
+                    $minifier = new Minify\CSS($filePath);
+                    break;
+                case 'js':
+                    $minifier = new Minify\JS($filePath);
+                    break;
+                default:
+                    throw new \Exception(sprintf("File '%s' should be a '.css' or a '.js'!", $path));
+            }
             $minifier->minify($filePath);
 
             return $path;
         }
-        throw new \Exception(sprintf("File '%s' doesn't exist!", $filePath));
+        throw new \Exception(sprintf("File '%s' doesn't exist!", $path));
+    }
+
+    public function minifyCss($value)
+    {
+        $minifier = new Minify\CSS($value);
+
+        return $minifier->minify();
+    }
+
+    public function minifyJs($value)
+    {
+        $minifier = new Minify\JS($value);
+
+        return $minifier->minify();
     }
 }
