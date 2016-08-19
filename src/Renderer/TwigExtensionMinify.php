@@ -87,12 +87,14 @@ class TwigExtensionMinify extends \Twig_Extension
     public function minifyCss($value)
     {
         $minifier = new Minify\CSS($value);
+
         return $minifier->minify();
     }
 
     public function minifyJs($value)
     {
         $minifier = new Minify\JS($value);
+
         return $minifier->minify();
     }
 }
