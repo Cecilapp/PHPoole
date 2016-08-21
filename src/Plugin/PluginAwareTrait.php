@@ -8,6 +8,7 @@
 
 namespace PHPoole\Plugin;
 
+use PHPoole\PHPoole;
 use Zend\EventManager\EventManager;
 
 trait PluginAwareTrait
@@ -112,7 +113,7 @@ trait PluginAwareTrait
      *
      * @throws \LogicException
      *
-     * @return self
+     * @return PHPoole
      */
     public function addPlugin(PluginInterface $plugin, $priority = 1)
     {
@@ -123,8 +124,8 @@ trait PluginAwareTrait
                 get_class($plugin)
             ));
         }
-        $plugin->attach($this->getEventManager(), $priority);
-        $registry->attach($plugin);
+        $plugin->attach($this->getEventManager());
+        $registry->attach($plugin, $priority);
 
         return $this;
     }
@@ -136,7 +137,7 @@ trait PluginAwareTrait
      *
      * @throws \LogicException
      *
-     * @return self
+     * @return PHPoole
      */
     public function removePlugin(PluginInterface $plugin)
     {

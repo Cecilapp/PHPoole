@@ -257,7 +257,7 @@ class PHPoole implements EventsCapableInterface
     {
         if ($this->options !== $data) {
             $this->options = $data;
-            $this->trigger('options', $data->export());
+            $this->trigger(__FUNCTION__, $data->export());
         }
 
         return $this;

@@ -15,7 +15,7 @@ class Example extends AbstractPlugin
 {
     public function attach(EventManagerInterface $events)
     {
-        $this->handles[] = $events->attach('options', [$this, 'onOptions']);
+        $this->handles[] = $events->attach('setOptions', [$this, 'onSetOptions']);
         $this->handles[] = $events->attach('locateContent.pre', [$this, 'onLocateContentPre']);
         $this->handles[] = $events->attach('locateContent.post', [$this, 'onLocateContentPost']);
         echo "Example plugin attached!\n";
@@ -23,9 +23,9 @@ class Example extends AbstractPlugin
         return $this;
     }
 
-    public function onOptions(Event $event)
+    public function onSetOptions(Event $event)
     {
-        echo sprintf("- Method 'options' finished, with params '%s'\n", json_encode($event->getParams()));
+        echo sprintf("- Method 'setOptions' finished, with params '%s'\n", json_encode($event->getParams()));
     }
 
     public function onLocateContentPre(Event $event)
