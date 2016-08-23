@@ -8,7 +8,6 @@
 
 namespace PHPoole\Test;
 
-use Dflydev\DotAccessData\Data;
 use PHPoole\Converter\Converter;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\Page;

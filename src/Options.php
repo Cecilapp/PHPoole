@@ -90,7 +90,7 @@ class Options
     public function __construct($options)
     {
         $data = new Data(self::$defaultOptions);
-        if ($options instanceof Options) {
+        if ($options instanceof self) {
             $data->importData($options->getAll());
         } elseif (is_array($options)) {
             $data->import($options);
@@ -208,7 +208,7 @@ class Options
     }
 
     /**
-     * Path helpers
+     * Path helpers.
      */
 
     /**
@@ -218,6 +218,7 @@ class Options
     {
         return $this->getSourceDir().'/'.$this->get('content.dir');
     }
+
     /**
      * @return string
      */
@@ -225,6 +226,7 @@ class Options
     {
         return $this->getSourceDir().'/'.$this->get('layouts.dir');
     }
+
     /**
      * @return string
      */
@@ -232,6 +234,7 @@ class Options
     {
         return $this->getSourceDir().'/'.$this->get('themes.dir');
     }
+
     /**
      * @return string
      */
@@ -239,6 +242,7 @@ class Options
     {
         return $this->getSourceDir().'/'.$this->get('themes.dir')."/$theme/$dir";
     }
+
     /**
      * @return string
      */
@@ -246,6 +250,7 @@ class Options
     {
         return $this->getSourceDir().'/'.$this->get('output.dir');
     }
+
     /**
      * @return string
      */
