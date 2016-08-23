@@ -151,9 +151,10 @@ class PHPoole
     }
 
     /**
-     * Options::setSourceDir alias
+     * Options::setSourceDir alias.
      *
      * @param $sourceDir
+     *
      * @return $this
      */
     public function setSourceDir($sourceDir)
@@ -164,9 +165,10 @@ class PHPoole
     }
 
     /**
-     * Options::setDestinationDir alias
+     * Options::setDestinationDir alias.
      *
      * @param $destinationDir
+     *
      * @return $this
      */
     public function setDestinationDir($destinationDir)
