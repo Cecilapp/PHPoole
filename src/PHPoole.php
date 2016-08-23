@@ -23,7 +23,6 @@ use PHPoole\Renderer\RendererInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Process\Process;
 
 /**
  * Class PHPoole.
@@ -729,40 +728,12 @@ class PHPoole
     {
         if (!isset($this->version)) {
             try {
-                $this->version = $this->runGitCommand('git describe --tags HEAD');
+                $this->version = Util::runGitCommand('git describe --tags HEAD');
             } catch (\RuntimeException $exception) {
                 $this->version = self::VERSION;
             }
         }
 
         return $this->version;
-    }
-
-    /**
-     * Runs a Git command on the repository.
-     *
-     * @param string $command The command.
-     *
-     * @throws \RuntimeException If the command failed.
-     *
-     * @return string The trimmed output from the command.
-     */
-    private function runGitCommand($command)
-    {
-        try {
-            $process = new Process($command, __DIR__);
-            if (0 === $process->run()) {
-                return trim($process->getOutput());
-            }
-            throw new \RuntimeException(
-                sprintf(
-                    'The tag or commit hash could not be retrieved from "%s": %s',
-                    __DIR__,
-                    $process->getErrorOutput()
-                )
-            );
-        } catch (\RuntimeException $exception) {
-            throw new \RuntimeException('Process error');
-        }
     }
 }
