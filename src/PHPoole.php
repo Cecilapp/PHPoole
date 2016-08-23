@@ -104,9 +104,7 @@ class PHPoole
     public function __construct($options = null, \Closure $messageCallback = null)
     {
         $this->setOptions($options);
-        $this->options
-            ->setSourceDir(null)
-            ->setDestinationDir(null);
+        $this->options->setSourceDir(null)->setDestinationDir(null);
         $this->setMessageCallback($messageCallback);
         $this->fs = new Filesystem();
     }
