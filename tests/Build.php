@@ -9,7 +9,6 @@
 namespace PHPoole\Test;
 
 use PHPoole\PHPoole;
-use PHPoole\Plugin\Example;
 use Symfony\Component\Filesystem\Filesystem;
 
 class Build extends \PHPUnit_Framework_TestCase
@@ -73,7 +72,6 @@ class Build extends \PHPUnit_Framework_TestCase
                     ],
                 ],
             ]
-        )->addPlugin(new Example())
-        ->build();
+        )->build();
     }
 }

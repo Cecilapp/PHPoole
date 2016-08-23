@@ -20,21 +20,17 @@ use PHPoole\Generator\Taxonomy;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\NodeTypeEnum;
 use PHPoole\Page\Page;
-use PHPoole\Plugin\PluginAwareTrait;
 use PHPoole\Renderer\RendererInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
-use Zend\EventManager\EventsCapableInterface;
 
 /**
  * Class PHPoole.
  */
-class PHPoole implements EventsCapableInterface
+class PHPoole
 {
-    use PluginAwareTrait;
-
     const VERSION = '1.1.x-dev';
 
     protected $version;
@@ -257,7 +253,6 @@ class PHPoole implements EventsCapableInterface
     {
         if ($this->options !== $data) {
             $this->options = $data;
-            $this->trigger(__FUNCTION__, $data->export());
         }
 
         return $this;
@@ -373,19 +368,14 @@ class PHPoole implements EventsCapableInterface
     {
         try {
             $dir = $this->sourceDir.'/'.$this->getOption('content.dir');
-            $params = compact('dir');
-            $this->triggerPre(__FUNCTION__, $params);
             $this->contentIterator = Finder::create()
                 ->files()
-                ->in($params['dir'])
+                ->in($dir)
                 ->name('*.'.$this->getOption('content.ext'));
-            $this->triggerPost(__FUNCTION__, $params);
             if (!$this->contentIterator instanceof Finder) {
                 throw new \Exception(__FUNCTION__.': result must be an instance of Symfony\Component\Finder.');
             }
         } catch (\Exception $e) {
-            $params = compact('dir', 'e');
-            $this->triggerException(__FUNCTION__, $params);
             echo $e->getMessage()."\n";
         }
     }
