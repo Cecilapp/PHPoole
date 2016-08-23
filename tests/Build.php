@@ -32,8 +32,6 @@ class Build extends \PHPUnit_Framework_TestCase
     public function testBuid()
     {
         PHPoole::create(
-            $this->wsSourceDir,
-            null,
             [
                 'site' => [
                     'menu' => [
@@ -72,6 +70,8 @@ class Build extends \PHPUnit_Framework_TestCase
                     ],
                 ],
             ]
-        )->build();
+        )->setSourceDir($this->wsSourceDir)
+        ->setDestinationDir($this->wsDestinationDir)
+        ->build();
     }
 }
