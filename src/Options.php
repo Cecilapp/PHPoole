@@ -236,6 +236,9 @@ class Options
     }
 
     /**
+     * @param string $theme
+     * @param string $dir
+     *
      * @return string
      */
     public function getThemePath($theme, $dir = 'layouts')
