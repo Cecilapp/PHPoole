@@ -87,7 +87,7 @@ class Options
      *
      * @param Options|array|null $options
      */
-    public function __construct($options)
+    public function __construct($options = null)
     {
         $data = new Data(self::$defaultOptions);
         if ($options instanceof self) {
@@ -117,7 +117,7 @@ class Options
     /**
      * Get options.
      *
-     * @return Data
+     * @return Data|null
      */
     public function getAll()
     {
@@ -243,7 +243,7 @@ class Options
      */
     public function getThemePath($theme, $dir = 'layouts')
     {
-        return $this->getSourceDir().'/'.$this->get('themes.dir')."/$theme/$dir";
+        return $this->getSourceDir().'/'.$this->get('themes.dir').'/'.$theme.'/'.$dir;
     }
 
     /**
