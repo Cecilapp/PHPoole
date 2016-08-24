@@ -316,7 +316,7 @@ class PHPoole
      *
      * @return Page
      */
-    public function convertPage($page, $format = 'yaml')
+    public function convertPage(Page $page, $format = 'yaml')
     {
         $converter = new Converter();
 
