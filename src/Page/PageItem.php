@@ -67,7 +67,7 @@ class PageItem extends AbstractItem
                         $this->offsetSet('date', new \DateTime($value));
                     }
                 } catch (\Exception $e) {
-                    throw new \Exception(sprintf("Expected date string in page '%s'", $this->getName()));
+                    throw new \Exception(sprintf("Expected date string in page ID: '%s'", $this->getId()));
                 }
                 break;
             default:

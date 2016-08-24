@@ -126,7 +126,7 @@ abstract class AbstractCollection implements CollectionInterface
     public function get($id)
     {
         if (!$this->has($id)) {
-            return;
+            return false;
         }
 
         return $this->items[$id];
