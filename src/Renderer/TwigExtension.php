@@ -120,7 +120,6 @@ class TwigExtension extends SlugifyExtension
         return $filtered;
     }
 
-
     /**
      * Sort by title.
      *
@@ -285,6 +284,7 @@ class TwigExtension extends SlugifyExtension
      * Minify CSS.
      *
      * @param $value
+     *
      * @return mixed
      */
     public function minifyCss($value)
@@ -298,6 +298,7 @@ class TwigExtension extends SlugifyExtension
      * Minify JS.
      *
      * @param $value
+     *
      * @return mixed
      */
     public function minifyJs($value)
