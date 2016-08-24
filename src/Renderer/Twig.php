@@ -70,9 +70,9 @@ class Twig implements RendererInterface
             ]
         );
         $this->twig->addExtension(new \Twig_Extension_Debug());
-        $this->twig->addExtension(new TwigExtension($options['destPath']));
-        $this->twig->getExtension('core')->setDateFormat($options['date']['format']);
-        $this->twig->getExtension('core')->setTimezone($options['date']['timezone']);
+        $this->twig->addExtension(new TwigExtension($options->getOutputPath()));
+        $this->twig->getExtension('core')->setDateFormat($options->get('site.date.format'));
+        $this->twig->getExtension('core')->setTimezone($options->get('site.date.timezone'));
 
         // excerpt filter
         $excerptFilter = new \Twig_SimpleFilter('excerpt', function ($string, $length = 450, $suffix = '…') {

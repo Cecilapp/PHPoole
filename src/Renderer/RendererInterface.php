@@ -8,6 +8,8 @@
 
 namespace PHPoole\Renderer;
 
+use PHPoole\Options;
+
 /**
  * Interface RendererInterface.
  */
@@ -17,7 +19,7 @@ interface RendererInterface
      * Constructor.
      *
      * @param string|array $templatesPath
-     * @param array        $options
+     * @param Options      $options
      */
     public function __construct($templatesPath, $options);
 
