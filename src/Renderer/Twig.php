@@ -70,10 +70,7 @@ class Twig implements RendererInterface
             ]
         );
         $this->twig->addExtension(new \Twig_Extension_Debug());
-        $this->twig->addExtension(new TwigExtensionSorts());
-        $this->twig->addExtension(new TwigExtensionFilters());
-        $this->twig->addExtension(new TwigExtensionUrlize());
-        $this->twig->addExtension(new TwigExtensionMinify($options['destPath']));
+        $this->twig->addExtension(new TwigExtension($options['destPath']));
         $this->twig->getExtension('core')->setDateFormat($options['date']['format']);
         $this->twig->getExtension('core')->setTimezone($options['date']['timezone']);
 
