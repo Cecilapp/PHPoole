@@ -50,12 +50,6 @@ class PHPoole
      */
     protected $pages;
     /**
-     * Site variables.
-     *
-     * @var array
-     */
-    protected $site;
-    /**
      * Collection of site menus.
      *
      * @var Collection\CollectionInterface
@@ -498,7 +492,7 @@ class PHPoole
     {
         $paths = [];
         // prepares global site variables
-        $this->site = array_merge(
+        $site = array_merge(
             $this->options->get('site'),
             ['menus' => $this->menus],
             ['pages' => $this->pages]
@@ -512,13 +506,9 @@ class PHPoole
         if ($this->isTheme()) {
             $paths[] = $this->options->getThemePath($this->theme);
         }
-        $dir = $this->options->getOutputPath();
-        $this->renderer = new Renderer\Twig($paths, [
-            'destPath' => $dir,
-            'date'     => $this->options->get('site.date'),
-        ]);
+        $this->renderer = new Renderer\Twig($paths, $this->options);
         // adds global variables
-        $this->renderer->addGlobal('site', $this->site);
+        $this->renderer->addGlobal('site', $site);
         $this->renderer->addGlobal('phpoole', [
             'url'       => 'http://phpoole.org/#v'.$this->getVersion(),
             'version'   => $this->getVersion(),
@@ -526,14 +516,14 @@ class PHPoole
         ]);
 
         // start rendering
-        $this->fs->mkdir($dir);
+        $this->fs->mkdir($this->options->getOutputPath());
         call_user_func_array($this->messageCallback, ['RENDER', 'Rendering pages']);
         $max = count($this->pages);
         $count = 0;
         /* @var $page Page */
         foreach ($this->pages as $page) {
             $count++;
-            $pathname = $this->renderPage($page, $dir);
+            $pathname = $this->renderPage($page, $this->options->getOutputPath());
             $message = substr($pathname, strlen($this->options->getDestinationDir()) + 1);
             call_user_func_array($this->messageCallback, ['RENDER_PROGRESS', $message, $count, $max]);
         }
@@ -553,14 +543,12 @@ class PHPoole
      */
     protected function renderPage(Page $page, $dir)
     {
-        $this->renderer->render($this->layoutFinder($page), [
-            'page' => $page,
-        ]);
+        $this->renderer->render($this->layoutFinder($page), ['page' => $page]);
 
-        // force pathname of a none virtual node page
+        // force pathname of a (non virtual) node page
         if ($page->getName() == 'index') {
             $pathname = $dir.'/'.$page->getPath().'/'.$this->options->get('output.filename');
-        // pathname of a page
+        // pathname of a (normal) page
         } else {
             if (empty(pathinfo($page->getPermalink(), PATHINFO_EXTENSION))) {
                 $pathname = $dir.'/'.$page->getPermalink().'/'.$this->options->get('output.filename');
@@ -568,8 +556,9 @@ class PHPoole
                 $pathname = $dir.'/'.$page->getPermalink();
             }
         }
+        // remove unnecessary slashes
+        $pathname = preg_replace('#/+#', '/', $pathname);
 
-        $pathname = preg_replace('#/+#', '/', $pathname); // remove unnecessary slashes
         $this->renderer->save($pathname);
 
         return $pathname;
