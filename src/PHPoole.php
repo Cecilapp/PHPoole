@@ -216,11 +216,11 @@ class PHPoole
         // locates content
         $this->locateContent();
         // creates Pages collection from content
-        $this->createPagesFromContent();
+        $this->createPages();
         // converts Pages content
         $this->convertPages();
         // generates virtual pages
-        $this->generateVirtualPages();
+        $this->generatePages();
         // generates menus
         $this->generateMenus();
         // copies static files
@@ -232,17 +232,6 @@ class PHPoole
             'CREATE',
             sprintf('Time: %s seconds', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
         ]);
-    }
-
-    protected function setupGenerators()
-    {
-        $this->generatorManager = (new GeneratorManager())
-            ->addGenerator(new Section(), 10)
-            ->addGenerator(new Taxonomy($this->options->getAll()), 20)
-            ->addGenerator(new Homepage($this->options->getAll()), 30)
-            ->addGenerator(new Pagination($this->options->getAll()), 40)
-            ->addGenerator(new Alias(), 50)
-            ->addGenerator(new ExternalBody(), 35);
     }
 
     /**
@@ -270,7 +259,7 @@ class PHPoole
      *
      * @see build()
      */
-    protected function createPagesFromContent()
+    protected function createPages()
     {
         $this->pages = new PageCollection();
         if (count($this->content) <= 0) {
@@ -360,10 +349,16 @@ class PHPoole
      *
      * @see build()
      */
-    protected function generateVirtualPages()
+    protected function generatePages()
     {
+        $this->generatorManager = (new GeneratorManager())
+            ->addGenerator(new Section(), 10)
+            ->addGenerator(new Taxonomy($this->options->getAll()), 20)
+            ->addGenerator(new Homepage($this->options->getAll()), 30)
+            ->addGenerator(new Pagination($this->options->getAll()), 40)
+            ->addGenerator(new Alias(), 50)
+            ->addGenerator(new ExternalBody(), 35);
         call_user_func_array($this->messageCallback, ['GENERATE', 'Generating pages']);
-        $this->setupGenerators();
         $this->pages = $this->generatorManager->process($this->pages, $this->messageCallback);
     }
 
@@ -463,6 +458,34 @@ class PHPoole
     }
 
     /**
+     * Copy static directory content to site root.
+     *
+     * @see build()
+     */
+    protected function copyStatic()
+    {
+        call_user_func_array($this->messageCallback, ['COPY', 'Copy static files']);
+        // copy theme static dir if exists
+        if ($this->isTheme()) {
+            $themeStaticDir = $this->options->getThemePath($this->theme, 'static');
+            if ($this->fs->exists($themeStaticDir)) {
+                $this->fs->mirror($themeStaticDir, $this->options->getOutputPath(), null, ['override' => true]);
+            }
+        }
+        // copy static dir if exists
+        $staticDir = $this->options->getStaticPath();
+        if ($this->fs->exists($staticDir)) {
+            $finder = new Finder();
+            $finder->files()->filter(function (\SplFileInfo $file) {
+                return !(is_array($this->options->get('static.exclude'))
+                    && in_array($file->getBasename(), $this->options->get('static.exclude')));
+            })->in($staticDir);
+            $this->fs->mirror($staticDir, $this->options->getOutputPath(), $finder, ['override' => true]);
+        }
+        call_user_func_array($this->messageCallback, ['COPY_PROGRESS', 'Done']);
+    }
+
+    /**
      * Pages rendering:
      * 1. Iterates Pages collection
      * 2. Applies Twig templates
@@ -550,34 +573,6 @@ class PHPoole
         $this->renderer->save($pathname);
 
         return $pathname;
-    }
-
-    /**
-     * Copy static directory content to site root.
-     *
-     * @see build()
-     */
-    protected function copyStatic()
-    {
-        call_user_func_array($this->messageCallback, ['COPY', 'Copy static files']);
-        // copy theme static dir if exists
-        if ($this->isTheme()) {
-            $themeStaticDir = $this->options->getThemePath($this->theme, 'static');
-            if ($this->fs->exists($themeStaticDir)) {
-                $this->fs->mirror($themeStaticDir, $this->options->getOutputPath(), null, ['override' => true]);
-            }
-        }
-        // copy static dir if exists
-        $staticDir = $this->options->getStaticPath();
-        if ($this->fs->exists($staticDir)) {
-            $finder = new Finder();
-            $finder->files()->filter(function (\SplFileInfo $file) {
-                return !(is_array($this->options->get('static.exclude'))
-                    && in_array($file->getBasename(), $this->options->get('static.exclude')));
-            })->in($staticDir);
-            $this->fs->mirror($staticDir, $this->options->getOutputPath(), $finder, ['override' => true]);
-        }
-        call_user_func_array($this->messageCallback, ['COPY_PROGRESS', 'Done']);
     }
 
     /**
