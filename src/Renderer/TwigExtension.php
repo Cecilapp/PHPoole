@@ -285,7 +285,7 @@ class TwigExtension extends SlugifyExtension
      *
      * @param $value
      *
-     * @return mixed
+     * @return string
      */
     public function minifyCss($value)
     {
@@ -299,7 +299,7 @@ class TwigExtension extends SlugifyExtension
      *
      * @param $value
      *
-     * @return mixed
+     * @return string
      */
     public function minifyJs($value)
     {

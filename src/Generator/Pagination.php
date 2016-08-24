@@ -62,7 +62,7 @@ class Pagination implements GeneratorInterface
                 for ($i = 0; $i < $paginateCount; $i++) {
                     $pagesInPagination = array_slice($pages, ($i * $paginateMax), ($i * $paginateMax) + $paginateMax);
                     $alteredPage = clone $page;
-                    // first
+                    // first page
                     if ($i == 0) {
                         $alteredPage
                             ->setId(Page::urlize(sprintf('%s/index', $path)))
@@ -70,7 +70,6 @@ class Pagination implements GeneratorInterface
                             ->setVariable('aliases', [
                                 sprintf('%s/%s/%s', $path, $paginatePath, 1),
                             ]);
-                    // others
                     } else {
                         $alteredPage
                             ->setId(Page::urlize(sprintf('%s/%s/%s/index', $path, $paginatePath, $i + 1)))

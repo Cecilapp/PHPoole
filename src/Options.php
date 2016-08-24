@@ -90,7 +90,7 @@ class Options
     public function __construct($options = null)
     {
         $data = new Data(self::$defaultOptions);
-        if ($options instanceof self) {
+        if ($options !== null && $options instanceof self) {
             $data->importData($options->getAll());
         } elseif (is_array($options)) {
             $data->import($options);

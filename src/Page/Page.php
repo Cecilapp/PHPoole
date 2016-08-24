@@ -148,9 +148,7 @@ class Page extends PageItem
     /**
      * Set node type.
      *
-     * @param $nodeType
-     *
-     * @throws \Exception
+     * @param string $nodeType
      *
      * @return self
      */

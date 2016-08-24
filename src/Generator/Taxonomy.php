@@ -84,7 +84,7 @@ class Taxonomy implements GeneratorInterface
     {
         /* @var $page Page */
         foreach ($this->pageCollection as $page) {
-            foreach ($this->siteTaxonomies as $plural => $singular) {
+            foreach (array_keys($this->siteTaxonomies) as $plural) {
                 if (isset($page[$plural])) {
                     // converts a list to an array if necessary
                     if (!is_array($page[$plural])) {
