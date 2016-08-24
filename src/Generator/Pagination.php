@@ -10,7 +10,7 @@ namespace PHPoole\Generator;
 
 use Dflydev\DotAccessData\Data;
 use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\NodeTypeEnum;
+use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
 
 /**
@@ -39,7 +39,7 @@ class Pagination implements GeneratorInterface
         $generatedPages = new PageCollection();
 
         $filteredPages = $pageCollection->filter(function (Page $page) {
-            return in_array($page->getNodeType(), [NodeTypeEnum::HOMEPAGE, NodeTypeEnum::SECTION]);
+            return in_array($page->getNodeType(), [NodeType::HOMEPAGE, NodeType::SECTION]);
         });
 
         /* @var $page Page */

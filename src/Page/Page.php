@@ -156,7 +156,7 @@ class Page extends PageItem
      */
     public function setNodeType($nodeType)
     {
-        $this->nodeType = new NodeTypeEnum($nodeType);
+        $this->nodeType = new NodeType($nodeType);
 
         return $this;
     }

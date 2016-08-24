@@ -17,7 +17,7 @@ use PHPoole\Generator\Pagination;
 use PHPoole\Generator\Section;
 use PHPoole\Generator\Taxonomy;
 use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\NodeTypeEnum;
+use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
 use PHPoole\Renderer\RendererInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -643,14 +643,14 @@ class PHPoole
         $layout = str_replace('.twig', '', $page->getLayout());
 
         switch ($page->getNodeType()) {
-            case NodeTypeEnum::HOMEPAGE:
+            case NodeType::HOMEPAGE:
                 $layouts = [
                     'index.html.twig',
                     '_default/list.html.twig',
                     '_default/page.html.twig',
                 ];
                 break;
-            case NodeTypeEnum::SECTION:
+            case NodeType::SECTION:
                 $layouts = [
                     // 'section/$section.html.twig',
                     '_default/section.html.twig',
@@ -660,7 +660,7 @@ class PHPoole
                     $layouts = array_merge([sprintf('section/%s.html.twig', $page->getSection())], $layouts);
                 }
                 break;
-            case NodeTypeEnum::TAXONOMY:
+            case NodeType::TAXONOMY:
                 $layouts = [
                     // 'taxonomy/$singular.html.twig',
                     '_default/taxonomy.html.twig',
@@ -670,7 +670,7 @@ class PHPoole
                     $layouts = array_merge([sprintf('taxonomy/%s.html.twig', $page->getVariable('singular'))], $layouts);
                 }
                 break;
-            case NodeTypeEnum::TERMS:
+            case NodeType::TERMS:
                 $layouts = [
                     // 'taxonomy/$singular.terms.html.twig',
                     '_default/terms.html.twig',

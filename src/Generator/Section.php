@@ -9,7 +9,7 @@
 namespace PHPoole\Generator;
 
 use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\NodeTypeEnum;
+use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
 
 /**
@@ -42,7 +42,7 @@ class Section implements GeneratorInterface
                         ->setId(Page::urlize(sprintf('%s/index', $node)))
                         ->setPathname(Page::urlize(sprintf('%s', $node)))
                         ->setTitle(ucfirst($node))
-                        ->setNodeType(NodeTypeEnum::SECTION)
+                        ->setNodeType(NodeType::SECTION)
                         ->setVariable('pages', $pages)
                         ->setVariable('menu', [
                             'main' => ['weight' => $menuWeight],

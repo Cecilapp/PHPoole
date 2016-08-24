@@ -10,7 +10,7 @@ namespace PHPoole\Generator;
 
 use Dflydev\DotAccessData\Data;
 use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\NodeTypeEnum;
+use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
 use PHPoole\Taxonomy\Collection as TaxonomyCollection;
 use PHPoole\Taxonomy\Term as Term;
@@ -125,7 +125,7 @@ class Taxonomy implements GeneratorInterface
                             ->setId(Page::urlize(sprintf('%s/%s/index', $plural, $term)))
                             ->setPathname(Page::urlize(sprintf('%s/%s', $plural, $term)))
                             ->setTitle(ucfirst($term))
-                            ->setNodeType(NodeTypeEnum::TAXONOMY)
+                            ->setNodeType(NodeType::TAXONOMY)
                             ->setVariable('pages', $pages)
                             ->setVariable('singular', $this->siteTaxonomies[$plural])
                             ->setVariable('pagination', ['pages' => $pages]);
@@ -140,7 +140,7 @@ class Taxonomy implements GeneratorInterface
                     ->setId(strtolower($plural))
                     ->setPathname(strtolower($plural))
                     ->setTitle($plural)
-                    ->setNodeType(NodeTypeEnum::TERMS)
+                    ->setNodeType(NodeType::TERMS)
                     ->setVariable('plural', $plural)
                     ->setVariable('singular', $this->siteTaxonomies[$plural])
                     ->setVariable('terms', $terms);

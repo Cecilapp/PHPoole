@@ -11,9 +11,9 @@ namespace PHPoole\Page;
 use MyCLabs\Enum\Enum;
 
 /**
- * Class PageNodeTypeEnum.
+ * Class NodeType.
  */
-class NodeTypeEnum extends Enum
+class NodeType extends Enum
 {
     const HOMEPAGE = 'homepage';
     const SECTION = 'section';

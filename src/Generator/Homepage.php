@@ -10,7 +10,7 @@ namespace PHPoole\Generator;
 
 use Dflydev\DotAccessData\Data;
 use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\NodeTypeEnum;
+use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
 
 /**
@@ -49,7 +49,7 @@ class Homepage implements GeneratorInterface
             /* @var $page Page */
             $page = (new Page())
                 ->setId('index')
-                ->setNodeType(NodeTypeEnum::HOMEPAGE)
+                ->setNodeType(NodeType::HOMEPAGE)
                 ->setPathname(Page::urlize(''))
                 ->setTitle('Home')
                 ->setVariable('pages', $pages)
