@@ -42,13 +42,13 @@ class PHPoole
      *
      * @var Finder
      */
-    protected $contentIterator;
+    protected $content;
     /**
      * Pages collection.
      *
      * @var PageCollection
      */
-    protected $pagesCollection;
+    protected $pages;
     /**
      * Site variables.
      *
@@ -253,11 +253,11 @@ class PHPoole
     protected function locateContent()
     {
         try {
-            $this->contentIterator = Finder::create()
+            $this->content = Finder::create()
                 ->files()
                 ->in($this->options->getContentPath())
                 ->name('*.'.$this->options->get('content.ext'));
-            if (!$this->contentIterator instanceof Finder) {
+            if (!$this->content instanceof Finder) {
                 throw new \Exception(__FUNCTION__.': result must be an instance of Symfony\Component\Finder.');
             }
         } catch (\Exception $e) {
@@ -272,19 +272,19 @@ class PHPoole
      */
     protected function createPagesFromContent()
     {
-        $this->pagesCollection = new PageCollection();
-        if (count($this->contentIterator) <= 0) {
+        $this->pages = new PageCollection();
+        if (count($this->content) <= 0) {
             return;
         }
         call_user_func_array($this->messageCallback, ['CREATE', 'Creating pages']);
-        $max = count($this->contentIterator);
+        $max = count($this->content);
         $count = 0;
         /* @var $file SplFileInfo */
-        foreach ($this->contentIterator as $file) {
+        foreach ($this->content as $file) {
             $count++;
             /* @var $page Page */
             $page = (new Page($file))->parse();
-            $this->pagesCollection->add($page);
+            $this->pages->add($page);
             $message = $page->getName();
             call_user_func_array($this->messageCallback, ['CREATE_PROGRESS', $message, $count, $max]);
         }
@@ -298,19 +298,19 @@ class PHPoole
      */
     protected function convertPages()
     {
-        if (count($this->pagesCollection) <= 0) {
+        if (count($this->pages) <= 0) {
             return;
         }
         call_user_func_array($this->messageCallback, ['CONVERT', 'Converting pages']);
-        $max = count($this->pagesCollection);
+        $max = count($this->pages);
         $count = 0;
         $countError = 0;
         /* @var $page Page */
-        foreach ($this->pagesCollection as $page) {
+        foreach ($this->pages as $page) {
             if (!$page->isVirtual()) {
                 $count++;
                 if (false !== $convertedPage = $this->convertPage($page, $this->options->get('frontmatter.format'))) {
-                    $this->pagesCollection->replace($page->getId(), $convertedPage);
+                    $this->pages->replace($page->getId(), $convertedPage);
                 } else {
                     $countError++;
                 }
@@ -364,7 +364,7 @@ class PHPoole
     {
         call_user_func_array($this->messageCallback, ['GENERATE', 'Generating pages']);
         $this->setupGenerators();
-        $this->pagesCollection = $this->generatorManager->process($this->pagesCollection, $this->messageCallback);
+        $this->pages = $this->generatorManager->process($this->pages, $this->messageCallback);
     }
 
     /**
@@ -422,7 +422,7 @@ class PHPoole
      */
     protected function generateMenusCollect()
     {
-        foreach ($this->pagesCollection as $page) {
+        foreach ($this->pages as $page) {
             /* @var $page Page */
             if (!empty($page['menu'])) {
                 /*
@@ -478,7 +478,7 @@ class PHPoole
         $this->site = array_merge(
             $this->options->get('site'),
             ['menus' => $this->menus],
-            ['pages' => $this->pagesCollection]
+            ['pages' => $this->pages]
         );
         // prepares renderer
         if (!is_dir($this->options->getLayoutsPath())) {
@@ -505,10 +505,10 @@ class PHPoole
         // start rendering
         $this->fs->mkdir($dir);
         call_user_func_array($this->messageCallback, ['RENDER', 'Rendering pages']);
-        $max = count($this->pagesCollection);
+        $max = count($this->pages);
         $count = 0;
         /* @var $page Page */
-        foreach ($this->pagesCollection as $page) {
+        foreach ($this->pages as $page) {
             $count++;
             $pathname = $this->renderPage($page, $dir);
             $message = substr($pathname, strlen($this->options->getDestinationDir()) + 1);
