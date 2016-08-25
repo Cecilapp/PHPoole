@@ -90,7 +90,7 @@ class Options
     public function __construct($options = null)
     {
         $data = new Data(self::$defaultOptions);
-        if ($options !== null && $options instanceof self) {
+        if ($options instanceof self) {
             $data->importData($options->getAll());
         } elseif (is_array($options)) {
             $data->import($options);
@@ -105,7 +105,7 @@ class Options
      *
      * @return $this
      */
-    public function setFromData(Data $data)
+    protected function setFromData(Data $data)
     {
         if ($this->options !== $data) {
             $this->options = $data;
@@ -117,14 +117,10 @@ class Options
     /**
      * Get options.
      *
-     * @return Data|null
+     * @return Data
      */
     public function getAll()
     {
-        if (is_null($this->options)) {
-            $this->setFromData(new Data());
-        }
-
         return $this->options;
     }
 

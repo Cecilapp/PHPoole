@@ -19,7 +19,6 @@ use PHPoole\Generator\Taxonomy;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
-use PHPoole\Renderer\RendererInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -70,7 +69,7 @@ class PHPoole
     /**
      * Twig renderer.
      *
-     * @var RendererInterface
+     * @var Renderer\RendererInterface
      */
     protected $renderer;
     /**
