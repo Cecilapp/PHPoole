@@ -348,7 +348,7 @@ class PHPoole
     {
         $generators = $this->options->get('generators');
         $this->generatorManager = new GeneratorManager();
-        array_walk($generators, function($generator, $priority) {
+        array_walk($generators, function ($generator, $priority) {
             $generator = "\\PHPoole\\Generator\\$generator";
             $this->generatorManager->addGenerator(new $generator($this->options), $priority);
         });
