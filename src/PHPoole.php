@@ -9,13 +9,7 @@
 namespace PHPoole;
 
 use PHPoole\Converter\Converter;
-use PHPoole\Generator\Alias;
-use PHPoole\Generator\ExternalBody;
 use PHPoole\Generator\GeneratorManager;
-use PHPoole\Generator\Homepage;
-use PHPoole\Generator\Pagination;
-use PHPoole\Generator\Section;
-use PHPoole\Generator\Taxonomy;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
@@ -352,13 +346,12 @@ class PHPoole
      */
     protected function generatePages()
     {
-        $this->generatorManager = (new GeneratorManager())
-            ->addGenerator(new Section(), 10)
-            ->addGenerator(new Taxonomy($this->options), 20)
-            ->addGenerator(new Homepage($this->options), 30)
-            ->addGenerator(new Pagination($this->options), 40)
-            ->addGenerator(new Alias(), 50)
-            ->addGenerator(new ExternalBody(), 35);
+        $generators = $this->options->get('generators');
+        $this->generatorManager = new GeneratorManager();
+        array_walk($generators, function($generator, $priority) {
+            $generator = "\\PHPoole\\Generator\\$generator";
+            $this->generatorManager->addGenerator(new $generator($this->options), $priority);
+        });
         call_user_func_array($this->messageCallback, ['GENERATE', 'Generating pages']);
         $this->pages = $this->generatorManager->process($this->pages, $this->messageCallback);
     }

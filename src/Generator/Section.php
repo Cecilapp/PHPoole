@@ -17,6 +17,17 @@ use PHPoole\Page\Page;
  */
 class Section implements GeneratorInterface
 {
+    /* @var \PHPoole\Options */
+    protected $options;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(\PHPoole\Options $options)
+    {
+        $this->options = $options;
+    }
+
     /**
      * {@inheritdoc}
      */

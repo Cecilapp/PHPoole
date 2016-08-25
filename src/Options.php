@@ -80,6 +80,14 @@ class Options
         'themes' => [
             'dir' => 'themes',
         ],
+        'generators' => [
+            10 => 'Section',
+            20 => 'Taxonomy',
+            30 => 'Homepage',
+            40 => 'Pagination',
+            50 => 'Alias',
+            35 => 'ExternalBody',
+        ],
     ];
 
     /**
