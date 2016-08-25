@@ -348,11 +348,12 @@ class PHPoole
     {
         $generators = $this->options->get('generators');
         $this->generatorManager = new GeneratorManager();
-        array_walk($generators, function($generator, $priority) {
-            $generator = sprintf("\\PHPoole\\Generator\\%s", $generator);
+        array_walk($generators, function ($generator, $priority) {
+            $generator = sprintf('\\PHPoole\\Generator\\%s', $generator);
             if (!class_exists($generator)) {
                 $message = sprintf("> Unable to load generator '%s'", $generator);
                 call_user_func_array($this->messageCallback, ['GENERATE_PROGRESS', $message]);
+
                 return;
             }
             $this->generatorManager->addGenerator(new $generator($this->options), $priority);
