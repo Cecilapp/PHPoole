@@ -69,6 +69,9 @@ class Build extends \PHPUnit_Framework_TestCase
                         'test.txt',
                     ],
                 ],
+                'generators' => [
+                    99 => 'Pouet',
+                ],
             ]
         )->setSourceDir($this->wsSourceDir)
         ->setDestinationDir($this->wsDestinationDir)

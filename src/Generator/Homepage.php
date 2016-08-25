@@ -18,15 +18,13 @@ use PHPoole\Page\Page;
  */
 class Homepage implements GeneratorInterface
 {
-    /* @var Options $options */
+    /* @var \PHPoole\Options */
     protected $options;
 
     /**
-     * Homepage constructor.
-     *
-     * @param Options $options
+     * {@inheritdoc}
      */
-    public function __construct(Options $options)
+    public function __construct(\PHPoole\Options $options)
     {
         $this->options = $options;
     }

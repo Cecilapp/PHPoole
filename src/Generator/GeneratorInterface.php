@@ -8,18 +8,25 @@
 
 namespace PHPoole\Generator;
 
-use PHPoole\Page\Collection as PageCollection;
-
 /**
  * Interface GeneratorInterface.
  */
 interface GeneratorInterface
 {
     /**
-     * @param PageCollection $pageCollection
-     * @param \Closure       $messageCallback
+     * Give Options to object.
      *
-     * @return PageCollection
+     * @param \PHPoole\Options $options
+     *
+     * @return void
      */
-    public function generate(PageCollection $pageCollection, \Closure $messageCallback);
+    public function __construct(\PHPoole\Options $options);
+
+    /**
+     * @param \PHPoole\Page\Collection $pageCollection
+     * @param \Closure                 $messageCallback
+     *
+     * @return \PHPoole\Page\Collection
+     */
+    public function generate(\PHPoole\Page\Collection $pageCollection, \Closure $messageCallback);
 }
