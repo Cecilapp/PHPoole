@@ -25,8 +25,21 @@ class PHPoole
     const VERSION = '1.1.x-dev';
     protected $version;
     /**
+     * Steps that are processed by build()
      *
+     * @var array
+     *
+     * @see build()
      */
+    protected $steps = [
+        'locateContent',
+        'createPages',
+        'convertPages',
+        'generatePages',
+        'generateMenus',
+        'copyStatic',
+        'renderPages',
+    ];
     /**
      * Options.
      *
@@ -203,20 +216,9 @@ class PHPoole
      */
     public function build()
     {
-        // locates content
-        $this->locateContent();
-        // creates Pages collection from content
-        $this->createPages();
-        // converts Pages content
-        $this->convertPages();
-        // generates virtual pages
-        $this->generatePages();
-        // generates menus
-        $this->generateMenus();
-        // copies static files
-        $this->copyStatic();
-        // rendering
-        $this->renderPages();
+        foreach ($this->steps as $step) {
+            $this->$step();
+        }
         // time
         call_user_func_array($this->messageCallback, [
             'CREATE',
