@@ -17,6 +17,8 @@ interface GeneratorInterface
      * Give Options to object.
      *
      * @param \PHPoole\Options $options
+     *
+     * @return void
      */
     public function __construct(\PHPoole\Options $options);
 
