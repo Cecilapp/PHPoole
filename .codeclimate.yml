@@ -1,5 +1,5 @@
 languages:
     PHP: true
 exclude_paths:
-    - phar-stub.php
     - tests/*
+    - docs/*
