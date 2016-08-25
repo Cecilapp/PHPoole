@@ -8,7 +8,7 @@
 
 namespace PHPoole\Generator;
 
-use Dflydev\DotAccessData\Data;
+use PHPoole\Options;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
@@ -18,15 +18,15 @@ use PHPoole\Page\Page;
  */
 class Homepage implements GeneratorInterface
 {
-    /* @var Data $options */
+    /* @var Options $options */
     protected $options;
 
     /**
      * Homepage constructor.
      *
-     * @param Data $options
+     * @param Options $options
      */
-    public function __construct(Data $options)
+    public function __construct(Options $options)
     {
         $this->options = $options;
     }

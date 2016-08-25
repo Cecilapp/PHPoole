@@ -354,9 +354,9 @@ class PHPoole
     {
         $this->generatorManager = (new GeneratorManager())
             ->addGenerator(new Section(), 10)
-            ->addGenerator(new Taxonomy($this->options->getAll()), 20)
-            ->addGenerator(new Homepage($this->options->getAll()), 30)
-            ->addGenerator(new Pagination($this->options->getAll()), 40)
+            ->addGenerator(new Taxonomy($this->options), 20)
+            ->addGenerator(new Homepage($this->options), 30)
+            ->addGenerator(new Pagination($this->options), 40)
             ->addGenerator(new Alias(), 50)
             ->addGenerator(new ExternalBody(), 35);
         call_user_func_array($this->messageCallback, ['GENERATE', 'Generating pages']);

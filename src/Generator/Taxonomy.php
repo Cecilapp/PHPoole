@@ -8,7 +8,7 @@
 
 namespace PHPoole\Generator;
 
-use Dflydev\DotAccessData\Data;
+use PHPoole\Options;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
@@ -21,7 +21,7 @@ use PHPoole\Taxonomy\Vocabulary as Vocabulary;
  */
 class Taxonomy implements GeneratorInterface
 {
-    /* @var Data */
+    /* @var Options */
     protected $options;
     /* @var TaxonomyCollection */
     protected $taxonomies;
@@ -35,9 +35,9 @@ class Taxonomy implements GeneratorInterface
     /**
      * Taxonomy constructor.
      *
-     * @param Data $options
+     * @param Options $options
      */
-    public function __construct(Data $options)
+    public function __construct(Options $options)
     {
         $this->options = $options;
     }
