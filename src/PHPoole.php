@@ -25,11 +25,8 @@ class PHPoole
     const VERSION = '1.1.x-dev';
     protected $version;
     /**
-     * Script start time (timestamp).
      *
-     * @var float
      */
-    private $start;
     /**
      * Options.
      *
@@ -95,7 +92,6 @@ class PHPoole
      */
     public function __construct($options = null, \Closure $messageCallback = null)
     {
-        $this->start = microtime(true);
         $this->setOptions($options);
         $this->options->setSourceDir(null)->setDestinationDir(null);
         $this->setMessageCallback($messageCallback);
@@ -225,7 +221,6 @@ class PHPoole
         call_user_func_array($this->messageCallback, [
             'CREATE',
             sprintf('Time: %s seconds', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
-            //$this->start
         ]);
     }
 
