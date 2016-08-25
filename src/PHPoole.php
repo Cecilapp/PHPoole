@@ -61,19 +61,13 @@ class PHPoole
     /**
      * Collection of site menus.
      *
-     * @var Collection\CollectionInterface
+     * @var Menu\Collection
      */
     protected $menus;
     /**
-     * Collection of taxonomies menus.
-     *
-     * @var Collection\CollectionInterface
-     */
-    protected $taxonomies;
-    /**
      * Twig renderer.
      *
-     * @var Renderer\RendererInterface
+     * @var Renderer\Twig
      */
     protected $renderer;
     /**
