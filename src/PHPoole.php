@@ -25,7 +25,7 @@ class PHPoole
     const VERSION = '1.1.x-dev';
     protected $version;
     /**
-     * Steps that are processed by build()
+     * Steps that are processed by build().
      *
      * @var array
      *
