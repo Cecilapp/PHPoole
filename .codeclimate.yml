@@ -1,5 +1,11 @@
 languages:
-    PHP: true
+  PHP: true
+engines:
+  phpmd:
+    enabled: true
+    checks:
+      Naming/ShortVariable:
+        enabled: false
 exclude_paths:
-    - tests/*
-    - docs/*
+  - tests/*
+  - docs/*
