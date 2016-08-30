@@ -41,11 +41,11 @@ class PHPoole
         'renderPages',
     ];
     /**
-     * Options.
+     * Config.
      *
-     * @var Options
+     * @var Config
      */
-    protected $options;
+    protected $config;
     /**
      * Content iterator.
      *
@@ -94,13 +94,13 @@ class PHPoole
     /**
      * PHPoole constructor.
      *
-     * @param Options|array|null $options
+     * @param Config|array|null $config
      * @param \Closure|null      $messageCallback
      */
-    public function __construct($options = null, \Closure $messageCallback = null)
+    public function __construct($config = null, \Closure $messageCallback = null)
     {
-        $this->setOptions($options);
-        $this->options->setSourceDir(null)->setDestinationDir(null);
+        $this->setConfig($config);
+        $this->config->setSourceDir(null)->setDestinationDir(null);
         $this->setMessageCallback($messageCallback);
         $this->fs = new Filesystem();
     }
@@ -118,34 +118,34 @@ class PHPoole
     }
 
     /**
-     * Set options.
+     * Set config.
      *
-     * @param Options|array|null $options
+     * @param Config|array|null $config
      *
      * @return $this
      */
-    public function setOptions($options)
+    public function setConfig($config)
     {
-        if (!$options instanceof Options) {
-            $options = new Options($options);
+        if (!$config instanceof Config) {
+            $config = new Config($config);
         }
-        if ($this->options !== $options) {
-            $this->options = $options;
+        if ($this->config !== $config) {
+            $this->config = $config;
         }
 
         return $this;
     }
 
     /**
-     * @return Options
+     * @return Config
      */
-    public function getOptions()
+    public function getConfig()
     {
-        return $this->options;
+        return $this->config;
     }
 
     /**
-     * Options::setSourceDir alias.
+     * Config::setSourceDir alias.
      *
      * @param $sourceDir
      *
@@ -153,13 +153,13 @@ class PHPoole
      */
     public function setSourceDir($sourceDir)
     {
-        $this->options->setSourceDir($sourceDir);
+        $this->config->setSourceDir($sourceDir);
 
         return $this;
     }
 
     /**
-     * Options::setDestinationDir alias.
+     * Config::setDestinationDir alias.
      *
      * @param $destinationDir
      *
@@ -167,7 +167,7 @@ class PHPoole
      */
     public function setDestinationDir($destinationDir)
     {
-        $this->options->setDestinationDir($destinationDir);
+        $this->config->setDestinationDir($destinationDir);
 
         return $this;
     }
@@ -230,8 +230,8 @@ class PHPoole
         try {
             $this->content = Finder::create()
                 ->files()
-                ->in($this->options->getContentPath())
-                ->name('*.'.$this->options->get('content.ext'));
+                ->in($this->config->getContentPath())
+                ->name('*.'.$this->config->get('content.ext'));
             if (!$this->content instanceof Finder) {
                 throw new \Exception(__FUNCTION__.': result must be an instance of Symfony\Component\Finder.');
             }
@@ -284,7 +284,7 @@ class PHPoole
         foreach ($this->pages as $page) {
             if (!$page->isVirtual()) {
                 $count++;
-                if (false !== $convertedPage = $this->convertPage($page, $this->options->get('frontmatter.format'))) {
+                if (false !== $convertedPage = $this->convertPage($page, $this->config->get('frontmatter.format'))) {
                     $this->pages->replace($page->getId(), $convertedPage);
                 } else {
                     $countError++;
@@ -337,7 +337,7 @@ class PHPoole
      */
     protected function generatePages()
     {
-        $generators = $this->options->get('generators');
+        $generators = $this->config->get('generators');
         $this->generatorManager = new GeneratorManager();
         array_walk($generators, function ($generator, $priority) {
             $generator = sprintf('\\PHPoole\\Generator\\%s', $generator);
@@ -347,7 +347,7 @@ class PHPoole
 
                 return;
             }
-            $this->generatorManager->addGenerator(new $generator($this->options), $priority);
+            $this->generatorManager->addGenerator(new $generator($this->config), $priority);
         });
         call_user_func_array($this->messageCallback, ['GENERATE', 'Generating pages']);
         $this->pages = $this->generatorManager->process($this->pages, $this->messageCallback);
@@ -365,7 +365,7 @@ class PHPoole
         $this->generateMenusCollect();
 
         /*
-         * Removing/adding/replacing menus entries from options array
+         * Removing/adding/replacing menus entries from config array
          * ie:
          * ['site' => [
          *     'menu' => [
@@ -380,8 +380,8 @@ class PHPoole
          *     ],
          * ]]
          */
-        if (!empty($this->options->get('site.menu'))) {
-            foreach ($this->options->get('site.menu') as $name => $entry) {
+        if (!empty($this->config->get('site.menu'))) {
+            foreach ($this->config->get('site.menu') as $name => $entry) {
                 /* @var $menu Menu\Menu */
                 $menu = $this->menus->get($name);
                 foreach ($entry as $property) {
@@ -458,20 +458,20 @@ class PHPoole
         call_user_func_array($this->messageCallback, ['COPY', 'Copy static files']);
         // copy theme static dir if exists
         if ($this->isTheme()) {
-            $themeStaticDir = $this->options->getThemePath($this->theme, 'static');
+            $themeStaticDir = $this->config->getThemePath($this->theme, 'static');
             if ($this->fs->exists($themeStaticDir)) {
-                $this->fs->mirror($themeStaticDir, $this->options->getOutputPath(), null, ['override' => true]);
+                $this->fs->mirror($themeStaticDir, $this->config->getOutputPath(), null, ['override' => true]);
             }
         }
         // copy static dir if exists
-        $staticDir = $this->options->getStaticPath();
+        $staticDir = $this->config->getStaticPath();
         if ($this->fs->exists($staticDir)) {
             $finder = new Finder();
             $finder->files()->filter(function (\SplFileInfo $file) {
-                return !(is_array($this->options->get('static.exclude'))
-                    && in_array($file->getBasename(), $this->options->get('static.exclude')));
+                return !(is_array($this->config->get('static.exclude'))
+                    && in_array($file->getBasename(), $this->config->get('static.exclude')));
             })->in($staticDir);
-            $this->fs->mirror($staticDir, $this->options->getOutputPath(), $finder, ['override' => true]);
+            $this->fs->mirror($staticDir, $this->config->getOutputPath(), $finder, ['override' => true]);
         }
         call_user_func_array($this->messageCallback, ['COPY_PROGRESS', 'Done']);
     }
@@ -490,20 +490,20 @@ class PHPoole
         $paths = [];
         // prepares global site variables
         $site = array_merge(
-            $this->options->get('site'),
+            $this->config->get('site'),
             ['menus' => $this->menus],
             ['pages' => $this->pages]
         );
         // prepares renderer
-        if (!is_dir($this->options->getLayoutsPath())) {
-            throw new \Exception(sprintf("'%s' is not a valid layouts directory", $this->options->getLayoutsPath()));
+        if (!is_dir($this->config->getLayoutsPath())) {
+            throw new \Exception(sprintf("'%s' is not a valid layouts directory", $this->config->getLayoutsPath()));
         } else {
-            $paths[] = $this->options->getLayoutsPath();
+            $paths[] = $this->config->getLayoutsPath();
         }
         if ($this->isTheme()) {
-            $paths[] = $this->options->getThemePath($this->theme);
+            $paths[] = $this->config->getThemePath($this->theme);
         }
-        $this->renderer = new Renderer\Twig($paths, $this->options);
+        $this->renderer = new Renderer\Twig($paths, $this->config);
         // adds global variables
         $this->renderer->addGlobal('site', $site);
         $this->renderer->addGlobal('phpoole', [
@@ -513,15 +513,15 @@ class PHPoole
         ]);
 
         // start rendering
-        $this->fs->mkdir($this->options->getOutputPath());
+        $this->fs->mkdir($this->config->getOutputPath());
         call_user_func_array($this->messageCallback, ['RENDER', 'Rendering pages']);
         $max = count($this->pages);
         $count = 0;
         /* @var $page Page */
         foreach ($this->pages as $page) {
             $count++;
-            $pathname = $this->renderPage($page, $this->options->getOutputPath());
-            $message = substr($pathname, strlen($this->options->getDestinationDir()) + 1);
+            $pathname = $this->renderPage($page, $this->config->getOutputPath());
+            $message = substr($pathname, strlen($this->config->getDestinationDir()) + 1);
             call_user_func_array($this->messageCallback, ['RENDER_PROGRESS', $message, $count, $max]);
         }
     }
@@ -544,11 +544,11 @@ class PHPoole
 
         // force pathname of a (non virtual) node page
         if ($page->getName() == 'index') {
-            $pathname = $dir.'/'.$page->getPath().'/'.$this->options->get('output.filename');
+            $pathname = $dir.'/'.$page->getPath().'/'.$this->config->get('output.filename');
         // pathname of a (normal) page
         } else {
             if (empty(pathinfo($page->getPermalink(), PATHINFO_EXTENSION))) {
-                $pathname = $dir.'/'.$page->getPermalink().'/'.$this->options->get('output.filename');
+                $pathname = $dir.'/'.$page->getPermalink().'/'.$this->config->get('output.filename');
             } else {
                 $pathname = $dir.'/'.$page->getPermalink();
             }
@@ -574,10 +574,10 @@ class PHPoole
         if ($this->theme !== null) {
             return true;
         }
-        if ($this->options->get('theme') !== '') {
-            $themesDir = $this->options->getThemesPath();
-            if ($this->fs->exists($themesDir.'/'.$this->options->get('theme'))) {
-                $this->theme = $this->options->get('theme');
+        if ($this->config->get('theme') !== '') {
+            $themesDir = $this->config->getThemesPath();
+            if ($this->fs->exists($themesDir.'/'.$this->config->get('theme'))) {
+                $this->theme = $this->config->get('theme');
 
                 return true;
             }
@@ -607,7 +607,7 @@ class PHPoole
         $layouts = $this->layoutFallback($page);
 
         // is layout exists in local layout dir?
-        $layoutsDir = $this->options->getLayoutsPath();
+        $layoutsDir = $this->config->getLayoutsPath();
         foreach ($layouts as $layout) {
             if ($this->fs->exists($layoutsDir.'/'.$layout)) {
                 return $layout;
@@ -615,7 +615,7 @@ class PHPoole
         }
         // is layout exists in layout theme dir?
         if ($this->isTheme()) {
-            $themeDir = $this->options->getThemePath($this->theme);
+            $themeDir = $this->config->getThemePath($this->theme);
             foreach ($layouts as $layout) {
                 if ($this->fs->exists($themeDir.'/'.$layout)) {
                     return $layout;

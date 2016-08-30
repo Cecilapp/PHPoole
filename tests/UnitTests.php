@@ -65,9 +65,9 @@ class UnitTests extends \PHPUnit_Framework_TestCase
             'option1' => 'Option 1',
             'option2' => 'Option 2',
         ];
-        $phpoole = (new PHPoole())->setOptions($options);
+        $phpoole = (new PHPoole())->setConfig($options);
         //$this->assertEquals($options, $phpoole->getOptions()->getAllAsArray());
-        $this->assertArraySubset($options, $phpoole->getOptions()->getAllAsArray());
+        $this->assertArraySubset($options, $phpoole->getConfig()->getAllAsArray());
     }
 
     public function testContentIterator()

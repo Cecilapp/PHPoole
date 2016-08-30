@@ -8,7 +8,7 @@
 
 namespace PHPoole\Generator;
 
-use PHPoole\Options;
+use PHPoole\Config;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
@@ -18,15 +18,15 @@ use PHPoole\Page\Page;
  */
 class Homepage implements GeneratorInterface
 {
-    /* @var \PHPoole\Options */
-    protected $options;
+    /* @var \PHPoole\Config */
+    protected $config;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(\PHPoole\Options $options)
+    public function __construct(\PHPoole\Config $config)
     {
-        $this->options = $options;
+        $this->config = $config;
     }
 
     /**
@@ -39,7 +39,7 @@ class Homepage implements GeneratorInterface
         if (!$pageCollection->has('index')) {
             $filteredPages = $pageCollection->filter(function (Page $page) {
                 return $page->getNodeType() === null
-                && $page->getSection() == $this->options->get('site.paginate.homepage.section')
+                && $page->getSection() == $this->config->get('site.paginate.homepage.section')
                 && !empty($page->getBody());
             });
             $pages = $filteredPages->sortByDate()->toArray();

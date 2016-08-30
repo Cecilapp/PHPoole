@@ -11,16 +11,16 @@ namespace PHPoole;
 use Dflydev\DotAccessData\Data;
 
 /**
- * Class Options.
+ * Class Config.
  */
-class Options
+class Config
 {
     /**
-     * Options.
+     * Config.
      *
      * @var Data
      */
-    protected $options;
+    protected $data;
     /**
      * Source directory.
      *
@@ -34,11 +34,11 @@ class Options
      */
     protected $destinationDir;
     /**
-     * Default options.
+     * Default data.
      *
      * @var array
      */
-    protected static $defaultOptions = [
+    protected static $defaultData = [
         'site' => [
             'title'       => 'PHPoole',
             'baseline'    => 'A PHPoole website',
@@ -91,23 +91,23 @@ class Options
     ];
 
     /**
-     * Options constructor.
+     * Config constructor.
      *
-     * @param Options|array|null $options
+     * @param Config|array|null $config
      */
-    public function __construct($options = null)
+    public function __construct($config = null)
     {
-        $data = new Data(self::$defaultOptions);
-        if ($options instanceof self) {
-            $data->importData($options->getAll());
-        } elseif (is_array($options)) {
-            $data->import($options);
+        $data = new Data(self::$defaultData);
+        if ($config instanceof self) {
+            $data->importData($config->getAll());
+        } elseif (is_array($config)) {
+            $data->import($config);
         }
         $this->setFromData($data);
     }
 
     /**
-     * Set options.
+     * Set config data.
      *
      * @param Data $data
      *
@@ -115,35 +115,35 @@ class Options
      */
     protected function setFromData(Data $data)
     {
-        if ($this->options !== $data) {
-            $this->options = $data;
+        if ($this->data !== $data) {
+            $this->data = $data;
         }
 
         return $this;
     }
 
     /**
-     * Get options.
+     * Get config data.
      *
      * @return Data
      */
     public function getAll()
     {
-        return $this->options;
+        return $this->data;
     }
 
     /**
-     * Get options as array.
+     * Get data as array.
      *
      * @return array
      */
     public function getAllAsArray()
     {
-        return $this->options->export();
+        return $this->data->export();
     }
 
     /**
-     * return an option value.
+     * Return a config value.
      *
      * @param string $key
      * @param string $default
@@ -152,10 +152,12 @@ class Options
      */
     public function get($key, $default = '')
     {
-        return $this->options->get($key, $default);
+        return $this->data->get($key, $default);
     }
 
     /**
+     * Set source directory.
+     *
      * @param null $sourceDir
      *
      * @throws \Exception
@@ -176,6 +178,8 @@ class Options
     }
 
     /**
+     * Get source directory.
+     *
      * @return string
      */
     public function getSourceDir()
@@ -184,6 +188,8 @@ class Options
     }
 
     /**
+     * Set destination directory.
+     *
      * @param null $destinationDir
      *
      * @throws \Exception
@@ -204,6 +210,8 @@ class Options
     }
 
     /**
+     * Get destination directory.
+     *
      * @return string
      */
     public function getDestinationDir()

@@ -20,8 +20,8 @@ use PHPoole\Taxonomy\Vocabulary as Vocabulary;
  */
 class Taxonomy implements GeneratorInterface
 {
-    /* @var \PHPoole\Options */
-    protected $options;
+    /* @var \PHPoole\Config */
+    protected $config;
     /* @var TaxonomyCollection */
     protected $taxonomies;
     /* @var PageCollection */
@@ -34,9 +34,9 @@ class Taxonomy implements GeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(\PHPoole\Options $options)
+    public function __construct(\PHPoole\Config $config)
     {
-        $this->options = $options;
+        $this->config = $config;
     }
 
     /**
@@ -47,8 +47,8 @@ class Taxonomy implements GeneratorInterface
         $this->pageCollection = $pageCollection;
         $this->generatedPages = new PageCollection();
 
-        if (array_key_exists('taxonomies', $this->options->get('site'))) {
-            $this->siteTaxonomies = $this->options->get('site.taxonomies');
+        if (array_key_exists('taxonomies', $this->config->get('site'))) {
+            $this->siteTaxonomies = $this->config->get('site.taxonomies');
 
             // is taxonomies disabled
             if (array_key_exists('disabled', $this->siteTaxonomies) && $this->siteTaxonomies['disabled']) {

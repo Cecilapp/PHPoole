@@ -14,13 +14,13 @@ namespace PHPoole\Generator;
 interface GeneratorInterface
 {
     /**
-     * Give Options to object.
+     * Give config to object.
      *
-     * @param \PHPoole\Options $options
+     * @param \PHPoole\Config $config
      *
      * @return void
      */
-    public function __construct(\PHPoole\Options $options);
+    public function __construct(\PHPoole\Config $config);
 
     /**
      * @param \PHPoole\Page\Collection $pageCollection
