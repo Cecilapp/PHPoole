@@ -39,21 +39,20 @@ class Layout
         $layouts = self::fallback($page);
 
         // is layout exists in local layout dir?
-        $layoutsDir = $config->getLayoutsPath();
         foreach ($layouts as $layout) {
-            if (Util::getFS()->exists($layoutsDir.'/'.$layout)) {
+            if (Util::getFS()->exists($config->getLayoutsPath().'/'.$layout)) {
                 return $layout;
             }
         }
         // is layout exists in layout theme dir?
         if ($config->hasTheme()) {
-            $themeDir = $config->getThemePath($config->get('theme'));
             foreach ($layouts as $layout) {
-                if (Util::getFS()->exists($themeDir.'/'.$layout)) {
+                if (Util::getFS()->exists($config->getThemePath($config->get('theme')).'/'.$layout)) {
                     return $layout;
                 }
             }
         }
+
         throw new Exception(sprintf("Layout '%s' not found for page '%s'!", $layout, $page->getId()));
     }
 
@@ -136,17 +135,16 @@ class Layout
                             $layouts
                         );
                     }
-                } else {
+                }
+                $layouts = array_merge(
+                    ['page.html.twig'],
+                    $layouts
+                );
+                if ($page->getLayout()) {
                     $layouts = array_merge(
-                        ['page.html.twig'],
+                        [sprintf('%s.twig', $layout)],
                         $layouts
                     );
-                    if ($page->getLayout()) {
-                        $layouts = array_merge(
-                            [sprintf('%s.twig', $layout)],
-                            $layouts
-                        );
-                    }
                 }
         }
 
