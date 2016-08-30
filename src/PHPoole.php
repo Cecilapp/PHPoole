@@ -45,25 +45,25 @@ class PHPoole
      *
      * @var Config
      */
-    protected $config;
+    public $config;
     /**
      * Content iterator.
      *
      * @var Finder
      */
-    protected $content;
+    public $content;
     /**
      * Pages collection.
      *
      * @var PageCollection
      */
-    protected $pages;
+    public $pages;
     /**
      * Collection of site menus.
      *
      * @var Menu\Collection
      */
-    protected $menus;
+    public $menus;
     /**
      * Twig renderer.
      *
@@ -214,6 +214,8 @@ class PHPoole
      */
     protected function locateContent()
     {
+        (new Steps\LocateContent($this))->process();
+        /*
         try {
             $this->content = Finder::create()
                 ->files()
@@ -225,6 +227,7 @@ class PHPoole
         } catch (Exception $e) {
             echo $e->getMessage()."\n";
         }
+        */
     }
 
     /**
