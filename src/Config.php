@@ -59,7 +59,7 @@ class Config
         ],
         'content' => [
             'dir' => 'content',
-            'ext' => 'md',
+            'ext' => ['md', 'markdown', 'mdown', 'mkdn', 'mkd', 'text', 'txt'],
         ],
         'frontmatter' => [
             'format' => 'yaml',

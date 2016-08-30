@@ -231,7 +231,7 @@ class PHPoole
             $this->content = Finder::create()
                 ->files()
                 ->in($this->config->getContentPath())
-                ->name('*.'.$this->config->get('content.ext'));
+                ->name('/\.('.implode('|', $this->config->get('content.ext')).')$/');
             if (!$this->content instanceof Finder) {
                 throw new \Exception(__FUNCTION__.': result must be an instance of Symfony\Component\Finder.');
             }
