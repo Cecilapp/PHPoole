@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPoole\Renderer;
+namespace PHPoole\Renderer\Twig;
 
 use Cocur\Slugify\Bridge\Twig\SlugifyExtension;
 use Cocur\Slugify\Slugify;
@@ -17,9 +17,9 @@ use PHPoole\Exception\Exception;
 use PHPoole\Page\Page;
 
 /**
- * Class TwigExtension.
+ * Class Twig\Extension.
  */
-class TwigExtension extends SlugifyExtension
+class Extension extends SlugifyExtension
 {
     /* @var string */
     protected $destPath;

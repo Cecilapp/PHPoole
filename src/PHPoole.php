@@ -12,9 +12,8 @@ use PHPoole\Converter\Converter;
 use PHPoole\Exception\Exception;
 use PHPoole\Generator\GeneratorManager;
 use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
-use Symfony\Component\Filesystem\Filesystem;
+use PHPoole\Renderer\Layout;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -72,18 +71,6 @@ class PHPoole
      */
     protected $renderer;
     /**
-     * The theme name.
-     *
-     * @var null
-     */
-    protected $theme = null;
-    /**
-     * Symfony\Component\Filesystem.
-     *
-     * @var Filesystem
-     */
-    protected $fs;
-    /**
      * @var \Closure
      */
     protected $messageCallback;
@@ -103,7 +90,6 @@ class PHPoole
         $this->setConfig($config);
         $this->config->setSourceDir(null)->setDestinationDir(null);
         $this->setMessageCallback($messageCallback);
-        $this->fs = new Filesystem();
     }
 
     /**
@@ -457,21 +443,21 @@ class PHPoole
     {
         call_user_func_array($this->messageCallback, ['COPY', 'Copy static files']);
         // copy theme static dir if exists
-        if ($this->isTheme()) {
-            $themeStaticDir = $this->config->getThemePath($this->theme, 'static');
-            if ($this->fs->exists($themeStaticDir)) {
-                $this->fs->mirror($themeStaticDir, $this->config->getOutputPath(), null, ['override' => true]);
+        if ($this->config->validTheme()) {
+            $themeStaticDir = $this->config->getThemePath($this->config->get('theme'), 'static');
+            if (Util::getFS()->exists($themeStaticDir)) {
+                Util::getFS()->mirror($themeStaticDir, $this->config->getOutputPath(), null, ['override' => true]);
             }
         }
         // copy static dir if exists
         $staticDir = $this->config->getStaticPath();
-        if ($this->fs->exists($staticDir)) {
+        if (Util::getFS()->exists($staticDir)) {
             $finder = new Finder();
             $finder->files()->filter(function (\SplFileInfo $file) {
                 return !(is_array($this->config->get('static.exclude'))
                     && in_array($file->getBasename(), $this->config->get('static.exclude')));
             })->in($staticDir);
-            $this->fs->mirror($staticDir, $this->config->getOutputPath(), $finder, ['override' => true]);
+            Util::getFS()->mirror($staticDir, $this->config->getOutputPath(), $finder, ['override' => true]);
         }
         call_user_func_array($this->messageCallback, ['COPY_PROGRESS', 'Done']);
     }
@@ -488,24 +474,27 @@ class PHPoole
     protected function renderPages()
     {
         $paths = [];
-        // prepares global site variables
-        $site = array_merge(
+
+        // checks layouts dir
+        if (!is_dir($this->config->getLayoutsPath()) && !$this->config->validTheme()) {
+            throw new Exception(sprintf("'%s' is not a valid layouts directory", $this->config->getLayoutsPath()));
+        }
+
+        // prepares renderer
+        if (is_dir($this->config->getLayoutsPath())) {
+            $paths[] = $this->config->getLayoutsPath();
+        }
+        if ($this->config->validTheme()) {
+            $paths[] = $this->config->getThemePath($this->config->get('theme'));
+        }
+        $this->renderer = new Renderer\Twig($paths, $this->config);
+
+        // adds global variables
+        $this->renderer->addGlobal('site', array_merge(
             $this->config->get('site'),
             ['menus' => $this->menus],
             ['pages' => $this->pages]
-        );
-        // prepares renderer
-        if (!is_dir($this->config->getLayoutsPath())) {
-            throw new Exception(sprintf("'%s' is not a valid layouts directory", $this->config->getLayoutsPath()));
-        } else {
-            $paths[] = $this->config->getLayoutsPath();
-        }
-        if ($this->isTheme()) {
-            $paths[] = $this->config->getThemePath($this->theme);
-        }
-        $this->renderer = new Renderer\Twig($paths, $this->config);
-        // adds global variables
-        $this->renderer->addGlobal('site', $site);
+        ));
         $this->renderer->addGlobal('phpoole', [
             'url'       => 'http://phpoole.org/#v'.$this->getVersion(),
             'version'   => $this->getVersion(),
@@ -513,7 +502,7 @@ class PHPoole
         ]);
 
         // start rendering
-        $this->fs->mkdir($this->config->getOutputPath());
+        Util::getFS()->mkdir($this->config->getOutputPath());
         call_user_func_array($this->messageCallback, ['RENDER', 'Rendering pages']);
         $max = count($this->pages);
         $count = 0;
@@ -540,7 +529,7 @@ class PHPoole
      */
     protected function renderPage(Page $page, $dir)
     {
-        $this->renderer->render($this->layoutFinder($page), ['page' => $page]);
+        $this->renderer->render((new Layout())->finder($page, $this->config), ['page' => $page]);
 
         // force pathname of a (non virtual) node page
         if ($page->getName() == 'index') {
@@ -559,145 +548,6 @@ class PHPoole
         $this->renderer->save($pathname);
 
         return $pathname;
-    }
-
-    /**
-     * Uses a theme?
-     * If yes, set $theme variable.
-     *
-     * @throws Exception
-     *
-     * @return bool
-     */
-    protected function isTheme()
-    {
-        if ($this->theme !== null) {
-            return true;
-        }
-        if ($this->config->get('theme') !== '') {
-            $themesDir = $this->config->getThemesPath();
-            if ($this->fs->exists($themesDir.'/'.$this->config->get('theme'))) {
-                $this->theme = $this->config->get('theme');
-
-                return true;
-            }
-            throw new Exception(sprintf("Theme directory '%s' not found!", $themesDir));
-        }
-
-        return false;
-    }
-
-    /**
-     * Layout file finder.
-     *
-     * @param Page $page
-     *
-     * @throws Exception
-     *
-     * @return string
-     */
-    protected function layoutFinder(Page $page)
-    {
-        $layout = 'unknown';
-
-        if ($page->getLayout() == 'redirect.html') {
-            return $page->getLayout().'.twig';
-        }
-
-        $layouts = $this->layoutFallback($page);
-
-        // is layout exists in local layout dir?
-        $layoutsDir = $this->config->getLayoutsPath();
-        foreach ($layouts as $layout) {
-            if ($this->fs->exists($layoutsDir.'/'.$layout)) {
-                return $layout;
-            }
-        }
-        // is layout exists in layout theme dir?
-        if ($this->isTheme()) {
-            $themeDir = $this->config->getThemePath($this->theme);
-            foreach ($layouts as $layout) {
-                if ($this->fs->exists($themeDir.'/'.$layout)) {
-                    return $layout;
-                }
-            }
-        }
-        throw new Exception(sprintf("Layout '%s' not found for page '%s'!", $layout, $page->getId()));
-    }
-
-    /**
-     * Layout fall-back.
-     *
-     * @param $page
-     *
-     * @return string[]
-     *
-     * @see layoutFinder()
-     */
-    protected function layoutFallback(Page $page)
-    {
-        // remove redundant '.twig' extension
-        $layout = str_replace('.twig', '', $page->getLayout());
-
-        switch ($page->getNodeType()) {
-            case NodeType::HOMEPAGE:
-                $layouts = [
-                    'index.html.twig',
-                    '_default/list.html.twig',
-                    '_default/page.html.twig',
-                ];
-                break;
-            case NodeType::SECTION:
-                $layouts = [
-                    // 'section/$section.html.twig',
-                    '_default/section.html.twig',
-                    '_default/list.html.twig',
-                ];
-                if ($page->getSection() !== null) {
-                    $layouts = array_merge([sprintf('section/%s.html.twig', $page->getSection())], $layouts);
-                }
-                break;
-            case NodeType::TAXONOMY:
-                $layouts = [
-                    // 'taxonomy/$singular.html.twig',
-                    '_default/taxonomy.html.twig',
-                    '_default/list.html.twig',
-                ];
-                if ($page->getVariable('singular') !== null) {
-                    $layouts = array_merge([sprintf('taxonomy/%s.html.twig', $page->getVariable('singular'))], $layouts);
-                }
-                break;
-            case NodeType::TERMS:
-                $layouts = [
-                    // 'taxonomy/$singular.terms.html.twig',
-                    '_default/terms.html.twig',
-                ];
-                if ($page->getVariable('singular') !== null) {
-                    $layouts = array_merge([sprintf('taxonomy/%s.terms.html.twig', $page->getVariable('singular'))], $layouts);
-                }
-                break;
-            default:
-                $layouts = [
-                    // '$section/page.html.twig',
-                    // '$section/$layout.twig',
-                    // '$layout.twig',
-                    // 'page.html.twig',
-                    '_default/page.html.twig',
-                ];
-                if ($page->getSection() !== null) {
-                    $layouts = array_merge([sprintf('%s/page.html.twig', $page->getSection())], $layouts);
-                    if ($page->getLayout() !== null) {
-                        $layouts = array_merge([sprintf('%s/%s.twig', $page->getSection(), $layout)], $layouts);
-                    }
-                } else {
-                    $layouts = array_merge(['page.html.twig'], $layouts);
-                    if ($page->getLayout() !== null) {
-                        $layouts = array_merge([sprintf('%s.twig', $layout)], $layouts);
-                    }
-                }
-        }
-
-        return $layouts;
     }
 
     /**
