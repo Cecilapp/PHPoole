@@ -27,8 +27,6 @@ class Taxonomy implements GeneratorInterface
     protected $taxonomies;
     /* @var PageCollection */
     protected $pageCollection;
-    /* @var array */
-    protected $siteTaxonomies;
     /* @var PageCollection */
     protected $generatedPages;
 
@@ -48,22 +46,16 @@ class Taxonomy implements GeneratorInterface
         $this->pageCollection = $pageCollection;
         $this->generatedPages = new PageCollection();
 
-        if (array_key_exists('taxonomies', $this->config->get('site'))) {
-            if (!is_array($this->config->get('site.taxonomies'))) {
-                throw new \Exception("Config key 'site.taxonomies' must be an array!");
-            }
-
-            $this->siteTaxonomies = $this->config->get('site.taxonomies');
-
+        if ($this->config->get('site.taxonomies')) {
             // is taxonomies disabled
-            if (array_key_exists('disabled', $this->siteTaxonomies) && $this->siteTaxonomies['disabled']) {
+            if ($this->config->get('site.taxonomies.disabled')) {
                 return $this->generatedPages;
             }
 
             // prepares taxonomies collection
             $this->taxonomies = new TaxonomyCollection('taxonomies');
             // adds each vocabulary collection to the taxonomies collection
-            foreach ($this->siteTaxonomies as $vocabulary) {
+            foreach ($this->config->get('site.taxonomies') as $vocabulary) {
                 if ($vocabulary != 'disable') {
                     $this->taxonomies->add(new Vocabulary($vocabulary));
                 }
@@ -86,7 +78,7 @@ class Taxonomy implements GeneratorInterface
     {
         /* @var $page Page */
         foreach ($this->pageCollection as $page) {
-            foreach (array_keys($this->siteTaxonomies) as $plural) {
+            foreach (array_keys($this->config->get('site.taxonomies')) as $plural) {
                 if (isset($page[$plural])) {
                     // converts a list to an array if necessary
                     if (!is_array($page[$plural])) {
@@ -129,7 +121,7 @@ class Taxonomy implements GeneratorInterface
                             ->setTitle(ucfirst($term))
                             ->setNodeType(NodeType::TAXONOMY)
                             ->setVariable('pages', $pages)
-                            ->setVariable('singular', $this->siteTaxonomies[$plural])
+                            ->setVariable('singular', $this->config->get('site.taxonomies')[$plural])
                             ->setVariable('pagination', ['pages' => $pages]);
                         $this->generatedPages->add($page);
                     }
@@ -144,7 +136,7 @@ class Taxonomy implements GeneratorInterface
                     ->setTitle($plural)
                     ->setNodeType(NodeType::TERMS)
                     ->setVariable('plural', $plural)
-                    ->setVariable('singular', $this->siteTaxonomies[$plural])
+                    ->setVariable('singular', $this->config->get('site.taxonomies')[$plural])
                     ->setVariable('terms', $terms);
 
                 // add page only if a template exist
