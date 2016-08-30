@@ -86,7 +86,10 @@ class Layout
                     '_default/list.html.twig',
                 ];
                 if ($page->getSection()) {
-                    $layouts = array_merge([sprintf('section/%s.html.twig', $page->getSection())], $layouts);
+                    $layouts = array_merge(
+                        [sprintf('section/%s.html.twig', $page->getSection())],
+                        $layouts
+                    );
                 }
                 break;
             case NodeType::TAXONOMY:
@@ -96,7 +99,10 @@ class Layout
                     '_default/list.html.twig',
                 ];
                 if ($page->getVariable('singular')) {
-                    $layouts = array_merge([sprintf('taxonomy/%s.html.twig', $page->getVariable('singular'))], $layouts);
+                    $layouts = array_merge(
+                        [sprintf('taxonomy/%s.html.twig', $page->getVariable('singular'))],
+                        $layouts
+                    );
                 }
                 break;
             case NodeType::TERMS:
@@ -105,7 +111,10 @@ class Layout
                     '_default/terms.html.twig',
                 ];
                 if ($page->getVariable('singular')) {
-                    $layouts = array_merge([sprintf('taxonomy/%s.terms.html.twig', $page->getVariable('singular'))], $layouts);
+                    $layouts = array_merge(
+                        [sprintf('taxonomy/%s.terms.html.twig', $page->getVariable('singular'))],
+                        $layouts
+                    );
                 }
                 break;
             default:
@@ -117,14 +126,26 @@ class Layout
                     '_default/page.html.twig',
                 ];
                 if ($page->getSection()) {
-                    $layouts = array_merge([sprintf('%s/page.html.twig', $page->getSection())], $layouts);
+                    $layouts = array_merge(
+                        [sprintf('%s/page.html.twig', $page->getSection())],
+                        $layouts
+                    );
                     if ($page->getLayout()) {
-                        $layouts = array_merge([sprintf('%s/%s.twig', $page->getSection(), $layout)], $layouts);
+                        $layouts = array_merge(
+                            [sprintf('%s/%s.twig', $page->getSection(), $layout)],
+                            $layouts
+                        );
                     }
                 } else {
-                    $layouts = array_merge(['page.html.twig'], $layouts);
+                    $layouts = array_merge(
+                        ['page.html.twig'],
+                        $layouts
+                    );
                     if ($page->getLayout()) {
-                        $layouts = array_merge([sprintf('%s.twig', $layout)], $layouts);
+                        $layouts = array_merge(
+                            [sprintf('%s.twig', $layout)],
+                            $layouts
+                        );
                     }
                 }
         }

@@ -231,7 +231,11 @@ class Config
     {
         if ($this->get('theme')) {
             if (!Util::getFS()->exists($this->getThemePath($this->get('theme')))) {
-                throw new Exception(sprintf("Theme directory '%s/%s/layouts' not found!", $this->getThemesPath(), $this->get('theme')));
+                throw new Exception(sprintf(
+                    "Theme directory '%s/%s/layouts' not found!",
+                    $this->getThemesPath(),
+                    $this->get('theme')
+                ));
             }
 
             return true;
