@@ -443,7 +443,7 @@ class PHPoole
     {
         call_user_func_array($this->messageCallback, ['COPY', 'Copy static files']);
         // copy theme static dir if exists
-        if ($this->config->validTheme()) {
+        if ($this->config->hasTheme()) {
             $themeStaticDir = $this->config->getThemePath($this->config->get('theme'), 'static');
             if (Util::getFS()->exists($themeStaticDir)) {
                 Util::getFS()->mirror($themeStaticDir, $this->config->getOutputPath(), null, ['override' => true]);
@@ -476,7 +476,7 @@ class PHPoole
         $paths = [];
 
         // checks layouts dir
-        if (!is_dir($this->config->getLayoutsPath()) && !$this->config->validTheme()) {
+        if (!is_dir($this->config->getLayoutsPath()) && !$this->config->hasTheme()) {
             throw new Exception(sprintf("'%s' is not a valid layouts directory", $this->config->getLayoutsPath()));
         }
 
@@ -484,7 +484,7 @@ class PHPoole
         if (is_dir($this->config->getLayoutsPath())) {
             $paths[] = $this->config->getLayoutsPath();
         }
-        if ($this->config->validTheme()) {
+        if ($this->config->hasTheme()) {
             $paths[] = $this->config->getThemePath($this->config->get('theme'));
         }
         $this->renderer = new Renderer\Twig($paths, $this->config);

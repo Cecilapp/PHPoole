@@ -149,7 +149,7 @@ class Config
      * @param string $key
      * @param string $default
      *
-     * @return array|null
+     * @return array|mixed|null
      */
     public function get($key, $default = '')
     {
@@ -221,13 +221,13 @@ class Config
     }
 
     /**
-     * Is theme is a valid theme?
+     * Is config has a valid theme?
      *
      * @throws Exception
      *
      * @return bool
      */
-    public function validTheme()
+    public function hasTheme()
     {
         if ($this->get('theme')) {
             if (!Util::getFS()->exists($this->getThemePath($this->get('theme')))) {

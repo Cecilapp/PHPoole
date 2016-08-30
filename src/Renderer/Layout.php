@@ -46,7 +46,7 @@ class Layout
             }
         }
         // is layout exists in layout theme dir?
-        if ($config->validTheme()) {
+        if ($config->hasTheme()) {
             $themeDir = $config->getThemePath($config->get('theme'));
             foreach ($layouts as $layout) {
                 if (Util::getFS()->exists($themeDir.'/'.$layout)) {
