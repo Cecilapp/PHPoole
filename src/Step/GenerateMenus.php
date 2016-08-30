@@ -34,7 +34,7 @@ class GenerateMenus implements StepInterface
 
     public function process()
     {
-        $this->phpoole->setMenus(new MenusCollection);
+        $this->phpoole->setMenus(new MenusCollection());
         $this->collectPages();
 
         /*
