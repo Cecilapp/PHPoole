@@ -287,8 +287,8 @@ class PHPoole
 
     /**
      * Converts page content:
-     * * Yaml frontmatter to PHP array
-     * * Markdown body to HTML.
+     * - Yaml frontmatter to PHP array
+     * - Markdown body to HTML.
      *
      * @param Page   $page
      * @param string $format
@@ -297,11 +297,9 @@ class PHPoole
      */
     public function convertPage(Page $page, $format = 'yaml')
     {
-        $converter = new Converter();
-
         // converts frontmatter
         try {
-            $variables = $converter->convertFrontmatter($page->getFrontmatter(), $format);
+            $variables = Converter::convertFrontmatter($page->getFrontmatter(), $format);
         } catch (Exception $e) {
             $message = sprintf("> Unable to convert frontmatter of '%s': %s", $page->getId(), $e->getMessage());
             call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', $message]);
@@ -311,7 +309,7 @@ class PHPoole
         $page->setVariables($variables);
 
         // converts body
-        $html = $converter->convertBody($page->getBody());
+        $html = Converter::convertBody($page->getBody());
         $page->setHtml($html);
 
         return $page;

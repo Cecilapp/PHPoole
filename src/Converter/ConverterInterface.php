@@ -21,7 +21,7 @@ interface ConverterInterface
      *
      * @return mixed
      */
-    public function convertFrontmatter($string, $type);
+    public static function convertFrontmatter($string, $type);
 
     /**
      * Converts body.
@@ -30,5 +30,5 @@ interface ConverterInterface
      *
      * @return mixed
      */
-    public function convertBody($string);
+    public static function convertBody($string);
 }

@@ -21,7 +21,7 @@ class Converter implements ConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function convertFrontmatter($string, $type = 'yaml')
+    public static function convertFrontmatter($string, $type = 'yaml')
     {
         switch ($type) {
             case 'ini':
@@ -39,8 +39,8 @@ class Converter implements ConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function convertBody($string)
+    public static function convertBody($string)
     {
-        return (new ParsedownExtra())->text($string);
+        return ParsedownExtra::instance()->text($string);
     }
 }
