@@ -95,7 +95,7 @@ class PHPoole
      * PHPoole constructor.
      *
      * @param Config|array|null $config
-     * @param \Closure|null      $messageCallback
+     * @param \Closure|null     $messageCallback
      */
     public function __construct($config = null, \Closure $messageCallback = null)
     {

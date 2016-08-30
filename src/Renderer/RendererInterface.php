@@ -19,7 +19,7 @@ interface RendererInterface
      * Constructor.
      *
      * @param string|array $templatesPath
-     * @param Config      $config
+     * @param Config       $config
      */
     public function __construct($templatesPath, $config);
 
