@@ -18,6 +18,7 @@ use Symfony\Component\Finder\Finder;
 class LocateContent implements StepInterface
 {
     protected $phpoole;
+    protected $process = false;
 
     public function __construct(PHPoole $PHPoole)
     {
@@ -29,6 +30,7 @@ class LocateContent implements StepInterface
         if (!is_dir($this->phpoole->getConfig()->getContentPath())) {
             throw new Exception(sprintf('%s not found!', $this->phpoole->getConfig()->getContentPath()));
         }
+        $this->process = true;
     }
 
     public function process()
