@@ -149,7 +149,7 @@ class Config
      * @param string $key
      * @param string $default
      *
-     * @return array|mixed|null
+     * @return array|null
      */
     public function get($key, $default = '')
     {
