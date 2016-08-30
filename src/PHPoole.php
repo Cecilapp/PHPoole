@@ -45,25 +45,25 @@ class PHPoole
      *
      * @var Config
      */
-    public $config;
+    protected $config;
     /**
      * Content iterator.
      *
      * @var Finder
      */
-    public $content;
+    protected $content;
     /**
      * Pages collection.
      *
      * @var PageCollection
      */
-    public $pages;
+    protected $pages;
     /**
      * Collection of site menus.
      *
      * @var Menu\Collection
      */
-    public $menus;
+    protected $menus;
     /**
      * Twig renderer.
      *
@@ -160,6 +160,54 @@ class PHPoole
     }
 
     /**
+     * @param $content
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @return Finder
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param $pages
+     */
+    public function setPages($pages)
+    {
+        $this->pages = $pages;
+    }
+
+    /**
+     * @return PageCollection
+     */
+    public function getPages()
+    {
+        return $this->pages;
+    }
+
+    /**
+     * @param $menus
+     */
+    public function setMenus($menus)
+    {
+        $this->menus = $menus;
+    }
+
+    /**
+     * @return Menu\Collection
+     */
+    public function getMenus()
+    {
+        return $this->menus;
+    }
+
+    /**
      * @param \Closure|null $messageCallback
      */
     public function setMessageCallback($messageCallback = null)
@@ -214,7 +262,7 @@ class PHPoole
      */
     protected function locateContent()
     {
-        (new Steps\LocateContent($this))->process();
+        (new Step\LocateContent($this))->process();
         /*
         try {
             $this->content = Finder::create()
