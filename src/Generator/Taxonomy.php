@@ -49,6 +49,10 @@ class Taxonomy implements GeneratorInterface
         $this->generatedPages = new PageCollection();
 
         if (array_key_exists('taxonomies', $this->config->get('site'))) {
+            if (!is_array($this->config->get('site.taxonomies'))) {
+                throw new \Exception("Config key 'site.taxonomies' must be an array!");
+            }
+
             $this->siteTaxonomies = $this->config->get('site.taxonomies');
 
             // is taxonomies disabled
