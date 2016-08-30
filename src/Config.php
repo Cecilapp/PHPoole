@@ -221,6 +221,30 @@ class Config
     }
 
     /**
+     * Is theme is a valid theme?
+     *
+     * @throws Exception
+     *
+     * @return bool
+     */
+    public function validTheme()
+    {
+        if ($this->get('theme')) {
+            if (!Util::getFS()->exists($this->getThemePath($this->get('theme')))) {
+                throw new Exception(sprintf(
+                    "Theme directory '%s/%s/layouts' not found!",
+                    $this->getThemesPath(),
+                    $this->get('theme')
+                ));
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Path helpers.
      */
 

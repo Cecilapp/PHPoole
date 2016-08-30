@@ -8,10 +8,32 @@
 
 namespace PHPoole;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 class Util
 {
+    /**
+     * Symfony\Component\Filesystem.
+     *
+     * @var Filesystem
+     */
+    protected static $fs;
+
+    /**
+     * Return Symfony\Component\Filesystem instance.
+     *
+     * @return Filesystem
+     */
+    public static function getFS()
+    {
+        if (!self::$fs instanceof Filesystem) {
+            self::$fs = new Filesystem();
+        }
+
+        return self::$fs;
+    }
+
     /**
      * Runs a Git command on the repository.
      *
