@@ -55,7 +55,8 @@ class ConvertPages implements StepInterface
             }
         }
         if ($countError > 0) {
-            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', sprintf('Errors: %s', $countError)]);
+            $message = sprintf('Errors: %s', $countError);
+            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message]);
         }
     }
 

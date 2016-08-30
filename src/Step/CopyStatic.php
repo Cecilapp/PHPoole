@@ -35,9 +35,15 @@ class CopyStatic implements StepInterface
         call_user_func_array($this->phpoole->getMessageCb(), ['COPY', 'Copy static files']);
         // copy theme static dir if exists
         if ($this->phpoole->getConfig()->hasTheme()) {
-            $themeStaticDir = $this->phpoole->getConfig()->getThemePath($this->phpoole->getConfig()->get('theme'), 'static');
+            $theme = $this->phpoole->getConfig()->get('theme');
+            $themeStaticDir = $this->phpoole->getConfig()->getThemePath($theme, 'static');
             if (Util::getFS()->exists($themeStaticDir)) {
-                Util::getFS()->mirror($themeStaticDir, $this->phpoole->getConfig()->getOutputPath(), null, ['override' => true]);
+                Util::getFS()->mirror(
+                    $themeStaticDir,
+                    $this->phpoole->getConfig()->getOutputPath(),
+                    null,
+                    ['override' => true]
+                );
             }
         }
         // copy static dir if exists
@@ -48,7 +54,12 @@ class CopyStatic implements StepInterface
                 return !(is_array($this->phpoole->getConfig()->get('static.exclude'))
                     && in_array($file->getBasename(), $this->phpoole->getConfig()->get('static.exclude')));
             })->in($staticDir);
-            Util::getFS()->mirror($staticDir, $this->phpoole->getConfig()->getOutputPath(), $finder, ['override' => true]);
+            Util::getFS()->mirror(
+                $staticDir,
+                $this->phpoole->getConfig()->getOutputPath(),
+                $finder,
+                ['override' => true]
+            );
         }
         call_user_func_array($this->phpoole->getMessageCb(), ['COPY_PROGRESS', 'Done']);
     }

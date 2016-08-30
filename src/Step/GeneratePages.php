@@ -49,7 +49,8 @@ class GeneratePages implements StepInterface
                 $generatorManager->addGenerator(new $generator($this->phpoole->getConfig()), $priority);
             });
             call_user_func_array($this->phpoole->getMessageCb(), ['GENERATE', 'Generating pages']);
-            $this->phpoole->setPages($generatorManager->process($this->phpoole->getPages(), $this->phpoole->getMessageCb()));
+            $pages = $generatorManager->process($this->phpoole->getPages(), $this->phpoole->getMessageCb());
+            $this->phpoole->setPages($pages);
         }
     }
 
