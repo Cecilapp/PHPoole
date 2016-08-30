@@ -42,20 +42,17 @@ class Pagination implements GeneratorInterface
 
         /* @var $page Page */
         foreach ($filteredPages as $page) {
-            $paginate = $this->config->get('site.paginate');
-
-            $disabled = array_key_exists('disabled', $paginate) && $paginate['disabled'];
-            if ($disabled) {
+            if ($this->config->get('site.paginate.disabled')) {
                 return $generatedPages;
             }
 
-            $paginateMax = $paginate['max'];
-            $paginatePath = $paginate['path'];
+            $paginateMax = $this->config->get('site.paginate.max');
+            $paginatePath = $this->config->get('site.paginate.path');
             $pages = $page->getVariable('pages');
             $path = $page->getPathname();
 
             // paginate
-            if (!$disabled && (isset($paginateMax) && count($pages) > $paginateMax)) {
+            if (is_int($paginateMax) && count($pages) > $paginateMax) {
                 $paginateCount = ceil(count($pages) / $paginateMax);
                 for ($i = 0; $i < $paginateCount; $i++) {
                     $pagesInPagination = array_slice($pages, ($i * $paginateMax), ($i * $paginateMax) + $paginateMax);

@@ -89,7 +89,8 @@ class Page extends PageItem
             // file path: "Blog"
             $this->filePath = str_replace(DIRECTORY_SEPARATOR, '/', $this->file->getRelativePath());
             // file id: "Blog/Post 1"
-            $this->fileId = ($this->filePath ? $this->filePath.'/' : '').basename($this->file->getBasename(), '.'.$this->fileExtension);
+            $this->fileId = ($this->filePath ? $this->filePath.'/' : '')
+                .basename($this->file->getBasename(), '.'.$this->fileExtension);
             /*
              * variables default values
              */
