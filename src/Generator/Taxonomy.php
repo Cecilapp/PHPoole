@@ -8,6 +8,7 @@
 
 namespace PHPoole\Generator;
 
+use PHPoole\Exception\Exception;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
@@ -145,7 +146,7 @@ class Taxonomy implements GeneratorInterface
                 // add page only if a template exist
                 try {
                     $this->generatedPages->add($page);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     echo $e->getMessage()."\n";
                     // do not add page
                     unset($page);

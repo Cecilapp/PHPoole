@@ -13,6 +13,7 @@ use Cocur\Slugify\Slugify;
 use MatthiasMullie\Minify;
 use PHPoole\Collection\AbstractCollection;
 use PHPoole\Collection\CollectionInterface;
+use PHPoole\Exception\Exception;
 use PHPoole\Page\Page;
 
 /**
@@ -92,7 +93,7 @@ class TwigExtension extends SlugifyExtension
      * @param string                   $variable
      * @param string                   $value
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return array
      */
@@ -113,7 +114,7 @@ class TwigExtension extends SlugifyExtension
                     }
                 }
             } else {
-                throw new \Exception("'filterBy' available for page only!");
+                throw new Exception("'filterBy' available for page only!");
             }
         }
 
@@ -254,7 +255,7 @@ class TwigExtension extends SlugifyExtension
      *
      * @param string $path
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return string
      */
@@ -271,13 +272,13 @@ class TwigExtension extends SlugifyExtension
                     $minifier = new Minify\JS($filePath);
                     break;
                 default:
-                    throw new \Exception(sprintf("File '%s' should be a '.css' or a '.js'!", $path));
+                    throw new Exception(sprintf("File '%s' should be a '.css' or a '.js'!", $path));
             }
             $minifier->minify($filePath);
 
             return $path;
         }
-        throw new \Exception(sprintf("File '%s' doesn't exist!", $path));
+        throw new Exception(sprintf("File '%s' doesn't exist!", $path));
     }
 
     /**

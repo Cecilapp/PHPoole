@@ -9,6 +9,7 @@
 namespace PHPoole;
 
 use PHPoole\Converter\Converter;
+use PHPoole\Exception\Exception;
 use PHPoole\Generator\GeneratorManager;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\NodeType;
@@ -233,9 +234,9 @@ class PHPoole
                 ->in($this->config->getContentPath())
                 ->name('/\.('.implode('|', $this->config->get('content.ext')).')$/');
             if (!$this->content instanceof Finder) {
-                throw new \Exception(__FUNCTION__.': result must be an instance of Symfony\Component\Finder.');
+                throw new Exception(__FUNCTION__.': result must be an instance of Symfony\Component\Finder.');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             echo $e->getMessage()."\n";
         }
     }
@@ -315,7 +316,7 @@ class PHPoole
         // converts frontmatter
         try {
             $variables = $converter->convertFrontmatter($page->getFrontmatter(), $format);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $message = sprintf("> Unable to convert frontmatter of '%s': %s", $page->getId(), $e->getMessage());
             call_user_func_array($this->messageCallback, ['CONVERT_PROGRESS', $message]);
 
@@ -495,7 +496,7 @@ class PHPoole
         );
         // prepares renderer
         if (!is_dir($this->config->getLayoutsPath())) {
-            throw new \Exception(sprintf("'%s' is not a valid layouts directory", $this->config->getLayoutsPath()));
+            throw new Exception(sprintf("'%s' is not a valid layouts directory", $this->config->getLayoutsPath()));
         } else {
             $paths[] = $this->config->getLayoutsPath();
         }
@@ -531,7 +532,7 @@ class PHPoole
      * @param Page   $page
      * @param string $dir
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @see renderPages()
      *
@@ -564,7 +565,7 @@ class PHPoole
      * Uses a theme?
      * If yes, set $theme variable.
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return bool
      */
@@ -580,7 +581,7 @@ class PHPoole
 
                 return true;
             }
-            throw new \Exception(sprintf("Theme directory '%s' not found!", $themesDir));
+            throw new Exception(sprintf("Theme directory '%s' not found!", $themesDir));
         }
 
         return false;
@@ -591,7 +592,7 @@ class PHPoole
      *
      * @param Page $page
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return string
      */
@@ -621,7 +622,7 @@ class PHPoole
                 }
             }
         }
-        throw new \Exception(sprintf("Layout '%s' not found for page '%s'!", $layout, $page->getId()));
+        throw new Exception(sprintf("Layout '%s' not found for page '%s'!", $layout, $page->getId()));
     }
 
     /**

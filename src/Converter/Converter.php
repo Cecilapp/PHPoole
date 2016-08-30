@@ -9,6 +9,7 @@
 namespace PHPoole\Converter;
 
 use ParsedownExtra;
+use PHPoole\Exception\Exception;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -30,7 +31,7 @@ class Converter implements ConverterInterface
                 try {
                     return Yaml::parse($string);
                 } catch (ParseException $e) {
-                    throw new \Exception($e->getMessage());
+                    throw new Exception($e->getMessage());
                 }
         }
     }

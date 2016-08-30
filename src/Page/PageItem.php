@@ -9,6 +9,7 @@
 namespace PHPoole\Page;
 
 use PHPoole\Collection\AbstractItem;
+use PHPoole\Exception\Exception;
 
 /**
  * Helper to set and get page variables.
@@ -20,7 +21,7 @@ class PageItem extends AbstractItem
      *
      * @param array $variables
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return $this
      */
@@ -52,7 +53,7 @@ class PageItem extends AbstractItem
      * @param $name
      * @param $value
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return $this
      */
@@ -66,8 +67,8 @@ class PageItem extends AbstractItem
                     } else {
                         $this->offsetSet('date', new \DateTime($value));
                     }
-                } catch (\Exception $e) {
-                    throw new \Exception(sprintf("Expected date string in page ID: '%s'", $this->getId()));
+                } catch (Exception $e) {
+                    throw new Exception(sprintf("Expected date string in page ID: '%s'", $this->getId()));
                 }
                 break;
             default:

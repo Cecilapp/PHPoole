@@ -9,6 +9,7 @@
 namespace PHPoole;
 
 use Dflydev\DotAccessData\Data;
+use PHPoole\Exception\Exception;
 
 /**
  * Class Config.
@@ -160,7 +161,7 @@ class Config
      *
      * @param null $sourceDir
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return $this
      */
@@ -192,7 +193,7 @@ class Config
      *
      * @param null $destinationDir
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return $this
      */
