@@ -81,12 +81,12 @@ class Config
             'dir' => 'themes',
         ],
         'generators' => [
-            10 => 'Section',
-            20 => 'Taxonomy',
-            30 => 'Homepage',
-            40 => 'Pagination',
-            50 => 'Alias',
-            35 => 'ExternalBody',
+            10 => 'PHPoole\Generator\Section',
+            20 => 'PHPoole\Generator\Taxonomy',
+            30 => 'PHPoole\Generator\Homepage',
+            40 => 'PHPoole\Generator\Pagination',
+            50 => 'PHPoole\Generator\Alias',
+            35 => 'PHPoole\Generator\ExternalBody',
         ],
     ];
 
