@@ -9,9 +9,9 @@
 namespace PHPoole\Renderer;
 
 use PHPoole\Config;
+use PHPoole\Exception\Exception;
 use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
-use PHPoole\Exception\Exception;
 use PHPoole\Util;
 
 /**
@@ -22,7 +22,7 @@ class Layout
     /**
      * Layout file finder.
      *
-     * @param Page $page
+     * @param Page   $page
      * @param Config $config
      *
      * @throws Exception

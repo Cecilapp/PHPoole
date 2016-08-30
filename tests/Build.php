@@ -64,7 +64,7 @@ class Build extends \PHPUnit_Framework_TestCase
                         'disabled' => false,
                     ],
                 ],
-                'theme' => 'theme',
+                'theme'  => 'theme',
                 'static' => [
                     'exclude' => [
                         'test.txt',
