@@ -8,7 +8,7 @@
 
 namespace PHPoole\Generator;
 
-use PHPoole\Options;
+use PHPoole\Config;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;
@@ -18,15 +18,15 @@ use PHPoole\Page\Page;
  */
 class Pagination implements GeneratorInterface
 {
-    /* @var \PHPoole\Options */
-    protected $options;
+    /* @var \PHPoole\Config */
+    protected $config;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(\PHPoole\Options $options)
+    public function __construct(\PHPoole\Config $config)
     {
-        $this->options = $options;
+        $this->config = $config;
     }
 
     /**
@@ -42,7 +42,7 @@ class Pagination implements GeneratorInterface
 
         /* @var $page Page */
         foreach ($filteredPages as $page) {
-            $paginate = $this->options->get('site.paginate');
+            $paginate = $this->config->get('site.paginate');
 
             $disabled = array_key_exists('disabled', $paginate) && $paginate['disabled'];
             if ($disabled) {

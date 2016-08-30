@@ -16,15 +16,15 @@ use PHPoole\Page\Page;
  */
 class TitleReplace implements GeneratorInterface
 {
-    /* @var \PHPoole\Options */
-    protected $options;
+    /* @var \PHPoole\Config */
+    protected $config;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(\PHPoole\Options $options)
+    public function __construct(\PHPoole\Config $config)
     {
-        $this->options = $options;
+        $this->config = $config;
     }
 
     /**
