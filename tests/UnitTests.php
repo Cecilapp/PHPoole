@@ -12,6 +12,7 @@ use PHPoole\Converter\Converter;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\Page;
 use PHPoole\PHPoole;
+use PHPoole\Step\ConvertPages;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -124,7 +125,9 @@ class UnitTests extends \PHPUnit_Framework_TestCase
         $page->parse();
         $pageCollection->add($page);
 
-        $page = PHPoole::create()->convertPage($page, 'yaml');
+        $page = (new ConvertPages(PHPoole::create()))
+            ->convertPage($page, 'yaml');
+
         $pageCollection->replace($page->getId(), $page);
         unset($page);
 
