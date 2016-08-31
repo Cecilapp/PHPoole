@@ -8,10 +8,7 @@
 
 namespace PHPoole\Step;
 
-use PHPoole\Converter\Converter;
-use PHPoole\Exception\Exception;
 use PHPoole\Generator\GeneratorManager;
-use PHPoole\Page\Page;
 use PHPoole\PHPoole;
 
 /**
