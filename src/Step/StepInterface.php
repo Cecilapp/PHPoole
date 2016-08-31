@@ -40,5 +40,5 @@ interface StepInterface
      *
      * @return void
      */
-    function internalProcess();
+    public function internalProcess();
 }
