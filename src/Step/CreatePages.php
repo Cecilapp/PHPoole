@@ -15,22 +15,12 @@ use PHPoole\PHPoole;
 /**
  * Create Pages collection from content iterator.
  */
-class CreatePages implements StepInterface
+class CreatePages extends AbstractStep
 {
-    protected $phpoole;
-    protected $process;
-
-    public function __construct(PHPoole $PHPoole)
-    {
-        $this->phpoole = $PHPoole;
-    }
-
-    public function init()
-    {
-        $this->process = true;
-    }
-
-    public function process()
+    /**
+     * {@inheritdoc}
+     */
+    public function internalProcess()
     {
         $this->phpoole->setPages(new PageCollection());
         if (count($this->phpoole->getContent()) <= 0) {

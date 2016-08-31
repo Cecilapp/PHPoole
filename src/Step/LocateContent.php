@@ -9,22 +9,18 @@
 namespace PHPoole\Step;
 
 use PHPoole\Exception\Exception;
-use PHPoole\PHPoole;
 use Symfony\Component\Finder\Finder;
 
 /**
  * Locates content.
  */
-class LocateContent implements StepInterface
+class LocateContent extends AbstractStep
 {
-    protected $phpoole;
-    protected $process = false;
-
-    public function __construct(PHPoole $PHPoole)
-    {
-        $this->phpoole = $PHPoole;
-    }
-
+    /**
+     * {@inheritdoc}
+     *
+     * @throws Exception
+     */
     public function init()
     {
         if (!is_dir($this->phpoole->getConfig()->getContentPath())) {
@@ -33,7 +29,10 @@ class LocateContent implements StepInterface
         $this->process = true;
     }
 
-    public function process()
+    /**
+     * {@inheritdoc}
+     */
+    public function internalProcess()
     {
         try {
             $content = Finder::create()

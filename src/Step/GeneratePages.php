@@ -17,16 +17,11 @@ use PHPoole\PHPoole;
 /**
  * Generates virtual pages.
  */
-class GeneratePages implements StepInterface
+class GeneratePages extends AbstractStep
 {
-    protected $phpoole;
-    protected $process = false;
-
-    public function __construct(PHPoole $PHPoole)
-    {
-        $this->phpoole = $PHPoole;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function init()
     {
         if (count($this->phpoole->getConfig()->get('generators')) > 0) {
@@ -34,7 +29,10 @@ class GeneratePages implements StepInterface
         }
     }
 
-    public function process()
+    /**
+     * {@inheritdoc}
+     */
+    public function internalProcess()
     {
         if ($this->process) {
             $generatorManager = new GeneratorManager();
@@ -52,35 +50,5 @@ class GeneratePages implements StepInterface
             $pages = $generatorManager->process($this->phpoole->getPages(), $this->phpoole->getMessageCb());
             $this->phpoole->setPages($pages);
         }
-    }
-
-    /**
-     * Converts page content:
-     * - Yaml frontmatter to PHP array
-     * - Markdown body to HTML.
-     *
-     * @param Page   $page
-     * @param string $format
-     *
-     * @return Page
-     */
-    public function convertPage(Page $page, $format = 'yaml')
-    {
-        // converts frontmatter
-        try {
-            $variables = Converter::convertFrontmatter($page->getFrontmatter(), $format);
-        } catch (Exception $e) {
-            $message = sprintf("> Unable to convert frontmatter of '%s': %s", $page->getId(), $e->getMessage());
-            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message]);
-
-            return false;
-        }
-        $page->setVariables($variables);
-
-        // converts body
-        $html = Converter::convertBody($page->getBody());
-        $page->setHtml($html);
-
-        return $page;
     }
 }

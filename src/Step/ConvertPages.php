@@ -11,27 +11,16 @@ namespace PHPoole\Step;
 use PHPoole\Converter\Converter;
 use PHPoole\Exception\Exception;
 use PHPoole\Page\Page;
-use PHPoole\PHPoole;
 
 /**
  * Converts content of all pages.
  */
-class ConvertPages implements StepInterface
+class ConvertPages extends AbstractStep
 {
-    protected $phpoole;
-    protected $process = false;
-
-    public function __construct(PHPoole $PHPoole)
-    {
-        $this->phpoole = $PHPoole;
-    }
-
-    public function init()
-    {
-        $this->process = true;
-    }
-
-    public function process()
+    /**
+     * {@inheritdoc}
+     */
+    public function internalProcess()
     {
         if (count($this->phpoole->getPages()) <= 0) {
             return;

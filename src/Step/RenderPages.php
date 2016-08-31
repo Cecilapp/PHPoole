@@ -21,16 +21,13 @@ use PHPoole\Util;
  * 2. Applies Twig templates
  * 3. Saves rendered files.
  */
-class RenderPages implements StepInterface
+class RenderPages extends AbstractStep
 {
-    protected $phpoole;
-    protected $process = false;
-
-    public function __construct(PHPoole $PHPoole)
-    {
-        $this->phpoole = $PHPoole;
-    }
-
+    /**
+     * {@inheritdoc}
+     *
+     * @throws Exception
+     */
     public function init()
     {
         // checks layouts dir
@@ -42,7 +39,12 @@ class RenderPages implements StepInterface
         $this->process = true;
     }
 
-    public function process()
+    /**
+     * {@inheritdoc}
+     *
+     * @throws Exception
+     */
+    public function internalProcess()
     {
         $paths = [];
 

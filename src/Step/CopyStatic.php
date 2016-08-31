@@ -8,29 +8,20 @@
 
 namespace PHPoole\Step;
 
-use PHPoole\PHPoole;
 use PHPoole\Util;
 use Symfony\Component\Finder\Finder;
 
 /**
  * Copy static directory content to site root.
  */
-class CopyStatic implements StepInterface
+class CopyStatic extends AbstractStep
 {
-    protected $phpoole;
-    protected $process = false;
-
-    public function __construct(PHPoole $PHPoole)
-    {
-        $this->phpoole = $PHPoole;
-    }
-
-    public function init()
-    {
-        $this->process = true;
-    }
-
-    public function process()
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \PHPoole\Exception\Exception
+     */
+    public function internalProcess()
     {
         call_user_func_array($this->phpoole->getMessageCb(), ['COPY', 'Copy static files']);
         // copy theme static dir if exists

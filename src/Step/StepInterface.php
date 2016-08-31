@@ -12,9 +12,33 @@ use PHPoole\PHPoole;
 
 interface StepInterface
 {
-    public function __construct(PHPoole $PHPoole);
+    /**
+     * StepInterface constructor.
+     *
+     * @param PHPoole $phpoole
+     *
+     * @return void
+     */
+    public function __construct(PHPoole $phpoole);
 
+    /**
+     * Checks if step can be processed.
+     *
+     * @return void
+     */
     public function init();
 
+    /**
+     * Public call to process.
+     *
+     * @return void
+     */
     public function process();
+
+    /**
+     * Process implementation.
+     *
+     * @return void
+     */
+    function internalProcess();
 }

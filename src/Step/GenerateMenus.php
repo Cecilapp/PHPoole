@@ -12,27 +12,16 @@ use PHPoole\Menu\Collection as MenusCollection;
 use PHPoole\Menu\Entry;
 use PHPoole\Menu\Menu;
 use PHPoole\Page\Page;
-use PHPoole\PHPoole;
 
 /**
  * Generates menus.
  */
-class GenerateMenus implements StepInterface
+class GenerateMenus extends AbstractStep
 {
-    protected $phpoole;
-    protected $process = false;
-
-    public function __construct(PHPoole $PHPoole)
-    {
-        $this->phpoole = $PHPoole;
-    }
-
-    public function init()
-    {
-        $this->process = true;
-    }
-
-    public function process()
+    /**
+     * {@inheritdoc}
+     */
+    public function internalProcess()
     {
         $this->phpoole->setMenus(new MenusCollection());
         $this->collectPages();
