@@ -8,7 +8,6 @@
 
 namespace PHPoole\Generator;
 
-use PHPoole\Config;
 use PHPoole\Page\Collection as PageCollection;
 use PHPoole\Page\NodeType;
 use PHPoole\Page\Page;

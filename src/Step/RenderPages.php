@@ -101,16 +101,15 @@ class RenderPages extends AbstractStep
             (new Layout())->finder($page, $this->phpoole->getConfig()),
             ['page' => $page]
         );
-
-        // force pathname of a (non virtual) node page
+        // force pathname of a file node page (ie: "section/index.md")
         if ($page->getName() == 'index') {
             $pathname = $dir.'/'.$page->getPath().'/'.$this->phpoole->getConfig()->get('output.filename');
-            // pathname of a (normal) page
         } else {
-            if (empty(pathinfo($page->getPermalink(), PATHINFO_EXTENSION))) {
-                $pathname = $dir.'/'.$page->getPermalink().'/'.$this->phpoole->getConfig()->get('output.filename');
-            } else {
+            // custom extension
+            if (!empty(pathinfo($page->getPermalink(), PATHINFO_EXTENSION))) {
                 $pathname = $dir.'/'.$page->getPermalink();
+            } else {
+                $pathname = $dir.'/'.$page->getPermalink().'/'.$this->phpoole->getConfig()->get('output.filename');
             }
         }
         // remove unnecessary slashes
