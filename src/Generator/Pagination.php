@@ -54,7 +54,7 @@ class Pagination implements GeneratorInterface
             if (is_int($paginateMax) && count($pages) > $paginateMax) {
                 $paginateCount = ceil(count($pages) / $paginateMax);
                 for ($i = 0; $i < $paginateCount; $i++) {
-                    $pagesInPagination = array_slice($pages, ($i * $paginateMax), ($i * $paginateMax) + $paginateMax);
+                    $pagesInPagination = array_slice($pages, ($i * $paginateMax), $paginateMax);
                     $alteredPage = clone $page;
                     // first page
                     if ($i == 0) {
