@@ -46,13 +46,13 @@ class Section implements GeneratorInterface
         // adds node pages to collection
         if (count($sections) > 0) {
             $menuWeight = 100;
-            foreach ($sections as $node => $pages) {
-                if (!$pageCollection->has($node)) {
+            foreach ($sections as $section => $pages) {
+                if (!$pageCollection->has($section.'/index')) {
                     usort($pages, 'PHPoole\Page\Utils::sortByDate');
                     $page = (new Page())
-                        ->setId(Page::urlize(sprintf('%s/index', $node)))
-                        ->setPathname(Page::urlize(sprintf('%s', $node)))
-                        ->setTitle(ucfirst($node))
+                        ->setId(Page::urlize(sprintf('%s/index', $section)))
+                        ->setPathname(Page::urlize(sprintf('%s', $section)))
+                        ->setTitle(ucfirst($section))
                         ->setNodeType(NodeType::SECTION)
                         ->setVariable('pages', $pages)
                         ->setVariable('menu', [
