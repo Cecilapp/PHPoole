@@ -36,8 +36,14 @@ class Alias implements GeneratorInterface
 
         /* @var $page Page */
         foreach ($pageCollection as $page) {
+            $aliases = [];
             if ($page->hasVariable('aliases')) {
                 $aliases = $page->getVariable('aliases');
+            }
+            if ($page->hasVariable('alias')) {
+                $aliases[] = $page->getVariable('alias');
+            }
+            if (!empty($aliases)) {
                 foreach ($aliases as $alias) {
                     /* @var $aliasPage Page */
                     $aliasPage = (new Page())
