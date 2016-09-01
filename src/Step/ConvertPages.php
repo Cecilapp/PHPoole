@@ -15,7 +15,7 @@ use PHPoole\Page\Page;
 /**
  * Converts content of all pages.
  */
-class ConvertPages extends AbstractStep
+class ConvertPages extends StepAbstract
 {
     /**
      * {@inheritdoc}

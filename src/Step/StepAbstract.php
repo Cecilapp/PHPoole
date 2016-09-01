@@ -10,7 +10,7 @@ namespace PHPoole\Step;
 
 use PHPoole\PHPoole;
 
-abstract class AbstractStep implements StepInterface
+abstract class StepAbstract implements StepInterface
 {
     protected $phpoole;
     protected $process = false;

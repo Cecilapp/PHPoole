@@ -8,12 +8,12 @@
 
 namespace PHPoole\Taxonomy;
 
-use PHPoole\Collection\AbstractCollection;
+use PHPoole\Collection\CollectionAbstract;
 
 /**
  * Class Collection.
  */
-class Collection extends AbstractCollection
+class Collection extends CollectionAbstract
 {
     /**
      * Return a Vocabulary collection (creates it if not exists)

@@ -8,12 +8,12 @@
 
 namespace PHPoole\Menu;
 
-use PHPoole\Collection\AbstractCollection;
+use PHPoole\Collection\CollectionAbstract;
 
 /**
  * Class Collection.
  */
-class Collection extends AbstractCollection
+class Collection extends CollectionAbstract
 {
     /**
      * Return a Menu collection (creates it if not exists)

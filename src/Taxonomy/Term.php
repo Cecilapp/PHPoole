@@ -8,12 +8,12 @@
 
 namespace PHPoole\Taxonomy;
 
-use PHPoole\Collection\AbstractCollection;
+use PHPoole\Collection\CollectionAbstract;
 use PHPoole\Collection\ItemInterface;
 
 /**
  * Class Term.
  */
-class Term extends AbstractCollection implements ItemInterface
+class Term extends CollectionAbstract implements ItemInterface
 {
 }

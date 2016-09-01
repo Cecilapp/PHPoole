@@ -9,9 +9,9 @@
 namespace PHPoole\Collection;
 
 /**
- * Class AbstractItem.
+ * Class ItemAbstract.
  */
-abstract class AbstractItem implements ItemInterface, \ArrayAccess
+abstract class ItemAbstract implements ItemInterface, \ArrayAccess
 {
     /**
      * Item properties.
@@ -21,7 +21,7 @@ abstract class AbstractItem implements ItemInterface, \ArrayAccess
     protected $properties = [];
 
     /**
-     * AbstractItem constructor.
+     * ItemAbstract constructor.
      *
      * @param string $id
      */

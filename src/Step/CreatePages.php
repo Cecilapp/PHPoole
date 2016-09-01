@@ -15,7 +15,7 @@ use PHPoole\PHPoole;
 /**
  * Create Pages collection from content iterator.
  */
-class CreatePages extends AbstractStep
+class CreatePages extends StepAbstract
 {
     /**
      * {@inheritdoc}

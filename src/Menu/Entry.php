@@ -8,12 +8,12 @@
 
 namespace PHPoole\Menu;
 
-use PHPoole\Collection\AbstractItem;
+use PHPoole\Collection\ItemAbstract;
 
 /**
  * Class Entry.
  */
-class Entry extends AbstractItem
+class Entry extends ItemAbstract
 {
     /**
      * Set menu entry name.

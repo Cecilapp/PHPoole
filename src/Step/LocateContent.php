@@ -14,7 +14,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * Locates content.
  */
-class LocateContent extends AbstractStep
+class LocateContent extends StepAbstract
 {
     /**
      * {@inheritdoc}
