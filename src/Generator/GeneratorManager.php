@@ -51,24 +51,26 @@ class GeneratorManager extends \SplPriorityQueue
     {
         $max = $this->count();
 
-        $this->top();
-        while ($this->valid()) {
-            /* @var GeneratorInterface $generator */
-            $generator = $this->current();
-            /* @var $generatedPages PageCollection */
-            $generatedPages = $generator->generate($pageCollection, $messageCallback);
-            foreach ($generatedPages as $page) {
-                /* @var $page \PHPoole\Page\Page */
-                if ($pageCollection->has($page->getId())) {
-                    $pageCollection->replace($page->getId(), $page);
-                } else {
-                    $pageCollection->add($page);
+        if ($max > 0) {
+            $this->top();
+            while ($this->valid()) {
+                /* @var GeneratorInterface $generator */
+                $generator = $this->current();
+                /* @var $generatedPages PageCollection */
+                $generatedPages = $generator->generate($pageCollection, $messageCallback);
+                foreach ($generatedPages as $page) {
+                    /* @var $page \PHPoole\Page\Page */
+                    if ($pageCollection->has($page->getId())) {
+                        $pageCollection->replace($page->getId(), $page);
+                    } else {
+                        $pageCollection->add($page);
+                    }
                 }
+                $message = substr(strrchr(get_class($generator), '\\'), 1).': '.count($generatedPages);
+                $count = ($max - $this->key());
+                call_user_func_array($messageCallback, ['GENERATE_PROGRESS', $message, $count, $max]);
+                $this->next();
             }
-            $message = substr(strrchr(get_class($generator), '\\'), 1).': '.count($generatedPages);
-            $count = ($max - $this->key());
-            call_user_func_array($messageCallback, ['GENERATE_PROGRESS', $message, $count, $max]);
-            $this->next();
         }
 
         return $pageCollection;

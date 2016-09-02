@@ -131,7 +131,7 @@ class Taxonomy implements GeneratorInterface
                  * ex: /tags/
                  */
                 $page = (new Page())
-                    ->setId(strtolower($plural))
+                    ->setId(Page::urlize($plural))
                     ->setPathname(strtolower($plural))
                     ->setTitle($plural)
                     ->setNodeType(NodeType::TERMS)

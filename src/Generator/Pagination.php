@@ -45,13 +45,13 @@ class Pagination implements GeneratorInterface
                 return $generatedPages;
             }
 
-            $paginateMax = $this->config->get('site.paginate.max');
+            $paginateMax = intval($this->config->get('site.paginate.max'));
             $paginatePath = $this->config->get('site.paginate.path');
             $pages = $page->getVariable('pages');
             $path = $page->getPathname();
 
             // paginate
-            if (is_int($paginateMax) && count($pages) > $paginateMax) {
+            if (count($pages) > $paginateMax) {
                 $paginateCount = ceil(count($pages) / $paginateMax);
                 for ($i = 0; $i < $paginateCount; $i++) {
                     $pagesInPagination = array_slice($pages, ($i * $paginateMax), $paginateMax);

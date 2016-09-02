@@ -47,7 +47,7 @@ class Alias implements GeneratorInterface
                 foreach ($aliases as $alias) {
                     /* @var $aliasPage Page */
                     $aliasPage = (new Page())
-                        ->setId($alias)
+                        ->setId($alias.'/redirect')
                         ->setPathname(Page::urlize($alias))
                         ->setTitle($alias)
                         ->setLayout('redirect.html')
