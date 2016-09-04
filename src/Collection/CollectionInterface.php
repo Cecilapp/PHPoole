@@ -8,16 +8,10 @@
 
 namespace PHPoole\Collection;
 
-use ArrayAccess;
-use ArrayIterator;
-use Closure;
-use Countable;
-use IteratorAggregate;
-
 /**
  * Interface CollectionInterface.
  */
-interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
+interface CollectionInterface extends \Countable, \IteratorAggregate, \ArrayAccess
 {
     /**
      * Set the collection identifier.
@@ -103,36 +97,36 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
     public function toArray();
 
     /**
-     * Implement IteratorAggregate.
+     * Implement \IteratorAggregate.
      *
-     * @return ArrayIterator
+     * @return \ArrayIterator
      */
     public function getIterator();
 
     /**
      * Implements usort.
      *
-     * @param Closure|null $callback
+     * @param \Closure|null $callback
      *
      * @return CollectionInterface
      */
-    public function usort(Closure $callback = null);
+    public function usort(\Closure $callback = null);
 
     /**
      * Filters items using a callback function.
      *
-     * @param Closure $callback
+     * @param \Closure $callback
      *
      * @return CollectionInterface
      */
-    public function filter(Closure $callback);
+    public function filter(\Closure $callback);
 
     /**
      * Applies a callback to items.
      *
-     * @param Closure $callback
+     * @param \Closure $callback
      *
      * @return CollectionInterface
      */
-    public function map(Closure $callback);
+    public function map(\Closure $callback);
 }

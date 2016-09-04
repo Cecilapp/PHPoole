@@ -61,4 +61,26 @@ class Util
             throw new \RuntimeException('Process error');
         }
     }
+
+    /**
+     * Sort array by 'date' item.
+     *
+     * @param $a
+     * @param $b
+     * @return int
+     */
+    public static function sortByDate($a, $b)
+    {
+        if (!isset($a['date'])) {
+            return -1;
+        }
+        if (!isset($b['date'])) {
+            return 1;
+        }
+        if ($a['date'] == $b['date']) {
+            return 0;
+        }
+
+        return ($a['date'] > $b['date']) ? -1 : 1;
+    }
 }

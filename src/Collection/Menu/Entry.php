@@ -6,14 +6,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPoole\Menu;
+namespace PHPoole\Collection\Menu;
 
-use PHPoole\Collection\AbstractItem;
+use PHPoole\Collection\Item;
 
 /**
  * Class Entry.
  */
-class Entry extends AbstractItem
+class Entry extends Item
 {
     /**
      * Set menu entry name.

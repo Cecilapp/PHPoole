@@ -6,15 +6,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPoole\Taxonomy;
+namespace PHPoole\Collection\Taxonomy;
 
-use PHPoole\Collection\AbstractCollection;
+use PHPoole\Collection\Collection as PHPooleCollection;
 use PHPoole\Collection\ItemInterface;
 
 /**
  * Class Vocabulary.
  */
-class Vocabulary extends AbstractCollection implements ItemInterface
+class Vocabulary extends PHPooleCollection implements ItemInterface
 {
     /**
      * Adds term to a Vocabulary collection.

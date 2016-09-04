@@ -8,9 +8,8 @@
 
 namespace PHPoole\Step;
 
-use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\Page;
-use PHPoole\PHPoole;
+use PHPoole\Collection\Collection as PageCollection;
+use PHPoole\Collection\Page\Page;
 
 /**
  * Create Pages collection from content iterator.

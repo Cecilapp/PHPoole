@@ -6,14 +6,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPoole\Taxonomy;
+namespace PHPoole\Collection\Taxonomy;
 
-use PHPoole\Collection\AbstractCollection;
+use PHPoole\Collection\Collection as PHPooleCollection;
 use PHPoole\Collection\ItemInterface;
 
 /**
  * Class Term.
  */
-class Term extends AbstractCollection implements ItemInterface
+class Term extends PHPooleCollection implements ItemInterface
 {
 }

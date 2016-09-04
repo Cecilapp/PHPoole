@@ -10,7 +10,7 @@ namespace PHPoole\Step;
 
 use PHPoole\Converter\Converter;
 use PHPoole\Exception\Exception;
-use PHPoole\Page\Page;
+use PHPoole\Collection\Page\Page;
 
 /**
  * Converts content of all pages.

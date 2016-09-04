@@ -9,7 +9,6 @@
 namespace PHPoole\Step;
 
 use PHPoole\Generator\GeneratorManager;
-use PHPoole\PHPoole;
 
 /**
  * Generates virtual pages.

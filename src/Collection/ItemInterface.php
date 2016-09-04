@@ -11,7 +11,7 @@ namespace PHPoole\Collection;
 /**
  * Interface ItemInterface.
  */
-interface ItemInterface
+interface ItemInterface extends \ArrayAccess
 {
     /**
      * Set the item identifier.

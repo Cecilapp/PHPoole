@@ -9,8 +9,7 @@
 namespace PHPoole\Step;
 
 use PHPoole\Exception\Exception;
-use PHPoole\Page\Page;
-use PHPoole\PHPoole;
+use PHPoole\Collection\Page\Page;
 use PHPoole\Renderer\Layout;
 use PHPoole\Renderer\Twig as Twig;
 use PHPoole\Util;
