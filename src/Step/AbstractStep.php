@@ -44,5 +44,5 @@ abstract class AbstractStep implements StepInterface
     /**
      * {@inheritdoc}
      */
-    abstract function internalProcess();
+    abstract public function internalProcess();
 }

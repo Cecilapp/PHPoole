@@ -24,7 +24,7 @@ interface GeneratorInterface
 
     /**
      * @param \PHPoole\Collection\Collection $pageCollection
-     * @param \Closure                 $messageCallback
+     * @param \Closure                       $messageCallback
      *
      * @return \PHPoole\Collection\Collection
      */
