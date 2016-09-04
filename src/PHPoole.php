@@ -8,9 +8,8 @@
 
 namespace PHPoole;
 
+use PHPoole\Collection\Collection as PageCollection;
 use PHPoole\Generator\GeneratorManager;
-use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Step\StepInterface;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -57,7 +56,7 @@ class PHPoole
     /**
      * Collection of site menus.
      *
-     * @var Menu\Collection
+     * @var Collection\Menu\Collection
      */
     protected $menus;
     /**
@@ -196,7 +195,7 @@ class PHPoole
     }
 
     /**
-     * @return Menu\Collection
+     * @return Collection\Menu\Collection
      */
     public function getMenus()
     {
@@ -268,7 +267,7 @@ class PHPoole
         $steps = [];
         // init...
         foreach ($this->steps as $step) {
-            /* @var $stepClass StepInterface */
+            /* @var $stepClass Step\StepInterface */
             $stepClass = new $step($this);
             $stepClass->init();
             $steps[] = $stepClass;
@@ -276,7 +275,7 @@ class PHPoole
         $this->steps = $steps;
         // ... and process!
         foreach ($this->steps as $step) {
-            /* @var $step StepInterface */
+            /* @var $step Step\StepInterface */
             $step->process();
         }
         // time

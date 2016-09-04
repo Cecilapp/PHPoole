@@ -40,4 +40,9 @@ abstract class AbstractStep implements StepInterface
             $this->internalProcess();
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function internalProcess();
 }

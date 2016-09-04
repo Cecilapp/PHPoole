@@ -8,10 +8,8 @@
 
 namespace PHPoole\Step;
 
-use PHPoole\Menu\Collection as MenusCollection;
-use PHPoole\Menu\Entry;
-use PHPoole\Menu\Menu;
-use PHPoole\Page\Page;
+use PHPoole\Collection\Menu\Collection as MenusCollection;
+use PHPoole\Collection\Menu\Entry;
 
 /**
  * Generates menus.
@@ -44,7 +42,7 @@ class GenerateMenus extends AbstractStep
          */
         if (!empty($this->phpoole->getConfig()->get('site.menu'))) {
             foreach ($this->phpoole->getConfig()->get('site.menu') as $name => $entry) {
-                /* @var $menu Menu */
+                /* @var $menu \PHPoole\Collection\Menu\Menu */
                 $menu = $this->phpoole->getMenus()->get($name);
                 foreach ($entry as $property) {
                     // remove disable entries
@@ -71,7 +69,7 @@ class GenerateMenus extends AbstractStep
     protected function collectPages()
     {
         foreach ($this->phpoole->getPages() as $page) {
-            /* @var $page Page */
+            /* @var $page \PHPoole\Collection\Page\Page */
             if (!empty($page['menu'])) {
                 /*
                  * Single case
@@ -82,7 +80,7 @@ class GenerateMenus extends AbstractStep
                     $item = (new Entry($page->getId()))
                         ->setName($page->getTitle())
                         ->setUrl($page->getPermalink());
-                    /* @var $menu Menu */
+                    /* @var $menu \PHPoole\Collection\Menu\Menu */
                     $menu = $this->phpoole->getMenus()->get($page['menu']);
                     $menu->add($item);
                 } else {
@@ -100,7 +98,7 @@ class GenerateMenus extends AbstractStep
                                 ->setName($page->getTitle())
                                 ->setUrl($page->getPermalink())
                                 ->setWeight($value['weight']);
-                            /* @var $menu Menu */
+                            /* @var $menu \PHPoole\Collection\Menu\Menu */
                             $menu = $this->phpoole->getMenus()->get($name);
                             $menu->add($item);
                         }

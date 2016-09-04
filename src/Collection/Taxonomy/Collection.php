@@ -6,14 +6,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPoole\Taxonomy;
+namespace PHPoole\Collection\Taxonomy;
 
-use PHPoole\Collection\AbstractCollection;
+use PHPoole\Collection\Collection as PHPooleCollection;
 
 /**
  * Class Collection.
  */
-class Collection extends AbstractCollection
+class Collection extends PHPooleCollection
 {
     /**
      * Return a Vocabulary collection (creates it if not exists)

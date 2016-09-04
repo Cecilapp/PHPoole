@@ -11,10 +11,10 @@ namespace PHPoole\Renderer\Twig;
 use Cocur\Slugify\Bridge\Twig\SlugifyExtension;
 use Cocur\Slugify\Slugify;
 use MatthiasMullie\Minify;
-use PHPoole\Collection\AbstractCollection;
+use PHPoole\Collection\Collection;
 use PHPoole\Collection\CollectionInterface;
+use PHPoole\Collection\Page\Page;
 use PHPoole\Exception\Exception;
-use PHPoole\Page\Page;
 
 /**
  * Class Twig\Extension.
@@ -144,7 +144,7 @@ class Extension extends SlugifyExtension
             return ($a['title'] > $b['title']) ? -1 : 1;
         };
 
-        if ($array instanceof AbstractCollection) {
+        if ($array instanceof Collection) {
             $array = $array->toArray();
         }
         if (is_array($array)) {
@@ -177,7 +177,7 @@ class Extension extends SlugifyExtension
             return ($a['weight'] < $b['weight']) ? -1 : 1;
         };
 
-        if ($array instanceof AbstractCollection) {
+        if ($array instanceof Collection) {
             $array = $array->toArray();
         }
         if (is_array($array)) {

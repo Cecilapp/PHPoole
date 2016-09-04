@@ -8,14 +8,10 @@
 
 namespace PHPoole\Collection;
 
-use ArrayIterator;
-use Closure;
-use DomainException;
-
 /**
- * Class AbstractCollection.
+ * Class Collection.
  */
-abstract class AbstractCollection implements CollectionInterface
+class Collection implements CollectionInterface
 {
     /**
      * Collections's identifier.
@@ -80,7 +76,7 @@ abstract class AbstractCollection implements CollectionInterface
     public function add(ItemInterface $item)
     {
         if ($this->has($item->getId())) {
-            throw new DomainException(sprintf(
+            throw new \DomainException(sprintf(
                 'Failed adding item "%s": an item with that id has already been added.',
                 $item->getId()
             ));
@@ -98,7 +94,7 @@ abstract class AbstractCollection implements CollectionInterface
         if ($this->has($id)) {
             $this->items[$id] = $item;
         } else {
-            throw new DomainException(sprintf(
+            throw new \DomainException(sprintf(
                 'Failed replacing item "%s": item does not exist.',
                 $item->getId()
             ));
@@ -113,7 +109,7 @@ abstract class AbstractCollection implements CollectionInterface
         if ($this->has($id)) {
             unset($this->items[$id]);
         } else {
-            throw new DomainException(sprintf(
+            throw new \DomainException(sprintf(
                 'Failed removing item with ID "%s": item does not exist.',
                 $id
             ));
@@ -161,13 +157,13 @@ abstract class AbstractCollection implements CollectionInterface
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->items);
+        return new \ArrayIterator($this->items);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function usort(Closure $callback = null)
+    public function usort(\Closure $callback = null)
     {
         $items = $this->items;
         $callback ? uasort($items, $callback) : uasort($items, function ($a, $b) {
@@ -184,7 +180,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * Sort items by date.
      *
-     * @return AbstractCollection
+     * @return Collection
      */
     public function sortByDate()
     {
@@ -206,9 +202,9 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * {@inheritdoc}
      *
-     * @return AbstractCollection
+     * @return Collection
      */
-    public function filter(Closure $callback)
+    public function filter(\Closure $callback)
     {
         return new static(self::getId(), array_filter($this->items, $callback));
     }
@@ -216,7 +212,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function map(Closure $callback)
+    public function map(\Closure $callback)
     {
         return new static(self::getId(), array_map($callback, $this->items));
     }

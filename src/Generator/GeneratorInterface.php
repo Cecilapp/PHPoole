@@ -23,10 +23,10 @@ interface GeneratorInterface
     public function __construct(\PHPoole\Config $config);
 
     /**
-     * @param \PHPoole\Page\Collection $pageCollection
-     * @param \Closure                 $messageCallback
+     * @param \PHPoole\Collection\Collection $pageCollection
+     * @param \Closure                       $messageCallback
      *
-     * @return \PHPoole\Page\Collection
+     * @return \PHPoole\Collection\Collection
      */
-    public function generate(\PHPoole\Page\Collection $pageCollection, \Closure $messageCallback);
+    public function generate(\PHPoole\Collection\Collection $pageCollection, \Closure $messageCallback);
 }

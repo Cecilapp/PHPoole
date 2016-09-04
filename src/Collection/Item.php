@@ -9,9 +9,9 @@
 namespace PHPoole\Collection;
 
 /**
- * Class AbstractItem.
+ * Class Item.
  */
-abstract class AbstractItem implements ItemInterface, \ArrayAccess
+class Item implements ItemInterface
 {
     /**
      * Item properties.

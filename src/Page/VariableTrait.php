@@ -8,14 +8,23 @@
 
 namespace PHPoole\Page;
 
-use PHPoole\Collection\AbstractItem;
 use PHPoole\Exception\Exception;
 
 /**
  * Helper to set and get page variables.
+ *
+ * @property array properties
  */
-class PageItem extends AbstractItem
+trait VariableTrait
 {
+    abstract public function offsetExists($offset);
+
+    abstract public function offsetGet($offset);
+
+    abstract public function offsetSet($offset, $value);
+
+    abstract public function offsetUnset($offset);
+
     /**
      * Set variables.
      *

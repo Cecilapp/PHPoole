@@ -8,10 +8,10 @@
 
 namespace PHPoole\Renderer;
 
+use PHPoole\Collection\Page\Page;
 use PHPoole\Config;
 use PHPoole\Exception\Exception;
 use PHPoole\Page\NodeType;
-use PHPoole\Page\Page;
 use PHPoole\Util;
 
 /**

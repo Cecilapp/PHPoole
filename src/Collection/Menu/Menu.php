@@ -6,15 +6,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPoole\Menu;
+namespace PHPoole\Collection\Menu;
 
-use PHPoole\Collection\AbstractCollection;
+use PHPoole\Collection\Collection as PHPooleCollection;
 use PHPoole\Collection\ItemInterface;
 
 /**
  * Class Menu.
  */
-class Menu extends AbstractCollection implements ItemInterface
+class Menu extends PHPooleCollection implements ItemInterface
 {
     /**
      * Add menu entry.

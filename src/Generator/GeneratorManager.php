@@ -8,7 +8,7 @@
 
 namespace PHPoole\Generator;
 
-use PHPoole\Page\Collection as PageCollection;
+use PHPoole\Collection\Collection as PageCollection;
 
 class GeneratorManager extends \SplPriorityQueue
 {
@@ -59,7 +59,7 @@ class GeneratorManager extends \SplPriorityQueue
                 /* @var $generatedPages PageCollection */
                 $generatedPages = $generator->generate($pageCollection, $messageCallback);
                 foreach ($generatedPages as $page) {
-                    /* @var $page \PHPoole\Page\Page */
+                    /* @var $page \PHPoole\Collection\Page\Page */
                     if ($pageCollection->has($page->getId())) {
                         $pageCollection->replace($page->getId(), $page);
                     } else {

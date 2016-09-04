@@ -6,16 +6,22 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPoole\Page;
+namespace PHPoole\Collection\Page;
 
 use Cocur\Slugify\Slugify;
+use PHPoole\Collection\Item;
+use PHPoole\Page\NodeType;
+use PHPoole\Page\Parser;
+use PHPoole\Page\VariableTrait;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Class Page.
  */
-class Page extends PageItem
+class Page extends Item
 {
+    use VariableTrait;
+
     const SLUGIFY_PATTERN = '/(^\/|[^a-z0-9\/]|-)+/';
 
     /**
