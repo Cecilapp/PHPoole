@@ -13,9 +13,9 @@ use Closure;
 use DomainException;
 
 /**
- * Class AbstractCollection.
+ * Class CollectionAbstract.
  */
-abstract class AbstractCollection implements CollectionInterface
+abstract class CollectionAbstract implements CollectionInterface
 {
     /**
      * Collections's identifier.
@@ -32,7 +32,7 @@ abstract class AbstractCollection implements CollectionInterface
     protected $items = [];
 
     /**
-     * AbstractCollection constructor.
+     * CollectionAbstract constructor.
      *
      * @param string|null $id
      * @param array       $items
@@ -184,7 +184,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * Sort items by date.
      *
-     * @return AbstractCollection
+     * @return CollectionAbstract
      */
     public function sortByDate()
     {
@@ -206,7 +206,7 @@ abstract class AbstractCollection implements CollectionInterface
     /**
      * {@inheritdoc}
      *
-     * @return AbstractCollection
+     * @return CollectionAbstract
      */
     public function filter(Closure $callback)
     {

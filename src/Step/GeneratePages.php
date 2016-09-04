@@ -14,7 +14,7 @@ use PHPoole\PHPoole;
 /**
  * Generates virtual pages.
  */
-class GeneratePages extends AbstractStep
+class GeneratePages extends StepAbstract
 {
     /**
      * {@inheritdoc}

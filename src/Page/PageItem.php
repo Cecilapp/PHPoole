@@ -8,13 +8,13 @@
 
 namespace PHPoole\Page;
 
-use PHPoole\Collection\AbstractItem;
+use PHPoole\Collection\ItemAbstract;
 use PHPoole\Exception\Exception;
 
 /**
  * Helper to set and get page variables.
  */
-class PageItem extends AbstractItem
+class PageItem extends ItemAbstract
 {
     /**
      * Set variables.

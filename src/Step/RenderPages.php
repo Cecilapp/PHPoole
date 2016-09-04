@@ -21,7 +21,7 @@ use PHPoole\Util;
  * 2. Applies Twig templates
  * 3. Saves rendered files.
  */
-class RenderPages extends AbstractStep
+class RenderPages extends StepAbstract
 {
     /**
      * {@inheritdoc}

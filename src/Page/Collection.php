@@ -8,11 +8,11 @@
 
 namespace PHPoole\Page;
 
-use PHPoole\Collection\AbstractCollection;
+use PHPoole\Collection\CollectionAbstract;
 
 /**
  * Class Collection.
  */
-class Collection extends AbstractCollection
+class Collection extends CollectionAbstract
 {
 }

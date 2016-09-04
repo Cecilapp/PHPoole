@@ -16,7 +16,7 @@ use PHPoole\Page\Page;
 /**
  * Generates menus.
  */
-class GenerateMenus extends AbstractStep
+class GenerateMenus extends StepAbstract
 {
     /**
      * {@inheritdoc}

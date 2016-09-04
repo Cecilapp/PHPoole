@@ -8,13 +8,13 @@
 
 namespace PHPoole\Taxonomy;
 
-use PHPoole\Collection\AbstractCollection;
+use PHPoole\Collection\CollectionAbstract;
 use PHPoole\Collection\ItemInterface;
 
 /**
  * Class Vocabulary.
  */
-class Vocabulary extends AbstractCollection implements ItemInterface
+class Vocabulary extends CollectionAbstract implements ItemInterface
 {
     /**
      * Adds term to a Vocabulary collection.

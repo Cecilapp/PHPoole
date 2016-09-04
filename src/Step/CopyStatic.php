@@ -14,7 +14,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * Copy static directory content to site root.
  */
-class CopyStatic extends AbstractStep
+class CopyStatic extends StepAbstract
 {
     /**
      * {@inheritdoc}
