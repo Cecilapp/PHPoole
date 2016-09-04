@@ -13,8 +13,8 @@ use Cocur\Slugify\Slugify;
 use MatthiasMullie\Minify;
 use PHPoole\Collection\Collection;
 use PHPoole\Collection\CollectionInterface;
-use PHPoole\Exception\Exception;
 use PHPoole\Collection\Page\Page;
+use PHPoole\Exception\Exception;
 
 /**
  * Class Twig\Extension.

@@ -8,8 +8,8 @@
 
 namespace PHPoole;
 
-use PHPoole\Generator\GeneratorManager;
 use PHPoole\Collection\Collection as PageCollection;
+use PHPoole\Generator\GeneratorManager;
 use Symfony\Component\Finder\Finder;
 
 /**
