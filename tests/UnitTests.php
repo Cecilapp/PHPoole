@@ -8,9 +8,9 @@
 
 namespace PHPoole\Test;
 
-use PHPoole\Converter\Converter;
 use PHPoole\Collection\Collection as PageCollection;
 use PHPoole\Collection\Page\Page;
+use PHPoole\Converter\Converter;
 use PHPoole\PHPoole;
 use PHPoole\Step\ConvertPages;
 use Symfony\Component\Filesystem\Filesystem;

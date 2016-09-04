@@ -8,13 +8,13 @@
 
 namespace PHPoole\Generator;
 
-use PHPoole\Exception\Exception;
 use PHPoole\Collection\Collection as PageCollection;
-use PHPoole\Page\NodeType;
 use PHPoole\Collection\Page\Page;
 use PHPoole\Collection\Taxonomy\Collection as TaxonomyCollection;
 use PHPoole\Collection\Taxonomy\Term as Term;
 use PHPoole\Collection\Taxonomy\Vocabulary as Vocabulary;
+use PHPoole\Exception\Exception;
+use PHPoole\Page\NodeType;
 
 /**
  * Class Taxonomy.

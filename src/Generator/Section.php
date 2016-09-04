@@ -9,8 +9,8 @@
 namespace PHPoole\Generator;
 
 use PHPoole\Collection\Collection as PageCollection;
-use PHPoole\Page\NodeType;
 use PHPoole\Collection\Page\Page;
+use PHPoole\Page\NodeType;
 
 /**
  * Class Section.

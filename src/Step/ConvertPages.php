@@ -8,9 +8,9 @@
 
 namespace PHPoole\Step;
 
+use PHPoole\Collection\Page\Page;
 use PHPoole\Converter\Converter;
 use PHPoole\Exception\Exception;
-use PHPoole\Collection\Page\Page;
 
 /**
  * Converts content of all pages.

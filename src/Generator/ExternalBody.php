@@ -8,9 +8,9 @@
 
 namespace PHPoole\Generator;
 
-use PHPoole\Converter\Converter;
 use PHPoole\Collection\Collection as PageCollection;
 use PHPoole\Collection\Page\Page;
+use PHPoole\Converter\Converter;
 
 /**
  * Class Homepage.
