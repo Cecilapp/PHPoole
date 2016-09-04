@@ -8,25 +8,14 @@
 
 namespace PHPoole\Generator;
 
-use PHPoole\Page\Collection as PageCollection;
-use PHPoole\Page\Page;
+use PHPoole\Collection\Collection as PageCollection;
+use PHPoole\Collection\Page\Page;
 
 /**
  * Class TitleReplace.
  */
-class TitleReplace implements GeneratorInterface
+class TitleReplace extends AbstractGenerator implements GeneratorInterface
 {
-    /* @var \PHPoole\Config */
-    protected $config;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct(\PHPoole\Config $config)
-    {
-        $this->config = $config;
-    }
-
     /**
      * {@inheritdoc}
      */

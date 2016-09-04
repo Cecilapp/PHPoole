@@ -8,26 +8,15 @@
 
 namespace PHPoole\Generator;
 
-use PHPoole\Page\Collection as PageCollection;
+use PHPoole\Collection\Collection as PageCollection;
 use PHPoole\Page\NodeType;
-use PHPoole\Page\Page;
+use PHPoole\Collection\Page\Page;
 
 /**
  * Class Section.
  */
-class Section implements GeneratorInterface
+class Section extends AbstractGenerator implements GeneratorInterface
 {
-    /* @var \PHPoole\Config */
-    protected $config;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct(\PHPoole\Config $config)
-    {
-        $this->config = $config;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -48,7 +37,7 @@ class Section implements GeneratorInterface
             $menuWeight = 100;
             foreach ($sections as $section => $pages) {
                 if (!$pageCollection->has($section.'/index')) {
-                    usort($pages, 'PHPoole\Page\Utils::sortByDate');
+                    usort($pages, 'PHPoole\Util::sortByDate');
                     $page = (new Page())
                         ->setId(Page::urlize(sprintf('%s/index', $section)))
                         ->setPathname(Page::urlize(sprintf('%s', $section)))

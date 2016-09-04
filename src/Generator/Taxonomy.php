@@ -9,34 +9,24 @@
 namespace PHPoole\Generator;
 
 use PHPoole\Exception\Exception;
-use PHPoole\Page\Collection as PageCollection;
+use PHPoole\Collection\Collection as PageCollection;
 use PHPoole\Page\NodeType;
-use PHPoole\Page\Page;
-use PHPoole\Taxonomy\Collection as TaxonomyCollection;
-use PHPoole\Taxonomy\Term as Term;
-use PHPoole\Taxonomy\Vocabulary as Vocabulary;
+use PHPoole\Collection\Page\Page;
+use PHPoole\Collection\Taxonomy\Collection as TaxonomyCollection;
+use PHPoole\Collection\Taxonomy\Term as Term;
+use PHPoole\Collection\Taxonomy\Vocabulary as Vocabulary;
 
 /**
  * Class Taxonomy.
  */
-class Taxonomy implements GeneratorInterface
+class Taxonomy extends AbstractGenerator implements GeneratorInterface
 {
-    /* @var \PHPoole\Config */
-    protected $config;
     /* @var TaxonomyCollection */
     protected $taxonomies;
     /* @var PageCollection */
     protected $pageCollection;
     /* @var PageCollection */
     protected $generatedPages;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct(\PHPoole\Config $config)
-    {
-        $this->config = $config;
-    }
 
     /**
      * {@inheritdoc}
@@ -104,7 +94,7 @@ class Taxonomy implements GeneratorInterface
      */
     protected function createNodePages()
     {
-        /* @var $terms \PHPoole\Taxonomy\Vocabulary */
+        /* @var $terms Vocabulary */
         foreach ($this->taxonomies as $plural => $terms) {
             if (count($terms) > 0) {
                 /*

@@ -8,26 +8,15 @@
 
 namespace PHPoole\Generator;
 
-use PHPoole\Page\Collection as PageCollection;
+use PHPoole\Collection\Collection as PageCollection;
 use PHPoole\Page\NodeType;
-use PHPoole\Page\Page;
+use PHPoole\Collection\Page\Page;
 
 /**
  * Class Pagination.
  */
-class Pagination implements GeneratorInterface
+class Pagination extends AbstractGenerator implements GeneratorInterface
 {
-    /* @var \PHPoole\Config */
-    protected $config;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct(\PHPoole\Config $config)
-    {
-        $this->config = $config;
-    }
-
     /**
      * {@inheritdoc}
      */
