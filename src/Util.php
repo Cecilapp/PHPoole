@@ -67,6 +67,7 @@ class Util
      *
      * @param $a
      * @param $b
+     *
      * @return int
      */
     public static function sortByDate($a, $b)
