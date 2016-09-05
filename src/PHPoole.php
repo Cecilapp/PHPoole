@@ -42,9 +42,9 @@ class PHPoole
      */
     protected $config;
     /**
-     * Content iterator.
+     * Content files array.
      *
-     * @var Finder
+     * @var array
      */
     protected $content;
     /**

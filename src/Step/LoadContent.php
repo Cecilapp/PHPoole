@@ -54,13 +54,13 @@ class LoadContent extends AbstractStep
                     $this->phpoole->getConfig()->get('content.frontmatter.'.$data['frontmatter'].'.parser')
                 );
                 $content[$index] = $properties;
-                $content[$index]['content'] = '';
+                $content[$index]['id'] = $index;
                 $content[$index]['format'] = $format;
                 $content[$index]['lastmodified'] = $file->getMTime();
             }
         }
 
-        var_dump($content);
+        //print_r($content);
 
         $this->phpoole->setContent($content);
     }

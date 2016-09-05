@@ -28,11 +28,10 @@ class CreatePages extends AbstractStep
         call_user_func_array($this->phpoole->getMessageCb(), ['CREATE', 'Creating pages']);
         $max = count($this->phpoole->getContent());
         $count = 0;
-        /* @var $file \Symfony\Component\Finder\SplFileInfo */
         foreach ($this->phpoole->getContent() as $file) {
             $count++;
             /* @var $page Page */
-            $page = (new Page($file))->parse();
+            $page = new Page($file);
             $this->phpoole->getPages()->add($page);
             $message = $page->getName();
             call_user_func_array($this->phpoole->getMessageCb(), ['CREATE_PROGRESS', $message, $count, $max]);

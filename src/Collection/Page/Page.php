@@ -11,9 +11,7 @@ namespace PHPoole\Collection\Page;
 use Cocur\Slugify\Slugify;
 use PHPoole\Collection\Item;
 use PHPoole\Page\NodeType;
-use PHPoole\Page\Parser;
 use PHPoole\Page\VariableTrait;
-use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Class Page.
@@ -22,10 +20,8 @@ class Page extends Item
 {
     use VariableTrait;
 
-    const SLUGIFY_PATTERN = '/(^\/|[^a-z0-9\/]|-)+/';
-
     /**
-     * @var SplFileInfo
+     * @var array
      */
     protected $file;
     /**
@@ -41,10 +37,6 @@ class Page extends Item
      */
     protected $fileId;
 
-    /**
-     * @var bool
-     */
-    protected $virtual = false;
     /**
      * @var string
      */
@@ -83,73 +75,45 @@ class Page extends Item
     /**
      * Constructor.
      *
-     * @param null|SplFileInfo $file
+     * @param array|null $file
      */
-    public function __construct(SplFileInfo $file = null)
+    public function __construct($file = null)
     {
         $this->file = $file;
 
-        if ($this->file instanceof SplFileInfo) {
-            // file extension: "md"
-            $this->fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
-            // file path: "Blog"
-            $this->filePath = str_replace(DIRECTORY_SEPARATOR, '/', $this->file->getRelativePath());
-            // file id: "Blog/Post 1"
-            $this->fileId = ($this->filePath ? $this->filePath.'/' : '')
-                .basename($this->file->getBasename(), '.'.$this->fileExtension);
-            /*
-             * variables default values
-             */
-            // id - ie: "blog/post-1"
-            $this->id = $this->urlize($this->fileId);
-            // pathname - ie: "blog/post-1"
-            $this->pathname = $this->urlize($this->fileId);
-            // path - ie: "blog"
-            $this->path = $this->urlize($this->filePath);
-            // name - ie: "post-1"
-            $this->name = $this->urlize(basename($this->file->getBasename(), '.'.$this->fileExtension));
-            /*
-             * front matter default values
-             */
-            // title - ie: "Post 1"
-            $this->setTitle(basename($this->file->getBasename(), '.'.$this->fileExtension));
-            // section - ie: "blog"
-            $this->setSection(explode('/', $this->path)[0]);
-            // date
-            $this->setDate(filemtime($this->file->getPathname()));
-            // permalink
-            $this->setPermalink($this->pathname);
+        print_r($this->file = $file);
 
-            parent::__construct($this->id);
-        } else {
-            $this->virtual = true;
+        // file extension: "md"
+        $this->fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
+        // file path: "Blog"
+        $this->filePath = str_replace(DIRECTORY_SEPARATOR, '/', $this->file->getRelativePath());
+        // file id: "Blog/Post 1"
+        $this->fileId = ($this->filePath ? $this->filePath.'/' : '')
+            .basename($this->file->getBasename(), '.'.$this->fileExtension);
+        /*
+         * variables default values
+         */
+        // id - ie: "blog/post-1"
+        $this->id = $this->urlize($this->fileId);
+        // pathname - ie: "blog/post-1"
+        $this->pathname = $this->urlize($this->fileId);
+        // path - ie: "blog"
+        $this->path = $this->urlize($this->filePath);
+        // name - ie: "post-1"
+        $this->name = $this->urlize(basename($this->file->getBasename(), '.'.$this->fileExtension));
+        /*
+         * front matter default values
+         */
+        // title - ie: "Post 1"
+        $this->setTitle(basename($this->file->getBasename(), '.'.$this->fileExtension));
+        // section - ie: "blog"
+        $this->setSection(explode('/', $this->path)[0]);
+        // date
+        $this->setDate(filemtime($this->file->getPathname()));
+        // permalink
+        $this->setPermalink($this->pathname);
 
-            parent::__construct();
-        }
-    }
-
-    /**
-     * Format string into URL.
-     *
-     * @param $string
-     *
-     * @return string
-     */
-    public static function urlize($string)
-    {
-        return Slugify::create([
-            'regexp' => self::SLUGIFY_PATTERN,
-        ])->slugify($string);
-    }
-
-    /**
-     * Is current page is virtual?
-     *
-     * @return bool
-     */
-    public function isVirtual()
-    {
-        return $this->virtual;
+        parent::__construct($this->id);
     }
 
     /**
@@ -174,21 +138,6 @@ class Page extends Item
     public function getNodeType()
     {
         return $this->nodeType;
-    }
-
-    /**
-     * Parse file content.
-     *
-     * @return $this
-     */
-    public function parse()
-    {
-        $parser = new Parser($this->file);
-        $parsed = $parser->parse();
-        $this->frontmatter = $parsed->getFrontmatter();
-        $this->body = $parsed->getBody();
-
-        return $this;
     }
 
     /**
