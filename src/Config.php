@@ -59,24 +59,24 @@ class Config
             ],
         ],
         'content' => [
-            'dir' => 'content',
+            'dir'    => 'content',
             'format' => [
                 'text' => [
-                    'ext' => ['text', 'txt'],
+                    'ext'         => ['text', 'txt'],
                     'frontmatter' => 'yaml',
                 ],
                 'markdown' => [
-                    'ext' => ['md', 'markdown', 'mdown', 'mkdn', 'mkd'],
-                    'parser' => 'PHPoole\Parser\Parsedown',
+                    'ext'         => ['md', 'markdown', 'mdown', 'mkdn', 'mkd'],
+                    'parser'      => 'PHPoole\Parser\Parsedown',
                     'frontmatter' => 'yaml',
                 ],
                 'textile' => [
-                    'ext' => ['textile'],
-                    'parser' => 'PHPoole\Parser\Textile',
+                    'ext'         => ['textile'],
+                    'parser'      => 'PHPoole\Parser\Textile',
                     'frontmatter' => 'yaml',
                 ],
                 'yaml' => [
-                    'ext' => ['yaml', 'yaml'],
+                    'ext'    => ['yaml', 'yaml'],
                     'parser' => 'PHPoole\Parser\SfYaml',
                 ],
             ],
@@ -179,6 +179,7 @@ class Config
 
     /**
      * @param $key
+     *
      * @return Data
      */
     public function getData($key)

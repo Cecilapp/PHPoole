@@ -20,6 +20,7 @@ class LoadContent extends AbstractStep
     // pattern of a file with a front matter
     // https://regex101.com/r/xH7cL3/1
     const PATTERN = '^\s*(?:<!--|---|\+++){1}[\n\r\s]*(.*?)[\n\r\s]*(?:-->|---|\+++){1}[\s\n\r]*(.*)$';
+
     /**
      * {@inheritdoc}
      *
@@ -77,7 +78,6 @@ class LoadContent extends AbstractStep
      * ```
      *
      * @param string $content
-     *
      * @param string $fmParser Class name
      *
      * @return array
