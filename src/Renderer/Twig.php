@@ -93,6 +93,7 @@ class Twig implements RendererInterface
             if ($min === 0) {
                 return '1';
             }
+
             return $min;
         });
         $this->twig->addFunction($readtimeFunction);
