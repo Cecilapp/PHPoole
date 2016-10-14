@@ -86,6 +86,17 @@ class Twig implements RendererInterface
         });
         $this->twig->addFilter($excerptFilter);
 
+        // read time function
+        $readtimeFunction = new \Twig_SimpleFunction('readtime', function ($text) {
+            $words = str_word_count(strip_tags($text));
+            $min = floor($words / 200);
+            if ($min === 0) {
+                return '1';
+            }
+            return $min;
+        });
+        $this->twig->addFunction($readtimeFunction);
+
         $this->fs = new Filesystem();
     }
 
