@@ -77,8 +77,8 @@ class Twig implements RendererInterface
 
         // excerpt filter
         $excerptFilter = new \Twig_SimpleFilter('excerpt', function ($string, $length = 450, $suffix = '…') {
-            $str = trim(strip_tags($string));
-            if (mb_strlen($str) > $length) {
+            $string = trim(strip_tags($string, '<p><br>'));
+            if (mb_strlen($string) > $length) {
                 $string = mb_substr($string, 0, $length).$suffix;
             }
 
