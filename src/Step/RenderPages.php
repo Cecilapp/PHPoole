@@ -60,7 +60,9 @@ class RenderPages extends AbstractStep
         $this->phpoole->getRenderer()->addGlobal('site', array_merge(
             $this->phpoole->getConfig()->get('site'),
             ['menus' => $this->phpoole->getMenus()],
-            ['pages' => $this->phpoole->getPages()]
+            ['pages' => $this->phpoole->getPages()->filter(function (Page $page) {
+                return $page->getVariable('published');
+            })]
         ));
         $this->phpoole->getRenderer()->addGlobal('phpoole', [
             'url'       => 'http://phpoole.org/#v'.$this->phpoole->getVersion(),
