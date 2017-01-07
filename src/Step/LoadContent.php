@@ -19,7 +19,7 @@ class LoadContent extends AbstractStep
 {
     // pattern of a file with a front matter
     // https://regex101.com/r/xH7cL3/1
-    const PATTERN = '^\s*(?:<!--|---|\+++){1}[\n\r\s]*(.*?)[\n\r\s]*(?:-->|---|\+++){1}[\s\n\r]*(.*)$';
+    const FM_PATTERN = '^\s*(?:<!--|---|\+++){1}[\n\r\s]*(.*?)[\n\r\s]*(?:-->|---|\+++){1}[\s\n\r]*(.*)$';
 
     /**
      * {@inheritdoc}
@@ -39,7 +39,7 @@ class LoadContent extends AbstractStep
      */
     public function internalProcess()
     {
-        $content = [];
+        $properties = [];
         // collects files in each supported format
         foreach ($this->phpoole->getConfig()->get('content.format') as $format => $data) {
             $files = Finder::create()
@@ -49,20 +49,22 @@ class LoadContent extends AbstractStep
             /* @var $file SplFileInfo */
             foreach ($files as $file) {
                 $index = $file->getRelativePathname();
-                $properties = $this->parse(
-                    $file->getContents(),
-                    $this->phpoole->getConfig()->get('content.frontmatter.'.$data['frontmatter'].'.parser')
-                );
-                $content[$index] = $properties;
-                $content[$index]['id'] = $index;
-                $content[$index]['format'] = $format;
-                $content[$index]['lastmodified'] = $file->getMTime();
+                if (array_key_exists('frontmatter', $data)) {
+                    $fmProperties = $this->parse(
+                        $file->getContents(),
+                        $this->phpoole->getConfig()->get('content.frontmatter.'.$data['frontmatter'].'.parser')
+                    );
+                    $properties[$index] = $fmProperties;
+                }
+                $properties[$index]['id'] = $index;
+                $properties[$index]['format'] = $format;
+                $properties[$index]['lastmodified'] = $file->getMTime();
             }
         }
 
         //print_r($content);
 
-        $this->phpoole->setContent($content);
+        $this->phpoole->setContent($properties);
     }
 
     /**
@@ -88,7 +90,7 @@ class LoadContent extends AbstractStep
 
         // parse front matter
         preg_match(
-            '/'.self::PATTERN.'/s',
+            '/'.self::FM_PATTERN.'/s',
             $content,
             $matches
         );
