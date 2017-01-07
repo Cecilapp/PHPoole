@@ -27,7 +27,7 @@ class PHPoole
      * @see build()
      */
     protected $steps = [
-        'PHPoole\Step\LocateContent',
+        'PHPoole\Step\LoadContent',
         'PHPoole\Step\CreatePages',
         'PHPoole\Step\ConvertPages',
         'PHPoole\Step\GeneratePages',
@@ -42,9 +42,9 @@ class PHPoole
      */
     protected $config;
     /**
-     * Content iterator.
+     * Content files array.
      *
-     * @var Finder
+     * @var array
      */
     protected $content;
     /**

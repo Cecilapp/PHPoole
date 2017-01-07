@@ -8,11 +8,14 @@
 
 namespace PHPoole;
 
+use Cocur\Slugify\Slugify;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 class Util
 {
+    const SLUGIFY_PATTERN = '/(^\/|[^a-z0-9\/]|-)+/';
+
     /**
      * Symfony\Component\Filesystem.
      *
@@ -32,6 +35,20 @@ class Util
         }
 
         return self::$fs;
+    }
+
+    /**
+     * Format string into URL.
+     *
+     * @param $string
+     *
+     * @return string
+     */
+    public static function urlize($string)
+    {
+        return Slugify::create([
+            'regexp' => self::SLUGIFY_PATTERN,
+        ])->slugify($string);
     }
 
     /**
