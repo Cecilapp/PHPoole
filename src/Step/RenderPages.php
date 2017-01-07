@@ -75,10 +75,12 @@ class RenderPages extends AbstractStep
         $count = 0;
         /* @var $page Page */
         foreach ($this->phpoole->getPages() as $page) {
-            $count++;
-            $pathname = $this->renderPage($page, $this->phpoole->getConfig()->getOutputPath());
-            $message = substr($pathname, strlen($this->phpoole->getConfig()->getDestinationDir()) + 1);
-            call_user_func_array($this->phpoole->getMessageCb(), ['RENDER_PROGRESS', $message, $count, $max]);
+            if ($page->getVariable('published') !== false) {
+                $count++;
+                $pathname = $this->renderPage($page, $this->phpoole->getConfig()->getOutputPath());
+                $message = substr($pathname, strlen($this->phpoole->getConfig()->getDestinationDir()) + 1);
+                call_user_func_array($this->phpoole->getMessageCb(), ['RENDER_PROGRESS', $message, $count, $max]);
+            }
         }
     }
 
