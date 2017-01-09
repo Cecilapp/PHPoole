@@ -237,11 +237,9 @@ class Extension extends SlugifyExtension
             $value = $value->getPermalink();
             $url = rtrim($baseurl, '/').'/'.ltrim(rtrim($value, '/').'/', '/');
         } else {
-            // external URL
-            if (preg_match('~^(?:f|ht)tps?://~i', $value)) {
+            if (preg_match('~^(?:f|ht)tps?://~i', $value)) { // external URL
                 $url = $value;
-            // file URL (with a dot for extension)
-            } elseif (false !== strpos($value, '.')) {
+            } elseif (false !== strpos($value, '.')) { // file URL (with a dot for extension)
                 $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
             } else {
                 $value = $this->slugifyFilter($value);
