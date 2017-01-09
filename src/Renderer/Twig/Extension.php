@@ -235,15 +235,15 @@ class Extension extends SlugifyExtension
 
         if ($value instanceof Page) {
             $value = $value->getPermalink();
-            $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
+            $url = rtrim($baseurl, '/').'/'.ltrim(rtrim($value, '/').'/', '/');
         } else {
             if (preg_match('~^(?:f|ht)tps?://~i', $value)) {
                 $url = $value;
             } elseif (false !== strpos($value, '.')) {
-                $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
+                $url = rtrim($baseurl, '/').'/'.ltrim(rtrim($value, '/').'/', '/');
             } else {
                 $value = $this->slugifyFilter($value);
-                $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
+                $url = rtrim($baseurl, '/').'/'.ltrim(rtrim($value, '/').'/', '/');
             }
         }
 
