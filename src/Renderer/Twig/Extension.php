@@ -235,7 +235,11 @@ class Extension extends SlugifyExtension
 
         if ($value instanceof Page) {
             $value = $value->getPermalink();
-            $url = rtrim($baseurl, '/').'/'.ltrim(rtrim($value, '/').'/', '/');
+            if (false !== strpos($value, '.')) { // file URL (with a dot for extension)
+                $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
+            } else {
+                $url = rtrim($baseurl, '/').'/'.ltrim(rtrim($value, '/').'/', '/');
+            }
         } else {
             if (preg_match('~^(?:f|ht)tps?://~i', $value)) { // external URL
                 $url = $value;
