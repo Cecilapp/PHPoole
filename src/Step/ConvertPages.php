@@ -35,7 +35,11 @@ class ConvertPages extends AbstractStep
                 $count++;
                 $convertedPage = $this->convertPage($page, $this->phpoole->getConfig()->get('frontmatter.format'));
                 if (false !== $convertedPage) {
-                    $this->phpoole->getPages()->replace($page->getId(), $convertedPage);
+                    if ($page->getVariable('published') !== false) {
+                        $this->phpoole->getPages()->replace($page->getId(), $convertedPage);
+                    } else {
+                        $this->phpoole->getPages()->remove($page->getId());
+                    }
                 } else {
                     $countError++;
                 }
