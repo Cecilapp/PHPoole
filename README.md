@@ -15,7 +15,7 @@
 [![Total Downloads](https://poser.pugx.org/narno/phpoole-library/downloads)](https://packagist.org/packages/narno/phpoole-library)
 [![License](https://poser.pugx.org/narno/phpoole-library/license)](https://packagist.org/packages/narno/phpoole-library)
 
-_PHPoole-library_ is inspired by [Jekyll](http://jekyllrb.com/) and [Hugo](http://gohugo.io/) and it is the core library of [**PHPoole**](https://github.com/Narno/PHPoole) CLI.
+_PHPoole-library_ is inspired by [Jekyll](http://jekyllrb.com/) and [Hugo](http://gohugo.io/) and it is the core library of [**PHPoole**](https://github.com/PHPoole/PHPoole) CLI.
 
 It converts [Markdown](http://daringfireball.net/projects/markdown/) files into a static HTML web site, with the help of [Twig](http://twig.sensiolabs.org), a flexible and fast template engine.
 
@@ -49,10 +49,12 @@ $ composer require narno/phpoole-library
 * [Layouts](docs/3.Layouts.md)
 * [Options](docs/4.Options.md)
 
-Try the [demo](https://github.com/Narno/PHPoole-demo).
+Try the [demo](https://github.com/PHPoole/PHPoole-demo).
 
 ## License
 
 PHPoole-library is a free software distributed under the terms of the MIT license.
 
-Logo created by [Cécile Ricordeau](http://www.cecillie.fr).
+© 2017 [Arnaud Ligny](https://arnaudligny.fr)  
+PHPoole logo © [Cécile Ricordeau](http://www.cecillie.fr)
+
