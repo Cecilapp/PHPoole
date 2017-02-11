@@ -47,7 +47,7 @@ $ composer require narno/phpoole-library
 * [Overview](docs/1.Overview.md)
 * [Content](docs/2.Content.md)
 * [Layouts](docs/3.Layouts.md)
-* [Options](docs/4.Configuration.md)
+* [Configuration](docs/4.Configuration.md)
 
 Try the [demo](https://github.com/PHPoole/PHPoole-demo).
 
