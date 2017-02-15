@@ -15,21 +15,7 @@
 [![Total Downloads](https://poser.pugx.org/narno/phpoole-library/downloads)](https://packagist.org/packages/narno/phpoole-library)
 [![License](https://poser.pugx.org/narno/phpoole-library/license)](https://packagist.org/packages/narno/phpoole-library)
 
-_PHPoole-library_ is inspired by [Jekyll](http://jekyllrb.com/) and [Hugo](http://gohugo.io/) and it is the core library of [**PHPoole CLI**](https://github.com/PHPoole/PHPoole).
-
-It converts [Markdown](http://daringfireball.net/projects/markdown/) files into a static HTML web site, with the help of [Twig](http://twig.sensiolabs.org), a flexible and fast template engine.
-
-You can easily create a blog, a personal website, a simple corporate website, etc.
-
-## Features
-
-* No database, files only
-* Fully configurable
-* Flexible template engine ([Twig](http://twig.sensiolabs.org/doc/templates.html))
-* Theme support
-* Dynamic menu creation
-* Configurable taxonomies (categories, tags, etc.)
-* Pagination (for node page)
+_PHPoole-library_ is the core library of [**PHPoole CLI**](https://github.com/PHPoole/PHPoole), highly inspired by [Jekyll](http://jekyllrb.com/) and [Hugo](http://gohugo.io/) and it .
 
 ## Requirements
 
@@ -44,12 +30,7 @@ $ composer require narno/phpoole-library
 
 ## Usage
 
-* [Overview](docs/1.Overview.md)
-* [Content](docs/2.Content.md)
-* [Layouts](docs/3.Layouts.md)
-* [Configuration](docs/4.Configuration.md)
-
-Try the [demo](https://github.com/PHPoole/PHPoole-demo).
+Please see the [documentation](https://phpoole.org/documentation/5-library/) on the [PHPoole's website](https://phpoole.org).
 
 ## License
 
@@ -57,4 +38,3 @@ PHPoole-library is a free software distributed under the terms of the MIT licens
 
 © 2017 [Arnaud Ligny](https://arnaudligny.fr)  
 PHPoole logo © [Cécile Ricordeau](http://www.cecillie.fr)
-
