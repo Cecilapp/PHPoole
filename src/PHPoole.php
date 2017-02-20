@@ -229,7 +229,7 @@ class PHPoole
                     case 'COPY_PROGRESS':
                     case 'RENDER_PROGRESS':
                         if ($itemsCount > 0 && $verbose !== false) {
-                            $log = sprintf( "  (%u/%u) %s\n", $itemsCount, $itemsMax, $message);
+                            $log = sprintf("  (%u/%u) %s\n", $itemsCount, $itemsMax, $message);
                             $this->addLog($log);
                         } else {
                             $log = sprintf("  %s\n", $message);
@@ -285,7 +285,7 @@ class PHPoole
     }
 
     /**
-     * Display $log string
+     * Display $log string.
      */
     public function showLog()
     {
