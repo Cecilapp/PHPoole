@@ -73,6 +73,10 @@ class PHPoole
      * @var GeneratorManager
      */
     protected $generatorManager;
+    /**
+     * @var string
+     */
+    protected $log;
 
     /**
      * PHPoole constructor.
@@ -216,7 +220,8 @@ class PHPoole
                     case 'COPY':
                     case 'RENDER':
                     case 'TIME':
-                        printf("\n> %s\n", $message);
+                        $log = sprintf("\n> %s\n", $message);
+                        $this->addLog($log);
                         break;
                     case 'CREATE_PROGRESS':
                     case 'CONVERT_PROGRESS':
@@ -224,9 +229,11 @@ class PHPoole
                     case 'COPY_PROGRESS':
                     case 'RENDER_PROGRESS':
                         if ($itemsCount > 0 && $verbose !== false) {
-                            printf("  (%u/%u) %s\n", $itemsCount, $itemsMax, $message);
+                            $log = sprintf( "  (%u/%u) %s\n", $itemsCount, $itemsMax, $message);
+                            $this->addLog($log);
                         } else {
-                            printf("  %s\n", $message);
+                            $log = sprintf("  %s\n", $message);
+                            $this->addLog($log);
                         }
                         break;
                 }
@@ -260,9 +267,39 @@ class PHPoole
     }
 
     /**
-     * Builds a new website.
+     * @param $log
+     *
+     * @return string
      */
-    public function build()
+    public function addLog($log)
+    {
+        return $this->log .= $log;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLog()
+    {
+        return $this->log;
+    }
+
+    /**
+     * Display $log string
+     */
+    public function showLog()
+    {
+        echo $this->log;
+    }
+
+    /**
+     * Builds a new website.
+     *
+     * @param bool $verbose
+     *
+     * @return $this
+     */
+    public function build($verbose = false)
     {
         $steps = [];
         // init...
@@ -283,6 +320,12 @@ class PHPoole
             'CREATE',
             sprintf('Time: %s seconds', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
         ]);
+
+        if ($verbose) {
+            $this->showLog();
+        }
+
+        return $this;
     }
 
     /**
