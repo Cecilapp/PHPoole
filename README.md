@@ -32,6 +32,14 @@ $ composer require narno/phpoole-library
 
 Please see the [documentation](https://phpoole.org/documentation/5-library/) on the [PHPoole's website](https://phpoole.org).
 
+## API documentation
+
+Run the following command to [build the API documentation](https://github.com/FriendsOfPHP/Sami):
+```bash
+$ vendor/bin/sami.php update sami.php
+```
+Then open `docs/api/master/index.html` in your browser.
+
 ## License
 
 PHPoole-library is a free software distributed under the terms of the MIT license.
