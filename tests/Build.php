@@ -31,7 +31,7 @@ class Build extends \PHPUnit_Framework_TestCase
 
     public function testBuid()
     {
-        PHPoole::create(
+        $build = PHPoole::create(
             [
                 'site' => [
                     'menu' => [
@@ -77,5 +77,13 @@ class Build extends \PHPUnit_Framework_TestCase
         )->setSourceDir($this->wsSourceDir)
         ->setDestinationDir($this->wsDestinationDir)
         ->build();
+
+        if (!$build->isSuccess()) {
+            echo "Can't build, error occurred!\n";
+            echo "Details:\n";
+            $build->showLog();
+            return;
+        }
+        echo 'Done!';
     }
 }

@@ -9,6 +9,7 @@
 namespace PHPoole;
 
 use PHPoole\Collection\Collection as PageCollection;
+use PHPoole\Exception\Exception;
 use PHPoole\Generator\GeneratorManager;
 use Symfony\Component\Finder\Finder;
 
@@ -77,6 +78,10 @@ class PHPoole
      * @var string
      */
     protected $log;
+    /**
+     * @var bool
+     */
+    protected $success;
 
     /**
      * PHPoole constructor.
@@ -301,6 +306,16 @@ class PHPoole
     }
 
     /**
+     * Return true in case of build success.
+     *
+     * @return bool
+     */
+    public function isSuccess()
+    {
+        return $this->success;
+    }
+
+    /**
      * Builds a new website.
      *
      * @param bool $verbose
@@ -310,19 +325,27 @@ class PHPoole
     public function build($verbose = false)
     {
         $steps = [];
-        // init...
-        foreach ($this->steps as $step) {
-            /* @var $stepClass Step\StepInterface */
-            $stepClass = new $step($this);
-            $stepClass->init();
-            $steps[] = $stepClass;
+
+        try {
+            // init...
+            foreach ($this->steps as $step) {
+                /* @var $stepClass Step\StepInterface */
+                $stepClass = new $step($this);
+                $stepClass->init();
+                $steps[] = $stepClass;
+            }
+            $this->steps = $steps;
+            // ... and process!
+            foreach ($this->steps as $step) {
+                /* @var $step Step\StepInterface */
+                $step->process();
+            }
+            $this->success = true;
+        } catch (Exception $e) {
+            $this->addLog($e->getMessage());
+            $this->success = false;
         }
-        $this->steps = $steps;
-        // ... and process!
-        foreach ($this->steps as $step) {
-            /* @var $step Step\StepInterface */
-            $step->process();
-        }
+
         // time
         call_user_func_array($this->messageCallback, [
             'CREATE',
