@@ -236,6 +236,14 @@ class PHPoole
                             $this->addLog($log);
                         }
                         break;
+                    case 'CREATE_ERROR':
+                    case 'CONVERT_ERROR':
+                    case 'GENERATE_ERROR':
+                    case 'COPY_ERROR':
+                    case 'RENDER_ERROR':
+                    $log = sprintf("/!\ %s\n", $message);
+                    $this->addLog($log);
+                        break;
                 }
             };
         }
@@ -318,7 +326,7 @@ class PHPoole
         // time
         call_user_func_array($this->messageCallback, [
             'CREATE',
-            sprintf('Time: %s seconds', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
+            sprintf('Execution time: %s seconds', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
         ]);
 
         if ($verbose) {

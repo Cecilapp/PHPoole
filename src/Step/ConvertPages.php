@@ -48,7 +48,7 @@ class ConvertPages extends AbstractStep
             }
         }
         if ($countError > 0) {
-            $message = sprintf('Errors: %s', $countError);
+            $message = sprintf('Converting errors: %s', $countError);
             call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message]);
         }
     }
@@ -69,8 +69,8 @@ class ConvertPages extends AbstractStep
         try {
             $variables = Converter::convertFrontmatter($page->getFrontmatter(), $format);
         } catch (Exception $e) {
-            $message = sprintf("> Unable to convert frontmatter of '%s': %s", $page->getId(), $e->getMessage());
-            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message]);
+            $message = sprintf("Unable to convert frontmatter of '%s': %s", $page->getId(), $e->getMessage());
+            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_ERROR', $message]);
 
             return false;
         }

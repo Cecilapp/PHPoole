@@ -39,8 +39,8 @@ class ExternalBody extends AbstractGenerator implements GeneratorInterface
                 $generatedPages->add($page);
             } catch (\Exception $e) {
                 $error = sprintf('Cannot get contents from %s', $page->getVariable('external'));
-                $message = sprintf("> Unable to generate '%s': %s", $page->getId(), $error);
-                call_user_func_array($messageCallback, ['GENERATE_PROGRESS', $message]);
+                $message = sprintf("Unable to generate '%s': %s", $page->getId(), $error);
+                call_user_func_array($messageCallback, ['GENERATE_ERROR', $message]);
             }
         }
 
