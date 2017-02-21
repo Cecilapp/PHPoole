@@ -82,6 +82,7 @@ class Build extends \PHPUnit_Framework_TestCase
             echo "Can't build, error occurred!\n";
             echo "Details:\n";
             $build->showLog();
+
             return;
         }
         echo 'Done!';
