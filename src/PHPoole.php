@@ -246,8 +246,8 @@ class PHPoole
                     case 'GENERATE_ERROR':
                     case 'COPY_ERROR':
                     case 'RENDER_ERROR':
-                    $log = sprintf("/!\ %s\n", $message);
-                    $this->addLog($log);
+                        $log = sprintf("/!\ %s\n", $message);
+                        $this->addLog($log);
                         break;
                 }
             };
