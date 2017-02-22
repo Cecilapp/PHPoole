@@ -37,7 +37,7 @@ class PHPoole
         'PHPoole\Step\RenderPages',
     ];
     /**
-     * Config.
+     * Configuration.
      *
      * @var Config
      */
@@ -55,6 +55,12 @@ class PHPoole
      */
     protected $pages;
     /**
+     * Pages generators manager.
+     *
+     * @var GeneratorManager
+     */
+    protected $generatorManager;
+    /**
      * Collection of site menus.
      *
      * @var Collection\Menu\Collection
@@ -67,13 +73,11 @@ class PHPoole
      */
     protected $renderer;
     /**
+     * Function used to return/display messages.
+     *
      * @var \Closure
      */
     protected $messageCallback;
-    /**
-     * @var GeneratorManager
-     */
-    protected $generatorManager;
     /**
      * @var string
      */
@@ -212,6 +216,22 @@ class PHPoole
     }
 
     /**
+     * @param $renderer
+     */
+    public function setRenderer($renderer)
+    {
+        $this->renderer = $renderer;
+    }
+
+    /**
+     * @return Renderer\Twig
+     */
+    public function getRenderer()
+    {
+        return $this->renderer;
+    }
+
+    /**
      * @param \Closure|null $messageCallback
      */
     public function setMessageCallback($messageCallback = null)
@@ -261,22 +281,6 @@ class PHPoole
     public function getMessageCb()
     {
         return $this->messageCallback;
-    }
-
-    /**
-     * @param $renderer
-     */
-    public function setRenderer($renderer)
-    {
-        $this->renderer = $renderer;
-    }
-
-    /**
-     * @return Renderer\Twig
-     */
-    public function getRenderer()
-    {
-        return $this->renderer;
     }
 
     /**
