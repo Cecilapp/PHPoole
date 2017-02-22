@@ -11,7 +11,7 @@ namespace PHPoole;
 /**
  * Class Result.
  */
-Class Result
+class Result
 {
     /**
      * @var bool
