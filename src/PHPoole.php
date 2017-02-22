@@ -82,10 +82,6 @@ class PHPoole
      * @var string
      */
     protected $log;
-    /**
-     * @var bool
-     */
-    protected $success;
 
     /**
      * PHPoole constructor.
@@ -310,23 +306,11 @@ class PHPoole
     }
 
     /**
-     * Return true in case of build success.
-     *
-     * @return bool
-     */
-    public function isSuccess()
-    {
-        return $this->success;
-    }
-
-    /**
      * Builds a new website.
      *
-     * @param bool $verbose
-     *
-     * @return $this
+     * @return Result
      */
-    public function build($verbose = false)
+    public function build()
     {
         $steps = [];
 
@@ -344,23 +328,18 @@ class PHPoole
                 /* @var $step Step\StepInterface */
                 $step->process();
             }
-            $this->success = true;
+            // execution time
+            call_user_func_array($this->messageCallback, [
+                'CREATE',
+                sprintf('Execution time: %s seconds', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
+            ]);
+
+            return new Result(true, $this->getLog());
         } catch (Exception $e) {
             $this->addLog($e->getMessage());
-            $this->success = false;
+
+            return new Result(false, $this->getLog());
         }
-
-        // time
-        call_user_func_array($this->messageCallback, [
-            'CREATE',
-            sprintf('Execution time: %s seconds', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
-        ]);
-
-        if ($verbose) {
-            $this->showLog();
-        }
-
-        return $this;
     }
 
     /**
