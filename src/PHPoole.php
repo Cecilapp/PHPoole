@@ -180,9 +180,9 @@ class PHPoole
     }
 
     /**
-     * @param $pages
+     * @param PageCollection $pages
      */
-    public function setPages($pages)
+    public function setPages(PageCollection $pages)
     {
         $this->pages = $pages;
     }
