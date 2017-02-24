@@ -34,6 +34,9 @@ class GeneratePages extends AbstractStep
             $generatorManager = new GeneratorManager();
             $generators = $this->phpoole->getConfig()->get('generators');
             call_user_func_array($this->phpoole->getMessageCb(), ['GENERATE', 'Generating pages']);
+
+            $this->phpoole->logger->addInfo('Generating pages');
+
             array_walk($generators, function ($generator, $priority) use ($generatorManager) {
                 if (!class_exists($generator)) {
                     $message = sprintf("Unable to load generator '%s'", $generator);

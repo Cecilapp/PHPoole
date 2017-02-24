@@ -8,6 +8,9 @@
 
 namespace PHPoole;
 
+use Monolog\Logger;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\StreamHandler;
 use PHPoole\Collection\Collection as PageCollection;
 use PHPoole\Exception\Exception;
 use PHPoole\Generator\GeneratorManager;
@@ -84,6 +87,11 @@ class PHPoole
     protected $log;
 
     /**
+     * @var Logger
+     */
+    public $logger;
+
+    /**
      * PHPoole constructor.
      *
      * @param Config|array|null $config
@@ -94,6 +102,16 @@ class PHPoole
         $this->setConfig($config);
         $this->config->setSourceDir(null)->setDestinationDir(null);
         $this->setMessageCallback($messageCallback);
+
+        //$output = "[%datetime%] %channel%.%level_name%: %message%\n";
+        $output = "%message%\n";
+        $formatter = new LineFormatter($output);
+
+        $streamHandler = new StreamHandler('php://stdout', Logger::INFO);
+        $streamHandler->setFormatter($formatter);
+
+        $this->logger = new Logger('PHPoole');
+        $this->logger->pushHandler($streamHandler);
     }
 
     /**
@@ -184,6 +202,8 @@ class PHPoole
      */
     public function setPages(PageCollection $pages)
     {
+        $this->logger->addDebug($pages->count());
+
         $this->pages = $pages;
     }
 
