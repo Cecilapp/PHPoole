@@ -8,9 +8,9 @@
 
 namespace PHPoole;
 
-use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use PHPoole\Collection\Collection as PageCollection;
 use PHPoole\Exception\Exception;
 use PHPoole\Generator\GeneratorManager;
