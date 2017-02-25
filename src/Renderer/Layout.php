@@ -85,8 +85,9 @@ class Layout
                     '_default/list.html.twig',
                 ];
                 if ($page->getPathname()) {
+                    $section = explode('/', $page->getPathname())[0];
                     $layouts = array_merge(
-                        [sprintf('section/%s.html.twig', $page->getPathname())],
+                        [sprintf('section/%s.html.twig', $section)],
                         $layouts
                     );
                 }
