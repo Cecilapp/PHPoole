@@ -76,6 +76,6 @@ class Build extends \PHPUnit_Framework_TestCase
             ]
         )->setSourceDir($this->wsSourceDir)
         ->setDestinationDir($this->wsDestinationDir)
-        ->build();
+        ->build(true);
     }
 }
