@@ -319,7 +319,7 @@ class Extension extends SlugifyExtension
      * Read $lenght first characters of a string and add a suffix.
      *
      * @param $string
-     * @param int $length
+     * @param int    $length
      * @param string $suffix
      *
      * @return string
