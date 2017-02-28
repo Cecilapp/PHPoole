@@ -27,8 +27,8 @@
     "twig/twig": "^1.32"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.7",
-    "satooshi/php-coveralls": "^1.0",
+    "phpunit/phpunit": "^4.8",
+    "satooshi/php-coveralls": "dev-master",
     "sami/sami": "^3.3"
   },
   "autoload": {
