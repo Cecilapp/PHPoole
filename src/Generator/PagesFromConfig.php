@@ -24,13 +24,12 @@ class PagesFromConfig extends AbstractGenerator implements GeneratorInterface
         $generatedPages = new PageCollection();
 
         $fmPages = $this->config->get('site.fmpages');
-        foreach($fmPages as $file => $frontmatter) {
+        foreach ($fmPages as $file => $frontmatter) {
             $page = (new Page())
                 ->setId(Page::urlize(sprintf('%s', $file)))
                 ->setPathname(Page::urlize(sprintf('%s', $file)))
                 ->setLayout($frontmatter['layout'])
-                ->setPermalink($frontmatter['permalink'])
-                ;
+                ->setPermalink($frontmatter['permalink']);
             $generatedPages->add($page);
         }
 
