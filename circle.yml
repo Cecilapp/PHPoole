@@ -1,6 +1,16 @@
+# PHP 7
 machine:
-  timezone:
-    Europe/Paris
   php:
     version:
-      5.5.11
+      7
+  timezone:
+      Europe/Paris
+# disable xdebug
+dependencies:
+  pre:
+    - rm /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini
+# write report
+test:
+  override:
+    - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
+    - phpunit --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml tests
