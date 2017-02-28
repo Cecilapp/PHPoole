@@ -59,6 +59,7 @@ class Extension extends SlugifyExtension
             new \Twig_SimpleFilter('urlize', [$this, 'slugifyFilter']),
             new \Twig_SimpleFilter('minifyCSS', [$this, 'minifyCss']),
             new \Twig_SimpleFilter('minifyJS', [$this, 'minifyJs']),
+            new \Twig_SimpleFilter('excerpt', [$this, 'excerpt']),
         ];
     }
 
@@ -70,6 +71,7 @@ class Extension extends SlugifyExtension
         return [
             new \Twig_SimpleFunction('url', [$this, 'createUrl'], ['needs_environment' => true]),
             new \Twig_SimpleFunction('minify', [$this, 'minify']),
+            new \Twig_SimpleFunction('readtime', [$this, 'readtime']),
         ];
     }
 
@@ -311,5 +313,42 @@ class Extension extends SlugifyExtension
         $minifier = new Minify\JS($value);
 
         return $minifier->minify();
+    }
+
+    /**
+     * Read $lenght first characters of a string and add a suffix.
+     *
+     * @param $string
+     * @param int $length
+     * @param string $suffix
+     *
+     * @return string
+     */
+    public function excerpt($string, $length = 450, $suffix = '…')
+    {
+        $string = trim(strip_tags($string, '<p><br>'));
+        if (mb_strlen($string) > $length) {
+            $string = mb_substr($string, 0, $length).$suffix;
+        }
+
+        return $string;
+    }
+
+    /**
+     * Calculate estimated time to read a text.
+     *
+     * @param $text
+     *
+     * @return float|string
+     */
+    public function readtime($text)
+    {
+        $words = str_word_count(strip_tags($text));
+        $min = floor($words / 200);
+        if ($min === 0) {
+            return '1';
+        }
+
+        return $min;
     }
 }

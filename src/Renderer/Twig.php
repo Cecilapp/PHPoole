@@ -72,29 +72,6 @@ class Twig implements RendererInterface
         $this->twig->getExtension('core')->setDateFormat($config->get('site.date.format'));
         $this->twig->getExtension('core')->setTimezone($config->get('site.date.timezone'));
 
-        // excerpt filter
-        $excerptFilter = new \Twig_SimpleFilter('excerpt', function ($string, $length = 450, $suffix = '…') {
-            $string = trim(strip_tags($string, '<p><br>'));
-            if (mb_strlen($string) > $length) {
-                $string = mb_substr($string, 0, $length).$suffix;
-            }
-
-            return $string;
-        });
-        $this->twig->addFilter($excerptFilter);
-
-        // read time function
-        $readtimeFunction = new \Twig_SimpleFunction('readtime', function ($text) {
-            $words = str_word_count(strip_tags($text));
-            $min = floor($words / 200);
-            if ($min === 0) {
-                return '1';
-            }
-
-            return $min;
-        });
-        $this->twig->addFunction($readtimeFunction);
-
         $this->fs = new Filesystem();
     }
 
