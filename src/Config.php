@@ -57,6 +57,12 @@ class Config
                 'format'   => 'j F Y',
                 'timezone' => 'Europe/Paris',
             ],
+            'fmpages' => [
+                'robotstxt' => [
+                    'layout'    => 'robots.txt',
+                    'permalink' => 'robots.txt',
+                ]
+            ]
         ],
         'content' => [
             'dir' => 'content',
@@ -88,6 +94,7 @@ class Config
             40 => 'PHPoole\Generator\Pagination',
             50 => 'PHPoole\Generator\Alias',
             35 => 'PHPoole\Generator\ExternalBody',
+            36 => 'PHPoole\Generator\PagesFromConfig',
         ],
     ];
 
