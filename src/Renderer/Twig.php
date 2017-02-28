@@ -50,18 +50,14 @@ class Twig implements RendererInterface
      */
     public function __construct($templatesPath, $config)
     {
-        $loaderFS = new \Twig_Loader_Filesystem($templatesPath);
+        // internal layouts
         $loaderArray = new \Twig_Loader_Array([
-            'redirect.html.twig' => '<!DOCTYPE html>
-<html>
-<head lang="en">
-    <link rel="canonical" href="{{ url(page.destination) }}"/>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta http-equiv="refresh" content="0;url={{ url(page.destination) }}" />
-</head>
-</html>',
+            'redirect.html.twig' => file_get_contents(__DIR__.'/../../res/layouts/redirect.html.twig'),
         ]);
-        $loader = new \Twig_Loader_Chain([$loaderArray, $loaderFS]);
+        // project layouts
+        $loaderFS = new \Twig_Loader_Filesystem($templatesPath);
+        // load layouts
+        $loader = new \Twig_Loader_Chain([$loaderFS, $loaderArray]);
         $this->twig = new \Twig_Environment($loader,
             [
                 'autoescape'       => false,
@@ -70,6 +66,7 @@ class Twig implements RendererInterface
                 'cache'            => $this->twigCache,
             ]
         );
+        // add extensions
         $this->twig->addExtension(new \Twig_Extension_Debug());
         $this->twig->addExtension(new TwigExtension($config->getOutputPath()));
         $this->twig->getExtension('core')->setDateFormat($config->get('site.date.format'));
