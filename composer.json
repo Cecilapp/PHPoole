@@ -15,21 +15,21 @@
   ],
   "require": {
     "php": "^5.5|^7.0",
-    "cocur/slugify": "^2.0",
-    "dflydev/dot-access-data": "^1.0",
+    "cocur/slugify": "^2.4",
+    "dflydev/dot-access-data": "^1.1",
     "erusev/parsedown-extra": "^0.7",
     "matthiasmullie/minify": "^1.3",
-    "myclabs/php-enum": "^1.4",
+    "myclabs/php-enum": "^1.5",
     "symfony/filesystem": "^2.8",
     "symfony/finder": "^2.7|^2.8",
     "symfony/process": "^2.8",
     "symfony/yaml": "^2.8",
-    "twig/twig": "^1.24"
+    "twig/twig": "^1.32"
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.8",
-    "satooshi/php-coveralls": "dev-master",
-    "sami/sami": "^3.3.0"
+    "phpunit/phpunit": "^5.7",
+    "satooshi/php-coveralls": "^1.0",
+    "sami/sami": "^3.3"
   },
   "autoload": {
     "psr-4" : {
