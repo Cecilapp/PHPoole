@@ -31,7 +31,11 @@ class Layout
      */
     public function finder(Page $page, Config $config)
     {
-        if ($page->getLayout() == 'redirect.html') {
+        // internal layouts
+        if (in_array($page->getLayout(), [
+            'redirect.html',
+            'robots.txt',
+        ])) {
             return $page->getLayout().'.twig';
         }
 

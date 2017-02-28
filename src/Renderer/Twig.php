@@ -53,6 +53,7 @@ class Twig implements RendererInterface
         // internal layouts
         $loaderArray = new \Twig_Loader_Array([
             'redirect.html.twig' => file_get_contents(__DIR__.'/../../res/layouts/redirect.html.twig'),
+            'robots.txt.twig'    => file_get_contents(__DIR__.'/../../res/layouts/robots.txt.twig'),
         ]);
         // project layouts
         $loaderFS = new \Twig_Loader_Filesystem($templatesPath);
