@@ -61,8 +61,8 @@ class Config
                 'robotstxt' => [
                     'layout'    => 'robots.txt',
                     'permalink' => 'robots.txt',
-                ]
-            ]
+                ],
+            ],
         ],
         'content' => [
             'dir' => 'content',
