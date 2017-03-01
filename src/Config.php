@@ -79,6 +79,7 @@ class Config
         ],
         'layouts' => [
             'dir' => 'layouts',
+            'internal' => ['redirect.html', 'robots.txt', 'sitemap.xml'],
         ],
         'output' => [
             'dir'      => '_site',
