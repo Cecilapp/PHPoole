@@ -8,7 +8,7 @@ machine:
 # install dependencies
 dependencies:
   override:
-    - composer install --prefer-source --no-interaction --no-dev
+    - composer install --no-interaction
 # run tests and write report
 test:
   override:
