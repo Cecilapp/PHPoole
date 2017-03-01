@@ -5,10 +5,6 @@ machine:
       7.0.4
   timezone:
     Europe/Paris
-# disable xdebug
-dependencies:
-  pre:
-    - rm /opt/circleci/php/$(phpenv global)/etc/conf.d/xdebug.ini
 # write report
 test:
   override:
