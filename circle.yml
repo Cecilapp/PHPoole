@@ -5,8 +5,13 @@ machine:
       7.0.4
   timezone:
     Europe/Paris
-# write report
+# install dependencies
+dependencies:
+  override:
+    - composer install --prefer-source --no-interaction --no-dev
+# run tests and write report
 test:
   override:
+    - vendor/bin/phpunit
     - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
     - phpunit --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml tests
