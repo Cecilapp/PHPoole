@@ -2,9 +2,9 @@
 machine:
   php:
     version:
-      7
+      7.0.4
   timezone:
-      Europe/Paris
+    Europe/Paris
 # disable xdebug
 dependencies:
   pre:
