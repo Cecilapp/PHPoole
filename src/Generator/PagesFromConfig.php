@@ -27,9 +27,13 @@ class PagesFromConfig extends AbstractGenerator implements GeneratorInterface
         foreach ($fmPages as $file => $frontmatter) {
             $page = (new Page())
                 ->setId(Page::urlize(sprintf('%s', $file)))
-                ->setPathname(Page::urlize(sprintf('%s', $file)))
-                ->setLayout($frontmatter['layout'])
-                ->setPermalink($frontmatter['permalink']);
+                ->setPathname(Page::urlize(sprintf('%s', $file)));
+            if (!empty($frontmatter['layout'])) {
+                $page->setLayout($frontmatter['layout']);
+            }
+            if (!empty($frontmatter['permalink'])) {
+                $page->setPermalink($frontmatter['permalink']);
+            }
             $generatedPages->add($page);
         }
 

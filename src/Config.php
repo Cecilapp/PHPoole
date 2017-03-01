@@ -62,6 +62,13 @@ class Config
                     'layout'    => 'robots.txt',
                     'permalink' => 'robots.txt',
                 ],
+                'sitemap' => [
+                    'layout'    => 'sitemap.xml',
+                    'permalink' => 'sitemap.xml',
+                ],
+                '404' => [
+                    'permalink' => '404.html',
+                ],
             ],
         ],
         'content' => [
