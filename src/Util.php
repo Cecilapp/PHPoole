@@ -98,7 +98,6 @@ class Util
     {
         foreach ($haystack as $item) {
             if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && self::in_array_recursive($needle, $item, $strict))) {
-
                 return true;
             }
         }
