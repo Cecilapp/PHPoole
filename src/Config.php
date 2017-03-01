@@ -85,7 +85,7 @@ class Config
             'dir' => 'static',
         ],
         'layouts' => [
-            'dir' => 'layouts',
+            'dir'      => 'layouts',
             'internal' => ['redirect.html', 'robots.txt', 'sitemap.xml'],
         ],
         'output' => [
