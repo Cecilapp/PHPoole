@@ -1,0 +1,20 @@
+{% set pattern = '#^(?!sitemap|rss|robotstxt|404|.*\/\d+\/.*|.*redirect).*$#' %}
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>{{ site.title }}</title>
+        <description>{{ site.description }}</description>
+        <lastBuildDate>{{ page.date|date('Y-m-dTH:i:sP') }}</lastBuildDate>
+        <link>{{ site.baseurl }}</link>
+{% for page in site.pages %}
+{% if page.id matches pattern %}
+            <item>
+                <title>{{ page.title }}</title>
+                <description>{{ page.content|excerpt|striptags }}</description>
+                <pubDate>{{ page.date|date('Y-m-dTH:i:sP') }}</pubDate>
+                <link>{{ url(page) }}</link>
+            </item>
+{% endif %}
+{% endfor %}
+    </channel>
+</rss>

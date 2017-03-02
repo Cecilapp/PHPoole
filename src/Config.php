@@ -72,6 +72,10 @@ class Config
                     'layout'    => '404.html',
                     'permalink' => '404.html',
                 ],
+                'rss' => [
+                    'layout'     => 'rss.xml',
+                    'permalink'  => 'rss.xml',
+                ],
             ],
         ],
         'content' => [
@@ -94,6 +98,7 @@ class Config
                 'robots.txt'         => '',
                 'sitemap.xml'        => '',
                 'googleanalytics.js' => 'includes/',
+                'rss.xml'            => '',
             ],
         ],
         'output' => [
