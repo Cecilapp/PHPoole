@@ -67,6 +67,7 @@ class Config
                     'permalink' => 'sitemap.xml',
                 ],
                 '404' => [
+                    'layout'    => '404.html',
                     'permalink' => '404.html',
                 ],
             ],
@@ -86,7 +87,12 @@ class Config
         ],
         'layouts' => [
             'dir'      => 'layouts',
-            'internal' => ['redirect.html', 'robots.txt', 'sitemap.xml'],
+            'internal' => [
+                'redirect.html'      => '',
+                'robots.txt'         => '',
+                'sitemap.xml'        => '',
+                'googleanalytics.js' => 'includes/',
+            ],
         ],
         'output' => [
             'dir'      => '_site',

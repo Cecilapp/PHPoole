@@ -32,7 +32,7 @@ class Layout
     public function finder(Page $page, Config $config)
     {
         // internal layouts
-        if (in_array($page->getLayout(), $config->get('layouts.internal'))) {
+        if (!empty($page->getLayout()) && array_key_exists($page->getLayout(), $config->get('layouts.internal'))) {
             return $page->getLayout().'.twig';
         }
 
