@@ -1,18 +1,13 @@
+{% set pattern = '#^(?!sitemap|rss|robotstxt|404|.*\/\d+\/.*|.*redirect).*$#' %}
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {% for page in site.pages %}
-{% if page.name not in ['sitemap', '404', 'rss'] %}
+{% if page.id matches pattern %}
     <url>
         <loc>{{ url(page) }}</loc>
         <lastmod>{{ page.date|date('Y-m-dTH:i:sP') }}</lastmod>
-{% if page.sitemap is defined %}
-{% if page.sitemap.changefreq %}
-        <changefreq>{{ page.sitemap.changefreq }}</changefreq>
-{% endif %}
-{% if page.sitemap.priority %}
-        <priority>{{ page.sitemap.priority }}</priority>
-{% endif %}
-{% endif %}
+        <changefreq>{{ page.sitemap.changefreq|default(site.fmpages.sitemap.changefreq) }}</changefreq>
+        <priority>{{ page.sitemap.priority|default(site.fmpages.sitemap.priority) }}</priority>
     </url>
 {% endif %}
 {% endfor %}

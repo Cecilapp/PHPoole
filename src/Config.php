@@ -63,8 +63,10 @@ class Config
                     'permalink' => 'robots.txt',
                 ],
                 'sitemap' => [
-                    'layout'    => 'sitemap.xml',
-                    'permalink' => 'sitemap.xml',
+                    'layout'     => 'sitemap.xml',
+                    'permalink'  => 'sitemap.xml',
+                    'changefreq' => 'monthly',
+                    'priority'   => '0.5',
                 ],
                 '404' => [
                     'layout'    => '404.html',
