@@ -15,7 +15,7 @@
 [![Total Downloads](https://poser.pugx.org/narno/phpoole-library/downloads)](https://packagist.org/packages/narno/phpoole-library)
 [![License](https://poser.pugx.org/narno/phpoole-library/license)](https://packagist.org/packages/narno/phpoole-library)
 
-_PHPoole-library_ is the core library of [**PHPoole CLI**](https://github.com/PHPoole/PHPoole), highly inspired by [Jekyll](http://jekyllrb.com/) and [Hugo](http://gohugo.io/) and it .
+_PHPoole-library_ is the core library of [**PHPoole CLI**](https://github.com/PHPoole/PHPoole).
 
 ## Requirements
 
