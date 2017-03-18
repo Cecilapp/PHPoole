@@ -95,7 +95,7 @@ class Twig implements RendererInterface
         $this->rendered = $this->twig->render($template, $variables);
 
         // add generator meta
-        if (!preg_match("/<meta name=\"generator\".*/i", $this->rendered)) {
+        if (!preg_match('/<meta name="generator".*/i', $this->rendered)) {
             $meta = '<meta name="generator" content="PHPoole" />';
             $this->rendered = preg_replace('/(<head.*>)/i', '$1'."\n\t".$meta, $this->rendered);
         }
