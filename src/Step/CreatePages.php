@@ -28,10 +28,10 @@ class CreatePages extends AbstractStep
         call_user_func_array($this->phpoole->getMessageCb(), ['CREATE', 'Creating pages']);
         $max = count($this->phpoole->getContent());
         $count = 0;
-        foreach ($this->phpoole->getContent() as $file) {
+        foreach ($this->phpoole->getContent() as $item) {
             $count++;
             /* @var $page Page */
-            $page = new Page($file);
+            $page = new Page($item);
             $this->phpoole->getPages()->add($page);
             $message = $page->getName();
             call_user_func_array($this->phpoole->getMessageCb(), ['CREATE_PROGRESS', $message, $count, $max]);

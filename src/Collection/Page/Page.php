@@ -23,7 +23,7 @@ class Page extends Item
     /**
      * @var array
      */
-    protected $file;
+    protected $item;
     /**
      * @var string
      */
@@ -75,21 +75,34 @@ class Page extends Item
     /**
      * Constructor.
      *
-     * @param array|null $file
+     * @param array|null $item
      */
-    public function __construct($file = null)
+    public function __construct($item = null)
     {
-        $this->file = $file;
+        /*
+        [Blog/Post 1.md] => Array(
+            [title] => Post 1
+                [date] => 01/01/2015
+                [tags] => Array(
+                    [0] => tag-1
+                    [1] => tag-2
+                )
+            [content] => Content.
+        )
+        */
+        $this->item = $item;
 
-        print_r($this->file = $file);
+        print_r($this->item = $item);
+
+        explode()
 
         // file extension: "md"
-        $this->fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
+        $this->fileExtension = pathinfo($this->item, PATHINFO_EXTENSION);
         // file path: "Blog"
-        $this->filePath = str_replace(DIRECTORY_SEPARATOR, '/', $this->file->getRelativePath());
+        $this->filePath = str_replace(DIRECTORY_SEPARATOR, '/', $this->item->getRelativePath());
         // file id: "Blog/Post 1"
         $this->fileId = ($this->filePath ? $this->filePath.'/' : '')
-            .basename($this->file->getBasename(), '.'.$this->fileExtension);
+            .basename($this->item->getBasename(), '.'.$this->fileExtension);
         /*
          * variables default values
          */
@@ -100,16 +113,16 @@ class Page extends Item
         // path - ie: "blog"
         $this->path = $this->urlize($this->filePath);
         // name - ie: "post-1"
-        $this->name = $this->urlize(basename($this->file->getBasename(), '.'.$this->fileExtension));
+        $this->name = $this->urlize(basename($this->item->getBasename(), '.'.$this->fileExtension));
         /*
          * front matter default values
          */
         // title - ie: "Post 1"
-        $this->setTitle(basename($this->file->getBasename(), '.'.$this->fileExtension));
+        $this->setTitle(basename($this->item->getBasename(), '.'.$this->fileExtension));
         // section - ie: "blog"
         $this->setSection(explode('/', $this->path)[0]);
         // date
-        $this->setDate(filemtime($this->file->getPathname()));
+        $this->setDate(filemtime($this->item->getPathname()));
         // permalink
         $this->setPermalink($this->pathname);
 
