@@ -9,6 +9,7 @@
 namespace PHPoole\Step;
 
 use PHPoole\Exception\Exception;
+use PHPoole\Util;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -49,6 +50,7 @@ class LoadContent extends AbstractStep
             /* @var $file SplFileInfo */
             foreach ($files as $file) {
                 $index = $file->getRelativePathname();
+<<<<<<< Updated upstream
                 if (array_key_exists('frontmatter', $data)) {
                     $fmProperties = $this->parse(
                         $file->getContents(),
@@ -59,16 +61,35 @@ class LoadContent extends AbstractStep
                 $properties[$index]['id'] = $index;
                 $properties[$index]['format'] = $format;
                 $properties[$index]['lastmodified'] = $file->getMTime();
+=======
+
+                $content[$index]['id']       = $index;
+                $content[$index]['filepath'] = $index;
+                $content[$index]['path']     = Util::urlize(trim($index, '.'.$format));
+
+                $content[$index]['format']   = $format;
+                $content[$index]['lastmodified'] = $file->getMTime();
+
+                // front matter?
+                if (isset($data['frontmatter'])) {
+                    $content[$index] = array_merge($content[$index], $this->parseFM(
+                        $file->getContents(),
+                        $this->phpoole->getConfig()->get('content.frontmatter.'.$data['frontmatter'].'.parser')
+                    )) ;
+                }
+>>>>>>> Stashed changes
             }
         }
 
+        // DEBUG
+        //echo 'content:'.PHP_EOL;
         //print_r($content);
 
         $this->phpoole->setContent($properties);
     }
 
     /**
-     * Parse the contents of a file.
+     * Parse front matter of a file.
      *
      * Example:
      * ```
@@ -84,7 +105,7 @@ class LoadContent extends AbstractStep
      *
      * @return array
      */
-    public function parse($content, $fmParser)
+    public function parseFM($content, $fmParser)
     {
         $properties = [];
 
@@ -96,7 +117,7 @@ class LoadContent extends AbstractStep
         );
         // if not front matter, set 'content' property only
         if (!$matches) {
-            $properties['raw'] = $content;
+            $properties['content'] = $content;
 
             return $properties;
         }
@@ -104,7 +125,7 @@ class LoadContent extends AbstractStep
         /* @var $parser \PHPoole\Parser\ParserInterface */
         $parser = new $fmParser();
         $properties = $parser->parse(trim($matches[1]));
-        $properties['raw'] = trim($matches[2]);
+        $properties['content'] = trim($matches[2]);
 
         return $properties;
     }
