@@ -14,21 +14,11 @@ namespace PHPoole\Converter;
 interface ConverterInterface
 {
     /**
-     * Converts frontmatter.
-     *
-     * @param  $string
-     * @param  $type
-     *
-     * @return mixed
-     */
-    public static function convertFrontmatter($string, $type);
-
-    /**
-     * Converts body.
+     * Converts content.
      *
      * @param  $string
      *
      * @return mixed
      */
-    public static function convertBody($string);
+    public static function convert($string);
 }

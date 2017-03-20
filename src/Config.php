@@ -67,12 +67,12 @@ class Config
                 ],
                 'markdown' => [
                     'ext'         => ['md', 'markdown', 'mdown', 'mkdn', 'mkd'],
-                    'parser'      => 'PHPoole\Parser\Parsedown',
+                    'converter'   => 'PHPoole\Converter\Parsedown',
                     'frontmatter' => 'yaml',
                 ],
                 'textile' => [
                     'ext'         => ['textile'],
-                    'parser'      => 'PHPoole\Parser\Textile',
+                    'converter'   => 'PHPoole\Converter\Textile',
                     'frontmatter' => 'yaml',
                 ],
                 'yaml' => [

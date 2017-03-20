@@ -6,21 +6,21 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPoole\Parser;
+namespace PHPoole\Converter;
 
 use ParsedownExtra;
 
 /**
  * Class Parsedown.
  */
-class Parsedown implements ParserInterface
+class Parsedown implements ConverterInterface
 {
     /**
      * {@inheritdoc}
      *
      * @return string
      */
-    public static function parse($string)
+    public static function convert($string)
     {
         return ParsedownExtra::instance()->text($string);
     }
