@@ -8,7 +8,6 @@
 
 namespace PHPoole\Collection\Page;
 
-use Cocur\Slugify\Slugify;
 use PHPoole\Collection\Item;
 use PHPoole\Page\NodeType;
 use PHPoole\Page\VariableTrait;
