@@ -50,6 +50,7 @@ class Util
             if (0 === $process->run()) {
                 return trim($process->getOutput());
             }
+
             throw new \RuntimeException(
                 sprintf(
                     'The tag or commit hash could not be retrieved from "%s": %s',
