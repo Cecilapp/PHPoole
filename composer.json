@@ -22,9 +22,9 @@
     "myclabs/php-enum": "1.5.2",
     "matthiasmullie/minify": "1.3.52",
     "symfony/finder": "^2.7|^2.8",
+    "twig/twig": "v1.34.4"
     "symfony/yaml": "v2.8.27",
     "symfony/process": "v2.8.27",
-    "twig/twig": "^1.32"
   },
   "require-dev": {
     "phpunit/phpunit": "^4.8",
