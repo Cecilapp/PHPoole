@@ -284,6 +284,7 @@ class Extension extends SlugifyExtension
 
             return $path;
         }
+
         throw new Exception(sprintf("File '%s' doesn't exist!", $path));
     }
 
