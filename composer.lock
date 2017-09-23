@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b456e5c8ed5cd0ac0318bb70b0e7368",
+    "content-hash": "b076ccca258b161e5e3cd47c8ae4a022",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -416,16 +416,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v2.8.17",
+            "version": "v2.8.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "355fccac526522dc5fca8ecf0e62749a149f3b8b"
+                "reference": "4f4e84811004e065a3bb5ceeb1d9aa592630f9ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/355fccac526522dc5fca8ecf0e62749a149f3b8b",
-                "reference": "355fccac526522dc5fca8ecf0e62749a149f3b8b",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/4f4e84811004e065a3bb5ceeb1d9aa592630f9ad",
+                "reference": "4f4e84811004e065a3bb5ceeb1d9aa592630f9ad",
                 "shasum": ""
             },
             "require": {
@@ -461,7 +461,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-02T20:30:24+00:00"
+            "time": "2017-06-01T20:52:29+00:00"
         },
         {
             "name": "symfony/process",
@@ -1761,12 +1761,12 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/satooshi/php-coveralls.git",
+                "url": "https://github.com/php-coveralls/php-coveralls.git",
                 "reference": "d5124af8bd6464144d550906cce46bd0df78f428"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/satooshi/php-coveralls/zipball/d5124af8bd6464144d550906cce46bd0df78f428",
+                "url": "https://api.github.com/repos/php-coveralls/php-coveralls/zipball/d5124af8bd6464144d550906cce46bd0df78f428",
                 "reference": "d5124af8bd6464144d550906cce46bd0df78f428",
                 "shasum": ""
             },
@@ -1817,7 +1817,7 @@
                 "github",
                 "test"
             ],
-            "time": "2017-02-25 12:14:18"
+            "time": "2017-02-25T12:14:18+00:00"
         },
         {
             "name": "sebastian/comparator",
