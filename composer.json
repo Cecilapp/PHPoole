@@ -22,7 +22,7 @@
     "myclabs/php-enum": "1.5.2",
     "symfony/filesystem": "v2.8.27",
     "symfony/finder": "^2.7|^2.8",
-    "symfony/process": "v2.8.27",
+    "symfony/process": "v2.8.28",
     "symfony/yaml": "v2.8.27",
     "twig/twig": "v1.34.4"
   },
