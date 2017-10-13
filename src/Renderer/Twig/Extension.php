@@ -338,7 +338,7 @@ class Extension extends SlugifyExtension
              $string = mb_substr($string, 0, $length).$suffix;
              $pOpen = mb_substr_count($string, '<p>');
              $pClose = mb_substr_count($string, '</p>');
-             if (($pOpen % $pClose) !== 0) {
+             if (($pClose > 0) && ($pOpen % $pClose !== 0)) {
                  $string .= '</p>';
              }
          }
