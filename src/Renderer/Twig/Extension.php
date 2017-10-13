@@ -228,15 +228,16 @@ class Extension extends SlugifyExtension
      *
      * @param \Twig_Environment $env
      * @param null              $value
+     * @param false             $canonical
      *
      * @return string
      */
-    public function createUrl(\Twig_Environment $env, $value = null)
+    public function createUrl(\Twig_Environment $env, $value = null, $canonical = false)
     {
         $base = '';
         $baseurl = $env->getGlobals()['site']['baseurl'];
 
-        if ($env->getGlobals()['site']['canonicalurl'] !== false) {
+        if ($canonical || $env->getGlobals()['site']['canonicalurl'] !== false) {
             $base = rtrim($baseurl, '/');
         }
 
