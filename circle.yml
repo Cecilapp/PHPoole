@@ -2,7 +2,7 @@
 machine:
   php:
     version:
-      7.1.9
+      7.1.6
   timezone:
     Europe/Paris
 # install dependencies
