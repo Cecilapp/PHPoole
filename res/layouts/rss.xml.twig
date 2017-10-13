@@ -5,14 +5,14 @@
         <title>{{ site.title }}</title>
         <description>{{ site.description|escape }}</description>
         <lastBuildDate>{{ page.date|date('Y-m-dTH:i:sP') }}</lastBuildDate>
-        <link>{{ site.baseurl }}</link>
-{% for page in site.pages %}
+        <link>{{ url('/', true) }}</link>
+{% for page in site.pages|sortByDate %}
 {% if page.id matches pattern %}
             <item>
                 <title>{{ page.title }}</title>
-                <description>{{ page.content|excerpt|striptags|escape }}</description>
+                <description>{{ page.content|excerpt }}</description>
                 <pubDate>{{ page.date|date('Y-m-dTH:i:sP') }}</pubDate>
-                <link>{{ url(page) }}</link>
+                <link>{{ url(page, true) }}</link>
             </item>
 {% endif %}
 {% endfor %}
