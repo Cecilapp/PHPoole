@@ -41,11 +41,12 @@ class Config
      */
     protected static $defaultData = [
         'site' => [
-            'title'       => 'PHPoole',
-            'baseline'    => 'A PHPoole website',
-            'baseurl'     => 'http://localhost:8000/',
-            'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'taxonomies'  => [
+            'title'        => 'PHPoole',
+            'baseline'     => 'A PHPoole website',
+            'baseurl'      => 'http://localhost:8000/',
+            'canonicalurl' => true,
+            'description'  => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'taxonomies'   => [
                 'tags'       => 'tag',
                 'categories' => 'category',
             ],
