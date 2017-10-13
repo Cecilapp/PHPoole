@@ -331,20 +331,20 @@ class Extension extends SlugifyExtension
      *
      * @return string
      */
-     public function excerpt($string, $length = 450, $suffix = '…')
-     {
-         $string = trim(strip_tags($string, '<p>'));
-         if (mb_strlen($string) > $length) {
-             $string = mb_substr($string, 0, $length).$suffix;
-             $pOpen = mb_substr_count($string, '<p>');
-             $pClose = mb_substr_count($string, '</p>');
-             if (($pOpen % $pClose) !== 0) {
-                 $string .= '</p>';
-             }
-         }
+    public function excerpt($string, $length = 450, $suffix = '…')
+    {
+        $string = trim(strip_tags($string, '<p>'));
+        if (mb_strlen($string) > $length) {
+            $string = mb_substr($string, 0, $length).$suffix;
+            $pOpen = mb_substr_count($string, '<p>');
+            $pClose = mb_substr_count($string, '</p>');
+            if (($pOpen % $pClose) !== 0) {
+                $string .= '</p>';
+            }
+        }
 
-         return $string;
-     }
+        return $string;
+    }
 
     /**
      * Calculate estimated time to read a text.
