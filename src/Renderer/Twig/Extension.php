@@ -329,7 +329,10 @@ class Extension extends SlugifyExtension
     {
         $string = trim(strip_tags($string, '<p>'));
         if (mb_strlen($string) > $length) {
-            $string = mb_substr($string, 0, $length).$suffix.'</p>';
+            $string = mb_substr($string, 0, $length).$suffix;
+            if (mb_strpos($string, '<p>') !== false) {
+                $string .= '</p>';
+            }
         }
 
         return $string;
