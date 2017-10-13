@@ -233,23 +233,28 @@ class Extension extends SlugifyExtension
      */
     public function createUrl(\Twig_Environment $env, $value = null)
     {
+        $base = '';
         $baseurl = $env->getGlobals()['site']['baseurl'];
+
+        if ($env->getGlobals()['site']['canonicalurl'] !== false) {
+            $base = rtrim($baseurl, '/');
+        }
 
         if ($value instanceof Page) {
             $value = $value->getPermalink();
             if (false !== strpos($value, '.')) { // file URL (with a dot for extension)
-                $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
+                $url = $base.'/'.ltrim($value, '/');
             } else {
-                $url = rtrim($baseurl, '/').'/'.ltrim(rtrim($value, '/').'/', '/');
+                $url = $base.'/'.ltrim(rtrim($value, '/').'/', '/');
             }
         } else {
             if (preg_match('~^(?:f|ht)tps?://~i', $value)) { // external URL
                 $url = $value;
             } elseif (false !== strpos($value, '.')) { // file URL (with a dot for extension)
-                $url = rtrim($baseurl, '/').'/'.ltrim($value, '/');
+                $url = $base.'/'.ltrim($value, '/');
             } else {
                 $value = $this->slugifyFilter($value);
-                $url = rtrim($baseurl, '/').'/'.ltrim(rtrim($value, '/').'/', '/');
+                $url = $base.'/'.ltrim(rtrim($value, '/').'/', '/');
             }
         }
 
