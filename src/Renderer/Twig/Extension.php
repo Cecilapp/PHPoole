@@ -335,12 +335,13 @@ class Extension extends SlugifyExtension
     {
         $string = trim(strip_tags($string, '<p>'));
         if (mb_strlen($string) > $length) {
-            $string = mb_substr($string, 0, $length).$suffix;
+            $string = mb_substr($string, 0, $length);
             $pOpen = mb_substr_count($string, '<p>');
             $pClose = mb_substr_count($string, '</p>');
-            if (($pClose > 0) && ($pOpen % $pClose !== 0)) {
-                $string .= '</p>';
+            if ($pOpen - $pClose !== 0) {
+                $suffix .= '</p>';
             }
+            $string .= $suffix;
         }
 
         return $string;
