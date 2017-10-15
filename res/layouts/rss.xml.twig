@@ -1,4 +1,3 @@
-{% set pattern = '#^(?!sitemap|rss|robotstxt|404|.*\/\d+\/.*|.*redirect|.*index|manifest).*$#' %}
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
     <channel>
@@ -6,15 +5,13 @@
         <description>{{ site.description|escape }}</description>
         <lastBuildDate>{{ page.date|date('Y-m-dTH:i:sP') }}</lastBuildDate>
         <link>{{ url('/', true) }}</link>
-{% for page in site.pages|sortByDate %}
-{% if page.id matches pattern %}
+        {% for page in site.pages|filterBy('section', 'blog')|sortByDate %}
             <item>
                 <title>{{ page.title }}</title>
                 <description>{{ page.content|excerpt }}</description>
                 <pubDate>{{ page.date|date('Y-m-dTH:i:sP') }}</pubDate>
                 <link>{{ url(page, true) }}</link>
             </item>
-{% endif %}
-{% endfor %}
+        {% endfor %}
     </channel>
 </rss>
