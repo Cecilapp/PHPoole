@@ -35,16 +35,18 @@ class ConvertPages extends AbstractStep
                 $count++;
                 $convertedPage = $this->convertPage($page, $this->phpoole->getConfig()->get('frontmatter.format'));
                 if (false !== $convertedPage) {
-                    if ($page->getVariable('published') !== false) {
+                    $message = $page->getName();
+                    if ($page->getVariable('published')) {
                         $this->phpoole->getPages()->replace($page->getId(), $convertedPage);
                     } else {
                         $this->phpoole->getPages()->remove($page->getId());
+                        $message .= ' (not published)';
                     }
+                    call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message, $count, $max]);
                 } else {
+                    $this->phpoole->getPages()->remove($page->getId());
                     $countError++;
                 }
-                $message = $page->getName();
-                call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message, $count, $max]);
             }
         }
         if ($countError > 0) {
