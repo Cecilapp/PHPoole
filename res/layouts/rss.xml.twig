@@ -2,13 +2,13 @@
 <rss version="2.0">
     <channel>
         <title>{{ site.title }}</title>
-        <description>{{ site.description|escape }}</description>
+        <description><![CDATA[{{ site.description|escape }}]]></description>
         <lastBuildDate>{{ page.date|date('Y-m-dTH:i:sP') }}</lastBuildDate>
         <link>{{ url('/', true) }}</link>
         {% for page in site.pages|filterBy('section', 'blog')|sortByDate %}
             <item>
                 <title>{{ page.title }}</title>
-                <description>{{ page.content|excerpt }}</description>
+                <description><![CDATA[{{ page.content|excerpt }}]]></description>
                 <pubDate>{{ page.date|date('Y-m-dTH:i:sP') }}</pubDate>
                 <link>{{ url(page, true) }}</link>
             </item>
