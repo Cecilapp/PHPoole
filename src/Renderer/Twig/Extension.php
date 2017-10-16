@@ -212,12 +212,21 @@ class Extension extends SlugifyExtension
             return ($a['date'] > $b['date']) ? -1 : 1;
         };
 
+        /*
         if ($array instanceof CollectionInterface) {
             $array->usort($callback);
         } else {
             if (is_array($array)) {
                 usort($array, $callback);
             }
+        }
+        */
+
+        if ($array instanceof Collection) {
+            $array = $array->toArray();
+        }
+        if (is_array($array)) {
+            usort($array, $callback);
         }
 
         return $array;
