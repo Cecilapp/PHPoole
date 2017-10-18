@@ -60,6 +60,7 @@ class Extension extends SlugifyExtension
             new \Twig_SimpleFilter('minifyCSS', [$this, 'minifyCss']),
             new \Twig_SimpleFilter('minifyJS', [$this, 'minifyJs']),
             new \Twig_SimpleFilter('excerpt', [$this, 'excerpt']),
+            new \Twig_SimpleFilter('excerptHtml', [$this, 'excerptHtml']),
         ];
     }
 
