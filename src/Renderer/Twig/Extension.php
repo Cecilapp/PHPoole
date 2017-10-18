@@ -353,6 +353,28 @@ class Extension extends SlugifyExtension
     }
 
     /**
+     * Read characters before '<!-- excerpt -->'.
+     *
+     * @param $string
+     *
+     * @return string
+     */
+    public function excerptHtml($string)
+    {
+        // https://regex101.com/r/mA2mG0/3
+        $pattern = '^(.*)[\n\r\s]*<!-- excerpt -->[\n\r\s]*(.*)$';
+        preg_match(
+            '/'.$pattern.'/s',
+            $string,
+            $matches
+        );
+        if (!$matches) {
+            return $string;
+        }
+        return trim($matches[1]);
+    }
+
+    /**
      * Calculate estimated time to read a text.
      *
      * @param $text
