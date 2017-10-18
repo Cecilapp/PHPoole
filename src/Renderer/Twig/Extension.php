@@ -371,6 +371,7 @@ class Extension extends SlugifyExtension
         if (!$matches) {
             return $string;
         }
+
         return trim($matches[1]);
     }
 
