@@ -150,10 +150,8 @@ class Page extends Item
     public static function asPrefix($string)
     {
         if (preg_match('/'.self::PREFIX_PATTERN.'/', $string, $matches)) {
-
             return $matches;
         } else {
-
             return false;
         }
     }
@@ -168,7 +166,6 @@ class Page extends Item
     public static function getPrefix($string)
     {
         if (false !== ($matches = self::asPrefix($string))) {
-
             return $matches[2];
         }
 
@@ -185,7 +182,6 @@ class Page extends Item
     public static function subPrefix($string)
     {
         if (false !== ($matches = self::asPrefix($string))) {
-
             return $matches[1].$matches[7];
         }
 
