@@ -39,6 +39,10 @@ class Page extends Item
     /**
      * @var string
      */
+    protected $fileName;
+    /**
+     * @var string
+     */
     protected $fileId;
 
     /**
@@ -94,29 +98,33 @@ class Page extends Item
             $this->fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
             // file path: "Blog"
             $this->filePath = str_replace(DIRECTORY_SEPARATOR, '/', $this->file->getRelativePath());
+            // file name: "Post 1"
+            $this->fileName = basename($this->file->getBasename(), '.'.$this->fileExtension);
             // file id: "Blog/Post 1"
-            $this->fileId = ($this->filePath ? $this->filePath.'/' : '')
-                .basename($this->file->getBasename(), '.'.$this->fileExtension);
+            $this->fileId = ($this->filePath ? $this->filePath.'/' : '').$this->fileName;
             /*
              * variables default values
              */
             // id - ie: "blog/post-1"
-            $this->id = $this->urlize($this->fileId);
+            $this->id = $this->urlize(self::deletePrefix($this->fileId));
             // pathname - ie: "blog/post-1"
-            $this->pathname = $this->urlize($this->fileId);
+            $this->pathname = $this->urlize(self::deletePrefix($this->fileId));
             // path - ie: "blog"
             $this->path = $this->urlize($this->filePath);
             // name - ie: "post-1"
-            $this->name = $this->urlize(basename($this->file->getBasename(), '.'.$this->fileExtension));
+            $this->name = $this->urlize(self::deletePrefix($this->fileName));
             /*
              * front matter default values
              */
             // title - ie: "Post 1"
-            $this->setTitle(basename($this->file->getBasename(), '.'.$this->fileExtension));
+            $this->setTitle($this->fileName);
             // section - ie: "blog"
             $this->setSection(explode('/', $this->path)[0]);
             // date
             $this->setDate(filemtime($this->file->getPathname()));
+            if (false !== self::getPrefix($this->fileId)) {
+                $this->setDate(self::getPrefix($this->fileId));
+            }
             // permalink
             $this->setPermalink($this->pathname);
 
@@ -128,6 +136,64 @@ class Page extends Item
         }
         // published by default
         $this->setVariable('published', true);
+    }
+
+    public static function _getPrefix($string)
+    {
+        return $string;
+    }
+
+    public static function subPrefix($string)
+    {
+        if (self::asPrefix($string)) {
+            return $string;
+        }
+
+        return $string;
+    }
+
+    public static function asPrefix($string)
+    {
+        return $string;
+    }
+
+    /**
+     * Delete prefix like 'YYYY-MM-DD-string'
+     *
+     * @param $string
+     *
+     * @return string
+     */
+    public static function deletePrefix($string)
+    {
+        // https://regex101.com/r/tJWUrd/1
+        $PATTERN = '^(.*?)(([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|[0-9]+)(-|_|\.)(.*)$';
+
+        if (preg_match('/'.$PATTERN.'/', $string, $matches)) {
+
+            return $matches[1].$matches[7];
+        } else {
+
+            return $string;
+        }
+    }
+
+    public static function getPrefix($string)
+    {
+        // https://regex101.com/r/tJWUrd/1
+        $PATTERN = '^(.*?)(([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|[0-9]+)(-|_|\.)(.*)$';
+
+        if (preg_match('/'.$PATTERN.'/', $string, $matches)) {
+            if (!empty($matches[2])) {
+                if (empty($matches[4])) {
+                    return (int)$matches[2];
+                }
+                return $matches[2];
+            }
+        } else {
+
+            return false;
+        }
     }
 
     /**
