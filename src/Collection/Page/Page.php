@@ -158,7 +158,7 @@ class Page extends Item
     }
 
     /**
-     * Delete prefix like 'YYYY-MM-DD-string'
+     * Delete prefix like 'YYYY-MM-DD-string'.
      *
      * @param $string
      *
@@ -170,10 +170,8 @@ class Page extends Item
         $PATTERN = '^(.*?)(([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|[0-9]+)(-|_|\.)(.*)$';
 
         if (preg_match('/'.$PATTERN.'/', $string, $matches)) {
-
             return $matches[1].$matches[7];
         } else {
-
             return $string;
         }
     }
@@ -186,12 +184,12 @@ class Page extends Item
         if (preg_match('/'.$PATTERN.'/', $string, $matches)) {
             if (!empty($matches[2])) {
                 if (empty($matches[4])) {
-                    return (int)$matches[2];
+                    return (int) $matches[2];
                 }
+
                 return $matches[2];
             }
         } else {
-
             return false;
         }
     }
