@@ -23,6 +23,8 @@ class Page extends Item
     use VariableTrait;
 
     const SLUGIFY_PATTERN = '/(^\/|[^a-z0-9\/]|-)+/';
+    // https://regex101.com/r/tJWUrd/1
+    const PREFIX_PATTERN = '^(.*?)(([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|[0-9]+)(-|_|\.)(.*)$';
 
     /**
      * @var SplFileInfo
@@ -36,6 +38,10 @@ class Page extends Item
      * @var string
      */
     protected $filePath;
+    /**
+     * @var string
+     */
+    protected $fileName;
     /**
      * @var string
      */
@@ -94,29 +100,33 @@ class Page extends Item
             $this->fileExtension = pathinfo($this->file, PATHINFO_EXTENSION);
             // file path: "Blog"
             $this->filePath = str_replace(DIRECTORY_SEPARATOR, '/', $this->file->getRelativePath());
+            // file name: "Post 1"
+            $this->fileName = basename($this->file->getBasename(), '.'.$this->fileExtension);
             // file id: "Blog/Post 1"
-            $this->fileId = ($this->filePath ? $this->filePath.'/' : '')
-                .basename($this->file->getBasename(), '.'.$this->fileExtension);
+            $this->fileId = ($this->filePath ? $this->filePath.'/' : '').$this->fileName;
             /*
              * variables default values
              */
             // id - ie: "blog/post-1"
-            $this->id = $this->urlize($this->fileId);
+            $this->id = $this->urlize(self::subPrefix($this->fileId));
             // pathname - ie: "blog/post-1"
-            $this->pathname = $this->urlize($this->fileId);
+            $this->pathname = $this->urlize(self::subPrefix($this->fileId));
             // path - ie: "blog"
             $this->path = $this->urlize($this->filePath);
             // name - ie: "post-1"
-            $this->name = $this->urlize(basename($this->file->getBasename(), '.'.$this->fileExtension));
+            $this->name = $this->urlize(self::subPrefix($this->fileName));
             /*
              * front matter default values
              */
             // title - ie: "Post 1"
-            $this->setTitle(basename($this->file->getBasename(), '.'.$this->fileExtension));
+            $this->setTitle($this->fileName);
             // section - ie: "blog"
             $this->setSection(explode('/', $this->path)[0]);
             // date
             $this->setDate(filemtime($this->file->getPathname()));
+            if (false !== self::getPrefix($this->fileId)) {
+                $this->setDate(self::getPrefix($this->fileId));
+            }
             // permalink
             $this->setPermalink($this->pathname);
 
@@ -128,6 +138,54 @@ class Page extends Item
         }
         // published by default
         $this->setVariable('published', true);
+    }
+
+    /**
+     * Return matches array if prefix exist or false.
+     *
+     * @param $string
+     *
+     * @return array|bool
+     */
+    public static function asPrefix($string)
+    {
+        if (preg_match('/'.self::PREFIX_PATTERN.'/', $string, $matches)) {
+            return $matches;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Return prefix if prefix or false.
+     *
+     * @param $string
+     *
+     * @return string|bool
+     */
+    public static function getPrefix($string)
+    {
+        if (false !== ($matches = self::asPrefix($string))) {
+            return $matches[2];
+        }
+
+        return false;
+    }
+
+    /**
+     * Return string without prefix (if exist).
+     *
+     * @param $string
+     *
+     * @return string
+     */
+    public static function subPrefix($string)
+    {
+        if (false !== ($matches = self::asPrefix($string))) {
+            return $matches[1].$matches[7];
+        }
+
+        return $string;
     }
 
     /**

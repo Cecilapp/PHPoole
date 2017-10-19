@@ -71,7 +71,7 @@ trait VariableTrait
         switch ($name) {
             case 'date':
                 try {
-                    if (is_int($value)) {
+                    if (is_numeric($value)) {
                         $this->offsetSet('date', (new \DateTime())->setTimestamp($value));
                     } else {
                         $this->offsetSet('date', new \DateTime($value));
