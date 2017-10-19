@@ -23,6 +23,8 @@ class Page extends Item
     use VariableTrait;
 
     const SLUGIFY_PATTERN = '/(^\/|[^a-z0-9\/]|-)+/';
+    // https://regex101.com/r/tJWUrd/1
+    const PREFIX_PATTERN = '^(.*?)(([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|[0-9]+)(-|_|\.)(.*)$';
 
     /**
      * @var SplFileInfo
@@ -106,13 +108,13 @@ class Page extends Item
              * variables default values
              */
             // id - ie: "blog/post-1"
-            $this->id = $this->urlize(self::deletePrefix($this->fileId));
+            $this->id = $this->urlize(self::subPrefix($this->fileId));
             // pathname - ie: "blog/post-1"
-            $this->pathname = $this->urlize(self::deletePrefix($this->fileId));
+            $this->pathname = $this->urlize(self::subPrefix($this->fileId));
             // path - ie: "blog"
             $this->path = $this->urlize($this->filePath);
             // name - ie: "post-1"
-            $this->name = $this->urlize(self::deletePrefix($this->fileName));
+            $this->name = $this->urlize(self::subPrefix($this->fileName));
             /*
              * front matter default values
              */
@@ -138,62 +140,56 @@ class Page extends Item
         $this->setVariable('published', true);
     }
 
-    public static function _getPrefix($string)
-    {
-        return $string;
-    }
-
-    public static function subPrefix($string)
-    {
-        if (self::asPrefix($string)) {
-            return $string;
-        }
-
-        return $string;
-    }
-
+    /**
+     * Return matches array if prefix exist or false.
+     *
+     * @param $string
+     *
+     * @return array|bool
+     */
     public static function asPrefix($string)
     {
-        return $string;
+        if (preg_match('/'.self::PREFIX_PATTERN.'/', $string, $matches)) {
+
+            return $matches;
+        } else {
+
+            return false;
+        }
     }
 
     /**
-     * Delete prefix like 'YYYY-MM-DD-string'
+     * Return prefix if prefix or false.
+     *
+     * @param $string
+     *
+     * @return string|bool
+     */
+    public static function getPrefix($string)
+    {
+        if (false !== ($matches = self::asPrefix($string))) {
+
+            return $matches[2];
+        }
+
+        return false;
+    }
+
+    /**
+     * Return string without prefix (if exist).
      *
      * @param $string
      *
      * @return string
      */
-    public static function deletePrefix($string)
+    public static function subPrefix($string)
     {
-        // https://regex101.com/r/tJWUrd/1
-        $PATTERN = '^(.*?)(([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|[0-9]+)(-|_|\.)(.*)$';
-
-        if (preg_match('/'.$PATTERN.'/', $string, $matches)) {
+        if (false !== ($matches = self::asPrefix($string))) {
 
             return $matches[1].$matches[7];
-        } else {
-
-            return $string;
         }
-    }
 
-    public static function getPrefix($string)
-    {
-        // https://regex101.com/r/tJWUrd/1
-        $PATTERN = '^(.*?)(([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])|[0-9]+)(-|_|\.)(.*)$';
-
-        if (preg_match('/'.$PATTERN.'/', $string, $matches)) {
-            if (!empty($matches[2])) {
-                if (empty($matches[4])) {
-                    return (int)$matches[2];
-                }
-                return $matches[2];
-            }
-        } else {
-
-            return false;
-        }
+        return $string;
     }
 
     /**
