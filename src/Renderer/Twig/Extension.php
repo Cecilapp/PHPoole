@@ -344,7 +344,7 @@ class Extension extends SlugifyExtension
     public function excerpt($string, $length = 450, $suffix = ' …')
     {
         $string = str_replace('</p>', '<br /><br />', $string);
-        $string = trim(strip_tags($string, '<br>'));
+        $string = trim(strip_tags($string, '<br>'), '<br />');
         if (mb_strlen($string) > $length) {
             $string = mb_substr($string, 0, $length);
             $string .= $suffix;
