@@ -5,7 +5,7 @@
 {% if page.id matches pattern %}
     <url>
         <loc>{{ url(page, true) }}</loc>
-        <lastmod>{{ page.date|date('Y-m-dTH:i:sP') }}</lastmod>
+        <lastmod>{{ page.date|date('Y-m-d') }}</lastmod>
         <changefreq>{{ page.sitemap.changefreq|default(site.fmpages.sitemap.changefreq) }}</changefreq>
         <priority>{{ page.sitemap.priority|default(site.fmpages.sitemap.priority) }}</priority>
     </url>
