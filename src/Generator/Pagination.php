@@ -67,7 +67,9 @@ class Pagination extends AbstractGenerator implements GeneratorInterface
                     if ($i < $paginateCount - 1) {
                         $pagination += ['next' => Page::urlize(sprintf('%s/%s/%s', $path, $paginatePath, $i + 2))];
                     }
-                    $alteredPage->setVariable('pagination', $pagination);
+                    $alteredPage
+                        ->setVariable('pagination', $pagination)
+                        ->setVariable('date', reset($pagination['pages'])->getDate());
 
                     $generatedPages->add($alteredPage);
                 }

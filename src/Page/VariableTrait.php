@@ -71,10 +71,16 @@ trait VariableTrait
         switch ($name) {
             case 'date':
                 try {
-                    if (is_numeric($value)) {
-                        $this->offsetSet('date', (new \DateTime())->setTimestamp($value));
+                    if ($value instanceof \DateTime) {
+                        $this->offsetSet('date', $value);
                     } else {
-                        $this->offsetSet('date', new \DateTime($value));
+                        if (is_numeric($value)) {
+                            $this->offsetSet('date', (new \DateTime())->setTimestamp($value));
+                        } else {
+                            if (is_string($value)) {
+                                $this->offsetSet('date', new \DateTime($value));
+                            }
+                        }
                     }
                 } catch (Exception $e) {
                     throw new Exception(sprintf("Expected date string in page ID: '%s'", $this->getId()));

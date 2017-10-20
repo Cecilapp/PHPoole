@@ -40,7 +40,8 @@ class Alias extends AbstractGenerator implements GeneratorInterface
                         ->setPathname(Page::urlize($alias))
                         ->setTitle($alias)
                         ->setLayout('redirect.html')
-                        ->setVariable('destination', $page->getPermalink());
+                        ->setVariable('destination', $page->getPermalink())
+                        ->setDate($page->getDate());
                     $generatedPages->add($aliasPage);
                 }
             }

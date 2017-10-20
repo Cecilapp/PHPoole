@@ -111,6 +111,7 @@ class Taxonomy extends AbstractGenerator implements GeneratorInterface
                             ->setTitle(ucfirst($term))
                             ->setNodeType(NodeType::TAXONOMY)
                             ->setVariable('pages', $pages)
+                            ->setVariable('date', $date = reset($pages)->getDate())
                             ->setVariable('singular', $this->config->get('site.taxonomies')[$plural])
                             ->setVariable('pagination', ['pages' => $pages]);
                         $this->generatedPages->add($page);
@@ -127,7 +128,8 @@ class Taxonomy extends AbstractGenerator implements GeneratorInterface
                     ->setNodeType(NodeType::TERMS)
                     ->setVariable('plural', $plural)
                     ->setVariable('singular', $this->config->get('site.taxonomies')[$plural])
-                    ->setVariable('terms', $terms);
+                    ->setVariable('terms', $terms)
+                    ->setVariable('date', $date);
 
                 // add page only if a template exist
                 try {

@@ -44,6 +44,7 @@ class Section extends AbstractGenerator implements GeneratorInterface
                         ->setTitle(ucfirst($section))
                         ->setNodeType(NodeType::SECTION)
                         ->setVariable('pages', $pages)
+                        ->setVariable('date', reset($pages)->getDate())
                         ->setVariable('menu', [
                             'main' => ['weight' => $menuWeight],
                         ]);
