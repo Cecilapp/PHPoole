@@ -100,6 +100,11 @@ class Twig implements RendererInterface
             $this->rendered = preg_replace('/(<head>|<head[[:space:]]+.*>)/i', '$1'."\n\t".$meta, $this->rendered);
         }
 
+        // replace excerpt tag by HTML anchor
+        $pattern = '/(.*)(<!-- excerpt -->)(.*)/i';
+        $replacement = '$1<span id="more"></span>$3';
+        $this->rendered = preg_replace($pattern, $replacement, $this->rendered);
+
         return $this;
     }
 
