@@ -119,7 +119,7 @@ class Page extends Item
              * front matter default values
              */
             // title - ie: "Post 1"
-            $this->setTitle($this->fileName);
+            $this->setTitle(self::subPrefix($this->fileName));
             // section - ie: "blog"
             $this->setSection(explode('/', $this->path)[0]);
             // date
