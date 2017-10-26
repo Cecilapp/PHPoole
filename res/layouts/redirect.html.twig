@@ -3,6 +3,7 @@
 <head lang="en">
     <title>Redirect to {{ url(page.destination) }}</title>
     <link rel="canonical" href="{{ url(page.destination) }}" />
+    <meta name="robots" content="noindex" />
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="refresh" content="0;url={{ url(page.destination) }}" />
 </head>
