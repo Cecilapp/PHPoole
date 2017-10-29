@@ -74,8 +74,8 @@ class Config
                     'permalink' => '404.html',
                 ],
                 'rss' => [
-                    'layout'     => 'rss.xml',
-                    'permalink'  => 'rss.xml',
+                    'layout'    => 'rss.xml',
+                    'permalink' => 'rss.xml',
                 ],
             ],
         ],
