@@ -36,6 +36,10 @@ class ConvertPages extends AbstractStep
                 $convertedPage = $this->convertPage($page, $this->phpoole->getConfig()->get('frontmatter.format'));
                 if (false !== $convertedPage) {
                     $message = $page->getName();
+                    // force convert drafts?
+                    if ($this->phpoole->getConfig()->get('drafts')) {
+                        $page->setVariable('published', true);
+                    }
                     if ($page->getVariable('published')) {
                         $this->phpoole->getPages()->replace($page->getId(), $convertedPage);
                     } else {

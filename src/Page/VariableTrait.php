@@ -86,6 +86,11 @@ trait VariableTrait
                     throw new Exception(sprintf("Expected date string in page ID: '%s'", $this->getId()));
                 }
                 break;
+            case 'draft':
+                if ($value === true) {
+                    $this->offsetSet('published', false);
+                }
+                break;
             default:
                 $this->offsetSet($name, $value);
         }
