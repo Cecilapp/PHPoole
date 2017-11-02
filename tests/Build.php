@@ -71,7 +71,7 @@ class Build extends \PHPUnit_Framework_TestCase
                         'test.txt',
                     ],
                 ],
-                'drafts' => false,
+                'drafts'     => false,
                 'generators' => [
                     99 => 'Pouet',
                 ],
