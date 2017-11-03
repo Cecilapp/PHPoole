@@ -109,6 +109,7 @@ class Config
         'themes' => [
             'dir' => 'themes',
         ],
+        'drafts'     => false,
         'generators' => [
             10 => 'PHPoole\Generator\Section',
             20 => 'PHPoole\Generator\Taxonomy',
