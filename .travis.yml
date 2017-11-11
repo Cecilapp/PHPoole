@@ -27,4 +27,5 @@ after_script:
   - php vendor/bin/coveralls -v
 # deploy docs
 after_success:
+  - vendor/bin/sami.php update sami.php
   - bash deploy-docs.sh
