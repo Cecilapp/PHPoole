@@ -246,6 +246,7 @@ class Extension extends SlugifyExtension
     {
         $base = '';
         $baseurl = $env->getGlobals()['site']['baseurl'];
+        $hash = md5($env->getGlobals()['site']['timestamp']);
 
         if ($canonical || $env->getGlobals()['site']['canonicalurl'] !== false) {
             $base = rtrim($baseurl, '/');
@@ -262,7 +263,7 @@ class Extension extends SlugifyExtension
             if (preg_match('~^(?:f|ht)tps?://~i', $value)) { // external URL
                 $url = $value;
             } elseif (false !== strpos($value, '.')) { // file URL (with a dot for extension)
-                $url = $base.'/'.ltrim($value, '/');
+                $url = $base.'/'.ltrim($value, '/').'?'.$hash;
             } else {
                 $value = $this->slugifyFilter($value);
                 $url = $base.'/'.ltrim(rtrim($value, '/').'/', '/');
