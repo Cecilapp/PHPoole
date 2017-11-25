@@ -10,7 +10,9 @@ jobs:
             command: sudo cp /usr/share/zoneinfo/Europe/Paris /etc/localtime
         - run:
             name: Composer
-            comand: sudo composer self-update && composer install --no-interaction
+            command: |
+              sudo composer self-update
+              composer install --no-interaction
         - run: 
             name: PHPUnit
             command: |
