@@ -1,12 +1,13 @@
 version: 2
 jobs:
-    test:
+    build:
       docker:
         - image: circleci/php:7.1
-      timezone:
-        Europe/Paris
       steps:
         - checkout
+        - run:
+            name: Switch timezone to Paris
+            command: sudo cp /usr/share/zoneinfo/Europe/Paris /etc/localtime
         - run:
             name: Composer
             comand: |
