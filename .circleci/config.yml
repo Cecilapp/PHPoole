@@ -17,7 +17,7 @@ jobs:
             name: PHPUnit
             command: |
               mkdir -p ~/phpunit
-              phpunit --log-junit ~/phpunit/junit.xml
+              vendor/bin/phpunit --log-junit ~/phpunit/junit.xml
             when: always
         - store_test_results:
             path: ~/phpunit
