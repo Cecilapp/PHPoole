@@ -63,7 +63,7 @@ class RenderPages extends AbstractStep
             ['pages' => $this->phpoole->getPages()->filter(function (Page $page) {
                 return $page->getVariable('published');
             })],
-            ['timestamp' => time()]
+            ['time' => time()]
         ));
         $this->phpoole->getRenderer()->addGlobal('phpoole', [
             'url'       => 'https://phpoole.org/#v'.$this->phpoole->getVersion(),

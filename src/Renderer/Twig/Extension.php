@@ -246,7 +246,7 @@ class Extension extends SlugifyExtension
     {
         $base = '';
         $baseurl = $env->getGlobals()['site']['baseurl'];
-        $hash = md5($env->getGlobals()['site']['timestamp']);
+        $hash = md5($env->getGlobals()['site']['time']);
 
         if ($canonical || $env->getGlobals()['site']['canonicalurl'] !== false) {
             $base = rtrim($baseurl, '/');
