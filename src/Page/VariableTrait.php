@@ -83,7 +83,7 @@ trait VariableTrait
                         }
                     }
                 } catch (\Exception $e) {
-                    throw new \Exception(sprintf("Expected date string"));
+                    throw new \Exception(sprintf('Expected date string'));
                 }
                 break;
             case 'draft':

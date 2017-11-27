@@ -10,7 +10,6 @@ namespace PHPoole\Step;
 
 use PHPoole\Collection\Page\Page;
 use PHPoole\Converter\Converter;
-use PHPoole\Exception\Exception;
 
 /**
  * Converts content of all pages.
@@ -33,6 +32,7 @@ class ConvertPages extends AbstractStep
         foreach ($this->phpoole->getPages() as $page) {
             if (!$page->isVirtual()) {
                 $count++;
+
                 try {
                     $convertedPage = $this->convertPage($page, $this->phpoole->getConfig()->get('frontmatter.format'));
                     $message = $page->getName();
@@ -56,7 +56,7 @@ class ConvertPages extends AbstractStep
         }
         if ($error > 0) {
             $message = '[ERROR] '.$message;
-            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT', 'ERROR', $message, $count-$error, $max]);
+            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT', 'ERROR', $message, $count - $error, $max]);
         }
     }
 
@@ -77,6 +77,7 @@ class ConvertPages extends AbstractStep
             $variables = Converter::convertFrontmatter($page->getFrontmatter(), $format);
         } catch (\Exception $e) {
             $message = sprintf("Unable to convert frontmatter of '%s': %s", $page->getId(), $e->getMessage());
+
             throw new \Exception($message);
         }
         // set variables
@@ -84,6 +85,7 @@ class ConvertPages extends AbstractStep
             $page->setVariables($variables);
         } catch (\Exception $e) {
             $message = sprintf("Unable to set variable in '%s': %s", $page->getId(), $e->getMessage());
+
             throw new \Exception($message);
         }
 
