@@ -212,27 +212,24 @@ class PHPoole
     public function setMessageCallback($messageCallback = null)
     {
         if ($messageCallback === null) {
-            $messageCallback = function ($code, $message = '', $itemsCount = 0, $itemsMax = 0, $verbose = true) {
-                switch ($code) {
+            $messageCallback = function ($step, $type, $message = '', $count = 0, $max = 0, $verbose = true) {
+                switch ($step) {
                     case 'CREATE':
                     case 'CONVERT':
                     case 'GENERATE':
                     case 'COPY':
                     case 'RENDER':
                     case 'TIME':
-                        $log = sprintf("\n> %s\n", $message);
-                        $this->addLog($log);
-                        break;
-                    case 'CREATE_PROGRESS':
-                    case 'CONVERT_PROGRESS':
-                    case 'GENERATE_PROGRESS':
-                    case 'COPY_PROGRESS':
-                    case 'RENDER_PROGRESS':
-                        if ($itemsCount > 0 && $verbose !== false) {
-                            $log = sprintf("  (%u/%u) %s\n", $itemsCount, $itemsMax, $message);
+                        if ($count == 0) {
+                            $log = sprintf("%s\n", $message);
                             $this->addLog($log);
-                        } else {
-                            $log = sprintf("  %s\n", $message);
+                        }
+                        if ($count > 0 && $verbose !== false) {
+                            $log = sprintf("\r- $step (%u/%u): %s", $count, $max, $message);
+                            $this->addLog($log);
+                        }
+                        if ($type == 'ERROR' || $count == $max) {
+                            $log = sprintf("\n");
                             $this->addLog($log);
                         }
                         break;

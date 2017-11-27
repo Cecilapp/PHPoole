@@ -62,7 +62,7 @@ trait VariableTrait
      * @param $name
      * @param $value
      *
-     * @throws Exception
+     * @throws \Exception
      *
      * @return $this
      */
@@ -82,8 +82,8 @@ trait VariableTrait
                             }
                         }
                     }
-                } catch (Exception $e) {
-                    throw new Exception(sprintf("Expected date string in page ID: '%s'", $this->getId()));
+                } catch (\Exception $e) {
+                    throw new \Exception(sprintf("Expected date string"));
                 }
                 break;
             case 'draft':

@@ -25,16 +25,16 @@ class ConvertPages extends AbstractStep
         if (count($this->phpoole->getPages()) <= 0) {
             return;
         }
-        call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT', 'Converting pages']);
         $max = count($this->phpoole->getPages());
         $count = 0;
-        $countError = 0;
+        $error = 0;
+        $message = '';
         /* @var $page Page */
         foreach ($this->phpoole->getPages() as $page) {
             if (!$page->isVirtual()) {
                 $count++;
-                $convertedPage = $this->convertPage($page, $this->phpoole->getConfig()->get('frontmatter.format'));
-                if (false !== $convertedPage) {
+                try {
+                    $convertedPage = $this->convertPage($page, $this->phpoole->getConfig()->get('frontmatter.format'));
                     $message = $page->getName();
                     // force convert drafts?
                     if ($this->phpoole->getConfig()->get('drafts')) {
@@ -46,16 +46,17 @@ class ConvertPages extends AbstractStep
                         $this->phpoole->getPages()->remove($page->getId());
                         $message .= ' (not published)';
                     }
-                    call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message, $count, $max]);
-                } else {
+                    call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT', 'TYPE', $message, $count, $max]);
+                } catch (\Exception $e) {
                     $this->phpoole->getPages()->remove($page->getId());
-                    $countError++;
+                    $error++;
+                    $message = $e->getMessage();
                 }
             }
         }
-        if ($countError > 0) {
-            $message = sprintf('Errors: %s', $countError);
-            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message]);
+        if ($error > 0) {
+            $message = '[ERROR] '.$message;
+            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT', 'ERROR', $message, $count-$error, $max]);
         }
     }
 
@@ -74,13 +75,17 @@ class ConvertPages extends AbstractStep
         // converts frontmatter
         try {
             $variables = Converter::convertFrontmatter($page->getFrontmatter(), $format);
-        } catch (Exception $e) {
-            $message = sprintf("> Unable to convert frontmatter of '%s': %s", $page->getId(), $e->getMessage());
-            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message]);
-
-            return false;
+        } catch (\Exception $e) {
+            $message = sprintf("Unable to convert frontmatter of '%s': %s", $page->getId(), $e->getMessage());
+            throw new \Exception($message);
         }
-        $page->setVariables($variables);
+        // set variables
+        try {
+            $page->setVariables($variables);
+        } catch (\Exception $e) {
+            $message = sprintf("Unable to set variable in '%s': %s", $page->getId(), $e->getMessage());
+            throw new \Exception($message);
+        }
 
         // converts body
         $html = Converter::convertBody($page->getBody());

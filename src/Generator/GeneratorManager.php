@@ -53,6 +53,7 @@ class GeneratorManager extends \SplPriorityQueue
 
         if ($max > 0) {
             $this->top();
+            $message = 0;
             while ($this->valid()) {
                 /* @var GeneratorInterface $generator */
                 $generator = $this->current();
@@ -66,9 +67,10 @@ class GeneratorManager extends \SplPriorityQueue
                         $pageCollection->add($page);
                     }
                 }
-                $message = substr(strrchr(get_class($generator), '\\'), 1).': '.count($generatedPages);
+                //$message = substr(strrchr(get_class($generator), '\\'), 1).': '.count($generatedPages);
+                $message += count($generatedPages);
                 $count = ($max - $this->key());
-                call_user_func_array($messageCallback, ['GENERATE_PROGRESS', $message, $count, $max]);
+                call_user_func_array($messageCallback, ['GENERATE', 'TYPE', $message, $count, $max]);
                 $this->next();
             }
         }
