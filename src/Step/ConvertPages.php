@@ -55,7 +55,8 @@ class ConvertPages extends AbstractStep
         }
         if ($countError > 0) {
             $message = sprintf('Errors: %s', $countError);
-            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message]);
+            //call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message]);
+            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message, '-1']);
         }
     }
 
@@ -74,13 +75,21 @@ class ConvertPages extends AbstractStep
         // converts frontmatter
         try {
             $variables = Converter::convertFrontmatter($page->getFrontmatter(), $format);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $message = sprintf("> Unable to convert frontmatter of '%s': %s", $page->getId(), $e->getMessage());
-            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message]);
+            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message, -1]);
 
             return false;
         }
-        $page->setVariables($variables);
+        // set variables
+        try {
+            $page->setVariables($variables);
+        } catch (\Exception $e) {
+            $message = sprintf("> Unable to set variable in '%s': %s", $page->getId(), $e->getMessage());
+            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_PROGRESS', $message, -1]);
+
+            return false;
+        }
 
         // converts body
         $html = Converter::convertBody($page->getBody());
