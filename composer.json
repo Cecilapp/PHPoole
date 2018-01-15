@@ -1,5 +1,5 @@
 {
-  "name": "narno/phpoole-library",
+  "name": "phpoole/library",
   "description": "An intuitive PHP library to create a static website.",
   "keywords": ["static", "website", "generator", "flat file", "markdown", "twig"],
   "homepage": "https://github.com/Narno/PHPoole-library",
@@ -43,7 +43,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "1.1.x-dev"
+      "dev-master": "1.x-dev"
     }
   },
   "minimum-stability": "dev",
