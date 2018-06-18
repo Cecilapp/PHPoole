@@ -23,7 +23,7 @@
     "symfony/filesystem": "2.8.31|3.3.13",
     "symfony/finder": "2.7.38|2.8.31|3.3.13",
     "symfony/process": "2.8.31|3.3.13",
-    "symfony/yaml": "2.8.31|3.3.13",
+    "symfony/yaml": "2.8.41|3.3.13",
     "twig/twig": "1.35.0"
   },
   "require-dev": {
