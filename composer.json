@@ -27,7 +27,7 @@
     "twig/twig": "1.35.3|2.4.8"
   },
   "require-dev": {
-    "phpunit/phpunit": "5.7.27|7.2.4",
+    "phpunit/phpunit": "7.2.5|7.2.4",
     "sami/sami": "3.3.0|4.0.16",
     "php-coveralls/php-coveralls": "2.1.0"
   },
