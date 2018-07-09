@@ -325,7 +325,7 @@ class Extension extends SlugifyExtension
 
         return $minifier->minify();
     }
-    
+
     /**
      * Compile style file to CSS.
      *
@@ -356,7 +356,7 @@ class Extension extends SlugifyExtension
 
         throw new Exception(sprintf("File '%s' doesn't exist!", $path));
     }
-    
+
     /**
      * Compile SCSS string to CSS.
      *
