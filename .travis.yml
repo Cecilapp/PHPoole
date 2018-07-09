@@ -24,7 +24,7 @@ script:
 # docs & co
 after_success:
   # run coveralls
-  - travis_retry php vendor/bin/coveralls -v
+  - travis_retry $TRAVIS_BUILD_DIR/vendor/bin/coveralls -v
   # build API docs
   #- vendor/bin/sami.php update sami.php
   # deploy docs
