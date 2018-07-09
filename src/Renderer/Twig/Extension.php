@@ -10,6 +10,7 @@ namespace PHPoole\Renderer\Twig;
 
 use Cocur\Slugify\Bridge\Twig\SlugifyExtension;
 use Cocur\Slugify\Slugify;
+use Leafo\ScssPhp\Compiler;
 use MatthiasMullie\Minify;
 use PHPoole\Collection\Collection;
 use PHPoole\Collection\CollectionInterface;
@@ -59,6 +60,7 @@ class Extension extends SlugifyExtension
             new \Twig_SimpleFilter('urlize', [$this, 'slugifyFilter']),
             new \Twig_SimpleFilter('minifyCSS', [$this, 'minifyCss']),
             new \Twig_SimpleFilter('minifyJS', [$this, 'minifyJs']),
+            new \Twig_SimpleFilter('SCSStoCSS', [$this, 'scssToCss']),
             new \Twig_SimpleFilter('excerpt', [$this, 'excerpt']),
             new \Twig_SimpleFilter('excerptHtml', [$this, 'excerptHtml']),
         ];
@@ -73,6 +75,7 @@ class Extension extends SlugifyExtension
             new \Twig_SimpleFunction('url', [$this, 'createUrl'], ['needs_environment' => true]),
             new \Twig_SimpleFunction('minify', [$this, 'minify']),
             new \Twig_SimpleFunction('readtime', [$this, 'readtime']),
+            new \Twig_SimpleFunction('toCSS', [$this, 'toCss']),
         ];
     }
 
@@ -321,6 +324,51 @@ class Extension extends SlugifyExtension
         $minifier = new Minify\JS($value);
 
         return $minifier->minify();
+    }
+
+    /**
+     * Compile style file to CSS.
+     *
+     * @param string $path
+     *
+     * @throws Exception
+     *
+     * @return string
+     */
+    public function toCss($path)
+    {
+        $filePath = $this->destPath.'/'.$path;
+        if (is_file($filePath)) {
+            $extension = (new \SplFileInfo($filePath))->getExtension();
+            switch ($extension) {
+                case 'scss':
+                    $scss = new Compiler();
+                    $scssIn = file_get_contents($filePath);
+                    $cssOut = $scss->compile($scssIn);
+                    file_put_contents(strtr($filePath, '.scss', '.css'), $cssOut);
+                    break;
+                default:
+                    throw new Exception(sprintf("File '%s' should be a '.scss'!", $path));
+            }
+
+            return $path;
+        }
+
+        throw new Exception(sprintf("File '%s' doesn't exist!", $path));
+    }
+
+    /**
+     * Compile SCSS string to CSS.
+     *
+     * @param $value
+     *
+     * @return string
+     */
+    public function scssToCss($value)
+    {
+        $scss = new Compiler();
+
+        return $scss->compile($value);
     }
 
     /**
