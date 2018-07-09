@@ -60,7 +60,7 @@ class Extension extends SlugifyExtension
             new \Twig_SimpleFilter('urlize', [$this, 'slugifyFilter']),
             new \Twig_SimpleFilter('minifyCSS', [$this, 'minifyCss']),
             new \Twig_SimpleFilter('minifyJS', [$this, 'minifyJs']),
-            new \Twig_SimpleFilter('SCSStoCSS', [$this, 'ScssToCss']),
+            new \Twig_SimpleFilter('SCSStoCSS', [$this, 'scssToCss']),
             new \Twig_SimpleFilter('excerpt', [$this, 'excerpt']),
             new \Twig_SimpleFilter('excerptHtml', [$this, 'excerptHtml']),
         ];
@@ -364,7 +364,7 @@ class Extension extends SlugifyExtension
      *
      * @return string
      */
-    public function ScssToCss($value)
+    public function scssToCss($value)
     {
         $scss = new Compiler();
 
