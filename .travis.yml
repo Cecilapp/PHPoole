@@ -34,7 +34,7 @@ script:
 after_success:
   # run coveralls
   #- travis_retry php vendor/bin/coveralls -v
-  - if [ $COVERAGE = run ]; then travis_retry php vendor/bin/coveralls; fi
+  - if [ $COVERAGE = run ]; then travis_retry php bin/coveralls -v; fi
   # build API docs
   #- vendor/bin/sami.php update sami.php
   # deploy docs
