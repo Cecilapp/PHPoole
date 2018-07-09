@@ -24,15 +24,15 @@ install:
 before_script:
   #- phpenv config-rm xdebug.ini
   - composer install --no-interaction
-  - if [ $COVERAGE == "run" ]; then mkdir -p build/logs; PHPUNIT_FLAGS="--coverage-text --coverage-clover build/logs/clover.xml"; fi
+  - if [[ $COVERAGE = run ]]; then mkdir -p build/logs; PHPUNIT_FLAGS="--coverage-text --coverage-clover build/logs/clover.xml"; fi
 # run PHPUnit and export code coverage log
 script:
-  - if [ $COVERAGE == "run" ]; then phpunit -c ./ $PHPUNIT_FLAGS; fi
+  - if [[ $COVERAGE = run ]]; then phpunit -c ./ $PHPUNIT_FLAGS; fi
 # docs & co
 after_success:
   # run coveralls
-  - if [ $COVERAGE == "run" ]; then travis_retry php bin/coveralls -v; fi
+  - if [[ $COVERAGE = run ]]; then travis_retry php bin/coveralls -v; fi
   # build API docs
-  - if [ $API_DOCS == "build" ]; then vendor/bin/sami.php update sami.php; fi
+  - if [[ $API_DOCS = build ]]; then vendor/bin/sami.php update sami.php; fi
   # deploy docs
   - bash deploy-docs.sh
