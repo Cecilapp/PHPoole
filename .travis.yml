@@ -1,6 +1,5 @@
 language: php
 sudo: false # faster builds on new travis setup not using sudo
-# PHP versions
 php:
   - 7.1
   - 7.2
@@ -31,11 +30,10 @@ before_script:
 script:
   # run PHPUnit and export code coverage log
   - if [[ $COVERAGE = run ]]; then phpunit -c ./ $PHPUNIT_FLAGS; fi
-# docs & co
 after_success:
   # submit coverage report to Coveralls
   - if [[ $COVERAGE = run ]]; then travis_retry php coveralls.phar -v; fi
-  # Submit coverage report to codecov.io
+  # submit coverage report to codecov.io
   - bash <(curl -s https://codecov.io/bash)
   # build API docs
   - if [[ $API_DOCS = build ]]; then vendor/bin/sami.php update sami.php; fi
