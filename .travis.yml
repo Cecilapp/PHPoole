@@ -33,8 +33,10 @@ script:
   - if [[ $COVERAGE = run ]]; then phpunit -c ./ $PHPUNIT_FLAGS; fi
 # docs & co
 after_success:
-  # run coveralls
-  - if [[ $COVERAGE = run ]]; then travis_retry php bin/coveralls -v; fi
+  # submit coverage report to Coveralls
+  - if [[ $COVERAGE = run ]]; then travis_retry php coveralls.phar -v; fi
+  # Submit coverage report to codecov.io
+  - bash <(curl -s https://codecov.io/bash)
   # build API docs
   - if [[ $API_DOCS = build ]]; then vendor/bin/sami.php update sami.php; fi
   # deploy docs
