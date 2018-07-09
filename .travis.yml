@@ -7,6 +7,9 @@ php:
   - 7.1
   - 7.2
 matrix:
+  include:
+    - php: 5.6
+      env: COVERAGE=run
   allow_failures:
     - php: 7.2
   fast_finish: true
@@ -22,16 +25,16 @@ install:
 before_script:
   #- phpenv config-rm xdebug.ini
   - composer install --no-interaction
-  - mkdir -p build/logs
+  - if [ $COVERAGE = run ]; then mkdir -p build/logs; PHPUNIT_FLAGS="--coverage-text --coverage-clover build/logs/clover.xml"; fi;
 # run PHPUnit and export code coverage log
 script:
   #- phpunit -c ./ --coverage-text --coverage-clover build/logs/clover.xml
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.6" ]]; then phpunit -c ./ --coverage-text --coverage-clover build/logs/clover.xml; fi
+  - phpunit -c $PHPUNIT_FLAGS
 # docs & co
 after_success:
   # run coveralls
   #- travis_retry php vendor/bin/coveralls -v
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.6" ]]; then travis_retry php vendor/bin/coveralls; fi
+  - if [ $COVERAGE = run ]; then travis_retry php vendor/bin/coveralls; fi
   # build API docs
   #- vendor/bin/sami.php update sami.php
   # deploy docs
