@@ -4,7 +4,6 @@
 
 [![Build Status](https://travis-ci.org/PHPoole/library.svg?branch=master)](https://travis-ci.org/PHPoole/library)
 [![Latest Stable Version](https://poser.pugx.org/phpoole/library/v/stable)](https://packagist.org/packages/phpoole/library)
-[![Total Downloads](https://poser.pugx.org/narno/phpoole-library/downloads)](https://packagist.org/packages/phpoole/library)
 [![License](https://poser.pugx.org/phpoole/library/license)](https://packagist.org/packages/phpoole/library)
 
 
@@ -13,7 +12,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/013e272c2eeb07f6c01a/maintainability)](https://codeclimate.com/github/PHPoole/PHPoole-library/maintainability)
 [![StyleCI](https://styleci.io/repos/32327575/shield)](https://styleci.io/repos/32327575)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/f4c44315-d370-499e-8f61-d6d1ce0cadde/mini.png)](https://insight.sensiolabs.com/projects/f4c44315-d370-499e-8f61-d6d1ce0cadde)
-[![codecov](https://codecov.io/gh/PHPoole/library/branch/master/graph/badge.svg)](https://codecov.io/gh/PHPoole/library)
 [![Coverage Status](https://coveralls.io/repos/github/PHPoole/library/badge.svg?branch=master)](https://coveralls.io/github/PHPoole/library?branch=master)
 
 _PHPoole/library_ is the core library of [**PHPoole CLI**](https://github.com/PHPoole/PHPoole).
