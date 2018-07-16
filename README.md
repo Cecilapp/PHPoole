@@ -4,9 +4,7 @@
 
 [![Build Status](https://travis-ci.org/PHPoole/library.svg?branch=master)](https://travis-ci.org/PHPoole/library)
 [![Latest Stable Version](https://poser.pugx.org/phpoole/library/v/stable)](https://packagist.org/packages/phpoole/library)
-[![License](https://poser.pugx.org/phpoole/library/license)](https://packagist.org/packages/phpoole/library)
-
-
+[![License](https://poser.pugx.org/phpoole/library/license)](https://packagist.org/packages/phpoole/library)  
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/PHPoole/library/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/PHPoole/library/?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/adbaa5309cd749fc9e095ca47d347586)](https://www.codacy.com/app/Narno/PHPoole-library)
 [![Maintainability](https://api.codeclimate.com/v1/badges/013e272c2eeb07f6c01a/maintainability)](https://codeclimate.com/github/PHPoole/PHPoole-library/maintainability)
@@ -24,7 +22,7 @@ Please see the [composer.json](composer.json) file.
 
 Run the following command:
 ```
-$ composer require phpoole/library
+composer require phpoole/library
 ```
 
 ## Usage
@@ -33,9 +31,10 @@ Please see the [documentation](https://phpoole.org/documentation/library/) on th
 
 ## API documentation
 
-Run the following command to [build the API documentation](https://github.com/FriendsOfPHP/Sami):
+Run the following commands to [build the API documentation](https://github.com/FriendsOfPHP/Sami):
 ```bash
-$ vendor/bin/sami.php update sami.php
+composer require sami/sami
+composer api-docs-build
 ```
 Then open `docs/api/master/index.html` in your browser.
 
@@ -43,5 +42,5 @@ Then open `docs/api/master/index.html` in your browser.
 
 _PHPoole/library_ is a free software distributed under the terms of the MIT license.
 
-© 2017 [Arnaud Ligny](https://arnaudligny.fr)  
+© [Arnaud Ligny](https://arnaudligny.fr)  
 PHPoole logo © [Cécile Ricordeau](http://www.cecillie.fr)
