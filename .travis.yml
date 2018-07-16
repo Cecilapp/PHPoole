@@ -4,8 +4,11 @@ sudo: false
 matrix:
   include:
     - php: 5.6
+      env:
+        - LEGACY_DEPS="phpunit/phpunit"
     - php: 7.1
       env:
+        - LEGACY_DEPS="phpunit/phpunit"
         - TEST_COVERAGE=true
     - php: 7.2
   allow_failures:
@@ -24,6 +27,7 @@ before_install:
 
 install:
   - travis_retry composer install --no-interaction
+  - if [[ $LEGACY_DEPS != '' ]]; then travis_retry composer update --no-interaction --with-dependencies $LEGACY_DEPS ; fi
 
 script: composer test
 
