@@ -1,41 +1,52 @@
 language: php
-sudo: false # faster builds on new travis setup not using sudo
-php:
-  - 7.1
-  - 7.2
-matrix:
-  include:
-    - php: 5.6
-      env: COVERAGE=run API_DOCS=build
-  allow_failures:
-    - php: 7.2
-  fast_finish: true
-# cache Composer files
+sudo: false
+
 cache:
   directories:
-    - vendor
     - $COMPOSER_CACHE_DIR
-install:
-  # update composer it-self
+
+php:
+  - 5.6
+  #- 7.1
+  #- 7.2
+
+stages:
+  - Test
+  - name: Test coverage
+    if: (NOT type IN (pull_request)) AND (branch = master)
+  - name: API docs build
+    if: (NOT type IN (pull_request)) AND (branch = master)
+  - name: HTML docs deploy
+    if: (NOT type IN (pull_request)) AND (branch = master)
+
+before_install:
   - composer self-update
-  # install coveralls.phar
-  - wget -c -nc --retry-connrefused --tries=0 https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar -O coveralls.phar
-  - chmod +x coveralls.phar
-  - php coveralls.phar --version
-before_script:
-  #- phpenv config-rm xdebug.ini
-  # install packages
-  - composer install --no-interaction
-  - if [[ $COVERAGE = run ]]; then mkdir -p build/logs; PHPUNIT_FLAGS="--coverage-text --coverage-clover build/logs/clover.xml"; fi
-script:
-  # run PHPUnit and export code coverage log
-  - if [[ $COVERAGE = run ]]; then phpunit -c ./ $PHPUNIT_FLAGS; fi
-after_success:
-  # submit coverage report to Coveralls
-  - if [[ $COVERAGE = run ]]; then travis_retry php coveralls.phar -v; fi
-  # submit coverage report to codecov.io
-  - bash <(curl -s https://codecov.io/bash)
-  # build API docs
-  - if [[ $API_DOCS = build ]]; then vendor/bin/sami.php update sami.php; fi
-  # deploy docs
-  - bash deploy-docs.sh
+  - if [[ $TEST_COVERAGE != true ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
+
+install:
+  - travis_retry composer install -n --prefer-source
+  - if [[ $TEST_COVERAGE == true ]]; then travis_retry composer test-coverage-install || return 0 ; fi
+
+script: composer test
+
+jobs:
+  allow_failures:
+    - php: 7.2
+  include:
+    - stage: Test
+      php: 5.6
+    - stage: Test coverage
+      php: 5.6
+      env: TEST_COVERAGE=true
+      before_script:
+        - mkdir -p build/logs
+      script:
+        - travis_retry composer test-coverage
+      after_success:
+        - travis_retry composer test-coverage-upload
+    - stage: API docs build
+      php: 7.1
+      script: composer api-docs-build
+    - stage: HTML docs deploy
+      php: 7.1
+      script: bash deploy-docs.sh
