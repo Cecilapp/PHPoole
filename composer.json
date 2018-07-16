@@ -51,5 +51,20 @@
     }
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "scripts": {
+    "test": "phpunit -c ./",
+    "test-coverage-install": [
+      "wget -c -nc --retry-connrefused --tries=0 https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar -O coveralls.phar",
+      "chmod +x coveralls.phar",
+      "php coveralls.phar --version"
+    ],
+    "test-coverage": "phpunit -c ./ --coverage-text --coverage-clover build/logs/clover.xml",
+    "test-coverage-upload": [
+      "travis_retry php coveralls.phar -v",
+      "bash <(curl -s https://codecov.io/bash)",
+    ],
+    "api-docs-build": "vendor/bin/sami.php update sami.php",
+
+    }
 }

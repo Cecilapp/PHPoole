@@ -5,38 +5,48 @@ php:
   - 7.1
   - 7.2
 
+matrix:
+  fast_finish : true
+  allow_failures:
+    - php: 7.2
+  include:
+    - php: 7.1
+      env:
+        - DEPS=locked
+        - TEST_COVERAGE=true
+
 stages:
   - test
   - test-coverage
   - api-docs-build
   - html-docs-deploy
 
-install:
+before_install:
   - composer self-update
-  #- phpenv config-rm xdebug.ini
-  - composer install --no-interaction
+  - if [[ $TEST_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
+
+install:
+  - travis_retry composer install --no-interaction --ignore-platform-reqs
+
+script: composer test
 
 jobs:
   include:
     - stage: test
-      php: 5.6
-      script: phpunit -c
     - stage: test-coverage
       php: 7.1
+      env: TEST_COVERAGE=true
       install:
-        - wget -c -nc --retry-connrefused --tries=0 https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar -O coveralls.phar
-        - chmod +x coveralls.phar
-        - php coveralls.phar --version
+        - composer test-coverage-install
       before_script:
         - mkdir -p build/logs
       script:
-        - phpunit -c ./ --coverage-text --coverage-clover build/logs/clover.xml
+        - composer test-coverage
       after_success:
-        - travis_retry php coveralls.phar -v
-        - bash <(curl -s https://codecov.io/bash)
+        - composer test-coverage-upload
     - stage: api-docs-build
       php: 7.1
-      script: vendor/bin/sami.php update sami.php
+      script: composer api-docs-build
     - stage: html-docs-deploy
       php: 7.1
       script: bash deploy-docs.sh
