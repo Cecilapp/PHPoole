@@ -13,11 +13,11 @@ php:
 stages:
   - Test
   - name: Test coverage
-    if: branch = master
+    if: (NOT type IN (pull_request)) AND (branch = master)
   - name: API docs build
-    if: branch = master
+    if: (NOT type IN (pull_request)) AND (branch = master)
   - name: HTML docs deploy
-    if: branch = master
+    if: (NOT type IN (pull_request)) AND (branch = master)
 
 before_install:
   - composer self-update
