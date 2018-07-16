@@ -28,8 +28,8 @@ before_install:
   - if [[ $TEST_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
 
 install:
-  - if [[ $DEPS == 'latest' ]]; then travis_retry composer update --no-interaction ; fi
   - travis_retry composer install --no-interaction --ignore-platform-reqs
+  - if [[ $DEPS == 'latest' ]]; then travis_retry composer update --no-interaction ; fi
 
 script: composer test
 
