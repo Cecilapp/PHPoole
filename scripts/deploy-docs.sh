@@ -16,7 +16,7 @@ cp -R $SOURCE_DOCS_DIR $HOME/$SOURCE_DOCS_DIR
 cd $HOME
 git config --global user.name "Travis"
 git config --global user.email "contact@travis-ci.org"
-git clone --quiet --branch=$TARGET_BRANCH https://${GH_TOKEN}@github.com/${REPO}.git ${TARGET_REPO} > /dev/null
+git clone --quiet --branch=$TARGET_BRANCH https://${GH_TOKEN}@github.com/${TARGET_REPO}.git ${TARGET_REPO} > /dev/null
 
 cd $TARGET_REPO
 mkdir -p $TARGET_DOCS_DIR
