@@ -36,6 +36,7 @@ jobs:
       php: 7.1
       env: TEST_COVERAGE=true
       install:
+        - travis_retry composer update --no-interaction
         - composer test-coverage-install
       before_script:
         - mkdir -p build/logs
