@@ -49,6 +49,7 @@ jobs:
       script: composer api-docs-build
     - stage: HTML docs deploy
       php: 7.1
+      script: skip
       deploy:
         provider: script
         script: bash scripts/deploy-docs.sh
