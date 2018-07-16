@@ -22,18 +22,20 @@ script: composer test
 
 jobs:
   include:
+    - stage: test
+      php: 5.6
     - stage: test-coverage
       php: 5.6
       env: TEST_COVERAGE=true
       install:
         - travis_retry composer update --no-interaction
-        - composer test-coverage-install
+        - travis_retry composer test-coverage-install
       before_script:
         - mkdir -p build/logs
       script:
-        - composer test-coverage
+        - travis_retry composer test-coverage
       after_success:
-        - composer test-coverage-upload
+        - travis_retry composer test-coverage-upload
     - stage: api-docs-build
       php: 7.1
       script: composer api-docs-build
