@@ -11,9 +11,9 @@ php:
   - 7.2
 
 stages:
-  - test-coverage
-  - api-docs-build
-  - html-docs-deploy
+  - Test coverage
+  - API docs build
+  - HTML docs deploy
 
 before_install:
   - composer self-update
@@ -29,7 +29,7 @@ jobs:
   allow_failures:
     - php: 7.2
   include:
-    - stage: test-coverage
+    - stage: Test coverage
       php: 5.6
       env: TEST_COVERAGE=true
       before_script:
@@ -38,9 +38,9 @@ jobs:
         - travis_retry composer test-coverage
       after_success:
         - travis_retry composer test-coverage-upload
-    - stage: api-docs-build
+    - stage: API docs build
       php: 7.1
       script: composer api-docs-build
-    - stage: html-docs-deploy
+    - stage: HTML docs deploy
       php: 7.1
       script: bash deploy-docs.sh
