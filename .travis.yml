@@ -19,6 +19,8 @@ install:
 jobs:
   include:
     - stage: test
+      php 5.6
+      script: phpunit -c
     - stage: test-coverage
       php 7.1
       install:
