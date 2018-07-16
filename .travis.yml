@@ -35,7 +35,7 @@ jobs:
     - stage: api-docs-build
       php 7.1
       script: vendor/bin/sami.php update sami.php
-    - stage: deploys-docs
+    - stage: html-docs-deploy
       php 7.1
       script: bash deploy-docs.sh
 
