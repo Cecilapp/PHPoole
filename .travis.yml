@@ -7,8 +7,8 @@ cache:
 
 php:
   - 5.6
-  - 7.1
-  - 7.2
+  #- 7.1
+  #- 7.2
 
 stages:
   - Test coverage
@@ -39,8 +39,10 @@ jobs:
       after_success:
         - travis_retry composer test-coverage-upload
     - stage: API docs build
+      if: branch = master
       php: 7.1
       script: composer api-docs-build
     - stage: HTML docs deploy
+      if: branch = master
       php: 7.1
       script: bash deploy-docs.sh
