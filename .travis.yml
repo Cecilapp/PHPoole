@@ -5,10 +5,10 @@ matrix:
   include:
     - php: 5.6
       env:
-        - DEPS=latest
+        - LEGACY_DEPS="phpunit/phpunit"
     - php: 7.1
       env:
-        - DEPS=locked
+        - LEGACY_DEPS="phpunit/phpunit"
         - TEST_COVERAGE=true
     - php: 7.2
       env:
@@ -28,8 +28,8 @@ before_install:
   - if [[ $TEST_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
 
 install:
-  - travis_retry composer install --no-interaction --ignore-platform-reqs
-  - if [[ $DEPS == 'latest' ]]; then travis_retry composer update --no-interaction ; fi
+  - travis_retry composer install --no-interaction
+  - if [[ $LEGACY_DEPS != '' ]]; then travis_retry composer update --no-interaction --with-dependencies $LEGACY_DEPS ; fi
 
 script: composer test
 
