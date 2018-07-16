@@ -62,9 +62,8 @@
     "test-coverage": "phpunit -c ./ --coverage-text --coverage-clover build/logs/clover.xml",
     "test-coverage-upload": [
       "travis_retry php coveralls.phar -v",
-      "bash <(curl -s https://codecov.io/bash)",
+      "bash <(curl -s https://codecov.io/bash)"
     ],
-    "api-docs-build": "vendor/bin/sami.php update sami.php",
-
-    }
+    "api-docs-build": "vendor/bin/sami.php update sami.php"
+  }
 }
