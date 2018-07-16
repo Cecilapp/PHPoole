@@ -19,10 +19,10 @@ install:
 jobs:
   include:
     - stage: test
-      php 5.6
+      php: 5.6
       script: phpunit -c
     - stage: test-coverage
-      php 7.1
+      php: 7.1
       install:
         - wget -c -nc --retry-connrefused --tries=0 https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar -O coveralls.phar
         - chmod +x coveralls.phar
@@ -35,10 +35,10 @@ jobs:
         - travis_retry php coveralls.phar -v
         - bash <(curl -s https://codecov.io/bash)
     - stage: api-docs-build
-      php 7.1
+      php: 7.1
       script: vendor/bin/sami.php update sami.php
     - stage: html-docs-deploy
-      php 7.1
+      php: 7.1
       script: bash deploy-docs.sh
 
 cache:
