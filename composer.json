@@ -49,8 +49,6 @@
       "dev-master": "1.x-dev"
     }
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "scripts": {
     "test": "phpunit -c ./",
     "test-coverage-install": [
