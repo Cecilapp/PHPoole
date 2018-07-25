@@ -6,9 +6,8 @@ cache:
     - $COMPOSER_CACHE_DIR
 
 php:
-  - 5.6
-  #- 7.1
-  #- 7.2
+  - 7.1
+  - 7.2
 
 stages:
   - Test
@@ -33,11 +32,11 @@ jobs:
   allow_failures:
     - php: 7.2
   include:
-    #- stage: Test
-    #  php: 7.1
-    #  env: TEST=true
+    - stage: Test
+      php: 7.1
+      env: TEST=true
     - stage: Test coverage
-      php: 5.6
+      php: 7.1
       env:
         - TEST=true
         - TEST_COVERAGE=true
