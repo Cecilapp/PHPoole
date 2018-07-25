@@ -2,7 +2,7 @@ version: 2
 jobs:
     build:
       docker:
-        - image: circleci/php:5.6-fpm-stretch-browsers
+        - image: circleci/php:7.1-cli-stretch-node-browsers
       steps:
         - checkout
         - run:
@@ -13,7 +13,7 @@ jobs:
             command: |
               sudo composer self-update
               composer install --no-interaction
-        - run: 
+        - run:
             name: PHPUnit
             command: |
               mkdir -p ~/phpunit
