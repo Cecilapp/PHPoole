@@ -11,7 +11,7 @@ namespace PHPoole\Test;
 use PHPoole\PHPoole;
 use Symfony\Component\Filesystem\Filesystem;
 
-class Build extends \PHPUnit_Framework_TestCase
+class Build extends \PHPUnit\Framework\TestCase
 {
     protected $wsSourceDir;
     protected $wsDestinationDir;
