@@ -29,7 +29,7 @@ class Converter implements ConverterInterface
             case 'yaml':
             default:
                 try {
-                    return Yaml::parse((string)$string);
+                    return Yaml::parse((string) $string);
                 } catch (ParseException $e) {
                     throw new Exception($e->getMessage());
                 }
