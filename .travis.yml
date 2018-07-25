@@ -23,7 +23,7 @@ before_install:
   - if [[ $TEST_COVERAGE != true ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
 
 install:
-  - if [[ $TEST == true ]]; then travis_retry composer install -n --prefer-source ; fi
+  - travis_retry composer install -n --prefer-source
   - if [[ $TEST_COVERAGE == true ]]; then travis_retry composer test-coverage-install || return 0 ; fi
 
 script: composer test
@@ -52,6 +52,7 @@ jobs:
       script: composer api-docs-build
     - stage: HTML docs deploy
       php: 7.1
+      install: skip
       script: skip
       deploy:
         provider: script
