@@ -16,7 +16,9 @@ _PHPoole/library_ is the core library of [**PHPoole CLI**](https://github.com/PH
 
 ## Requirements
 
-Please see the [composer.json](composer.json) file.
+_PHPoole/library_ require [PHP](http://www.php.net) 7.1+.
+
+> Please see the [composer.json](composer.json) file for details.
 
 ## Installation
 
