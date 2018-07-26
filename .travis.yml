@@ -42,6 +42,7 @@ jobs:
         - travis_retry composer test-coverage
       after_success:
         - travis_retry composer test-coverage-upload
+        - bash <(curl -s https://codecov.io/bash)
     - stage: API docs build
       install: composer api-docs-install
       script: composer api-docs-build
