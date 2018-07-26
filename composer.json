@@ -61,7 +61,7 @@
     "test-coverage": "phpunit -c ./ --coverage-text --coverage-clover build/logs/clover.xml",
     "test-coverage-upload": [
       "php coveralls.phar -v",
-      "curl -s https://codecov.io/bash"
+      "bash <(curl -s https://codecov.io/bash)"
     ],
     "api-docs-install": "curl -O http://get.sensiolabs.org/sami.phar",
     "api-docs-build": "php sami.phar update sami.php"
