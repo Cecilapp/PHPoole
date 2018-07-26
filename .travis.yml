@@ -43,7 +43,7 @@ jobs:
       after_success:
         - travis_retry composer test-coverage-upload
     - stage: API docs build
-      install: travis_retry composer require sami/sami
+      install: composer api-docs-install
       script: composer api-docs-build
     - stage: HTML docs deploy
       install: skip
