@@ -6,12 +6,10 @@ cache:
     - $COMPOSER_CACHE_DIR
 
 php:
-  - 5.6
-  #- 7.1
-  #- 7.2
+  - 7.1
+  - 7.2
 
 stages:
-  - Test
   - name: Test coverage
     if: (NOT type IN (pull_request)) AND (branch = master)
   - name: API docs build
@@ -24,7 +22,7 @@ before_install:
   - if [[ $TEST_COVERAGE != true ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
 
 install:
-  - if [[ $TEST == true ]]; then travis_retry composer install -n --prefer-source ; fi
+  - travis_retry composer install -n --prefer-source
   - if [[ $TEST_COVERAGE == true ]]; then travis_retry composer test-coverage-install || return 0 ; fi
 
 script: composer test
@@ -33,11 +31,8 @@ jobs:
   allow_failures:
     - php: 7.2
   include:
-    #- stage: Test
-    #  php: 7.1
-    #  env: TEST=true
     - stage: Test coverage
-      php: 5.6
+      php: 7.1
       env:
         - TEST=true
         - TEST_COVERAGE=true
@@ -48,11 +43,10 @@ jobs:
       after_success:
         - travis_retry composer test-coverage-upload
     - stage: API docs build
-      php: 7.1
       install: travis_retry composer require sami/sami
       script: composer api-docs-build
     - stage: HTML docs deploy
-      php: 7.1
+      install: skip
       script: skip
       deploy:
         provider: script
