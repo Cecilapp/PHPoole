@@ -31,9 +31,9 @@ Please see the [documentation](https://phpoole.org/documentation/library/) on th
 
 ## API documentation
 
-Run the following commands to [build the API documentation](https://github.com/FriendsOfPHP/Sami):
+Run the following commands to install [Sami](https://github.com/FriendsOfPHP/Sami) and build the API documentation:
 ```bash
-composer require sami/sami
+composer api-docs-install
 composer api-docs-build
 ```
 Then open `docs/api/master/index.html` in your browser.

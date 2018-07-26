@@ -63,6 +63,7 @@
       "php coveralls.phar -v",
       "curl -s https://codecov.io/bash"
     ],
-    "api-docs-build": "vendor/bin/sami.php update sami.php"
+    "api-docs-install": "curl -O http://get.sensiolabs.org/sami.phar",
+    "api-docs-build": "php sami.phar update sami.php"
   }
 }
