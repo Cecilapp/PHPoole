@@ -16,6 +16,7 @@ use PHPoole\Collection\Collection;
 use PHPoole\Collection\CollectionInterface;
 use PHPoole\Collection\Page\Page;
 use PHPoole\Exception\Exception;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class Twig\Extension.
@@ -24,6 +25,10 @@ class Extension extends SlugifyExtension
 {
     /* @var string */
     protected $destPath;
+    /**
+     * @var Filesystem
+     */
+    protected $fileSystem;
 
     /**
      * Constructor.
@@ -36,6 +41,8 @@ class Extension extends SlugifyExtension
         parent::__construct(Slugify::create([
             'regexp' => Page::SLUGIFY_PATTERN,
         ]));
+
+        $this->fileSystem = new Filesystem();
     }
 
     /**
@@ -338,20 +345,23 @@ class Extension extends SlugifyExtension
     public function toCss($path)
     {
         $filePath = $this->destPath.'/'.$path;
+        $subPath = substr($path, 0, strrpos($path, '/'));
+
         if (is_file($filePath)) {
             $extension = (new \SplFileInfo($filePath))->getExtension();
             switch ($extension) {
                 case 'scss':
-                    $scss = new Compiler();
-                    $scssIn = file_get_contents($filePath);
-                    $cssOut = $scss->compile($scssIn);
-                    file_put_contents(strtr($filePath, '.scss', '.css'), $cssOut);
+                    $scssPhp = new Compiler();
+                    $scss = file_get_contents($filePath);
+                    $scssPhp->setImportPaths($this->destPath.'/'.$subPath);
+                    $css = $scssPhp->compile($scss);
+                    $this->fileSystem->dumpFile(preg_replace('/scss/m', 'css', $filePath), $css);
                     break;
                 default:
                     throw new Exception(sprintf("File '%s' should be a '.scss'!", $path));
             }
 
-            return $path;
+            return preg_replace('/scss/m', 'css', $path);
         }
 
         throw new Exception(sprintf("File '%s' doesn't exist!", $path));
