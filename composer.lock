@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "888027ec2a2ff3b037b9f27ec53c2805",
+    "content-hash": "2544fb1ad315eeaa33129ef212c1c5fb",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -649,16 +649,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.1.2",
+            "version": "v4.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "1d1677391ecf00d1c5b9482d6050c0c27aa3ac3a"
+                "reference": "f01fc7a4493572f7f506c49dcb50ad01fb3a2f56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/1d1677391ecf00d1c5b9482d6050c0c27aa3ac3a",
-                "reference": "1d1677391ecf00d1c5b9482d6050c0c27aa3ac3a",
+                "url": "https://api.github.com/repos/symfony/process/zipball/f01fc7a4493572f7f506c49dcb50ad01fb3a2f56",
+                "reference": "f01fc7a4493572f7f506c49dcb50ad01fb3a2f56",
                 "shasum": ""
             },
             "require": {
@@ -694,7 +694,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-31T10:17:53+00:00"
+            "time": "2018-07-26T11:24:31+00:00"
         },
         {
             "name": "symfony/yaml",
