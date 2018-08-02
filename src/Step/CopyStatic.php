@@ -19,6 +19,19 @@ class CopyStatic extends AbstractStep
     /**
      * {@inheritdoc}
      *
+     * @throws Exception
+     */
+    public function init()
+    {
+        // clean before
+        Util::getFS()->remove($this->phpoole->getConfig()->getOutputPath());
+
+        $this->process = true;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
      * @throws \PHPoole\Exception\Exception
      */
     public function internalProcess()

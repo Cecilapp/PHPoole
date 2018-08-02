@@ -352,16 +352,21 @@ class Extension extends SlugifyExtension
             switch ($extension) {
                 case 'scss':
                     $scssPhp = new Compiler();
-                    $scss = file_get_contents($filePath);
                     $scssPhp->setImportPaths($this->destPath.'/'.$subPath);
-                    $css = $scssPhp->compile($scss);
-                    $this->fileSystem->dumpFile(preg_replace('/scss/m', 'css', $filePath), $css);
+                    $targetPath = preg_replace('/scss/m', 'css', $path);
+
+                    // compile if target file doesn't exists
+                    if (!$this->fileSystem->exists($this->destPath.'/'.$targetPath)) {
+                        $scss = file_get_contents($filePath);
+                        $css = $scssPhp->compile($scss);
+                        $this->fileSystem->dumpFile($this->destPath.'/'.$targetPath, $css);
+                    }
+
+                    return $targetPath;
                     break;
                 default:
                     throw new Exception(sprintf("File '%s' should be a '.scss'!", $path));
             }
-
-            return preg_replace('/scss/m', 'css', $path);
         }
 
         throw new Exception(sprintf("File '%s' doesn't exist!", $path));
