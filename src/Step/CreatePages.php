@@ -34,7 +34,7 @@ class CreatePages extends AbstractStep
             /* @var $page Page */
             $page = (new Page($file))->parse();
             $this->phpoole->getPages()->add($page);
-            $message = $page->getName();
+            $message = $page->getPathname();
             call_user_func_array($this->phpoole->getMessageCb(), ['CREATE_PROGRESS', $message, $count, $max]);
         }
     }
