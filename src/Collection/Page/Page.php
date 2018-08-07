@@ -408,7 +408,8 @@ class Page extends Item
      */
     public function setPermalink($permalink)
     {
-        $this->setVariable('permalink', $permalink);
+        //$this->setVariable('permalink', $permalink);
+        $this->setVariable('permalink', str_replace('/index', '/', $permalink));
 
         return $this;
     }
