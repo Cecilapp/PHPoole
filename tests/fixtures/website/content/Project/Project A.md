@@ -1,5 +1,5 @@
 ---
-title: [error[Project A
+title: Project A
 date: 2015-04-09
 categories: category-1
 ---
