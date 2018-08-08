@@ -60,20 +60,24 @@ class Config
             ],
             'fmpages' => [
                 'robotstxt' => [
+                    'title'     => 'Robots.txt',
                     'layout'    => 'robots.txt',
                     'permalink' => 'robots.txt',
                 ],
                 'sitemap' => [
+                    'title'      => 'XML sitemap',
                     'layout'     => 'sitemap.xml',
                     'permalink'  => 'sitemap.xml',
                     'changefreq' => 'monthly',
                     'priority'   => '0.5',
                 ],
                 '404' => [
+                    'title'     => '404 page',
                     'layout'    => '404.html',
                     'permalink' => '404.html',
                 ],
                 'rss' => [
+                    'title'     => 'RSS file',
                     'layout'    => 'rss.xml',
                     'permalink' => 'rss.xml',
                 ],
