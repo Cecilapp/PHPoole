@@ -103,7 +103,7 @@ class Page extends Item
             // file name: "Post 1"
             $this->fileName = basename($this->file->getBasename(), '.'.$this->fileExtension);
             // file id: "Blog/Post 1"
-            $this->fileId = ($this->filePath ? $this->filePath.'/' : '').$this->fileName;
+            $this->fileId = ($this->filePath ? $this->filePath.'/' : '').($this->fileName != 'index' ? $this->fileName : '');
             /*
              * variables default values
              */
@@ -408,8 +408,7 @@ class Page extends Item
      */
     public function setPermalink($permalink)
     {
-        //$this->setVariable('permalink', $permalink);
-        $this->setVariable('permalink', str_replace('/index', '/', $permalink));
+        $this->setVariable('permalink', $permalink);
 
         return $this;
     }

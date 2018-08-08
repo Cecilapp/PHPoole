@@ -106,7 +106,7 @@ class Taxonomy extends AbstractGenerator implements GeneratorInterface
                     if (!$this->pageCollection->has($term)) {
                         $pages = $pages->sortByDate()->toArray();
                         $page = (new Page())
-                            ->setId(Page::urlize(sprintf('%s/%s/index', $plural, $term)))
+                            ->setId(Page::urlize(sprintf('%s/%s/', $plural, $term)))
                             ->setPathname(Page::urlize(sprintf('%s/%s', $plural, $term)))
                             ->setTitle(ucfirst($term))
                             ->setNodeType(NodeType::TAXONOMY)

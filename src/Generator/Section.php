@@ -36,10 +36,10 @@ class Section extends AbstractGenerator implements GeneratorInterface
         if (count($sections) > 0) {
             $menuWeight = 100;
             foreach ($sections as $section => $pages) {
-                if (!$pageCollection->has($section.'/index')) {
+                if (!$pageCollection->has($section.'/')) {
                     usort($pages, 'PHPoole\Util::sortByDate');
                     $page = (new Page())
-                        ->setId(Page::urlize(sprintf('%s/index', $section)))
+                        ->setId(Page::urlize(sprintf('%s/', $section)))
                         ->setPathname(Page::urlize(sprintf('%s', $section)))
                         ->setTitle(ucfirst($section))
                         ->setNodeType(NodeType::SECTION)
