@@ -28,6 +28,7 @@ class PagesFromConfig extends AbstractGenerator implements GeneratorInterface
             $page = (new Page())
                 ->setId(Page::urlize(sprintf('%s', $file)))
                 ->setPathname(Page::urlize(sprintf('%s', $file)));
+            $page->setVariables($frontmatter);
             if (!empty($frontmatter['layout'])) {
                 $page->setLayout($frontmatter['layout']);
             }
