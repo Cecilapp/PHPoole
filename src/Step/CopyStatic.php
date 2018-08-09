@@ -37,6 +37,7 @@ class CopyStatic extends AbstractStep
     public function internalProcess()
     {
         call_user_func_array($this->phpoole->getMessageCb(), ['COPY', 'Copy static files']);
+        call_user_func_array($this->phpoole->getMessageCb(), ['COPY_PROGRESS', 'Start', 1, 100]);
         // copy theme static dir if exists
         if ($this->phpoole->getConfig()->hasTheme()) {
             $theme = $this->phpoole->getConfig()->get('theme');
@@ -65,6 +66,6 @@ class CopyStatic extends AbstractStep
                 ['override' => true]
             );
         }
-        call_user_func_array($this->phpoole->getMessageCb(), ['COPY_PROGRESS', 'Done']);
+        call_user_func_array($this->phpoole->getMessageCb(), ['COPY_PROGRESS', 'Copied', 100, 100]);
     }
 }
