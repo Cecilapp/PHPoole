@@ -330,8 +330,8 @@ class PHPoole
         }
         // time
         call_user_func_array($this->messageCallback, [
-            'CREATE',
-            sprintf('Time: %s seconds', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
+            'TIME',
+            sprintf('Website built in %ss', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
         ]);
 
         if ($verbose) {
