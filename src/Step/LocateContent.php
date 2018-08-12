@@ -35,6 +35,7 @@ class LocateContent extends AbstractStep
     public function internalProcess()
     {
         call_user_func_array($this->phpoole->getMessageCb(), ['COPY', 'Loading content']);
+
         try {
             $content = Finder::create()
                 ->files()
