@@ -21,6 +21,7 @@ class GenerateMenus extends AbstractStep
      */
     public function internalProcess()
     {
+        call_user_func_array($this->phpoole->getMessageCb(), ['MENU', 'Generating menus']);
         $this->phpoole->setMenus(new MenusCollection());
         $this->collectPages();
 
@@ -41,6 +42,7 @@ class GenerateMenus extends AbstractStep
          * ]]
          */
         if (!empty($this->phpoole->getConfig()->get('site.menu'))) {
+            $count = 0;
             foreach ($this->phpoole->getConfig()->get('site.menu') as $name => $entry) {
                 /* @var $menu \PHPoole\Collection\Menu\Menu */
                 $menu = $this->phpoole->getMenus()->get($name);
@@ -58,9 +60,12 @@ class GenerateMenus extends AbstractStep
                         ->setUrl($property['url'])
                         ->setWeight($property['weight']);
                     $menu->add($item);
+                    $count++;
                 }
             }
         }
+        call_user_func_array($this->phpoole->getMessageCb(), ['MENU_PROGRESS', 'Start generating menus', 1, $count]);
+        call_user_func_array($this->phpoole->getMessageCb(), ['MENU_PROGRESS', 'Menus generated', $count, $count]);
     }
 
     /**

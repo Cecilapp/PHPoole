@@ -36,13 +36,17 @@ class CopyStatic extends AbstractStep
      */
     public function internalProcess()
     {
-        call_user_func_array($this->phpoole->getMessageCb(), ['COPY', 'Copy static files']);
-        call_user_func_array($this->phpoole->getMessageCb(), ['COPY_PROGRESS', 'Start', 1, 100]);
+        $count = 0;
+
+        call_user_func_array($this->phpoole->getMessageCb(), ['COPY', 'Copying static files']);
         // copy theme static dir if exists
         if ($this->phpoole->getConfig()->hasTheme()) {
             $theme = $this->phpoole->getConfig()->get('theme');
             $themeStaticDir = $this->phpoole->getConfig()->getThemePath($theme, 'static');
             if (Util::getFS()->exists($themeStaticDir)) {
+                $finder = new Finder();
+                $finder->files()->in($themeStaticDir);
+                $count += $finder->count();
                 Util::getFS()->mirror(
                     $themeStaticDir,
                     $this->phpoole->getConfig()->getOutputPath(),
@@ -59,6 +63,7 @@ class CopyStatic extends AbstractStep
                 return !(is_array($this->phpoole->getConfig()->get('static.exclude'))
                     && in_array($file->getBasename(), $this->phpoole->getConfig()->get('static.exclude')));
             })->in($staticDir);
+            $count += $finder->count();
             Util::getFS()->mirror(
                 $staticDir,
                 $this->phpoole->getConfig()->getOutputPath(),
@@ -66,6 +71,7 @@ class CopyStatic extends AbstractStep
                 ['override' => true]
             );
         }
-        call_user_func_array($this->phpoole->getMessageCb(), ['COPY_PROGRESS', 'Copied', 100, 100]);
+        call_user_func_array($this->phpoole->getMessageCb(), ['COPY_PROGRESS', 'Start copy', 1, $count]);
+        call_user_func_array($this->phpoole->getMessageCb(), ['COPY_PROGRESS', 'Files copied', $count, $count]);
     }
 }

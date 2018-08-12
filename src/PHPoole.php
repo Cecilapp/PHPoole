@@ -212,29 +212,42 @@ class PHPoole
     public function setMessageCallback($messageCallback = null)
     {
         if ($messageCallback === null) {
-            $messageCallback = function ($code, $message = '', $itemsCount = 0, $itemsMax = 0, $verbose = true) {
+            $messageCallback = function ($code, $message = '', $itemsCount = 0, $itemsMax = 0) {
                 switch ($code) {
                     case 'CREATE':
                     case 'CONVERT':
                     case 'GENERATE':
+                    case 'MENU':
                     case 'COPY':
                     case 'RENDER':
                     case 'TIME':
-                        $log = sprintf("\n> %s\n", $message);
+                        $log = sprintf("%s\n", $message);
                         $this->addLog($log);
                         break;
                     case 'CREATE_PROGRESS':
                     case 'CONVERT_PROGRESS':
                     case 'GENERATE_PROGRESS':
+                    case 'MENU_PROGRESS':
                     case 'COPY_PROGRESS':
                     case 'RENDER_PROGRESS':
-                        if ($itemsCount > 0 && $verbose !== false) {
-                            $log = sprintf("  (%u/%u) %s\n", $itemsCount, $itemsMax, $message);
-                            $this->addLog($log);
-                        } else {
-                            $log = sprintf("  %s\n", $message);
-                            $this->addLog($log);
+                        if ($this->getConfig()->get('debug')) {
+                            if ($itemsCount > 0) {
+                                $log = sprintf("(%u/%u) %s\n", $itemsCount, $itemsMax, $message);
+                                $this->addLog($log);
+                            } else {
+                                $log = sprintf("%s\n", $message);
+                                $this->addLog($log);
+                            }
                         }
+                        break;
+                    case 'CREATE_ERROR':
+                    case 'CONVERT_ERROR':
+                    case 'GENERATE_ERROR':
+                    case 'MENU_ERROR':
+                    case 'COPY_ERROR':
+                    case 'RENDER_ERROR':
+                        $log = sprintf(">> %s\n", $message);
+                        $this->addLog($log);
                         break;
                 }
             };
@@ -289,7 +302,7 @@ class PHPoole
      */
     public function showLog()
     {
-        echo $this->log;
+        printf("\n%s", $this->log);
     }
 
     /**
