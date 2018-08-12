@@ -34,6 +34,8 @@ class LocateContent extends AbstractStep
      */
     public function internalProcess()
     {
+        call_user_func_array($this->phpoole->getMessageCb(), ['COPY', 'Loading content']);
+
         try {
             $content = Finder::create()
                 ->files()
@@ -42,7 +44,9 @@ class LocateContent extends AbstractStep
             if (!$content instanceof Finder) {
                 throw new Exception(__FUNCTION__.': result must be an instance of Symfony\Component\Finder.');
             }
+            call_user_func_array($this->phpoole->getMessageCb(), ['COPY_PROGRESS', 'Start copy', 1, $content->count()]);
             $this->phpoole->setContent($content);
+            call_user_func_array($this->phpoole->getMessageCb(), ['COPY_PROGRESS', 'Files copied', $content->count(), $content->count()]);
         } catch (Exception $e) {
             echo $e->getMessage()."\n";
         }
