@@ -46,3 +46,5 @@ _PHPoole/library_ is a free software distributed under the terms of the MIT lice
 
 © [Arnaud Ligny](https://arnaudligny.fr)  
 PHPoole logo © [Cécile Ricordeau](http://www.cecillie.fr)
+
+Test
