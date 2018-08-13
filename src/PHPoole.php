@@ -214,6 +214,7 @@ class PHPoole
         if ($messageCallback === null) {
             $messageCallback = function ($code, $message = '', $itemsCount = 0, $itemsMax = 0) {
                 switch ($code) {
+                    case 'LOCATE':
                     case 'CREATE':
                     case 'CONVERT':
                     case 'GENERATE':
@@ -224,6 +225,7 @@ class PHPoole
                         $log = sprintf("%s\n", $message);
                         $this->addLog($log);
                         break;
+                    case 'LOCATE_PROGRESS':
                     case 'CREATE_PROGRESS':
                     case 'CONVERT_PROGRESS':
                     case 'GENERATE_PROGRESS':
@@ -240,6 +242,7 @@ class PHPoole
                             }
                         }
                         break;
+                    case 'LOCATE_ERROR':
                     case 'CREATE_ERROR':
                     case 'CONVERT_ERROR':
                     case 'GENERATE_ERROR':

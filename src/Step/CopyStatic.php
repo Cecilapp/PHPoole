@@ -71,7 +71,7 @@ class CopyStatic extends AbstractStep
                 ['override' => true]
             );
         }
-        call_user_func_array($this->phpoole->getMessageCb(), ['COPY_PROGRESS', 'Start copy', 1, $count]);
+        call_user_func_array($this->phpoole->getMessageCb(), ['COPY_PROGRESS', 'Start copy', 0, $count]);
         call_user_func_array($this->phpoole->getMessageCb(), ['COPY_PROGRESS', 'Files copied', $count, $count]);
     }
 }

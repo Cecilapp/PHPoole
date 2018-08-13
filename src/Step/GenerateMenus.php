@@ -64,8 +64,12 @@ class GenerateMenus extends AbstractStep
                 }
             }
         }
-        call_user_func_array($this->phpoole->getMessageCb(), ['MENU_PROGRESS', 'Start generating menus', 1, $count]);
-        call_user_func_array($this->phpoole->getMessageCb(), ['MENU_PROGRESS', 'Menus generated', $count, $count]);
+        if ($count) {
+            call_user_func_array($this->phpoole->getMessageCb(), ['MENU_PROGRESS', 'Start generating', 0, $count]);
+            call_user_func_array($this->phpoole->getMessageCb(), ['MENU_PROGRESS', 'Menus generated', $count, $count]);
+        } else {
+            call_user_func_array($this->phpoole->getMessageCb(), ['MENU_PROGRESS', 'No menu']);
+        }
     }
 
     /**
