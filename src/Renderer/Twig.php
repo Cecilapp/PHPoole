@@ -54,7 +54,8 @@ class Twig implements RendererInterface
         $internalLoader = [];
         if ($internalLayouts = $config->get('layouts.internal')) {
             foreach ($internalLayouts as $layout => $path) {
-                $internalLoader[sprintf('%s%s.twig', (($path) ? $path : ''), $layout)] = file_get_contents(sprintf(__DIR__.'/../../res/layouts/%s.twig', $layout));
+                $layoutContent = file_get_contents(sprintf(__DIR__.'/../../res/layouts/%s.twig', $layout));
+                $internalLoader[sprintf('%s%s.twig', (($path) ? $path : ''), $layout)] = $layoutContent;
             }
         }
         $loaderArray = new \Twig_Loader_Array($internalLoader);
@@ -62,14 +63,12 @@ class Twig implements RendererInterface
         $loaderFS = new \Twig_Loader_Filesystem($templatesPath);
         // load layouts
         $loader = new \Twig_Loader_Chain([$loaderFS, $loaderArray]);
-        $this->twig = new \Twig_Environment($loader,
-            [
-                'autoescape'       => false,
-                'strict_variables' => $this->twigStrict,
-                'debug'            => $this->twigDebug,
-                'cache'            => $this->twigCache,
-            ]
-        );
+        $this->twig = new \Twig_Environment($loader, [
+            'autoescape'       => false,
+            'strict_variables' => $this->twigStrict,
+            'debug'            => $this->twigDebug,
+            'cache'            => $this->twigCache,
+        ]);
         // add extensions
         $this->twig->addExtension(new \Twig_Extension_Debug());
         $this->twig->addExtension(new TwigExtension($config->getOutputPath()));

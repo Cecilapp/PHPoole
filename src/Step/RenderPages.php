@@ -32,7 +32,8 @@ class RenderPages extends AbstractStep
         // checks layouts dir
         if (!is_dir($this->phpoole->getConfig()->getLayoutsPath()) && !$this->phpoole->getConfig()->hasTheme()) {
             throw new Exception(sprintf(
-                "'%s' is not a valid layouts directory", $this->phpoole->getConfig()->getLayoutsPath()
+                "'%s' is not a valid layouts directory",
+                $this->phpoole->getConfig()->getLayoutsPath()
             ));
         }
         $this->process = true;

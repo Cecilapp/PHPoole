@@ -44,9 +44,10 @@ class LocateContent extends AbstractStep
             if (!$content instanceof Finder) {
                 throw new Exception(__FUNCTION__.': result must be an instance of Symfony\Component\Finder.');
             }
-            call_user_func_array($this->phpoole->getMessageCb(), ['LOCATE_PROGRESS', 'Start locating', 0, $content->count()]);
+            $count = $content->count();
+            call_user_func_array($this->phpoole->getMessageCb(), ['LOCATE_PROGRESS', 'Start locating', 0, $count]);
             $this->phpoole->setContent($content);
-            call_user_func_array($this->phpoole->getMessageCb(), ['LOCATE_PROGRESS', 'Files loaded', $content->count(), $content->count()]);
+            call_user_func_array($this->phpoole->getMessageCb(), ['LOCATE_PROGRESS', 'Files loaded', $count, $count]);
         } catch (Exception $e) {
             echo $e->getMessage()."\n";
         }
