@@ -84,7 +84,7 @@ class UnitTests extends \PHPUnit\Framework\TestCase
         $preParsedPath = __DIR__.'/fixtures/content_parsed/Page1.md';
         $parsed = (new Page($this->file))->parse();
         $this->assertStringEqualsFile(sprintf("$preParsedPath/%s", 'frontmatter.yaml'), $parsed->getFrontmatter());
-        $this->assertStringEqualsFile(sprintf("$preParsedPath/%s", 'body.yaml'), $parsed->getBody());
+        $this->assertStringEqualsFile(sprintf("$preParsedPath/%s", 'body.md'), $parsed->getBody());
     }
 
     public function testAddPageToCollection()
