@@ -64,15 +64,13 @@ class Twig implements RendererInterface
         // load layouts
         $loader = new \Twig_Loader_Chain([$loaderFS, $loaderArray]);
         // Twig
-        $this->twig = new \Twig_Environment($loader,
-            [
-                'autoescape'       => false,
-                'strict_variables' => $this->twigStrict,
-                'debug'            => $this->twigDebug,
-                'cache'            => $this->twigCache,
-                'auto_reload'      => true,
-            ]
-        );
+        $this->twig = new \Twig_Environment($loader, [
+            'autoescape'       => false,
+            'strict_variables' => $this->twigStrict,
+            'debug'            => $this->twigDebug,
+            'cache'            => $this->twigCache,
+            'auto_reload'      => true,
+        ]);
         // add extensions
         $this->twig->addExtension(new \Twig_Extension_Debug());
         $this->twig->addExtension(new TwigExtension($config->getOutputPath()));
