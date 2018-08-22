@@ -63,12 +63,16 @@ class Twig implements RendererInterface
         $loaderFS = new \Twig_Loader_Filesystem($templatesPath);
         // load layouts
         $loader = new \Twig_Loader_Chain([$loaderFS, $loaderArray]);
-        $this->twig = new \Twig_Environment($loader, [
-            'autoescape'       => false,
-            'strict_variables' => $this->twigStrict,
-            'debug'            => $this->twigDebug,
-            'cache'            => $this->twigCache,
-        ]);
+        // Twig
+        $this->twig = new \Twig_Environment($loader,
+            [
+                'autoescape'       => false,
+                'strict_variables' => $this->twigStrict,
+                'debug'            => $this->twigDebug,
+                'cache'            => $this->twigCache,
+                'auto_reload'      => true,
+            ]
+        );
         // add extensions
         $this->twig->addExtension(new \Twig_Extension_Debug());
         $this->twig->addExtension(new TwigExtension($config->getOutputPath()));
@@ -116,7 +120,12 @@ class Twig implements RendererInterface
             $this->fs->mkdir($dir);
         }
 
-        return false !== @file_put_contents($pathname, $this->rendered);
+        try {
+            $this->fs->dumpFile($pathname, $this->rendered);
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     /**
