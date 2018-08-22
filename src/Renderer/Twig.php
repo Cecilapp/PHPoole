@@ -122,6 +122,7 @@ class Twig implements RendererInterface
 
         try {
             $this->fs->dumpFile($pathname, $this->rendered);
+
             return true;
         } catch (Exception $e) {
             return false;
