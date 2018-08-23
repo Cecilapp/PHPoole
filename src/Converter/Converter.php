@@ -41,6 +41,8 @@ class Converter implements ConverterInterface
      */
     public static function convertBody($string)
     {
-        return ParsedownExtra::instance()->text($string);
+        $parsedown = new ParsedownExtra();
+
+        return $parsedown->text($string);
     }
 }
