@@ -22,6 +22,7 @@ class GenerateMenus extends AbstractStep
     public function internalProcess()
     {
         call_user_func_array($this->phpoole->getMessageCb(), ['MENU', 'Generating menus']);
+        $count = 0;
         $this->phpoole->setMenus(new MenusCollection());
         $this->collectPages();
 
@@ -42,7 +43,6 @@ class GenerateMenus extends AbstractStep
          * ]]
          */
         if (!empty($this->phpoole->getConfig()->get('site.menu'))) {
-            $count = 0;
             foreach ($this->phpoole->getConfig()->get('site.menu') as $name => $entry) {
                 /* @var $menu \PHPoole\Collection\Menu\Menu */
                 $menu = $this->phpoole->getMenus()->get($name);
