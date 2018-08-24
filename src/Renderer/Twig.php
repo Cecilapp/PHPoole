@@ -33,18 +33,6 @@ class Twig implements RendererInterface
      * @var Filesystem
      */
     protected $fs;
-    /**
-     * @var bool
-     */
-    protected $twigStrict = true;
-    /**
-     * @var bool
-     */
-    protected $twigDebug = true;
-    /*
-     * @var string|bool
-     */
-    protected $twigCache = false;
 
     /**
      * {@inheritdoc}
@@ -66,10 +54,10 @@ class Twig implements RendererInterface
         $loader = new \Twig_Loader_Chain([$loaderFS, $loaderArray]);
         // Twig
         $this->twig = new \Twig_Environment($loader, [
+            'debug'            => true,
+            'strict_variables' => true,
             'autoescape'       => false,
-            'strict_variables' => $this->twigStrict,
-            'debug'            => $this->twigDebug,
-            'cache'            => $this->twigCache,
+            'cache'            => false,
             'auto_reload'      => true,
         ]);
         // add extensions
