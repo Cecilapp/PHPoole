@@ -17,7 +17,7 @@ use Symfony\Component\Finder\Finder;
  */
 class PHPoole
 {
-    const VERSION = '1.1.x-dev';
+    const VERSION = '2.x-dev';
     protected $version;
     /**
      * Steps that are processed by build().
@@ -353,8 +353,11 @@ class PHPoole
     {
         if (!isset($this->version)) {
             try {
-                $this->version = Util::runGitCommand('git describe --tags HEAD');
-            } catch (\RuntimeException $exception) {
+                $this->version = @file_get_contents(__DIR__.'/../VERSION');
+                if ($this->version === false) {
+                    throw new \Exception('Can\'t get version file!');
+                }
+            } catch (\Exception $e) {
                 $this->version = self::VERSION;
             }
         }
