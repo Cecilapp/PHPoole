@@ -67,9 +67,9 @@ class RenderPages extends AbstractStep
             ['time' => time()]
         ));
         $this->phpoole->getRenderer()->addGlobal('phpoole', [
-            'url'       => sprintf("https://phpoole.org/#%s", $this->phpoole->getVersion()),
+            'url'       => sprintf('https://phpoole.org/#%s', $this->phpoole->getVersion()),
             'version'   => $this->phpoole->getVersion(),
-            'poweredby' => sprintf("PHPoole (library v%s)", $this->phpoole->getVersion()),
+            'poweredby' => sprintf('PHPoole (library v%s)', $this->phpoole->getVersion()),
         ]);
 
         // start rendering
