@@ -122,8 +122,6 @@ trait VariableTrait
         if ($this->offsetExists($name)) {
             return $this->offsetGet($name);
         }
-
-        return null;
     }
 
     /**
