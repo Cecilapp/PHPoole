@@ -115,15 +115,13 @@ trait VariableTrait
      *
      * @param string $name
      *
-     * @return mixed|false
+     * @return mixed|null
      */
     public function getVariable($name)
     {
         if ($this->offsetExists($name)) {
             return $this->offsetGet($name);
         }
-
-        return false;
     }
 
     /**

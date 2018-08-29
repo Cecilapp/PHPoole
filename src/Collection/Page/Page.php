@@ -137,7 +137,7 @@ class Page extends Item
 
             parent::__construct();
         }
-        // published by default
+        $this->setVariable('virtual', $this->virtual);
         $this->setVariable('published', true);
     }
 
