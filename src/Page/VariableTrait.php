@@ -115,7 +115,7 @@ trait VariableTrait
      *
      * @param string $name
      *
-     * @return mixed|false
+     * @return mixed|null
      */
     public function getVariable($name)
     {
@@ -123,7 +123,7 @@ trait VariableTrait
             return $this->offsetGet($name);
         }
 
-        return false;
+        return null;
     }
 
     /**

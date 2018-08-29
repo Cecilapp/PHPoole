@@ -25,7 +25,7 @@ class ExternalBody extends AbstractGenerator implements GeneratorInterface
         $generatedPages = new PageCollection();
 
         $filteredPages = $pageCollection->filter(function (Page $page) {
-            return false !== $page->getVariable('external');
+            return null !== $page->getVariable('external');
         });
 
         /* @var $page Page */
