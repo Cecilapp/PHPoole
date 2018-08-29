@@ -80,6 +80,7 @@ class Config
                     'title'     => 'RSS file',
                     'layout'    => 'rss.xml',
                     'permalink' => 'rss.xml',
+                    'section'   => 'blog',
                 ],
             ],
         ],
