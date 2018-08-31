@@ -8,7 +8,6 @@
 
 namespace PHPoole\Renderer;
 
-use PHPoole\Exception\Exception;
 use PHPoole\Renderer\Twig\Extension as TwigExtension;
 
 /**
