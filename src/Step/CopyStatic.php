@@ -34,7 +34,7 @@ class CopyStatic extends AbstractStep
      *
      * @throws \PHPoole\Exception\Exception
      */
-    public function internalProcess()
+    public function process()
     {
         $count = 0;
 

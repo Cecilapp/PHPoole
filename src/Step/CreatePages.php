@@ -19,7 +19,7 @@ class CreatePages extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function internalProcess()
+    public function process()
     {
         $this->phpoole->setPages(new PageCollection());
         if (count($this->phpoole->getContent()) <= 0) {

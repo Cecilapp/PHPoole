@@ -33,12 +33,12 @@ interface StepInterface
      *
      * @return void
      */
-    public function process();
+    public function runProcess();
 
     /**
      * Process implementation.
      *
      * @return void
      */
-    public function internalProcess();
+    public function process();
 }

@@ -12,7 +12,17 @@ use PHPoole\PHPoole;
 
 abstract class AbstractStep implements StepInterface
 {
+    /**
+     * @var PHPoole
+     */
     protected $phpoole;
+    /**
+     * @var Config
+     */
+    protected $config;
+    /**
+     * @var bool
+     */
     protected $process = false;
 
     /**
@@ -21,6 +31,7 @@ abstract class AbstractStep implements StepInterface
     public function __construct(PHPoole $phpoole)
     {
         $this->phpoole = $phpoole;
+        $this->config = $phpoole->getConfig();
     }
 
     /**
@@ -34,15 +45,15 @@ abstract class AbstractStep implements StepInterface
     /**
      * {@inheritdoc}
      */
-    public function process()
+    public function runProcess()
     {
         if ($this->process) {
-            $this->internalProcess();
+            $this->process();
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    abstract public function internalProcess();
+    abstract public function process();
 }

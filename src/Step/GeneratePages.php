@@ -28,7 +28,7 @@ class GeneratePages extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function internalProcess()
+    public function process()
     {
         if ($this->process) {
             $generatorManager = new GeneratorManager();

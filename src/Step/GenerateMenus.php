@@ -19,7 +19,7 @@ class GenerateMenus extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function internalProcess()
+    public function process()
     {
         call_user_func_array($this->phpoole->getMessageCb(), ['MENU', 'Generating menus']);
         $count = 0;

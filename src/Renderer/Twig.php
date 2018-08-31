@@ -10,7 +10,6 @@ namespace PHPoole\Renderer;
 
 use PHPoole\Exception\Exception;
 use PHPoole\Renderer\Twig\Extension as TwigExtension;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class Twig.
@@ -29,10 +28,6 @@ class Twig implements RendererInterface
      * @var string
      */
     protected $rendered;
-    /**
-     * @var Filesystem
-     */
-    protected $fs;
 
     /**
      * {@inheritdoc}
@@ -65,8 +60,6 @@ class Twig implements RendererInterface
         $this->twig->addExtension(new TwigExtension($config->getOutputPath()));
         $this->twig->getExtension('Twig_Extension_Core')->setDateFormat($config->get('site.date.format'));
         $this->twig->getExtension('Twig_Extension_Core')->setTimezone($config->get('site.date.timezone'));
-
-        $this->fs = new Filesystem();
     }
 
     /**
@@ -95,25 +88,7 @@ class Twig implements RendererInterface
         $replacement = '$1<span id="more"></span>$3';
         $this->rendered = preg_replace($pattern, $replacement, $this->rendered);
 
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save($pathname)
-    {
-        if (!is_dir($dir = dirname($pathname))) {
-            $this->fs->mkdir($dir);
-        }
-
-        try {
-            $this->fs->dumpFile($pathname, $this->rendered);
-
-            return true;
-        } catch (Exception $e) {
-            return false;
-        }
+        return $this->rendered;
     }
 
     /**

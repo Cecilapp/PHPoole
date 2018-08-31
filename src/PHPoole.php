@@ -34,6 +34,7 @@ class PHPoole
         'PHPoole\Step\GenerateMenus',
         'PHPoole\Step\CopyStatic',
         'PHPoole\Step\RenderPages',
+        'PHPoole\Step\SavePages',
     ];
     /**
      * Config.
@@ -221,6 +222,7 @@ class PHPoole
                     case 'MENU':
                     case 'COPY':
                     case 'RENDER':
+                    case 'SAVE':
                     case 'TIME':
                         $log = sprintf("%s\n", $message);
                         $this->addLog($log);
@@ -232,6 +234,7 @@ class PHPoole
                     case 'MENU_PROGRESS':
                     case 'COPY_PROGRESS':
                     case 'RENDER_PROGRESS':
+                    case 'SAVE_PROGRESS':
                         if ($this->getConfig()->get('debug')) {
                             if ($itemsCount > 0) {
                                 $log = sprintf("(%u/%u) %s\n", $itemsCount, $itemsMax, $message);
@@ -249,6 +252,7 @@ class PHPoole
                     case 'MENU_ERROR':
                     case 'COPY_ERROR':
                     case 'RENDER_ERROR':
+                    case 'SAVE_ERROR':
                         $log = sprintf(">> %s\n", $message);
                         $this->addLog($log);
                         break;
@@ -329,7 +333,7 @@ class PHPoole
         // ... and process!
         foreach ($this->steps as $step) {
             /* @var $step Step\StepInterface */
-            $step->process();
+            $step->runProcess();
         }
         // time
         call_user_func_array($this->messageCallback, [
