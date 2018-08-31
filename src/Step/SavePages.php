@@ -13,7 +13,7 @@ use PHPoole\Exception\Exception;
 use PHPoole\Util;
 
 /**
- * Pages saving
+ * Pages saving.
  */
 class SavePages extends AbstractStep
 {

@@ -14,7 +14,7 @@ use PHPoole\Renderer\Layout;
 use PHPoole\Renderer\Twig as Twig;
 
 /**
- * Pages rendering
+ * Pages rendering.
  */
 class RenderPages extends AbstractStep
 {
