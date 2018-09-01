@@ -68,7 +68,7 @@ class RenderPages extends AbstractStep
             $page->setVariable('rendered', $rendered);
             $this->phpoole->getPages()->replace($page->getId(), $page);
 
-            $message = $page->getName();
+            $message = $page->getPathname() ?: 'index';
             call_user_func_array($this->phpoole->getMessageCb(), ['RENDER_PROGRESS', $message, $count, $max]);
         }
     }

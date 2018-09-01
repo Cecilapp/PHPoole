@@ -75,6 +75,7 @@ class Build extends \PHPUnit\Framework\TestCase
                 'generators' => [
                     99 => 'Pouet',
                 ],
+                'debug' => true,
             ]
         )->setSourceDir($this->wsSourceDir)
         ->setDestinationDir($this->wsDestinationDir)
