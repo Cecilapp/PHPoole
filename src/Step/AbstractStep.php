@@ -17,7 +17,7 @@ abstract class AbstractStep implements StepInterface
      */
     protected $phpoole;
     /**
-     * @var PHPoole\Config
+     * @var \PHPoole\Config
      */
     protected $config;
     /**
