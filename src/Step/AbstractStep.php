@@ -8,6 +8,7 @@
 
 namespace PHPoole\Step;
 
+use PHPoole\Config;
 use PHPoole\PHPoole;
 
 abstract class AbstractStep implements StepInterface
@@ -17,7 +18,7 @@ abstract class AbstractStep implements StepInterface
      */
     protected $phpoole;
     /**
-     * @var \Config
+     * @var Config
      */
     protected $config;
     /**
