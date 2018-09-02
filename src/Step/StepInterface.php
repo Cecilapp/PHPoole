@@ -24,21 +24,23 @@ interface StepInterface
     /**
      * Checks if step can be processed.
      *
+     * @param array
+     *
      * @return void
      */
-    public function init();
+    public function init($options);
 
     /**
      * Public call to process.
      *
      * @return void
      */
-    public function process();
+    public function runProcess();
 
     /**
      * Process implementation.
      *
      * @return void
      */
-    public function internalProcess();
+    public function process();
 }
