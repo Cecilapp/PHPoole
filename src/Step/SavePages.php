@@ -22,8 +22,15 @@ class SavePages extends AbstractStep
      *
      * @throws Exception
      */
-    public function init()
+    public function init($options)
     {
+        if ($options['dry-run']) {
+            $this->process = false;
+            call_user_func_array($this->phpoole->getMessageCb(), ['SAVE', 'Dry run']);
+
+            return;
+        }
+
         Util::getFS()->mkdir($this->config->getOutputPath());
 
         $this->process = true;

@@ -315,18 +315,28 @@ class PHPoole
     /**
      * Builds a new website.
      *
-     * @param bool $verbose
+     * @param array $options
      *
      * @return $this
      */
-    public function build($verbose = false)
+    public function build($options)
     {
+        if ($options === true) {
+            $options['verbose'] = true;
+        }
+
+        $options = array_merge(array(
+            //'debug'   => false,
+            'verbose' => false,
+            'dry-run' => false,
+        ), $options);
+
         $steps = [];
         // init...
         foreach ($this->steps as $step) {
             /* @var $stepClass Step\StepInterface */
             $stepClass = new $step($this);
-            $stepClass->init();
+            $stepClass->init($options);
             $steps[] = $stepClass;
         }
         $this->steps = $steps;
@@ -335,13 +345,13 @@ class PHPoole
             /* @var $step Step\StepInterface */
             $step->runProcess();
         }
-        // time
+        // show process time
         call_user_func_array($this->messageCallback, [
             'TIME',
             sprintf('Built in %ss', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
         ]);
-
-        if ($verbose) {
+        // show full log
+        if ($options === true || $options['verbose'] === true) {
             $this->showLog();
         }
 

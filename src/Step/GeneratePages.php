@@ -18,7 +18,7 @@ class GeneratePages extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function init($options)
     {
         if (count($this->phpoole->getConfig()->get('generators')) > 0) {
             $this->process = true;

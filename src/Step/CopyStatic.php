@@ -21,7 +21,7 @@ class CopyStatic extends AbstractStep
      *
      * @throws Exception
      */
-    public function init()
+    public function init($options)
     {
         // clean before
         Util::getFS()->remove($this->phpoole->getConfig()->getOutputPath());

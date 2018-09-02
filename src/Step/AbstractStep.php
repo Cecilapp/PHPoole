@@ -38,7 +38,7 @@ abstract class AbstractStep implements StepInterface
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function init($options)
     {
         $this->process = true;
     }

@@ -23,7 +23,7 @@ class RenderPages extends AbstractStep
      *
      * @throws Exception
      */
-    public function init()
+    public function init($options)
     {
         if (!is_dir($this->config->getLayoutsPath()) && !$this->config->hasTheme()) {
             throw new Exception(sprintf(
