@@ -325,11 +325,11 @@ class PHPoole
             $options['verbose'] = true;
         }
 
-        $options = array_merge(array(
+        $options = array_merge([
             //'debug'   => false,
             'verbose' => false,
             'dry-run' => false,
-        ), $options);
+        ], $options);
 
         $steps = [];
         // init...
