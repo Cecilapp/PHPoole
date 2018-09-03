@@ -361,7 +361,7 @@ class PHPoole
     /**
      * The timestamp of the start of the request.
      *
-     * @return integer
+     * @return int
      */
     protected function getRequestStartTime()
     {
