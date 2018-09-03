@@ -34,6 +34,7 @@ class PHPoole
         'PHPoole\Step\GenerateMenus',
         'PHPoole\Step\CopyStatic',
         'PHPoole\Step\RenderPages',
+        'PHPoole\Step\SavePages',
     ];
     /**
      * Config.
@@ -221,6 +222,7 @@ class PHPoole
                     case 'MENU':
                     case 'COPY':
                     case 'RENDER':
+                    case 'SAVE':
                     case 'TIME':
                         $log = sprintf("%s\n", $message);
                         $this->addLog($log);
@@ -232,6 +234,7 @@ class PHPoole
                     case 'MENU_PROGRESS':
                     case 'COPY_PROGRESS':
                     case 'RENDER_PROGRESS':
+                    case 'SAVE_PROGRESS':
                         if ($this->getConfig()->get('debug')) {
                             if ($itemsCount > 0) {
                                 $log = sprintf("(%u/%u) %s\n", $itemsCount, $itemsMax, $message);
@@ -249,6 +252,7 @@ class PHPoole
                     case 'MENU_ERROR':
                     case 'COPY_ERROR':
                     case 'RENDER_ERROR':
+                    case 'SAVE_ERROR':
                         $log = sprintf(">> %s\n", $message);
                         $this->addLog($log);
                         break;
@@ -311,33 +315,43 @@ class PHPoole
     /**
      * Builds a new website.
      *
-     * @param bool $verbose
+     * @param array $options
      *
      * @return $this
      */
-    public function build($verbose = false)
+    public function build($options)
     {
+        if ($options === true) {
+            $options['verbose'] = true;
+        }
+
+        $options = array_merge([
+            //'debug'   => false,
+            'verbose' => false,
+            'dry-run' => false,
+        ], $options);
+
         $steps = [];
         // init...
         foreach ($this->steps as $step) {
             /* @var $stepClass Step\StepInterface */
             $stepClass = new $step($this);
-            $stepClass->init();
+            $stepClass->init($options);
             $steps[] = $stepClass;
         }
         $this->steps = $steps;
         // ... and process!
         foreach ($this->steps as $step) {
             /* @var $step Step\StepInterface */
-            $step->process();
+            $step->runProcess();
         }
-        // time
+        // show process time
         call_user_func_array($this->messageCallback, [
             'TIME',
             sprintf('Built in %ss', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
         ]);
-
-        if ($verbose) {
+        // show full log
+        if ($options === true || $options['verbose'] === true) {
             $this->showLog();
         }
 

@@ -8,11 +8,22 @@
 
 namespace PHPoole\Step;
 
+use PHPoole\Config;
 use PHPoole\PHPoole;
 
 abstract class AbstractStep implements StepInterface
 {
+    /**
+     * @var PHPoole
+     */
     protected $phpoole;
+    /**
+     * @var Config
+     */
+    protected $config;
+    /**
+     * @var bool
+     */
     protected $process = false;
 
     /**
@@ -21,12 +32,13 @@ abstract class AbstractStep implements StepInterface
     public function __construct(PHPoole $phpoole)
     {
         $this->phpoole = $phpoole;
+        $this->config = $phpoole->getConfig();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function init($options)
     {
         $this->process = true;
     }
@@ -34,15 +46,15 @@ abstract class AbstractStep implements StepInterface
     /**
      * {@inheritdoc}
      */
-    public function process()
+    public function runProcess()
     {
         if ($this->process) {
-            $this->internalProcess();
+            $this->process();
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    abstract public function internalProcess();
+    abstract public function process();
 }
