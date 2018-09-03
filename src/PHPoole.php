@@ -348,7 +348,7 @@ class PHPoole
         // show process time
         call_user_func_array($this->messageCallback, [
             'TIME',
-            sprintf('Built in %ss', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
+            sprintf('Built in %ss', round(microtime(true) - $this->getRequestStartTime(), 2)),
         ]);
         // show full log
         if ($options === true || $options['verbose'] === true) {
@@ -356,6 +356,16 @@ class PHPoole
         }
 
         return $this;
+    }
+
+    /**
+     * The timestamp of the start of the request.
+     *
+     * @return integer
+     */
+    protected function getRequestStartTime()
+    {
+        return $_SERVER['REQUEST_TIME_FLOAT'];
     }
 
     /**
