@@ -44,15 +44,6 @@ interface RendererInterface
     public function render($template, $variables);
 
     /**
-     * Saves rendered template.
-     *
-     * @param string $pathname
-     *
-     * @return bool
-     */
-    public function save($pathname);
-
-    /**
      * Validates template.
      *
      * @param $template
