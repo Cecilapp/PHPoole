@@ -75,9 +75,13 @@ class PHPoole
      */
     protected $generatorManager;
     /**
-     * @var string
+     * @var array
      */
     protected $log;
+    /**
+     * @var array
+     */
+    protected $options;
 
     /**
      * PHPoole constructor.
@@ -235,15 +239,13 @@ class PHPoole
                     case 'COPY_PROGRESS':
                     case 'RENDER_PROGRESS':
                     case 'SAVE_PROGRESS':
-                        if ($this->getConfig()->get('debug')) {
-                            if ($itemsCount > 0) {
-                                $log = sprintf("(%u/%u) %s\n", $itemsCount, $itemsMax, $message);
-                                $this->addLog($log);
-                            } else {
-                                $log = sprintf("%s\n", $message);
-                                $this->addLog($log);
-                            }
-                        }
+                          if ($itemsCount > 0) {
+                              $log = sprintf("(%u/%u) %s\n", $itemsCount, $itemsMax, $message);
+                              $this->addLog($log, 'verbose');
+                          } else {
+                              $log = sprintf("%s\n", $message);
+                              $this->addLog($log, 'verbose');
+                          }
                         break;
                     case 'LOCATE_ERROR':
                     case 'CREATE_ERROR':
@@ -287,29 +289,48 @@ class PHPoole
     }
 
     /**
-     * @param $log
+     * @param string $log
+     * @param string $type
      *
      * @return string
      */
-    public function addLog($log)
+    public function addLog($log, $type = 'normal')
     {
-        return $this->log .= $log;
-    }
+        $this->log[] = [$type => $log];
 
-    /**
-     * @return string
-     */
-    public function getLog()
-    {
         return $this->log;
     }
 
     /**
+     * @param string $type
+     *
+     * @return string
+     */
+    public function getLog($type)
+    {
+        if (isset($type)) {
+            return array_filter($this->log, function($key) use ($type) {
+                return $key == $type;
+            }, ARRAY_FILTER_USE_KEY);
+        }
+
+        return $this->log;
+    }
+
+    /**
+     * @param string $type
+     *
      * Display $log string.
      */
-    public function showLog()
+    public function showLog($type)
     {
-        printf("\n%s", $this->log);
+        //printf("\n%s", $this->getLog($type));
+        print $this->getLog($type);
+    }
+
+    public function getBuildOptions()
+    {
+        return $this->options;
     }
 
     /**
@@ -321,12 +342,13 @@ class PHPoole
      */
     public function build($options)
     {
+        // backward compatibility
         if ($options === true) {
             $options['verbose'] = true;
         }
 
         $options = array_merge([
-            //'debug'   => false,
+            'quiet'   => false,
             'verbose' => false,
             'dry-run' => false,
         ], $options);
@@ -350,9 +372,13 @@ class PHPoole
             'TIME',
             sprintf('Built in %ss', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
         ]);
-        // show full log
-        if ($options === true || $options['verbose'] === true) {
-            $this->showLog();
+        // show log
+        if (!$options['quiet']) {
+            if ($options['verbose'] === true) {
+                $this->showLog('verbose');
+            } else {
+                $this->showLog();
+            }
         }
 
         return $this;
