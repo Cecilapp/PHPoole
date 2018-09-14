@@ -309,7 +309,7 @@ class PHPoole
     public function getLog($type)
     {
         if (isset($type)) {
-            return array_filter($this->log, function($key) use ($type) {
+            return array_filter($this->log, function ($key) use ($type) {
                 return $key == $type;
             }, ARRAY_FILTER_USE_KEY);
         }
@@ -325,7 +325,7 @@ class PHPoole
     public function showLog($type)
     {
         //printf("\n%s", $this->getLog($type));
-        print $this->getLog($type);
+        echo $this->getLog($type);
     }
 
     public function getBuildOptions()
