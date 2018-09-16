@@ -80,8 +80,8 @@ class Build extends \PHPUnit\Framework\TestCase
         )->setSourceDir($this->wsSourceDir)
         ->setDestinationDir($this->wsDestinationDir)
         ->build([
-            'verbose' => true,
-            'dry-run' => false,
+            'verbosity' => 1,
+            'dry-run'   => false,
         ]);
 
         self::assertTrue(true);
