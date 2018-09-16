@@ -328,7 +328,7 @@ class PHPoole
     public function showLog($type = 0)
     {
         $log = $this->getLog($type);
-        foreach ($log as $key => $value) {
+        foreach ($log as $value) {
             printf('%s', $value['log']);
         }
     }
