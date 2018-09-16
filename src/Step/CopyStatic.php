@@ -21,7 +21,7 @@ class CopyStatic extends AbstractStep
      *
      * @throws Exception
      */
-    public function init()
+    public function init($options)
     {
         // clean before
         Util::getFS()->remove($this->phpoole->getConfig()->getOutputPath());
@@ -34,7 +34,7 @@ class CopyStatic extends AbstractStep
      *
      * @throws \PHPoole\Exception\Exception
      */
-    public function internalProcess()
+    public function process()
     {
         $count = 0;
 

@@ -20,7 +20,7 @@ class ConvertPages extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function internalProcess()
+    public function process()
     {
         if (count($this->phpoole->getPages()) <= 0) {
             return;
