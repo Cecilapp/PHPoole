@@ -239,13 +239,13 @@ class PHPoole
                     case 'COPY_PROGRESS':
                     case 'RENDER_PROGRESS':
                     case 'SAVE_PROGRESS':
-                          if ($itemsCount > 0) {
-                              $log = sprintf("(%u/%u) %s\n", $itemsCount, $itemsMax, $message);
-                              $this->addLog($log, 1);
-                          } else {
-                              $log = sprintf("%s\n", $message);
-                              $this->addLog($log, 1);
-                          }
+                        if ($itemsCount > 0) {
+                            $log = sprintf("(%u/%u) %s\n", $itemsCount, $itemsMax, $message);
+                            $this->addLog($log, 1);
+                        } else {
+                            $log = sprintf("%s\n", $message);
+                            $this->addLog($log, 1);
+                        }
                         break;
                     case 'LOCATE_ERROR':
                     case 'CREATE_ERROR':
