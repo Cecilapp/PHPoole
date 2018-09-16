@@ -290,7 +290,7 @@ class PHPoole
 
     /**
      * @param string $log
-     * @param int $type
+     * @param int    $type
      *
      * @return array
      */
@@ -298,7 +298,7 @@ class PHPoole
     {
         $this->log[] = [
             'type' => $type,
-            'log'  => $log
+            'log'  => $log,
         ];
 
         return $this->getLog($type);
@@ -315,6 +315,7 @@ class PHPoole
             if ($key['type'] <= $type) {
                 return true;
             }
+
             return false;
         });
     }
@@ -328,7 +329,7 @@ class PHPoole
     {
         $log = $this->getLog($type);
         foreach ($log as $key => $value) {
-            printf("%s", $value['log']);
+            printf('%s', $value['log']);
         }
     }
 
