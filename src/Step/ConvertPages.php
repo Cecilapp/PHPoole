@@ -25,7 +25,11 @@ class ConvertPages extends AbstractStep
         if (count($this->phpoole->getPages()) <= 0) {
             return;
         }
-        call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT', 'Converting pages']);
+        $message = 'Converting pages';
+        if ($this->phpoole->getBuildOptions()['drafts']) {
+            $message .= ' (drafts included)';
+        }
+        call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT', $message]);
         $max = count($this->phpoole->getPages());
         $count = 0;
         $countError = 0;
@@ -37,7 +41,7 @@ class ConvertPages extends AbstractStep
                 if (false !== $convertedPage) {
                     $message = $page->getPathname();
                     // force convert drafts?
-                    if ($this->phpoole->getConfig()->get('drafts')) {
+                    if ($this->phpoole->getBuildOptions()['drafts']) {
                         $page->setVariable('published', true);
                     }
                     if ($page->getVariable('published')) {

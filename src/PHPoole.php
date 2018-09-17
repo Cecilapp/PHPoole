@@ -18,6 +18,16 @@ use Symfony\Component\Finder\Finder;
 class PHPoole
 {
     const VERSION = '2.x-dev';
+    const VERBOSITY_QUIET   = -1;
+    const VERBOSITY_NORMAL  = 0;
+    const VERBOSITY_VERBOSE = 1;
+    const VERBOSITY_DEBUG   = 2;
+
+    /**
+     * Library version.
+     *
+     * @var string
+     */
     protected $version;
     /**
      * Steps that are processed by build().
@@ -352,12 +362,13 @@ class PHPoole
     {
         // backward compatibility
         if ($options === true) {
-            $options['verbosity'] = 1;
+            $options['verbosity'] = self::VERBOSITY_VERBOSE;
         }
 
         $this->options = array_merge([
-            'verbosity' => 0, // -1: quiet, 0: normal, 1: verbose, 2: debug
-            'dry-run'   => false,
+            'verbosity' => self::VERBOSITY_NORMAL, // -1: quiet, 0: normal, 1: verbose, 2: debug
+            'drafts'    => false, // build drafts or not
+            'dry-run'   => false, // if dry-run is true, generated files are not saved
         ], $options);
 
         $steps = [];

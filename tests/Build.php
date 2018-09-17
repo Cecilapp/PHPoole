@@ -71,7 +71,6 @@ class Build extends \PHPUnit\Framework\TestCase
                         'test.txt',
                     ],
                 ],
-                'drafts'     => false,
                 'generators' => [
                     99 => 'Pouet',
                 ],
@@ -80,7 +79,8 @@ class Build extends \PHPUnit\Framework\TestCase
         )->setSourceDir($this->wsSourceDir)
         ->setDestinationDir($this->wsDestinationDir)
         ->build([
-            'verbosity' => 1,
+            'verbosity' => PHPoole::VERBOSITY_VERBOSE,
+            'drafts'    => false,
             'dry-run'   => false,
         ]);
 
