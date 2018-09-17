@@ -321,9 +321,11 @@ class PHPoole
      */
     public function getLog($type = 0)
     {
-        return array_filter($this->log, function ($key) use ($type) {
-            return $key['type'] <= $type;
-        });
+        if (is_array($this->log)) {
+            return array_filter($this->log, function ($key) use ($type) {
+                return $key['type'] <= $type;
+            });
+        }
     }
 
     /**
@@ -333,9 +335,10 @@ class PHPoole
      */
     public function showLog($type = 0)
     {
-        $log = $this->getLog($type);
-        foreach ($log as $value) {
-            printf('%s', $value['log']);
+        if ($log = $this->getLog($type)) {
+            foreach ($log as $value) {
+                printf('%s', $value['log']);
+            }
         }
     }
 
