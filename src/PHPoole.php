@@ -322,11 +322,7 @@ class PHPoole
     public function getLog($type = 0)
     {
         return array_filter($this->log, function ($key) use ($type) {
-            if ($key['type'] <= $type) {
-                return true;
-            }
-
-            return false;
+            return $key['type'] <= $type;
         });
     }
 
@@ -344,7 +340,7 @@ class PHPoole
     }
 
     /**
-     * @return $options
+     * @return array $options
      */
     public function getBuildOptions()
     {
