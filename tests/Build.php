@@ -79,7 +79,7 @@ class Build extends \PHPUnit\Framework\TestCase
         )->setSourceDir($this->wsSourceDir)
         ->setDestinationDir($this->wsDestinationDir)
         ->build([
-            'verbosity' => PHPoole::VERBOSITY_VERBOSE,
+            'verbosity' => PHPoole::VERBOSITY_DEBUG,
             'drafts'    => false,
             'dry-run'   => false,
         ]);

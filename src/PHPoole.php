@@ -360,7 +360,6 @@ class PHPoole
         if ($options === true) {
             $options['verbosity'] = self::VERBOSITY_VERBOSE;
         }
-
         $this->options = array_merge([
             'verbosity' => self::VERBOSITY_NORMAL, // -1: quiet, 0: normal, 1: verbose, 2: debug
             'drafts'    => false, // build drafts or not
@@ -372,7 +371,7 @@ class PHPoole
         foreach ($this->steps as $step) {
             /* @var $stepClass Step\StepInterface */
             $stepClass = new $step($this);
-            $stepClass->init($options);
+            $stepClass->init($this->options);
             $steps[] = $stepClass;
         }
         $this->steps = $steps;
