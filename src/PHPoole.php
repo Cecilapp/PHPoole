@@ -302,7 +302,7 @@ class PHPoole
      * @param string $log
      * @param int    $type
      *
-     * @return array
+     * @return array|null
      */
     public function addLog($log, $type = 0)
     {
@@ -317,7 +317,7 @@ class PHPoole
     /**
      * @param int $type
      *
-     * @return array
+     * @return array|null
      */
     public function getLog($type = 0)
     {
