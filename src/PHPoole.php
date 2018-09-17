@@ -18,10 +18,10 @@ use Symfony\Component\Finder\Finder;
 class PHPoole
 {
     const VERSION = '2.x-dev';
-    const VERBOSITY_QUIET   = -1;
-    const VERBOSITY_NORMAL  = 0;
+    const VERBOSITY_QUIET = -1;
+    const VERBOSITY_NORMAL = 0;
     const VERBOSITY_VERBOSE = 1;
-    const VERBOSITY_DEBUG   = 2;
+    const VERBOSITY_DEBUG = 2;
 
     /**
      * Library version.
