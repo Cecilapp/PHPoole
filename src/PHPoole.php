@@ -18,6 +18,16 @@ use Symfony\Component\Finder\Finder;
 class PHPoole
 {
     const VERSION = '2.x-dev';
+    const VERBOSITY_QUIET = -1;
+    const VERBOSITY_NORMAL = 0;
+    const VERBOSITY_VERBOSE = 1;
+    const VERBOSITY_DEBUG = 2;
+
+    /**
+     * Library version.
+     *
+     * @var string
+     */
     protected $version;
     /**
      * Steps that are processed by build().
@@ -34,6 +44,7 @@ class PHPoole
         'PHPoole\Step\GenerateMenus',
         'PHPoole\Step\CopyStatic',
         'PHPoole\Step\RenderPages',
+        'PHPoole\Step\SavePages',
     ];
     /**
      * Config.
@@ -74,9 +85,13 @@ class PHPoole
      */
     protected $generatorManager;
     /**
-     * @var string
+     * @var array
      */
     protected $log;
+    /**
+     * @var array
+     */
+    protected $options;
 
     /**
      * PHPoole constructor.
@@ -221,6 +236,7 @@ class PHPoole
                     case 'MENU':
                     case 'COPY':
                     case 'RENDER':
+                    case 'SAVE':
                     case 'TIME':
                         $log = sprintf("%s\n", $message);
                         $this->addLog($log);
@@ -232,14 +248,13 @@ class PHPoole
                     case 'MENU_PROGRESS':
                     case 'COPY_PROGRESS':
                     case 'RENDER_PROGRESS':
-                        if ($this->getConfig()->get('debug')) {
-                            if ($itemsCount > 0) {
-                                $log = sprintf("(%u/%u) %s\n", $itemsCount, $itemsMax, $message);
-                                $this->addLog($log);
-                            } else {
-                                $log = sprintf("%s\n", $message);
-                                $this->addLog($log);
-                            }
+                    case 'SAVE_PROGRESS':
+                        if ($itemsCount > 0) {
+                            $log = sprintf("(%u/%u) %s\n", $itemsCount, $itemsMax, $message);
+                            $this->addLog($log, 1);
+                        } else {
+                            $log = sprintf("%s\n", $message);
+                            $this->addLog($log, 1);
                         }
                         break;
                     case 'LOCATE_ERROR':
@@ -249,6 +264,7 @@ class PHPoole
                     case 'MENU_ERROR':
                     case 'COPY_ERROR':
                     case 'RENDER_ERROR':
+                    case 'SAVE_ERROR':
                         $log = sprintf(">> %s\n", $message);
                         $this->addLog($log);
                         break;
@@ -283,63 +299,97 @@ class PHPoole
     }
 
     /**
-     * @param $log
+     * @param string $log
+     * @param int    $type
      *
-     * @return string
+     * @return array|null
      */
-    public function addLog($log)
+    public function addLog($log, $type = 0)
     {
-        return $this->log .= $log;
+        $this->log[] = [
+            'type' => $type,
+            'log'  => $log,
+        ];
+
+        return $this->getLog($type);
     }
 
     /**
-     * @return string
+     * @param int $type
+     *
+     * @return array|null
      */
-    public function getLog()
+    public function getLog($type = 0)
     {
-        return $this->log;
+        if (is_array($this->log)) {
+            return array_filter($this->log, function ($key) use ($type) {
+                return $key['type'] <= $type;
+            });
+        }
     }
 
     /**
+     * @param int $type
+     *
      * Display $log string.
      */
-    public function showLog()
+    public function showLog($type = 0)
     {
-        printf("\n%s", $this->log);
+        if ($log = $this->getLog($type)) {
+            foreach ($log as $value) {
+                printf('%s', $value['log']);
+            }
+        }
+    }
+
+    /**
+     * @return array $options
+     */
+    public function getBuildOptions()
+    {
+        return $this->options;
     }
 
     /**
      * Builds a new website.
      *
-     * @param bool $verbose
+     * @param array $options
      *
      * @return $this
      */
-    public function build($verbose = false)
+    public function build($options)
     {
+        // backward compatibility
+        if ($options === true) {
+            $options['verbosity'] = self::VERBOSITY_VERBOSE;
+        }
+        $this->options = array_merge([
+            'verbosity' => self::VERBOSITY_NORMAL, // -1: quiet, 0: normal, 1: verbose, 2: debug
+            'drafts'    => false, // build drafts or not
+            'dry-run'   => false, // if dry-run is true, generated files are not saved
+        ], $options);
+
         $steps = [];
         // init...
         foreach ($this->steps as $step) {
             /* @var $stepClass Step\StepInterface */
             $stepClass = new $step($this);
-            $stepClass->init();
+            $stepClass->init($this->options);
             $steps[] = $stepClass;
         }
         $this->steps = $steps;
         // ... and process!
         foreach ($this->steps as $step) {
             /* @var $step Step\StepInterface */
-            $step->process();
+            $step->runProcess();
         }
-        // time
+        // show process time
         call_user_func_array($this->messageCallback, [
             'TIME',
             sprintf('Built in %ss', round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2)),
         ]);
-
-        if ($verbose) {
-            $this->showLog();
-        }
+        // show log
+        $this->showLog($this->options['verbosity']);
 
         return $this;
     }

@@ -21,18 +21,19 @@ class LocateContent extends AbstractStep
      *
      * @throws Exception
      */
-    public function init()
+    public function init($options)
     {
         if (!is_dir($this->phpoole->getConfig()->getContentPath())) {
             throw new Exception(sprintf('%s not found!', $this->phpoole->getConfig()->getContentPath()));
         }
+
         $this->process = true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function internalProcess()
+    public function process()
     {
         call_user_func_array($this->phpoole->getMessageCb(), ['LOCATE', 'Loading content']);
 
