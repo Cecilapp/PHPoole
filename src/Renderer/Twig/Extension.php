@@ -130,6 +130,17 @@ class Extension extends SlugifyExtension
                 throw new Exception("'filterBy' available for page only!");
             }
         }
+        // exclude virtual pages in section
+        if ($variable == 'section' && !empty($filtered)) {
+            $notVirtual = [];
+            foreach ($filtered as $page) {
+                if (!$page->getVariable('virtual')) {
+                    $notVirtual[] = $page;
+                }
+            }
+
+            return $notVirtual;
+        }
 
         return $filtered;
     }

@@ -4,7 +4,7 @@ All pages:
 <ul>
     {% for item in site.pages|sortByDate %}
         <li>
-            <a href="{{ url(item) }}">{{ item.title }}</a> [id: {{ item.id }} | date: {{ item.date|date("d/m/Y") }} | type: {{ item.nodetype }}]
+            <a href="{{ url(item) }}">{{ item.title }}</a> [id: {{ item.id }} | date: {{ item.date|date("d/m/Y") }} | type: {{ item.nodetype }} | virtual: {{ item.virtual }}]
         </li>
     {% endfor %}
 </ul>
