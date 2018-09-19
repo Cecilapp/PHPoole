@@ -131,6 +131,7 @@ class Extension extends SlugifyExtension
             }
         }
         // exclude virtual pages in section
+        // temporary fix
         if ($variable == 'section' && !empty($filtered)) {
             $notVirtual = [];
             foreach ($filtered as $page) {
