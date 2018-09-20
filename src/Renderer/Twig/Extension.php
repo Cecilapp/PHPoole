@@ -112,26 +112,22 @@ class Extension extends SlugifyExtension
      */
     public function filterBy($pages, $variable, $value)
     {
-        $filtered = [];
-
-        foreach ($pages as $page) {
-            if ($page instanceof Page) {
-                $method = 'get'.ucfirst($variable);
-                if (method_exists($page, $method)) {
-                    if ($page->$method() == $value) {
-                        $filtered[] = $page;
-                    }
-                } else {
-                    if ($page->getVariable($variable) == $value) {
-                        $filtered[] = $page;
-                    }
-                }
-            } else {
-                throw new Exception("'filterBy' available for page only!");
+        $filteredPages = $pages->filter(function (Page $page) use ($variable, $value) {
+            // filter virtual pages in section
+            if ($variable == 'section' && $page->getVariable('virtual')) {
+                return false;
             }
-        }
+            // dedicated getter?
+            $method = 'get'.ucfirst($variable);
+            if (method_exists($page, $method) && $page->$method() == $value) {
+                return true;
+            }
+            if ($page->getVariable($variable) == $value) {
+                return true;
+            }
+        });
 
-        return $filtered;
+        return $filteredPages;
     }
 
     /**
