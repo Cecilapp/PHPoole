@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>{{ page.title }}</title>
     <link rel="stylesheet" href="{{ url(minify('css/style.css')) }}" media="all" />
-    <script src="{{ url(minify('js/script.js')) }}"></script>
+    <script src="{{ url(minify('js/script.js')) }}" integrity="{{ hash('js/script.js') }}"></script>
 </head>
 <body>
 <h1>{{ page.title }}</h1>
