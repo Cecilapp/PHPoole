@@ -450,7 +450,7 @@ class Extension extends SlugifyExtension
      *
      * @param string $path
      *
-     * @return string
+     * @return string|null
      */
     public function hashFile($path)
     {
