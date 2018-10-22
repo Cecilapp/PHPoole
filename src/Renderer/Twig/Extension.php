@@ -83,6 +83,7 @@ class Extension extends SlugifyExtension
             new \Twig_SimpleFunction('minify', [$this, 'minify']),
             new \Twig_SimpleFunction('readtime', [$this, 'readtime']),
             new \Twig_SimpleFunction('toCSS', [$this, 'toCss']),
+            new \Twig_SimpleFunction('hash', [$this, 'hashFile']),
         ];
     }
 
@@ -442,5 +443,19 @@ class Extension extends SlugifyExtension
         }
 
         return $min;
+    }
+
+    /**
+     * Hash file with sha384.
+     *
+     * @param string $path
+     *
+     * @return string|null
+     */
+    public function hashFile($path)
+    {
+        if (is_file($filePath = $this->destPath.'/'.$path)) {
+            return sprintf('sha384-%s', hash_file('sha384', $filePath));
+        }
     }
 }
