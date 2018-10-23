@@ -122,6 +122,7 @@ class Config
             50 => 'PHPoole\Generator\Alias',
             35 => 'PHPoole\Generator\ExternalBody',
             36 => 'PHPoole\Generator\PagesFromConfig',
+            60 => 'PHPoole\Generator\Redirect',
         ],
     ];
 
