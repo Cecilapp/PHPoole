@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <title>Redirect to {{ url(page.destination) }}</title>
-    <link rel="canonical" href="{{ url(page.destination) }}" />
-    <meta name="robots" content="noindex" />
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta http-equiv="refresh" content="0;url={{ url(page.destination) }}" />
+  <meta charset="utf-8">
+  <title>Redirecting&hellip;</title>
+  <link rel="canonical" href="{{ url(page.destination) }}" />
+  <meta name="robots" content="noindex" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="refresh" content="0;url={{ url(page.destination) }}" />
 </head>
 <body>
-    Redirect to <a href="{{ url(page.destination) }}">{{ url(page.destination) }}</a>
+  <h1>Redirecting&hellip;</h1>
+  <a href="{{ url(page.destination) }}">Click here if you are not redirected.</a>
 </body>
 </html>
