@@ -72,7 +72,8 @@ class Build extends \PHPUnit\Framework\TestCase
                     ],
                 ],
                 'generators' => [
-                    99 => 'Pouet',
+                    99  => 'PHPoole\Generator\Test',
+                    //100 => 'PHPoole\Generator\TitleReplace',
                 ],
                 'debug' => true,
             ]
