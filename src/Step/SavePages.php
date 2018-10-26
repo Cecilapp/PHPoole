@@ -77,8 +77,12 @@ class SavePages extends AbstractStep
         if ($page->getName() == 'index') {
             return $page->getPath().'/'.$this->config->get('output.filename');
         } else {
-            // custom extension
+            // custom extension, ex: 'manifest.json'
             if (!empty(pathinfo($page->getPermalink(), PATHINFO_EXTENSION))) {
+                return $page->getPermalink();
+            }
+            // underscore prefix, ex: '_redirects'
+            if (strpos($page->getPermalink(), '_') === 0) {
                 return $page->getPermalink();
             }
 
