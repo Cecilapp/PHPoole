@@ -11,7 +11,7 @@
 <body>
   <h1>Redirecting&hellip;</h1>
   <a href="{{ url(page.destination) }}">Click here if you are not redirected.</a>
-{% if site.googleanalytics %}
+{% if site.googleanalytics is defined %}
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.googleanalytics }}"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
