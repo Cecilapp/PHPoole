@@ -30,7 +30,9 @@ class Redirect extends AbstractGenerator implements GeneratorInterface
         /* @var $page Page */
         foreach ($filteredPages as $page) {
             $alteredPage = clone $page;
-            $alteredPage->setTitle(sprintf('Redirect %s', $alteredPage->getId()));
+            if ($alteredPage->getVariable('title') === null) {
+                $alteredPage->setTitle(sprintf('Redirect %s', $alteredPage->getId()));
+            }
             $alteredPage->setLayout('redirect.html');
             $alteredPage->setVariable('destination', $page->getVariable('redirect'));
             $generatedPages->add($alteredPage);
