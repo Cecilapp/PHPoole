@@ -4,13 +4,13 @@
         <title>{{ site.title }}</title>
         <description><![CDATA[{{ site.description|escape }}]]></description>
         <lastBuildDate>{{ page.date|date('Y-m-dTH:i:sP') }}</lastBuildDate>
-        <link>{{ url('/', true) }}</link>
+        <link>{{ url('/', { canonical: true }) }}</link>
 {% for page in site.pages|filterBy('section', page.section)|filterBy('virtual', false)|sortByDate %}
         <item>
             <title>{{ page.title }}</title>
             <description><![CDATA[{{ page.content }}]]></description>
             <pubDate>{{ page.date|date('Y-m-dTH:i:sP') }}</pubDate>
-            <link>{{ url(page, true) }}</link>
+            <link>{{ url(page, { canonical: true }) }}</link>
         </item>
 {% endfor %}
     </channel>
