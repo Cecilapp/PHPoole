@@ -44,7 +44,7 @@ class Config
             'title'        => 'PHPoole',
             'baseline'     => 'A PHPoole website',
             'baseurl'      => 'http://localhost:8000/',
-            'canonicalurl' => true,
+            'canonicalurl' => false,
             'description'  => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'taxonomies'   => [
                 'tags'       => 'tag',

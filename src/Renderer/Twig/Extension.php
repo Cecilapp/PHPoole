@@ -233,20 +233,40 @@ class Extension extends SlugifyExtension
     /**
      * Create an URL.
      *
-     * @param \Twig_Environment $env
-     * @param null              $value
-     * @param false             $canonical
+     * $options[
+     *     'canonical' => null,
+     *     'addhash'   => true,
+     * ];
+     *
+     * @param \Twig_Environment         $env
+     * @param string|\PHPoole\Page\Page $value
+     * @param array|null                $options
      *
      * @return string
      */
-    public function createUrl(\Twig_Environment $env, $value = null, $canonical = false)
+    public function createUrl(\Twig_Environment $env, $value = null, $options = null)
     {
         $base = '';
         $baseurl = $env->getGlobals()['site']['baseurl'];
         $hash = md5($env->getGlobals()['site']['time']);
+        $canonical = null;
+        $addhash = true;
 
-        if ($canonical || $env->getGlobals()['site']['canonicalurl'] !== false) {
+        if (isset($options['canonical'])) {
+            $canonical = $options['canonical'];
+        }
+        if (is_bool($options)) { // backward compatibility
+            $canonical = $options;
+        }
+        if (isset($options['addhash'])) {
+            $addhash = $options['addhash'];
+        }
+
+        if ($env->getGlobals()['site']['canonicalurl'] === true || $canonical === true) {
             $base = rtrim($baseurl, '/');
+        }
+        if ($canonical === false) {
+            $base = '';
         }
 
         if ($value instanceof Page) {
@@ -260,7 +280,10 @@ class Extension extends SlugifyExtension
             if (preg_match('~^(?:f|ht)tps?://~i', $value)) { // external URL
                 $url = $value;
             } elseif (false !== strpos($value, '.')) { // file URL (with a dot for extension)
-                $url = $base.'/'.ltrim($value, '/').'?'.$hash;
+                $url = $base.'/'.ltrim($value, '/');
+                if ($addhash) {
+                    $url .= '?'.$hash;
+                }
             } else {
                 $value = $this->slugifyFilter($value);
                 $url = $base.'/'.ltrim(rtrim($value, '/').'/', '/');
