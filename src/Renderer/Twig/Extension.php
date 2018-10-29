@@ -238,7 +238,7 @@ class Extension extends SlugifyExtension
      *     'addhash'   => true,
      * ];
      *
-     * @param \Twig_Environment $env
+     * @param \Twig_Environment         $env
      * @param string|\PHPoole\Page\Page $value
      * @param array|null                $options
      *
