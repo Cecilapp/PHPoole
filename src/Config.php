@@ -141,9 +141,9 @@ class Config
         }
 
         // Apply environment variables
-        $applyEnv = function ($someArray) use ($data) {
+        $applyEnv = function ($array) use ($data) {
             $iterator = new \RecursiveIteratorIterator(
-                new \RecursiveArrayIterator($someArray),
+                new \RecursiveArrayIterator($array),
                 \RecursiveIteratorIterator::SELF_FIRST
             );
             foreach ($iterator as $value) {
