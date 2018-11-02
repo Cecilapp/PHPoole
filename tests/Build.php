@@ -35,7 +35,7 @@ class Build extends \PHPUnit\Framework\TestCase
             [
                 'site' => [
                     'title' => 'PHPoole test',
-                    'menu' => [
+                    'menu'  => [
                         'main' => [
                             'index' => [
                                 'id'     => 'index',
