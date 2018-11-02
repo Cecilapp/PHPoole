@@ -146,7 +146,7 @@ class Config
                 new \RecursiveArrayIterator($someArray),
                 \RecursiveIteratorIterator::SELF_FIRST
             );
-            foreach ($iterator as $k => $v) {
+            foreach ($iterator as $value) {
                 if (!$iterator->hasChildren()) {
                     for ($p = [], $i = 0, $z = $iterator->getDepth(); $i <= $z; $i++) {
                         $p[] = $iterator->getSubIterator($i)->key();
