@@ -142,7 +142,10 @@ class Config
 
         // Apply environment variables
         $applyEnv = function ($someArray) use ($data) {
-            $iterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($someArray), \RecursiveIteratorIterator::SELF_FIRST);
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveArrayIterator($someArray),
+                \RecursiveIteratorIterator::SELF_FIRST
+            );
             foreach ($iterator as $k => $v) {
                 if (!$iterator->hasChildren()) {
                     for ($p = [], $i = 0, $z = $iterator->getDepth(); $i <= $z; $i++) {
