@@ -134,6 +134,7 @@ class Config
     public function __construct($config = null)
     {
         $data = new Data(self::$defaultData);
+
         if ($config instanceof self) {
             $data->importData($config->getAll());
         } elseif (is_array($config)) {
@@ -146,15 +147,14 @@ class Config
                 new \RecursiveArrayIterator($array),
                 \RecursiveIteratorIterator::SELF_FIRST
             );
-            foreach ($iterator as $value) {
-                if (!$iterator->hasChildren()) {
-                    for ($p = [], $i = 0, $z = $iterator->getDepth(); $i <= $z; $i++) {
-                        $p[] = $iterator->getSubIterator($i)->key();
-                    }
-                    $path = implode('_', $p);
-                    if ($getEnv = getenv('PHPOOLE_'.strtoupper($path))) {
-                        $data->set(str_replace('_', '.', strtolower($path)), $getEnv);
-                    }
+            foreach ($iterator as $leafValue) {
+                $path = [];
+                foreach (range(0, $iterator->getDepth()) as $depth) {
+                    $path[] = $iterator->getSubIterator($depth)->key();
+                }
+                $sPath = implode('_', $path);
+                if ($getEnv = getenv('PHPOOLE_'.strtoupper($sPath))) {
+                    $data->set(str_replace('_', '.', strtolower($sPath)), $getEnv);
                 }
             }
         };
