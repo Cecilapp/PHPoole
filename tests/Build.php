@@ -34,7 +34,8 @@ class Build extends \PHPUnit\Framework\TestCase
         PHPoole::create(
             [
                 'site' => [
-                    'menu' => [
+                    'title' => 'PHPoole test',
+                    'menu'  => [
                         'main' => [
                             'index' => [
                                 'id'     => 'index',

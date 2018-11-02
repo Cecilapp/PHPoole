@@ -139,6 +139,27 @@ class Config
         } elseif (is_array($config)) {
             $data->import($config);
         }
+
+        // Apply environment variables
+        $applyEnv = function ($array) use ($data) {
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveArrayIterator($array),
+                \RecursiveIteratorIterator::SELF_FIRST
+            );
+            foreach ($iterator as $value) {
+                if (!$iterator->hasChildren()) {
+                    for ($p = [], $i = 0, $z = $iterator->getDepth(); $i <= $z; $i++) {
+                        $p[] = $iterator->getSubIterator($i)->key();
+                    }
+                    $path = implode('_', $p);
+                    if ($getEnv = getenv('PHPOOLE_'.strtoupper($path))) {
+                        $data->set(str_replace('_', '.', strtolower($path)), $getEnv);
+                    }
+                }
+            }
+        };
+        $applyEnv($data->export());
+
         $this->setFromData($data);
     }
 
