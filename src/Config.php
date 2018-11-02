@@ -141,11 +141,11 @@ class Config
         }
 
         // Apply environment variables
-        $applyEnv = function($someArray) use ($data) {
+        $applyEnv = function ($someArray) use ($data) {
             $iterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($someArray), \RecursiveIteratorIterator::SELF_FIRST);
             foreach ($iterator as $k => $v) {
                 if (!$iterator->hasChildren()) {
-                    for ($p = array(), $i = 0, $z = $iterator->getDepth(); $i <= $z; $i++) {
+                    for ($p = [], $i = 0, $z = $iterator->getDepth(); $i <= $z; $i++) {
                         $p[] = $iterator->getSubIterator($i)->key();
                     }
                     $path = implode('_', $p);
