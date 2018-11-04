@@ -57,6 +57,7 @@ class Twig implements RendererInterface
         // add extensions
         $this->twig->addExtension(new \Twig_Extension_Debug());
         $this->twig->addExtension(new TwigExtension($config->getOutputPath()));
+        $this->twig->addExtension(new \Twig_Extension_StringLoader());
         $this->twig->getExtension('Twig_Extension_Core')->setDateFormat($config->get('site.date.format'));
         $this->twig->getExtension('Twig_Extension_Core')->setTimezone($config->get('site.date.timezone'));
     }

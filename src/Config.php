@@ -105,6 +105,7 @@ class Config
                 'sitemap.xml'        => '',
                 'googleanalytics.js' => 'includes/',
                 'rss.xml'            => '',
+                'macros.html'        => 'includes/',
             ],
         ],
         'output' => [
