@@ -2,7 +2,6 @@
 title: Macros
 layout: macro.html
 ---
-<!--{% import 'includes/macros.html.twig' as macro %}-->
 # Macros in Markdown
 
 ## Youtube video

@@ -1,3 +1,6 @@
-<!-- macro.html.twig layout -->
+{% extends '_default/page.html.twig' %}
 
-{{ include(template_from_string(page.content)) }}
+{% block content %}
+{# page.content #}
+{% include page.content_template %}
+{% endblock %}

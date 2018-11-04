@@ -1,0 +1,2 @@
+{% set includes_macros = "{% import 'includes/macros.twig' as macro %}" %}
+{{ include(template_from_string(includes_macros ~ page.content)) }}

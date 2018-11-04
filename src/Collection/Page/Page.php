@@ -139,6 +139,7 @@ class Page extends Item
         }
         $this->setVariable('virtual', $this->virtual);
         $this->setVariable('published', true);
+        $this->setVariable('content_template', 'page.content.twig');
     }
 
     /**
