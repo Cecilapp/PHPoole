@@ -27,7 +27,7 @@
     "myclabs/php-enum": "1.6.1",
     "symfony/filesystem": "4.1.2",
     "symfony/finder": "4.1.2",
-    "symfony/process": "4.1.2",
+    "symfony/process": "4.1.7",
     "symfony/yaml": "4.1.2",
     "twig/twig": "2.5.0"
   },
