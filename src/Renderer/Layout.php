@@ -31,21 +31,16 @@ class Layout
      */
     public function finder(Page $page, Config $config)
     {
-        // internal layouts
-        if (!empty($page->getLayout()) && array_key_exists($page->getLayout(), $config->get('layouts.internal'))) {
-            return $page->getLayout().'.twig';
-        }
-
         $layout = 'unknown';
         $layouts = self::fallback($page);
 
-        // is layout exists in local layout dir?
+        // is layout exists in local layouts dir?
         foreach ($layouts as $layout) {
             if (Util::getFS()->exists($config->getLayoutsPath().'/'.$layout)) {
                 return $layout;
             }
         }
-        // is layout exists in layout theme dir?
+        // is layout exists in layouts theme dir?
         if ($config->hasTheme()) {
             foreach ($layouts as $layout) {
                 if (Util::getFS()->exists($config->getThemePath($config->get('theme')).'/'.$layout)) {
@@ -53,6 +48,8 @@ class Layout
                 }
             }
         }
+        // is layout exists in layouts internal dir?
+        // TO DO
 
         throw new Exception(sprintf("Layout '%s' not found for page '%s'!", $layout, $page->getId()));
     }

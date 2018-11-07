@@ -33,19 +33,8 @@ class Twig implements RendererInterface
      */
     public function __construct($templatesPath, $config)
     {
-        // internal layouts
-        $internalLoader = [];
-        if ($internalLayouts = $config->get('layouts.internal')) {
-            foreach ($internalLayouts as $layout => $path) {
-                $layoutContent = file_get_contents(sprintf(__DIR__.'/../../res/layouts/%s.twig', $layout));
-                $internalLoader[sprintf('%s%s.twig', (($path) ? $path : ''), $layout)] = $layoutContent;
-            }
-        }
-        $loaderArray = new \Twig_Loader_Array($internalLoader);
-        // project layouts
-        $loaderFS = new \Twig_Loader_Filesystem($templatesPath);
         // load layouts
-        $loader = new \Twig_Loader_Chain([$loaderFS, $loaderArray]);
+        $loader = new \Twig_Loader_Filesystem($templatesPath);
         // Twig
         $this->twig = new \Twig_Environment($loader, [
             'debug'            => true,
