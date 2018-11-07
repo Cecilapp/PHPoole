@@ -340,7 +340,7 @@ class Config
      */
     public function getInternalLayoutsPath()
     {
-        return $this->getSourceDir().'/'.$this->get('layouts.internal.dir');
+        return __DIR__.'/../'.$this->get('layouts.internal.dir');
     }
 
     /**
