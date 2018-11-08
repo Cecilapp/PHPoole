@@ -319,6 +319,14 @@ class Config
     /**
      * @return string
      */
+    public function getInternalLayoutsPath()
+    {
+        return __DIR__.'/../'.$this->get('layouts.internal.dir');
+    }
+
+    /**
+     * @return string
+     */
     public function getThemesPath()
     {
         return $this->getSourceDir().'/'.$this->get('themes.dir');
@@ -333,14 +341,6 @@ class Config
     public function getThemePath($theme, $dir = 'layouts')
     {
         return $this->getSourceDir().'/'.$this->get('themes.dir').'/'.$theme.'/'.$dir;
-    }
-
-    /**
-     * @return string
-     */
-    public function getInternalLayoutsPath()
-    {
-        return __DIR__.'/../'.$this->get('layouts.internal.dir');
     }
 
     /**

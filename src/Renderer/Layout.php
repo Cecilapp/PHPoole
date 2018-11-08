@@ -32,20 +32,23 @@ class Layout
     public function finder(Page $page, Config $config)
     {
         $layout = 'unknown';
+
+        // what layouts could be use for the page?
         $layouts = self::fallback($page);
 
+        // take the first available layout
         foreach ($layouts as $layout) {
-            // layout in layouts dir?
+            // is it in layouts dir?
             if (Util::getFS()->exists($config->getLayoutsPath().'/'.$layout)) {
                 return $layout;
             }
-            // layout in theme dir?
+            // is it in theme dir?
             if ($config->hasTheme()) {
                 if (Util::getFS()->exists($config->getThemePath($config->get('theme')).'/'.$layout)) {
                     return $layout;
                 }
             }
-            // layout in internal dir?
+            // is it in internal dir?
             if (Util::getFS()->exists($config->getInternalLayoutsPath().'/'.$layout)) {
                 return $layout;
             }
