@@ -100,13 +100,7 @@ class Config
         'layouts' => [
             'dir'      => 'layouts',
             'internal' => [
-                'redirect.html'      => '',
-                'robots.txt'         => '',
-                'sitemap.xml'        => '',
-                'googleanalytics.js' => 'includes/',
-                'rss.xml'            => '',
-                'page.content'       => '',
-                'macros'             => 'includes/',
+                'dir' => 'res/layouts',
             ],
         ],
         'output' => [
