@@ -35,17 +35,17 @@ class Layout
         $layouts = self::fallback($page);
 
         foreach ($layouts as $layout) {
-            // is layout exists in local layouts dir?
+            // layout in layouts dir?
             if (Util::getFS()->exists($config->getLayoutsPath().'/'.$layout)) {
                 return $layout;
             }
-            // is layout exists in layouts theme dir?
+            // layout in theme dir?
             if ($config->hasTheme()) {
                 if (Util::getFS()->exists($config->getThemePath($config->get('theme')).'/'.$layout)) {
                     return $layout;
                 }
             }
-            // is layout exists in layouts internal dir?
+            // layout in internal dir?
             if (Util::getFS()->exists($config->getInternalLayoutsPath().'/'.$layout)) {
                 return $layout;
             }
