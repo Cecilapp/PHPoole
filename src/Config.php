@@ -100,11 +100,7 @@ class Config
         'layouts' => [
             'dir'      => 'layouts',
             'internal' => [
-                'redirect.html'      => '',
-                'robots.txt'         => '',
-                'sitemap.xml'        => '',
-                'googleanalytics.js' => 'includes/',
-                'rss.xml'            => '',
+                'dir' => 'res/layouts',
             ],
         ],
         'output' => [
@@ -318,6 +314,14 @@ class Config
     public function getLayoutsPath()
     {
         return $this->getSourceDir().'/'.$this->get('layouts.dir');
+    }
+
+    /**
+     * @return string
+     */
+    public function getInternalLayoutsPath()
+    {
+        return __DIR__.'/../'.$this->get('layouts.internal.dir');
     }
 
     /**

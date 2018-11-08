@@ -2,10 +2,12 @@
 
 {% block content %}
 {{ page.content }}
+<quote>Page from theme > layouts > project > page.html.twig</quote>
 {% if page.categories is defined %}
+<ul>
 {% for category in page.categories %}
-<a href="{{ url('categories/' ~ category) }}">#{{ category }}</a>&nbsp;
+<li><a href="{{ url('categories/' ~ category) }}">#{{ category }}</a></li>
 {% endfor %}
+</ul>
 {% endif %}
-<p>layout (themes/theme): {{ _self.getTemplateName() }}</p>
 {% endblock %}

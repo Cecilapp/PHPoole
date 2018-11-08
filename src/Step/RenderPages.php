@@ -43,20 +43,21 @@ class RenderPages extends AbstractStep
     public function process()
     {
         // prepares renderer
-        $this->phpoole->setRenderer(new Twig($this->getLayoutsPaths(), $this->config));
+        $this->phpoole->setRenderer(new Twig($this->getAllLayoutsPaths(), $this->config));
 
         // add globals variables
         $this->addGlobals();
 
-        // start rendering
         call_user_func_array($this->phpoole->getMessageCb(), ['RENDER', 'Rendering pages']);
 
+        // collect published pages
         /* @var $page Page */
         $filteredPages = $this->phpoole->getPages()->filter(function (Page $page) {
             return !empty($page->getVariable('published'));
         });
         $max = count($filteredPages);
 
+        // render each page
         $count = 0;
         foreach ($filteredPages as $page) {
             $count++;
@@ -78,16 +79,21 @@ class RenderPages extends AbstractStep
      *
      * @return array Layouts directory
      */
-    protected function getLayoutsPaths()
+    protected function getAllLayoutsPaths()
     {
         $paths = [];
 
+        // website
         if (is_dir($this->config->getLayoutsPath())) {
             $paths[] = $this->config->getLayoutsPath();
         }
         // theme
         if ($this->config->hasTheme()) {
             $paths[] = $this->config->getThemePath($this->config->get('theme'));
+        }
+        // internal
+        if (is_dir($this->config->getInternalLayoutsPath())) {
+            $paths[] = $this->config->getInternalLayoutsPath();
         }
 
         return $paths;

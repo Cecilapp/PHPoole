@@ -31,26 +31,26 @@ class Layout
      */
     public function finder(Page $page, Config $config)
     {
-        // internal layouts
-        if (!empty($page->getLayout()) && array_key_exists($page->getLayout(), $config->get('layouts.internal'))) {
-            return $page->getLayout().'.twig';
-        }
-
         $layout = 'unknown';
+
+        // what layouts could be use for the page?
         $layouts = self::fallback($page);
 
-        // is layout exists in local layout dir?
+        // take the first available layout
         foreach ($layouts as $layout) {
+            // is it in layouts dir?
             if (Util::getFS()->exists($config->getLayoutsPath().'/'.$layout)) {
                 return $layout;
             }
-        }
-        // is layout exists in layout theme dir?
-        if ($config->hasTheme()) {
-            foreach ($layouts as $layout) {
+            // is it in theme dir?
+            if ($config->hasTheme()) {
                 if (Util::getFS()->exists($config->getThemePath($config->get('theme')).'/'.$layout)) {
                     return $layout;
                 }
+            }
+            // is it in internal dir?
+            if (Util::getFS()->exists($config->getInternalLayoutsPath().'/'.$layout)) {
+                return $layout;
             }
         }
 
