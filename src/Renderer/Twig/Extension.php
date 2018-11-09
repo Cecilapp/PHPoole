@@ -478,7 +478,7 @@ class Extension extends SlugifyExtension
     public function hashFile($path)
     {
         if (is_file($filePath = $this->destPath.'/'.$path)) {
-            return sprintf('sha384-%s', hash_file('sha384', $filePath));
+            return sprintf('sha384-%s', base64_encode(hash_file('sha384', $filePath, true)));
         }
     }
 }
