@@ -42,7 +42,7 @@ class CopyStatic extends AbstractStep
         // copy theme static dir if exists
         if ($this->phpoole->getConfig()->hasTheme()) {
             $theme = $this->phpoole->getConfig()->get('theme');
-            $themeStaticDir = $this->phpoole->getConfig()->getThemePath($theme, 'static');
+            $themeStaticDir = $this->phpoole->getConfig()->getThemeDirPath($theme, 'static');
             if (Util::getFS()->exists($themeStaticDir)) {
                 $finder = new Finder();
                 $finder->files()->in($themeStaticDir);

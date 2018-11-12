@@ -44,7 +44,7 @@ class Layout
             }
             // is it in theme dir?
             if ($config->hasTheme()) {
-                if (Util::getFS()->exists($config->getThemePath($config->get('theme')).'/'.$layout)) {
+                if (Util::getFS()->exists($config->getThemeDirPath($config->get('theme')).'/'.$layout)) {
                     return $layout;
                 }
             }

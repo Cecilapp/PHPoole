@@ -89,7 +89,7 @@ class RenderPages extends AbstractStep
         }
         // theme
         if ($this->config->hasTheme()) {
-            $paths[] = $this->config->getThemePath($this->config->get('theme'));
+            $paths[] = $this->config->getThemeDirPath($this->config->get('theme'));
         }
         // internal
         if (is_dir($this->config->getInternalLayoutsPath())) {

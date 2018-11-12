@@ -273,7 +273,90 @@ class Config
     }
 
     /**
-     * Is config has a valid theme?
+     * Path helpers.
+     */
+
+    /**
+     * Return content directory path.
+     *
+     * @return string
+     */
+    public function getContentPath()
+    {
+        return $this->getSourceDir().'/'.$this->get('content.dir');
+    }
+
+    /**
+     * Return templates directory path.
+     *
+     * @return string
+     */
+    public function getLayoutsPath()
+    {
+        return $this->getSourceDir().'/'.$this->get('layouts.dir');
+    }
+
+    /**
+     * Return themes directory path.
+     *
+     * @return string
+     */
+    public function getThemesPath()
+    {
+        return $this->getSourceDir().'/'.$this->get('themes.dir');
+    }
+
+    /**
+     * Return internal templates directory path
+     *
+     * @return string
+     */
+    public function getInternalLayoutsPath()
+    {
+        return __DIR__.'/../'.$this->get('layouts.internal.dir');
+    }
+
+    /**
+     * Return output directory path
+     *
+     * @return string
+     */
+    public function getOutputPath()
+    {
+        return $this->getSourceDir().'/'.$this->get('output.dir');
+    }
+
+    /**
+     * Return static files directory path
+     *
+     * @return string
+     */
+    public function getStaticPath()
+    {
+        return $this->getSourceDir().'/'.$this->get('static.dir');
+    }
+
+    /**
+     * Themes helpers.
+     */
+
+    /**
+     * Return theme(s)
+     *
+     * @return array|null
+     */
+    public function getTheme() {
+        if ($theme = $this->get('theme')) {
+            if (!is_array($theme)) {
+                return [$theme];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Has a (valid) theme(s)?
      *
      * @throws Exception
      *
@@ -281,13 +364,15 @@ class Config
      */
     public function hasTheme()
     {
-        if ($this->get('theme')) {
-            if (!Util::getFS()->exists($this->getThemePath($this->get('theme')))) {
-                throw new Exception(sprintf(
-                    "Theme directory '%s/%s/layouts' not found!",
-                    $this->getThemesPath(),
-                    $this->get('theme')
-                ));
+        if ($themes = $this->getTheme()) {
+            foreach ($themes as $theme) {
+                if (!Util::getFS()->exists($this->getThemeDirPath($theme, 'layouts'))) {
+                    throw new Exception(sprintf(
+                        "Theme directory '%s/%s/layouts' not found!",
+                        $this->getThemesPath(),
+                        $theme
+                    ));
+                }
             }
 
             return true;
@@ -297,65 +382,15 @@ class Config
     }
 
     /**
-     * Path helpers.
-     */
-
-    /**
-     * @return string
-     */
-    public function getContentPath()
-    {
-        return $this->getSourceDir().'/'.$this->get('content.dir');
-    }
-
-    /**
-     * @return string
-     */
-    public function getLayoutsPath()
-    {
-        return $this->getSourceDir().'/'.$this->get('layouts.dir');
-    }
-
-    /**
-     * @return string
-     */
-    public function getInternalLayoutsPath()
-    {
-        return __DIR__.'/../'.$this->get('layouts.internal.dir');
-    }
-
-    /**
-     * @return string
-     */
-    public function getThemesPath()
-    {
-        return $this->getSourceDir().'/'.$this->get('themes.dir');
-    }
-
-    /**
+     * Return the path of a specific theme's directory
+     *
      * @param string $theme
      * @param string $dir
      *
      * @return string
      */
-    public function getThemePath($theme, $dir = 'layouts')
+    public function getThemeDirPath($theme, $dir = 'layouts')
     {
-        return $this->getSourceDir().'/'.$this->get('themes.dir').'/'.$theme.'/'.$dir;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOutputPath()
-    {
-        return $this->getSourceDir().'/'.$this->get('output.dir');
-    }
-
-    /**
-     * @return string
-     */
-    public function getStaticPath()
-    {
-        return $this->getSourceDir().'/'.$this->get('static.dir');
+        return $this->getThemesPath().'/'.$theme.'/'.$dir;
     }
 }
