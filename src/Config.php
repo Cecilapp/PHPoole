@@ -354,9 +354,6 @@ class Config
 
             return [$themes];
         }
-
-        return null;
-
     }
 
     /**
