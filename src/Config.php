@@ -307,7 +307,7 @@ class Config
     }
 
     /**
-     * Return internal templates directory path
+     * Return internal templates directory path.
      *
      * @return string
      */
@@ -317,7 +317,7 @@ class Config
     }
 
     /**
-     * Return output directory path
+     * Return output directory path.
      *
      * @return string
      */
@@ -327,7 +327,7 @@ class Config
     }
 
     /**
-     * Return static files directory path
+     * Return static files directory path.
      *
      * @return string
      */
@@ -341,18 +341,17 @@ class Config
      */
 
     /**
-     * Return theme(s)
+     * Return theme(s).
      *
      * @return array|null
      */
-    public function getTheme() {
+    public function getTheme()
+    {
         if ($theme = $this->get('theme')) {
             if (!is_array($theme)) {
                 return [$theme];
             }
         }
-
-        return null;
     }
 
     /**
@@ -382,7 +381,7 @@ class Config
     }
 
     /**
-     * Return the path of a specific theme's directory
+     * Return the path of a specific theme's directory.
      *
      * @param string $theme
      * @param string $dir
