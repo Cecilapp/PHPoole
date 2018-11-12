@@ -63,13 +63,13 @@ class RenderPages extends AbstractStep
             $count++;
 
             $rendered = $this->phpoole->getRenderer()->render(
-                (new Layout())->finder($page, $this->config),
+                $layout = (new Layout())->finder($page, $this->config),
                 ['page' => $page]
             );
             $page->setVariable('rendered', $rendered);
             $this->phpoole->getPages()->replace($page->getId(), $page);
 
-            $message = $page->getPathname() ?: 'index';
+            $message = ($page->getPathname() ?: 'index')."    ($layout)";
             call_user_func_array($this->phpoole->getMessageCb(), ['RENDER_PROGRESS', $message, $count, $max]);
         }
     }
@@ -83,15 +83,18 @@ class RenderPages extends AbstractStep
     {
         $paths = [];
 
-        // website
+        // layouts/
         if (is_dir($this->config->getLayoutsPath())) {
             $paths[] = $this->config->getLayoutsPath();
         }
-        // theme
+        // <theme>/layouts/
         if ($this->config->hasTheme()) {
-            $paths[] = $this->config->getThemeDirPath($this->config->get('theme'));
+            $themes = $this->config->getTheme();
+            foreach ($themes as $theme) {
+                $paths[] = $this->config->getThemeDirPath($theme);
+            }
         }
-        // internal
+        // res/layouts/
         if (is_dir($this->config->getInternalLayoutsPath())) {
             $paths[] = $this->config->getInternalLayoutsPath();
         }

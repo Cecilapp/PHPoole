@@ -38,17 +38,20 @@ class Layout
 
         // take the first available layout
         foreach ($layouts as $layout) {
-            // is it in layouts dir?
+            // is it in layouts/ dir?
             if (Util::getFS()->exists($config->getLayoutsPath().'/'.$layout)) {
                 return $layout;
             }
-            // is it in theme dir?
+            // is it in <theme>/layouts/ dir?
             if ($config->hasTheme()) {
-                if (Util::getFS()->exists($config->getThemeDirPath($config->get('theme')).'/'.$layout)) {
-                    return $layout;
+                $themes = $config->getTheme();
+                foreach ($themes as $theme) {
+                    if (Util::getFS()->exists($config->getThemeDirPath($theme, 'layouts').'/'.$layout)) {
+                        return $layout;
+                    }
                 }
             }
-            // is it in internal dir?
+            // is it in res/layouts/ dir?
             if (Util::getFS()->exists($config->getInternalLayoutsPath().'/'.$layout)) {
                 return $layout;
             }
@@ -126,18 +129,6 @@ class Layout
                     // 'page.html.twig',
                     '_default/page.html.twig',
                 ];
-                if ($page->getSection()) {
-                    $layouts = array_merge(
-                        [sprintf('%s/page.html.twig', $page->getSection())],
-                        $layouts
-                    );
-                    if ($page->getLayout()) {
-                        $layouts = array_merge(
-                            [sprintf('%s/%s.twig', $page->getSection(), $layout)],
-                            $layouts
-                        );
-                    }
-                }
                 $layouts = array_merge(
                     ['page.html.twig'],
                     $layouts
@@ -145,6 +136,18 @@ class Layout
                 if ($page->getLayout()) {
                     $layouts = array_merge(
                         [sprintf('%s.twig', $layout)],
+                        $layouts
+                    );
+                }
+                if ($page->getSection()) {
+                    if ($page->getLayout()) {
+                        $layouts = array_merge(
+                            [sprintf('%s/%s.twig', $page->getSection(), $layout)],
+                            $layouts
+                        );
+                    }
+                    $layouts = array_merge(
+                        [sprintf('%s/page.html.twig', $page->getSection())],
                         $layouts
                     );
                 }

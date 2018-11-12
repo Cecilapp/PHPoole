@@ -347,11 +347,16 @@ class Config
      */
     public function getTheme()
     {
-        if ($theme = $this->get('theme')) {
-            if (!is_array($theme)) {
-                return [$theme];
+        if ($themes = $this->get('theme')) {
+            if (is_array($themes)) {
+                return $themes;
             }
+
+            return [$themes];
         }
+
+        return null;
+
     }
 
     /**

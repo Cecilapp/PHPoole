@@ -1,0 +1,18 @@
+    <div class="sidebar">
+      <div class="container sidebar-sticky">
+        <div class="sidebar-about">
+          <h1>
+            <a href="{{ url('/') }}">{{ site.title }}</a>
+          </h1>
+          <p class="lead">{{ site.description }}</p>
+        </div>
+        <nav class="sidebar-nav">
+{% if site.menus.main is defined %}
+{% for menu in site.menus.main|sortByWeight %}
+          <a class="sidebar-nav-item{% if page.pathname == menu.url %} active{% endif %}" href="{{ url(menu.url) }}">{{ menu.name }}</a>
+{% endfor %}
+{% endif %}
+        </nav>
+        <p>Powered by <a href="{{ phpoole.url }}">PHPoole</a> &amp; <a href="http://hyde.getpoole.com">Hyde</a>.</p>
+      </div>
+    </div>

@@ -66,7 +66,10 @@ class Build extends \PHPUnit\Framework\TestCase
                     ],
                     'googleanalytics' => 'POUET',
                 ],
-                'theme'  => 'theme',
+                'theme'  => [
+                    'a-theme',
+                    'hyde',
+                ],
                 'static' => [
                     'exclude' => [
                         'test.txt',
