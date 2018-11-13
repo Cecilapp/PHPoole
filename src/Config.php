@@ -390,7 +390,7 @@ class Config
      *
      * @return string
      */
-    public function getThemeDirPath($theme, $dir = 'layouts')
+    public function getThemeDirPath($theme, $dir='layouts')
     {
         return $this->getThemesPath().'/'.$theme.'/'.$dir;
     }
