@@ -71,6 +71,6 @@
     ],
     "api-docs-install": "curl -O http://get.sensiolabs.org/sami.phar",
     "api-docs-build": "php sami.phar update sami.php",
-    "post-install-cmd": "cd tests/fixtures/website;composer install;composer update"
+    "post-install-cmd": "cd tests/fixtures/website;composer install;"
   }
 }
