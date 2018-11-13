@@ -1,0 +1,24 @@
+{% extends '_default/page.html.twig' %}
+
+{% block content %}
+All pages:
+<ul>
+{% for item in site.pages|sortByDate %}
+{% include 'includes/page_li.html.twig' %}
+{% endfor %}
+</ul>
+
+Blog pages:
+<ul>
+{% for item in site.pages|filterBy('section', 'blog') %}
+{% include 'includes/page_li.html.twig' %}
+{% endfor %}
+</ul>
+
+Virtuals pages:
+<ul>
+{% for item in site.pages|filterBy('virtual', true) %}
+{% include 'includes/page_li.html.twig' %}
+{% endfor %}
+</ul>
+{% endblock %}
