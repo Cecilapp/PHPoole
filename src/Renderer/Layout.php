@@ -123,9 +123,9 @@ class Layout
                 break;
             default:
                 $layouts = [
-                    // '$section/page.html.twig',
                     // '$section/$layout.twig',
                     // '$layout.twig',
+                    // '$section/page.html.twig',
                     // 'page.html.twig',
                     '_default/page.html.twig',
                 ];
@@ -133,23 +133,24 @@ class Layout
                     ['page.html.twig'],
                     $layouts
                 );
+
+                if ($page->getSection()) {
+                    $layouts = array_merge(
+                        [sprintf('%s/page.html.twig', $page->getSection())],
+                        $layouts
+                    );
+                }
                 if ($page->getLayout()) {
                     $layouts = array_merge(
                         [sprintf('%s.twig', $layout)],
                         $layouts
                     );
-                }
-                if ($page->getSection()) {
-                    if ($page->getLayout()) {
+                    if ($page->getSection()) {
                         $layouts = array_merge(
                             [sprintf('%s/%s.twig', $page->getSection(), $layout)],
                             $layouts
                         );
                     }
-                    $layouts = array_merge(
-                        [sprintf('%s/page.html.twig', $page->getSection())],
-                        $layouts
-                    );
                 }
         }
 
