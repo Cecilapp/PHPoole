@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c160975804e8e2832151b15c6dadbcd",
+    "content-hash": "36c62b2016cdc2dd1015ce3980c3e843",
     "packages": [
         {
             "name": "phpoole/theme-hyde",
