@@ -37,6 +37,7 @@ class PHPoole
      * @see build()
      */
     protected $steps = [
+        'PHPoole\Step\ImportConfig',
         'PHPoole\Step\LocateContent',
         'PHPoole\Step\CreatePages',
         'PHPoole\Step\ConvertPages',
@@ -101,8 +102,9 @@ class PHPoole
      */
     public function __construct($config = null, \Closure $messageCallback = null)
     {
-        $this->setConfig($config);
-        $this->config->setSourceDir(null)->setDestinationDir(null);
+        $this->setConfig($config)
+            ->setSourceDir(null)
+            ->setDestinationDir(null);
         $this->setMessageCallback($messageCallback);
     }
 
@@ -229,6 +231,7 @@ class PHPoole
         if ($messageCallback === null) {
             $messageCallback = function ($code, $message = '', $itemsCount = 0, $itemsMax = 0) {
                 switch ($code) {
+                    case 'CONFIG':
                     case 'LOCATE':
                     case 'CREATE':
                     case 'CONVERT':
@@ -241,6 +244,7 @@ class PHPoole
                         $log = sprintf("%s\n", $message);
                         $this->addLog($log);
                         break;
+                    case 'CONFIG_PROGRESS':
                     case 'LOCATE_PROGRESS':
                     case 'CREATE_PROGRESS':
                     case 'CONVERT_PROGRESS':

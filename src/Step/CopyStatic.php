@@ -39,23 +39,25 @@ class CopyStatic extends AbstractStep
         $count = 0;
 
         call_user_func_array($this->phpoole->getMessageCb(), ['COPY', 'Copying static files']);
-        // copy theme static dir if exists
+        // copy <theme>/static/ dir if exists
         if ($this->phpoole->getConfig()->hasTheme()) {
-            $theme = $this->phpoole->getConfig()->get('theme');
-            $themeStaticDir = $this->phpoole->getConfig()->getThemePath($theme, 'static');
-            if (Util::getFS()->exists($themeStaticDir)) {
-                $finder = new Finder();
-                $finder->files()->in($themeStaticDir);
-                $count += $finder->count();
-                Util::getFS()->mirror(
-                    $themeStaticDir,
-                    $this->phpoole->getConfig()->getOutputPath(),
-                    null,
-                    ['override' => true]
-                );
+            $themes = array_reverse($this->phpoole->getConfig()->getTheme());
+            foreach ($themes as $theme) {
+                $themeStaticDir = $this->phpoole->getConfig()->getThemeDirPath($theme, 'static');
+                if (Util::getFS()->exists($themeStaticDir)) {
+                    $finder = new Finder();
+                    $finder->files()->in($themeStaticDir);
+                    $count += $finder->count();
+                    Util::getFS()->mirror(
+                        $themeStaticDir,
+                        $this->phpoole->getConfig()->getOutputPath(),
+                        null,
+                        ['override' => true]
+                    );
+                }
             }
         }
-        // copy static dir if exists
+        // copy static/ dir if exists
         $staticDir = $this->phpoole->getConfig()->getStaticPath();
         if (Util::getFS()->exists($staticDir)) {
             $finder = new Finder();

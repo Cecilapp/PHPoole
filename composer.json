@@ -1,7 +1,14 @@
 {
   "name": "phpoole/library",
   "description": "An intuitive PHP library to create a static website.",
-  "keywords": ["static", "website", "generator", "flat file", "markdown", "twig"],
+  "keywords": [
+    "static",
+    "website",
+    "generator",
+    "flat file",
+    "markdown",
+    "twig"
+  ],
   "homepage": "https://github.com/PHPoole/library",
   "license": "MIT",
   "type": "library",
@@ -35,7 +42,7 @@
     "phpunit/phpunit": "7.2.7"
   },
   "autoload": {
-    "psr-4" : {
+    "psr-4": {
       "PHPoole\\": "src"
     }
   },
@@ -63,6 +70,8 @@
       "php coveralls.phar -v"
     ],
     "api-docs-install": "curl -O http://get.sensiolabs.org/sami.phar",
-    "api-docs-build": "php sami.phar update sami.php"
+    "api-docs-build": "php sami.phar update sami.php",
+    "post-install-cmd": "cd tests/fixtures/website;composer install;",
+    "post-update-cmd": "cd tests/fixtures/website;composer update;"
   }
 }

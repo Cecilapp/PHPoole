@@ -15,6 +15,7 @@ class Build extends \PHPUnit\Framework\TestCase
 {
     protected $wsSourceDir;
     protected $wsDestinationDir;
+    const DEBUG = false;
 
     public function setUp()
     {
@@ -25,8 +26,10 @@ class Build extends \PHPUnit\Framework\TestCase
     public function tearDown()
     {
         $fs = new Filesystem();
-        $fs->remove($this->wsDestinationDir.'/_site');
-        $fs->remove(__DIR__.'/../_cache');
+        if (!self::DEBUG) {
+            $fs->remove($this->wsDestinationDir.'/_site');
+            $fs->remove(__DIR__.'/../_cache');
+        }
     }
 
     public function testBuid()
@@ -66,7 +69,10 @@ class Build extends \PHPUnit\Framework\TestCase
                     ],
                     'googleanalytics' => 'POUET',
                 ],
-                'theme'  => 'theme',
+                'theme'  => [
+                    'a-theme',
+                    'hyde',
+                ],
                 'static' => [
                     'exclude' => [
                         'test.txt',

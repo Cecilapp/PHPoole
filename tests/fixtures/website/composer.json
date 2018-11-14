@@ -1,0 +1,5 @@
+{
+  "require": {
+    "phpoole/theme-hyde": "^1.10"
+  }
+}
