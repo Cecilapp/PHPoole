@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "phpoole/theme-hyde",
-            "version": "1.10.0",
+            "version": "1.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPoole/theme-hyde.git",
-                "reference": "ebf282bd980f0c3a996a53ca564f6a21dbeffae4"
+                "reference": "c6fa10b1cb43952e0fe8292135b8c91ac79d5f3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPoole/theme-hyde/zipball/ebf282bd980f0c3a996a53ca564f6a21dbeffae4",
-                "reference": "ebf282bd980f0c3a996a53ca564f6a21dbeffae4",
+                "url": "https://api.github.com/repos/PHPoole/theme-hyde/zipball/c6fa10b1cb43952e0fe8292135b8c91ac79d5f3d",
+                "reference": "c6fa10b1cb43952e0fe8292135b8c91ac79d5f3d",
                 "shasum": ""
             },
             "require": {
@@ -40,7 +40,7 @@
                 "phpoole",
                 "theme"
             ],
-            "time": "2018-11-13T22:40:06+00:00"
+            "time": "2018-11-14T13:42:07+00:00"
         },
         {
             "name": "phpoole/theme-installer",
