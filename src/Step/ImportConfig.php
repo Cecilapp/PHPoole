@@ -28,8 +28,6 @@ class ImportConfig extends AbstractStep
     {
         if ($this->config->hasTheme()) {
             $this->process = true;
-        } else {
-            $this->process = false;
         }
     }
 
