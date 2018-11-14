@@ -131,13 +131,17 @@ class Config
     {
         $data = new Data(self::$defaultData);
 
-        if ($config instanceof self) {
-            $data->importData($config->getAll());
-        } elseif (is_array($config)) {
-            $data->import($config);
+        if ($config) {
+            if ($config instanceof self) {
+                $data->importData($config->getAll());
+            } elseif (is_array($config)) {
+                $data->import($config);
+            }
         }
 
-        // Apply environment variables
+        /**
+         * Apply environment variables
+         */
         $applyEnv = function ($array) use ($data) {
             $iterator = new \RecursiveIteratorIterator(
                 new \RecursiveArrayIterator($array),
@@ -157,6 +161,23 @@ class Config
         $applyEnv($data->export());
 
         $this->setFromData($data);
+    }
+
+    /**
+     * Import array config to current config.
+     *
+     * @param array $config
+     *
+     * @return $this
+     */
+    public function import($config) {
+        if (is_array($config)) {
+            $data = $this->getAll();
+            $origin = $data->export();
+            $data->import($config);
+            $data->import($origin);
+            $this->setFromData($data);
+        }
     }
 
     /**

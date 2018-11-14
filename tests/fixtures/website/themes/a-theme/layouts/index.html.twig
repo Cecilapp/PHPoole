@@ -1,6 +1,7 @@
 {% extends '_default/page.html.twig' %}
 
 {% block content %}
+
 All pages:
 <ul>
 {% for item in site.pages|sortByDate %}
@@ -21,4 +22,10 @@ Virtuals pages:
 {% include 'includes/page_li.html.twig' %}
 {% endfor %}
 </ul>
+
+Imported config (from theme(s)):
+{% if site.foo is defined %}
+<p>Variable `foo`=`{{ site.foo }}`</p>
+{% endif %}
+
 {% endblock %}
