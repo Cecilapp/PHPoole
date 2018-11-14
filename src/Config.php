@@ -140,7 +140,7 @@ class Config
         }
 
         /**
-         * Apply environment variables
+         * Apply environment variables.
          */
         $applyEnv = function ($array) use ($data) {
             $iterator = new \RecursiveIteratorIterator(
@@ -170,7 +170,8 @@ class Config
      *
      * @return $this
      */
-    public function import($config) {
+    public function import($config)
+    {
         if (is_array($config)) {
             $data = $this->getAll();
             $origin = $data->export();
