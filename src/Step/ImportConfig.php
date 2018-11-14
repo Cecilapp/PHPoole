@@ -26,11 +26,11 @@ class ImportConfig extends AbstractStep
      */
     public function init($options)
     {
-        if (!$this->config->hasTheme()) {
+        if ($this->config->hasTheme()) {
+            $this->process = true;
+        } else {
             $this->process = false;
         }
-
-        $this->process = true;
     }
 
     /**
