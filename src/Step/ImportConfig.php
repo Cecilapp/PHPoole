@@ -8,8 +8,7 @@
 
 namespace PHPoole\Step;
 
-//use PHPoole\Exception\Exception;
-//use Symfony\Component\Finder\Finder;
+use PHPoole\Exception\Exception;
 use PHPoole\Util;
 use Symfony\Component\Yaml\Yaml;
 
