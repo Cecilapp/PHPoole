@@ -128,8 +128,9 @@ class Page extends Item
             // file as a prefix?
             if (false !== self::getPrefix($this->fileId)) {
                 // prefix is a valid date?
-                $isValidDate = function($date, $format = 'Y-m-d') {
+                $isValidDate = function ($date, $format = 'Y-m-d') {
                     $d = \DateTime::createFromFormat($format, $date);
+
                     return $d && $d->format($format) === $date;
                 };
                 if ($isValidDate(self::getPrefix($this->fileId))) {
