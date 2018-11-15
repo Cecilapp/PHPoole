@@ -123,10 +123,19 @@ class Page extends Item
             $this->setTitle(self::subPrefix($this->fileName));
             // section - ie: "blog"
             $this->setSection(explode('/', $this->path)[0]);
-            // date
+            // date from file meta
             $this->setDate(filemtime($this->file->getPathname()));
+            // file as a prefix?
             if (false !== self::getPrefix($this->fileId)) {
-                $this->setDate(self::getPrefix($this->fileId));
+                // prefix is a valid date?
+                $isValidDate = function ($date, $format = 'Y-m-d') {
+                    $d = \DateTime::createFromFormat($format, $date);
+
+                    return $d && $d->format($format) === $date;
+                };
+                if ($isValidDate(self::getPrefix($this->fileId))) {
+                    $this->setDate(self::getPrefix($this->fileId));
+                }
             }
             // permalink
             $this->setPermalink($this->pathname);

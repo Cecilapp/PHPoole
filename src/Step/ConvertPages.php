@@ -76,15 +76,17 @@ class ConvertPages extends AbstractStep
     public function convertPage(Page $page, $format = 'yaml')
     {
         // converts frontmatter
-        try {
-            $variables = Converter::convertFrontmatter($page->getFrontmatter(), $format);
-        } catch (Exception $e) {
-            $message = sprintf("Unable to convert frontmatter of '%s': %s", $page->getId(), $e->getMessage());
-            call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_ERROR', $message]);
+        if ($page->getFrontmatter()) {
+            try {
+                $variables = Converter::convertFrontmatter($page->getFrontmatter(), $format);
+            } catch (Exception $e) {
+                $message = sprintf("Unable to convert frontmatter of '%s': %s", $page->getId(), $e->getMessage());
+                call_user_func_array($this->phpoole->getMessageCb(), ['CONVERT_ERROR', $message]);
 
-            return false;
+                return false;
+            }
+            $page->setVariables($variables);
         }
-        $page->setVariables($variables);
 
         // converts body
         $html = Converter::convertBody($page->getBody());
