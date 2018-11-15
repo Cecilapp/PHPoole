@@ -144,7 +144,7 @@ class Extension extends SlugifyExtension
             $array = $array->toArray();
         }
         if (is_array($array)) {
-            array_multisort(array_keys($array), SORT_NATURAL| SORT_FLAG_CASE, $array);
+            array_multisort(array_keys($array), SORT_NATURAL | SORT_FLAG_CASE, $array);
         }
 
         return $array;
