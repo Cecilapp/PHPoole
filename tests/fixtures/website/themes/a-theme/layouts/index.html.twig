@@ -4,21 +4,21 @@
 
 All pages:
 <ul>
-{% for item in site.pages|sortByDate %}
+{% for item in site.pages|sortByTitle %}
 {% include 'includes/page_li.html.twig' %}
 {% endfor %}
 </ul>
 
 Blog pages:
 <ul>
-{% for item in site.pages|filterBy('section', 'blog') %}
+{% for item in site.pages|filterBy('section', 'blog')|sortByTitle %}
 {% include 'includes/page_li.html.twig' %}
 {% endfor %}
 </ul>
 
 Virtuals pages:
 <ul>
-{% for item in site.pages|filterBy('virtual', true) %}
+{% for item in site.pages|filterBy('virtual', true)|sortByTitle %}
 {% include 'includes/page_li.html.twig' %}
 {% endfor %}
 </ul>

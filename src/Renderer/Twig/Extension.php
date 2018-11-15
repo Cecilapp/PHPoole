@@ -140,25 +140,11 @@ class Extension extends SlugifyExtension
      */
     public function sortByTitle($array)
     {
-        $callback = function ($a, $b) {
-            if (!isset($a['title'])) {
-                return 1;
-            }
-            if (!isset($b['title'])) {
-                return -1;
-            }
-            if ($a['title'] == $b['title']) {
-                return 0;
-            }
-
-            return ($a['title'] > $b['title']) ? -1 : 1;
-        };
-
         if ($array instanceof Collection) {
             $array = $array->toArray();
         }
         if (is_array($array)) {
-            usort($array, $callback);
+            array_multisort(array_keys($array), SORT_NATURAL| SORT_FLAG_CASE, $array);
         }
 
         return $array;
