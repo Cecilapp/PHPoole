@@ -135,6 +135,9 @@ class Page extends Item
                 };
                 if ($isValidDate(self::getPrefix($this->fileId))) {
                     $this->setDate(self::getPrefix($this->fileId));
+                } else {
+                    // prefix is an integer
+                    $this->setWeight(self::getPrefix($this->fileId));
                 }
             }
             // permalink
@@ -408,6 +411,30 @@ class Page extends Item
     public function getDate()
     {
         return $this->getVariable('date');
+    }
+
+    /**
+     * Set weight.
+     *
+     * @param $int
+     *
+     * @return $this
+     */
+    public function setWeight($int)
+    {
+        $this->setVariable('weight', $int);
+
+        return $this;
+    }
+
+    /**
+     * Get weight.
+     *
+     * @return int
+     */
+    public function getWeight()
+    {
+        return $this->getVariable('weight');
     }
 
     /**
