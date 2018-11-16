@@ -430,7 +430,7 @@ class Page extends Item
     /**
      * Get weight.
      *
-     * @return integer
+     * @return int
      */
     public function getWeight()
     {
