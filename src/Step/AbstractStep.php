@@ -9,12 +9,12 @@
 namespace PHPoole\Step;
 
 use PHPoole\Config;
-use PHPoole\PHPoole;
+use PHPoole\Builder;
 
 abstract class AbstractStep implements StepInterface
 {
     /**
-     * @var PHPoole
+     * @var Builder
      */
     protected $phpoole;
     /**
@@ -29,7 +29,7 @@ abstract class AbstractStep implements StepInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(PHPoole $phpoole)
+    public function __construct(Builder $phpoole)
     {
         $this->phpoole = $phpoole;
         $this->config = $phpoole->getConfig();
