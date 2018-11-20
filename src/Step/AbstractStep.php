@@ -8,8 +8,8 @@
 
 namespace PHPoole\Step;
 
-use PHPoole\Config;
 use PHPoole\Builder;
+use PHPoole\Config;
 
 abstract class AbstractStep implements StepInterface
 {
