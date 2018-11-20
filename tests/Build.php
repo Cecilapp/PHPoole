@@ -8,7 +8,7 @@
 
 namespace PHPoole\Test;
 
-use PHPoole\PHPoole;
+use PHPoole\Builder;
 use Symfony\Component\Filesystem\Filesystem;
 
 class Build extends \PHPUnit\Framework\TestCase
@@ -34,7 +34,7 @@ class Build extends \PHPUnit\Framework\TestCase
 
     public function testBuid()
     {
-        PHPoole::create(
+        Builder::create(
             [
                 'site' => [
                     'title' => 'PHPoole test',
@@ -87,7 +87,7 @@ class Build extends \PHPUnit\Framework\TestCase
         )->setSourceDir($this->wsSourceDir)
         ->setDestinationDir($this->wsDestinationDir)
         ->build([
-            'verbosity' => PHPoole::VERBOSITY_DEBUG,
+            'verbosity' => Builder::VERBOSITY_DEBUG,
             'drafts'    => false,
             'dry-run'   => false,
         ]);

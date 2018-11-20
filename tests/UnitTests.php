@@ -8,10 +8,10 @@
 
 namespace PHPoole\Test;
 
+use PHPoole\Builder;
 use PHPoole\Collection\Collection as PageCollection;
 use PHPoole\Collection\Page\Page;
 use PHPoole\Converter\Converter;
-use PHPoole\PHPoole;
 use PHPoole\Step\ConvertPages;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -57,7 +57,7 @@ class UnitTests extends \PHPUnit\Framework\TestCase
 
     public function testCreate()
     {
-        $this->assertInstanceOf('PHPoole\PHPoole', PHPoole::create());
+        $this->assertInstanceOf('PHPoole\Builder', Builder::create());
     }
 
     public function testOptions()
@@ -66,7 +66,7 @@ class UnitTests extends \PHPUnit\Framework\TestCase
             'option1' => 'Option 1',
             'option2' => 'Option 2',
         ];
-        $phpoole = (new PHPoole())->setConfig($options);
+        $phpoole = (new Builder())->setConfig($options);
         //$this->assertEquals($options, $phpoole->getOptions()->getAllAsArray());
         $this->assertArraySubset($options, $phpoole->getConfig()->getAllAsArray());
     }
@@ -126,7 +126,7 @@ class UnitTests extends \PHPUnit\Framework\TestCase
         $page->parse();
         $pageCollection->add($page);
 
-        $page = (new ConvertPages(PHPoole::create()))
+        $page = (new ConvertPages(Builder::create()))
             ->convertPage($page, 'yaml');
 
         $pageCollection->replace($page->getId(), $page);

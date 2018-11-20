@@ -41,8 +41,8 @@ class Config
      */
     protected static $defaultData = [
         'site' => [
-            'title'        => 'PHPoole',
-            'baseline'     => 'A PHPoole website',
+            'title'        => 'My Webiste',
+            'baseline'     => 'An amazing static website!',
             'baseurl'      => 'http://localhost:8000/',
             'canonicalurl' => false,
             'description'  => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
