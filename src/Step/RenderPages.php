@@ -116,10 +116,10 @@ class RenderPages extends AbstractStep
             })],
             ['time' => time()]
         ));
-        $this->phpoole->getRenderer()->addGlobal('phpoole', [
-            'url'       => sprintf('https://phpoole.org/#%s', $this->phpoole->getVersion()),
+        $this->phpoole->getRenderer()->addGlobal('cecil', [
+            'url'       => sprintf('https://cecil.app/#%s', $this->phpoole->getVersion()),
             'version'   => $this->phpoole->getVersion(),
-            'poweredby' => sprintf('PHPoole (library v%s)', $this->phpoole->getVersion()),
+            'poweredby' => sprintf('Cecil/PHPoole v%s', $this->phpoole->getVersion()),
         ]);
     }
 }

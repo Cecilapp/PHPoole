@@ -13,9 +13,9 @@ use PHPoole\Generator\GeneratorManager;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Class PHPoole.
+ * Class Builder.
  */
-class PHPoole
+class Builder
 {
     const VERSION = '2.x-dev';
     const VERBOSITY_QUIET = -1;
@@ -95,7 +95,7 @@ class PHPoole
     protected $options;
 
     /**
-     * PHPoole constructor.
+     * Builder constructor.
      *
      * @param Config|array|null $config
      * @param \Closure|null     $messageCallback
@@ -109,9 +109,9 @@ class PHPoole
     }
 
     /**
-     * Creates a new PHPoole instance.
+     * Creates a new Builder instance.
      *
-     * @return PHPoole
+     * @return Builder
      */
     public static function create()
     {

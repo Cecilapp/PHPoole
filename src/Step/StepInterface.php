@@ -8,18 +8,18 @@
 
 namespace PHPoole\Step;
 
-use PHPoole\PHPoole;
+use PHPoole\Builder;
 
 interface StepInterface
 {
     /**
      * StepInterface constructor.
      *
-     * @param PHPoole $phpoole
+     * @param Builder $phpoole
      *
      * @return void
      */
-    public function __construct(PHPoole $phpoole);
+    public function __construct(Builder $phpoole);
 
     /**
      * Checks if step can be processed.
