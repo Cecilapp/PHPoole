@@ -17,7 +17,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ImportConfig extends AbstractStep
 {
-    const THEME_CONFIG_FILE = 'phpoole.yml';
+    const THEME_CONFIG_FILE = 'config.yml';
 
     /**
      * {@inheritdoc}
