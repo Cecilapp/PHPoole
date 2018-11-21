@@ -2,6 +2,7 @@
 
 > An intuitive PHP library to create a static websites.
 
+[![Build Status](https://travis-ci.com/Cecilapp/PHPoole.svg?branch=master)](https://travis-ci.com/Cecilapp/PHPoole)
 [![Build Status](https://travis-ci.org/Cecil/PHPoole.svg?branch=master)](https://travis-ci.org/Cecil/PHPoole)
 [![Latest Stable Version](https://poser.pugx.org/cecil/phpoole/v/stable)](https://packagist.org/packages/cecil/phpoole)
 [![License](https://poser.pugx.org/cecil/phpoole/license)](https://packagist.org/packages/cecil/phpoole)  
